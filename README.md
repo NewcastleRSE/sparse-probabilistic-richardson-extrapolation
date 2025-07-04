@@ -1,6 +1,6 @@
 # Sparse Probabilistic Richardson Extrapolation
 
-This work is a follow up to the [Probabilistic Richardson Extrapolation] (https://academic.oup.com/jrsssb/article/87/2/457/7933067) paper.
+This work is a follow up to the [Probabilistic Richardson Extrapolation](https://academic.oup.com/jrsssb/article/87/2/457/7933067) paper.
 
 ## About
 
