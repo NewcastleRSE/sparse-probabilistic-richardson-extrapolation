@@ -1,26 +1,21 @@
-# Standard Project
-A template repo for the standard RSE project
+# Sparse Probabilistic Richardson Extrapolation
 
-## >> INITIAL SETUP FOR NEW PROJECTS <<   
-
-When you create a new project, we recommend that you do the following additional manual steps (and then delete this section of the readme).
-
-- Add project details to  this Readme!
-
-- Go to Settings -> Code security and Analysis and enable "Dependabot Version Updates". This will automatically create Pull Requests to keep your dependencies up-to-date. To activate this feature, you will need to specify the package ecosystem (i.e. NPM) and save the YML file. 
-
-- Add a brief description of the project to the 'About' section (top right of this page). If your project involves a website, then add the URL here too.
+This work is a follow up to the [Probabilistic Richardson Extrapolation] (https://academic.oup.com/jrsssb/article/87/2/457/7933067) paper.
 
 ## About
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sollicitudin ante at eleifend eleifend. Sed non vestibulum nisi. Aliquam vel condimentum quam. Donec fringilla et purus at auctor. Praesent euismod vitae metus non consectetur. Sed interdum aliquet nisl at efficitur. Nulla urna quam, gravida eget elementum eget, mattis nec tortor. Fusce ut neque tellus. Integer at magna feugiat lacus porta posuere eget vitae metus.
+Almost all numerical tasks can be viewed as a type of extrapolation, where a key accuracy or tolerance setting is adjusted. This viewpoint allows for better ways to measure uncertainty and design experiments, and can even speed up how fast numerical methods converge.
+
+Previous research showed a method called Probabilistic Richardson Extrapolation, which uses simulations at different accuracy levels to speed up large simulations — like those modeling a full heart. However, this approach needed a huge amount of data as the number of variables increased, making it impractical for complex problems.
+
+The new method, called Sparse Probabilistic Richardson Extrapolation, is both simpler and more powerful. It introduces the concepts of effective dimension and extrapolation sparsity, which apply to many modern numerical techniques and help significantly reduce the amount of data required.
 
 ### Project Team
 
 | Name  | Role | Affiliation
 | ------------- | ------------- | ------------- |
-| Firstname Lastname  | PI | Newcastle University  |
-| Firstname Lastname | RSE  | Newcastle Universtiy  |
+| Chris Oates  | PI | Newcastle University  |
+| Richard Howey | RSE  | Newcastle Universtiy  |
 
 ## Built With
 
@@ -66,4 +61,4 @@ A branch per feature that is being worked on.
 https://nvie.com/posts/a-successful-git-branching-model/
 
 ## Acknowledgements
-This work was funded by a grant from the UK Research Councils, EPSRC grant ref. EP/L012345/1, “Example project title, please update”.
+This work was funded by a grant from the UK Research Councils, EPSRC grant ref. EP/W019590/1, “Harnessing the Power of Stein Discrepancies in Bayesian Computation”.
