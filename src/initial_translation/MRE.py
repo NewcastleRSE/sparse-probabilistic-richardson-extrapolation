@@ -1,16 +1,19 @@
 import numpy as np
-from sklearn.neighbors import NearestNeighbors
+#from sklearn.neighbors import NearestNeighbors
 
-def x2fx(X, A):
+def x2fx(X : np.ndarray, A : np.ndarray) -> np.ndarray:
     """
     Generate polynomial basis terms for each row in X using exponents in A.
     
     Parameters:
-        X : (n_samples, d)
+        X : np.ndarray
+            predictor matrix (n, d)
         A : (m, d) binary matrix (or integer exponents)
+            powers to use for predictor variables
 
     Returns:
-        V : (n_samples, m) design matrix where V[i,j] = prod_k X[i,k]^A[j,k]
+        np.ndarray
+            (n, m) design matrix where V[i,j] = prod_k X[i,k]^A[j,k]
     """
     return np.prod([X[:, [i]] ** A[:, i] for i in range(A.shape[1])], axis=0)
 
@@ -19,15 +22,16 @@ def MRE(A, X, Y):
     Multivariate Richardson Extrapolation.
 
     Parameters:
-        A : np.ndarray of shape (m, d)
-            Sparse basis (binary matrix).
-        X : np.ndarray of shape (n_train, d)
-            Training inputs.
-        Y : np.ndarray of shape (n_train,) or (n_train, 1)
-            Training outputs.
+        A : np.ndarray
+            of shape (m, d). Sparse basis (binary matrix).
+        X : np.ndarray
+            of shape (n_train, d). Training inputs.
+        Y : np.ndarray
+            of shape (n_train,) or (n_train, 1). Training outputs.
 
     Returns:
-        out : dict with key 'mu', the predicted f(0)
+        dict
+            with key 'mu', the predicted f(0)
     """
     m, d = A.shape
 
@@ -58,4 +62,4 @@ def MRE(A, X, Y):
     coeffs = np.linalg.lstsq(V, Yn, rcond=None)[0]
     mu = nY * v @ coeffs
 
-    return {"mu": float(mu)}
+    return mu #{"mu": float(mu)}

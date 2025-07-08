@@ -1,6 +1,6 @@
 import numpy as np
 
-def cellsum(arrays):
+def cellsum(arrays : list) -> np.ndarray:
     """
     Pointwise addition for a collection of arrays stored in a list.
 
@@ -17,7 +17,7 @@ def cellsum(arrays):
         out = np.add(out, arr)
     return out
 
-def remove_row(arr, index):
+def remove_row(arr : np.ndarray, index : int) -> np.ndarray:
     """
     Remove a row from a 2D NumPy array.
 
@@ -33,32 +33,39 @@ def remove_row(arr, index):
     """
     return np.delete(arr, index, axis=0)
 
-def softplus(x):
-    return np.log1p(np.exp(x))  # log(1 + exp(x)) with better numerical stability
+def softplus(x : float):
+    return np.log1p(np.exp(x))  # log(1 + exp(x))
 
-def stepwise(A, order):
+def stepwise(A : np.ndarray, order : int) -> np.ndarray:
     """
     Compute which high-order interactions to consider next.
 
     Parameters:
-        A (np.ndarray): n_models x d array of current interactions.
-        order (int): current order to consider.
+        A : np.ndarray
+            n_models x d array of current interactions.
+        order : int
+            current order to consider.
 
     Returns:
-        np.ndarray: array of new interactions to consider.
+        np.ndarray
+            array of new interactions to consider.
     """
-    out = []
     n_models, d = A.shape
-    for i in range(n_models):
-        Ai = A[i, :]
-        if Ai.sum() == (order - 1):  # ignore interactions of order-2 and lower
-            for j in range(d):
-                Aij = Ai.copy()
-                Aij[j] += 1  # increment the j-th entry
-                out.append(Aij)
-    if len(out) == 0:
+    
+    # Mask for rows where the sum equals (order - 1)
+    mask = A.sum(axis = 1) == (order - 1)
+    A_filtered = A[mask]  # Shape: (k, d), where k is number of matching rows
+
+    if A_filtered.shape[0] == 0:
         return np.empty((0, d), dtype=int)
-    out = np.unique(np.array(out), axis=0)
+
+    # For a selected row, add 1 to the first column, append row, add 1 to 2nd column, append row etc.
+    # Giving d by d matrix. For each selected row this gives k, d by d matrices.
+    eye_d = np.eye(d, dtype = int)  # Shape: (d, d)
+    expanded = A_filtered[:, np.newaxis, :] + eye_d  # Shape: (k, d, d)
+
+    # Reshape to 2D and remove duplicates
+    out = np.unique(expanded.reshape(-1, d), axis=0)
     return out
 
 def white(X1, X2):
@@ -66,30 +73,24 @@ def white(X1, X2):
     White noise kernel.
 
     Parameters:
-        X1: np.ndarray of shape (n1, d)
-        X2: np.ndarray of shape (n2, d)
+        X1 : np.ndarray
+            of shape (n1, d)
+        X2 : np.ndarray
+            of shape (n2, d)
 
     Returns:
-        out: np.ndarray of shape (n1, n2)
+        np.ndarray
+            of shape (n1, n2)
     """
     n1 = X1.shape[0]
     n2 = X2.shape[0]
 
     out = np.zeros((n1, n2))
 
-    # Find matching rows of X1 in X2, return indices or -1 if not found
-    # This mimics MATLAB's ismember with 'rows'
-    # We can use a structured array view for row-wise comparison
-
-    dtype = np.dtype((np.void, X1.dtype.itemsize * X1.shape[1]))
-    X1_view = X1.view(dtype).ravel()
-    X2_view = X2.view(dtype).ravel()
-
-    # For each row in X1, find index in X2 or -1 if not found
-    Locb = np.array([np.where(X2_view == row)[0][0] if np.any(X2_view == row) else -1 for row in X1_view])
-
-    for i in range(n1):
-        if Locb[i] != -1:
-            out[i, Locb[i]] = 1
+    # Loop thro' each row in X1 and check where it appears in X2 if anywhere
+    # out[i, j] = 1 indicates that row i in X1 is the same as row j in X2
+    for row in range(n1):
+        matching_rows = np.where((X2 == X1[row,:]).all(axis = 1))
+        out[row, matching_rows] = 1
 
     return out
