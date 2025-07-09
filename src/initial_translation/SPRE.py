@@ -1,4 +1,10 @@
+# Python modules
 import numpy as np
+
+# Application modules
+from src.initial_translation.kernel import kernel
+from src.initial_translation.helper_functions import x2fx, remove_row
+import auto_diff
 
 def SPRE(A, X, Y, x, str_):
     """
@@ -42,7 +48,7 @@ def SPRE(A, X, Y, x, str_):
         return x2fx(Xs, A).T  # m x n_test
 
     # Kernel
-    k_func, _ = kernel(str_, d)
+    k_func = kernel(str_, d)
     def k(X1, X2, x): return k_func(X1, X2, x)
 
     # Residual term
@@ -51,3 +57,80 @@ def SPRE(A, X, Y, x, str_):
         return v(A, Xs) - V(A, X).T @ K_inv @ k(X, Xs, x)
 
     # Coefficient estimator
+    def beta(A, X, Y, x):
+        K_inv = np.linalg.inv(k(X, X, x))
+        VA = V(A, X)
+        return np.linalg.inv(VA.T @ K_inv @ VA) @ (VA.T @ K_inv @ Y)
+
+    # Predictive mean
+    def mu_GP(A, X, Y, Xs, x):
+        K_inv = np.linalg.inv(k(X, X, x))
+        return k(Xs, X, x) @ K_inv @ Y + r(A, X, Xs, x).T @ beta(A, X, Y, x)
+
+    # Predictive covariance
+    def cov_GP(A, X, Xs, x):
+        K_inv = np.linalg.inv(k(X, X, x))
+        VA = V(A, X)
+        return (k(Xs, Xs, x)
+                - k(Xs, X, x) @ K_inv @ k(X, Xs, x)
+                + r(A, X, Xs, x).T @ np.linalg.inv(VA.T @ K_inv @ VA) @ r(A, X, Xs, x))
+
+    # Cross-validation loss (log-likelihood style)
+    def cv_local_loss(A, X, Y, Xs, Ys, x):
+        cov_val = cov_GP(A, X, Xs, x)
+        mu_val = mu_GP(A, X, Y, Xs, x)
+        diff = Ys - mu_val
+        inv_cov = np.linalg.inv(cov_val)
+        term1 = -0.5 * np.log(np.linalg.det(2 * np.pi * cov_val))
+        term2 = -0.5 * diff.T @ inv_cov @ diff
+        return term1 + term2
+
+    # LOOCV loss
+    def cv_loss(A, X, Y, x):
+        return sum(
+            cv_local_loss(
+                A,
+                remove_row(X, i),
+                remove_row(Y, i),
+                X[i:i+1, :],
+                Y[i:i+1],
+                x
+            ) for i in range(n_train)
+        )
+
+    # LOOCV predictions
+    mu_cv = np.array([
+        nY * mu_GP(A, remove_row(Xn, i), remove_row(Yn, i), Xn[i:i+1, :], x)
+        for i in range(n_train)
+    ])
+
+    var_cv = np.array([
+        nY**2 * cov_GP(A, remove_row(Xn, i), Xn[i:i+1, :], x)
+        for i in range(n_train)
+    ])
+
+    # Get the 
+    # Define a function f
+    # f can have other arguments, if they are constant wrt x
+    # Define the input vector, x
+
+    Jf = 2
+    #with auto_diff.AutoDiff(x) as x:
+    #    f_eval = cv_loss(A, Xn, Yn, x) #lambda x: cv_loss(A, Xn, Yn, x)
+    #    y, Jf = auto_diff.get_value_and_jacobian(f_eval)
+
+    # y is the value of f(x, u) and Jf is the Jacobian of f with respect to x.
+
+    # Output
+    out = {
+        "mu": nY * mu_GP(A, Xn, Yn, np.zeros((1, d)), x),
+        "var": nY**2 * cov_GP(A, Xn, np.zeros((1, d)), x),
+        "mu_GP": lambda Xs: nY * mu_GP(A, Xn, Yn, Xs / nX, x),
+        "cov_GP": lambda Xs: nY**2 * cov_GP(A, Xn, Xs / nX, x),
+        "mu_cv": mu_cv,
+        "var_cv": var_cv,
+        "cv": cv_loss(A, Xn, Yn, x),
+        "cv_grad": Jf
+    }
+
+    return out

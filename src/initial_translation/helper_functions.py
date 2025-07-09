@@ -1,3 +1,4 @@
+# Python modules
 import numpy as np
 
 def cellsum(arrays : list) -> np.ndarray:
@@ -94,3 +95,19 @@ def white(X1, X2):
         out[row, matching_rows] = 1
 
     return out
+
+def x2fx(X : np.ndarray, A : np.ndarray) -> np.ndarray:
+    """
+    Generate polynomial basis terms for each row in X using exponents in A.
+    
+    Parameters:
+        X : np.ndarray
+            predictor matrix (n, d)
+        A : (m, d) binary matrix (or integer exponents)
+            powers to use for predictor variables
+
+    Returns:
+        np.ndarray
+            (n, m) design matrix where V[i,j] = prod_k X[i,k]^A[j,k]
+    """
+    return np.prod([X[:, [i]] ** A[:, i] for i in range(A.shape[1])], axis=0)

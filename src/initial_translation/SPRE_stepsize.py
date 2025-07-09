@@ -1,5 +1,11 @@
+# Python modules
 import numpy as np
 from tqdm import tqdm  # For progress bars
+
+# Application modules
+from src.initial_translation.helper_functions import stepwise
+from src.initial_translation.SPRE_opt import SPRE_opt
+from src.initial_translation.SPRE import SPRE
 
 def SPRE_stepwise(X, Y, k_name):
     """
