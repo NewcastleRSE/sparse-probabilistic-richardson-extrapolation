@@ -313,4 +313,5 @@ class InitialTranslationTestCase(unittest.TestCase):
         self.assertTrue((np.round(result["mu_cv"].flatten(), 4) == np.round(ans["mu_cv"], 4)).all(), f"Failed SPRE, mu_cv! Result is {result["mu_cv"]} not {ans["mu_cv"]}")
         self.assertTrue((np.round(result["var_cv"].flatten(), 4) == np.round(ans["var_cv"], 4)).all(), f"Failed SPRE, var_cv! Result is {result["var_cv"]} not {ans["var_cv"]}")
         self.assertTrue((round(result["cv"], 4) == round(ans["cv"], 4)).all(), f"Failed SPRE, cv! Result is {result["cv"]} not {ans["cv"]}")
+        self.assertTrue((round(result["cv_grad"], 4) == round(ans["cv_grad"], 4)).all(), f"Failed SPRE, cv_grad! Result is {result["cv_grad"]} not {ans["cv_grad"]}")
         ##Grad...

@@ -4,7 +4,8 @@ import numpy as np
 # Application modules
 from src.initial_translation.kernel import kernel
 from src.initial_translation.helper_functions import x2fx, remove_row
-import auto_diff
+#import mygrad as mg
+from jax import grad
 
 def SPRE(A, X, Y, x, str_):
     """
@@ -41,6 +42,9 @@ def SPRE(A, X, Y, x, str_):
     Yn = Y / nY
 
     # Basis functions
+    # A = m x d
+    # X = n x d
+    # Xs = n_test x d
     def V(A, X):
         return x2fx(X, A)  # n x m
 
@@ -52,30 +56,56 @@ def SPRE(A, X, Y, x, str_):
     def k(X1, X2, x): return k_func(X1, X2, x)
 
     # Residual term
+    # A = m x d
+    # X = n_train x d
+    # Xs = n_test x d
+    # x = p x 1
     def r(A, X, Xs, x):
         K_inv = np.linalg.inv(k(X, X, x))
         return v(A, Xs) - V(A, X).T @ K_inv @ k(X, Xs, x)
 
     # Coefficient estimator
+    # A = m x d
+    # X = n_train x d
+    # Y = n_train x 1
+    # x = p x 1
     def beta(A, X, Y, x):
         K_inv = np.linalg.inv(k(X, X, x))
         VA = V(A, X)
         return np.linalg.inv(VA.T @ K_inv @ VA) @ (VA.T @ K_inv @ Y)
 
     # Predictive mean
+    # A = m x d
+    # X = n_train x d
+    # Y = n_train x 1
+    # Xs = n_test x d
+    # x = p x 1
     def mu_GP(A, X, Y, Xs, x):
         K_inv = np.linalg.inv(k(X, X, x))
         return k(Xs, X, x) @ K_inv @ Y + r(A, X, Xs, x).T @ beta(A, X, Y, x)
 
     # Predictive covariance
+    # A = m x d
+    # X = n_train x d
+    # Xs = n_test x d
+    # x = p x 1
     def cov_GP(A, X, Xs, x):
+        #print(x)
+        #print(type(x))
+        #x = x.data #np.ndarray(x)
         K_inv = np.linalg.inv(k(X, X, x))
         VA = V(A, X)
         return (k(Xs, Xs, x)
                 - k(Xs, X, x) @ K_inv @ k(X, Xs, x)
                 + r(A, X, Xs, x).T @ np.linalg.inv(VA.T @ K_inv @ VA) @ r(A, X, Xs, x))
 
-    # Cross-validation loss (log-likelihood style)
+    # Cross-validation local loss (log-likelihood of test data)
+    # A = m x d
+    # X = n_train x d
+    # Y = n_train x 1
+    # Xs = n_test x d
+    # Ys = n_test x 1
+    # x = p x 1
     def cv_local_loss(A, X, Y, Xs, Ys, x):
         cov_val = cov_GP(A, X, Xs, x)
         mu_val = mu_GP(A, X, Y, Xs, x)
@@ -85,7 +115,11 @@ def SPRE(A, X, Y, x, str_):
         term2 = -0.5 * diff.T @ inv_cov @ diff
         return term1 + term2
 
-    # LOOCV loss
+    # LOOCV loss 
+    # A = m x d
+    # X = n_train x d
+    # Y = n_train x 1
+    # x = p x 1
     def cv_loss(A, X, Y, x):
         return sum(
             cv_local_loss(
@@ -113,11 +147,30 @@ def SPRE(A, X, Y, x, str_):
     # Define a function f
     # f can have other arguments, if they are constant wrt x
     # Define the input vector, x
+  
+    
+    # Define the input tensor
+    #x_tensor = mg.Tensor(x)
 
-    Jf = 2
+    # Define the function
+    # y = x**2 + 2*x + 1
+    def f_eval(x):
+        return cv_loss(A, Xn, Yn, x)
+    
+    gradient_function = grad(f_eval)
+
+    gradient = gradient_function(x)
+
+    #y = cv_loss(A, Xn, Yn, x_tensor) #.data)
+    #y = mg.Tensor(y)
+
+    
+    #Jf = derivative(f_eval, x)
+
     #with auto_diff.AutoDiff(x) as x:
-    #    f_eval = cv_loss(A, Xn, Yn, x) #lambda x: cv_loss(A, Xn, Yn, x)
-    #    y, Jf = auto_diff.get_value_and_jacobian(f_eval)
+    #    #f_eval = cv_loss(A, Xn, Yn, x) # cv_loss(A, Xn, Yn, x) #lambda x: cv_loss(A, Xn, Yn, x)
+    #    f_eval = f_eval0(x)
+    #    Jf0 = auto_diff.jacobian(f_eval)
 
     # y is the value of f(x, u) and Jf is the Jacobian of f with respect to x.
 
@@ -130,7 +183,7 @@ def SPRE(A, X, Y, x, str_):
         "mu_cv": mu_cv,
         "var_cv": var_cv,
         "cv": cv_loss(A, Xn, Yn, x),
-        "cv_grad": Jf
+        "cv_grad": gradient
     }
 
     return out
