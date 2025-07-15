@@ -1,33 +1,32 @@
 # Python modules
-import numpy as np
+import jax.numpy as jnp
+from jax import grad
 
 # Application modules
 from src.initial_translation.kernel import kernel
 from src.initial_translation.helper_functions import x2fx, remove_row
-#import mygrad as mg
-from jax import grad
 
 def SPRE(A, X, Y, x, str_):
     """
     Sparse Probabilistic Richardson Extrapolation (SPRE).
     
     Parameters:
-        A : np.ndarray of shape (m, d), binary matrix for sparse basis
+        A : np.ndarray of shape (m, d), binary matrix representing the sparse basis
         X : np.ndarray of shape (n_train, d), training inputs
         Y : np.ndarray of shape (n_train,), training outputs
         x : np.ndarray of shape (p,), kernel parameters
-        str_ : str or tuple, kernel specification or (B, kernel_name) tuple
+        str_ : str or tuple, kernel specification (c.f. function "kernel")
     
     Returns:
         out : dict with keys:
-            - mu: predictive mean at 0
-            - var: predictive variance at 0
-            - mu_GP: predictive mean function
-            - cov_GP: predictive covariance function
-            - mu_cv: LOOCV predictive means
-            - var_cv: LOOCV predictive variances
-            - cv: LOOCV criterion
-            - cv_grad: gradient of LOOCV criterion
+            - mu: scalar, predictive mean for f(0)
+            - var: scalar, predictive variance for f(0)
+            - mu_GP: function R^d -> R, predictive mean for fitted GP
+            - cov_GP: function R^d x R^d -> R, predictive covariance for fitted GP
+            - mu_cv: n_train x 1, LOOCV predictive means
+            - var_cv: n_train x 1, LOOCV predictive variances
+            - cv: scalar, LOOCV criterion
+            - cv_grad: p x 1, gradient of LOOCV criterion
     """
 
     m, d = A.shape
@@ -36,8 +35,8 @@ def SPRE(A, X, Y, x, str_):
 
     # Data normalization
     ep = 1e-16
-    nX = ep + (np.max(X, axis=0) - np.min(X, axis=0))
-    nY = ep + (np.max(Y) - np.min(Y))
+    nX = ep + (jnp.max(X, axis=0) - jnp.min(X, axis=0))
+    nY = ep + (jnp.max(Y) - jnp.min(Y))
     Xn = X / nX
     Yn = Y / nY
 
@@ -61,7 +60,7 @@ def SPRE(A, X, Y, x, str_):
     # Xs = n_test x d
     # x = p x 1
     def r(A, X, Xs, x):
-        K_inv = np.linalg.inv(k(X, X, x))
+        K_inv = jnp.linalg.inv(k(X, X, x))
         return v(A, Xs) - V(A, X).T @ K_inv @ k(X, Xs, x)
 
     # Coefficient estimator
@@ -70,9 +69,9 @@ def SPRE(A, X, Y, x, str_):
     # Y = n_train x 1
     # x = p x 1
     def beta(A, X, Y, x):
-        K_inv = np.linalg.inv(k(X, X, x))
+        K_inv = jnp.linalg.inv(k(X, X, x))
         VA = V(A, X)
-        return np.linalg.inv(VA.T @ K_inv @ VA) @ (VA.T @ K_inv @ Y)
+        return jnp.linalg.inv(VA.T @ K_inv @ VA) @ (VA.T @ K_inv @ Y)
 
     # Predictive mean
     # A = m x d
@@ -81,7 +80,7 @@ def SPRE(A, X, Y, x, str_):
     # Xs = n_test x d
     # x = p x 1
     def mu_GP(A, X, Y, Xs, x):
-        K_inv = np.linalg.inv(k(X, X, x))
+        K_inv = jnp.linalg.inv(k(X, X, x))
         return k(Xs, X, x) @ K_inv @ Y + r(A, X, Xs, x).T @ beta(A, X, Y, x)
 
     # Predictive covariance
@@ -90,14 +89,11 @@ def SPRE(A, X, Y, x, str_):
     # Xs = n_test x d
     # x = p x 1
     def cov_GP(A, X, Xs, x):
-        #print(x)
-        #print(type(x))
-        #x = x.data #np.ndarray(x)
-        K_inv = np.linalg.inv(k(X, X, x))
+        K_inv = jnp.linalg.inv(k(X, X, x))
         VA = V(A, X)
         return (k(Xs, Xs, x)
                 - k(Xs, X, x) @ K_inv @ k(X, Xs, x)
-                + r(A, X, Xs, x).T @ np.linalg.inv(VA.T @ K_inv @ VA) @ r(A, X, Xs, x))
+                + r(A, X, Xs, x).T @ jnp.linalg.inv(VA.T @ K_inv @ VA) @ r(A, X, Xs, x))
 
     # Cross-validation local loss (log-likelihood of test data)
     # A = m x d
@@ -110,8 +106,8 @@ def SPRE(A, X, Y, x, str_):
         cov_val = cov_GP(A, X, Xs, x)
         mu_val = mu_GP(A, X, Y, Xs, x)
         diff = Ys - mu_val
-        inv_cov = np.linalg.inv(cov_val)
-        term1 = -0.5 * np.log(np.linalg.det(2 * np.pi * cov_val))
+        inv_cov = jnp.linalg.inv(cov_val)
+        term1 = -0.5 * jnp.log(jnp.linalg.det(2 * jnp.pi * cov_val))
         term2 = -0.5 * diff.T @ inv_cov @ diff
         return term1 + term2
 
@@ -133,57 +129,37 @@ def SPRE(A, X, Y, x, str_):
         )
 
     # LOOCV predictions
-    mu_cv = np.array([
+    mu_cv = jnp.array([
         nY * mu_GP(A, remove_row(Xn, i), remove_row(Yn, i), Xn[i:i+1, :], x)
         for i in range(n_train)
     ])
 
-    var_cv = np.array([
+    var_cv = jnp.array([
         nY**2 * cov_GP(A, remove_row(Xn, i), Xn[i:i+1, :], x)
         for i in range(n_train)
-    ])
+    ]).flatten()
 
-    # Get the 
-    # Define a function f
-    # f can have other arguments, if they are constant wrt x
-    # Define the input vector, x
-  
+   
+    # Define the function to calculate grdient from
+    #def f_eval(x):
+    #    return cv_loss(A, Xn, Yn, x)
     
-    # Define the input tensor
-    #x_tensor = mg.Tensor(x)
+    # Define the gradient function
+    #gradient_function = grad(f_eval)
 
-    # Define the function
-    # y = x**2 + 2*x + 1
-    def f_eval(x):
-        return cv_loss(A, Xn, Yn, x)
-    
-    gradient_function = grad(f_eval)
-
-    gradient = gradient_function(x)
-
-    #y = cv_loss(A, Xn, Yn, x_tensor) #.data)
-    #y = mg.Tensor(y)
-
-    
-    #Jf = derivative(f_eval, x)
-
-    #with auto_diff.AutoDiff(x) as x:
-    #    #f_eval = cv_loss(A, Xn, Yn, x) # cv_loss(A, Xn, Yn, x) #lambda x: cv_loss(A, Xn, Yn, x)
-    #    f_eval = f_eval0(x)
-    #    Jf0 = auto_diff.jacobian(f_eval)
-
-    # y is the value of f(x, u) and Jf is the Jacobian of f with respect to x.
+    # Evaluate gradient at x
+    #gradient = gradient_function(x)
 
     # Output
     out = {
-        "mu": nY * mu_GP(A, Xn, Yn, np.zeros((1, d)), x),
-        "var": nY**2 * cov_GP(A, Xn, np.zeros((1, d)), x),
+        "mu": nY * mu_GP(A, Xn, Yn, jnp.zeros((1, d)), x),
+        "var": nY**2 * cov_GP(A, Xn, jnp.zeros((1, d)), x),
         "mu_GP": lambda Xs: nY * mu_GP(A, Xn, Yn, Xs / nX, x),
         "cov_GP": lambda Xs: nY**2 * cov_GP(A, Xn, Xs / nX, x),
         "mu_cv": mu_cv,
         "var_cv": var_cv,
         "cv": cv_loss(A, Xn, Yn, x),
-        "cv_grad": gradient
+        #"cv_grad": jnp.array(gradient)
     }
 
     return out

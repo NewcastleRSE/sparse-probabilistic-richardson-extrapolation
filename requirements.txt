@@ -1,3 +1,5 @@
 numpy==2.3.1
 scikit-learn==1.7.0
 jax==0.6.2
+jaxopt==0.8.5
+tqdm==4.67.1

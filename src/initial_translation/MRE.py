@@ -1,5 +1,6 @@
 # Python modules
-import numpy as np
+#import numpy as np
+import jax.numpy as jnp
 from sklearn.neighbors import NearestNeighbors
 
 # Application modules
@@ -28,7 +29,7 @@ def MRE(A, X, Y):
 
     # Find m nearest neighbors to 0 in X
     nbrs = NearestNeighbors(n_neighbors=m).fit(X)
-    indices = nbrs.kneighbors(np.zeros((1, d)), return_distance = False)
+    indices = nbrs.kneighbors(jnp.zeros((1, d)), return_distance = False)
     idx = indices.flatten()
 
     X_sel = X[idx]
@@ -36,18 +37,18 @@ def MRE(A, X, Y):
 
     # Normalization
     ep = 1e-16 # smallest permitted normalising constant
-    nX = ep + np.ptp(X_sel, axis=0)  # normalising constant for X
-    nY = ep + np.ptp(Y_sel)          # normalising constant for Y
+    nX = ep + jnp.ptp(X_sel, axis=0)  # normalising constant for X
+    nY = ep + jnp.ptp(Y_sel)          # normalising constant for Y
 
     Xn = X_sel / nX
     Yn = Y_sel / nY
    
     # Polynomial fit
     V = x2fx(Xn, A)  # Design matrix
-    eval = x2fx(np.zeros((1, d)), A)  # Evaluation point
+    eval = x2fx(jnp.zeros((1, d)), A)  # Evaluation point
 
     # Least-squares solution
-    coeffs = np.linalg.lstsq(V, Yn, rcond=None)[0]
+    coeffs = jnp.linalg.lstsq(V, Yn, rcond=None)[0]
     mu = nY * eval @ coeffs
 
     return mu
