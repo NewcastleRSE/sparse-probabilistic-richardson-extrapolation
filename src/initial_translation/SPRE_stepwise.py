@@ -3,13 +3,10 @@ import jax.numpy as jnp
 from tqdm import tqdm  # For progress bars
 
 # Application modules
-from src.initial_translation.kernel import kernel
-from src.initial_translation import SPRE
-
-# Application modules
-from src.initial_translation.helper_functions import stepwise
-from src.initial_translation.SPRE_opt import SPRE_opt
-#from src.initial_translation.SPRE import SPRE
+from kernel import kernel
+from helper_functions import stepwise
+from SPRE_opt import SPRE_opt
+from SPRE import SPRE
 
 def SPRE_stepwise(X, Y, k_name):
     """
@@ -33,12 +30,20 @@ def SPRE_stepwise(X, Y, k_name):
     """
 
     d = X.shape[1]
-    A = jnp.zeros((1, d), dtype=int)  # Initialize with intercept
+    #A = jnp.zeros((1, d), dtype=int)  # Initialise with just an intercept
+    A = jnp.array([[0, 0]])
+    #A = jnp.array([[0, 0], [0, 1], [1, 1], [2, 0]])
     order = 0
     fit = SPRE_opt(A, X, Y, k_name)
+    #print("stepwise")
+    #print(A)
+    #print(X)
+    #print(Y)
+    #print(k_name)
+    #print(fit)
     cv = fit['cv']
 
-    carry_on = True
+    carry_on = 0 # True
 
     while carry_on:
         order += 1
@@ -70,7 +75,10 @@ def SPRE_stepwise(X, Y, k_name):
 
     # Optimal parameters
     x_opt = fit['x']
-
+    print(x_opt)
+    print(A)
+    print(X)
+    print(Y)
     # Final model with best kernel parameters and basis A
     out = SPRE(A, X, Y, x_opt, k_name)
 

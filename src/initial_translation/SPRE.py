@@ -1,10 +1,10 @@
 # Python modules
 import jax.numpy as jnp
-from jax import grad
+from jax import grad, debug
 
 # Application modules
-from src.initial_translation.kernel import kernel
-from src.initial_translation.helper_functions import x2fx, remove_row
+from kernel import kernel
+from helper_functions import x2fx, remove_row
 
 def SPRE(A, X, Y, x, str_):
     """
@@ -141,15 +141,19 @@ def SPRE(A, X, Y, x, str_):
 
    
     # Define the function to calculate grdient from
-    #def f_eval(x):
-    #    return cv_loss(A, Xn, Yn, x)
+    def f_eval(x):
+        return cv_loss(A, Xn, Yn, x)
     
     # Define the gradient function
-    #gradient_function = grad(f_eval)
+    gradient_function = grad(f_eval)
 
     # Evaluate gradient at x
-    #gradient = gradient_function(x)
+    gradient = gradient_function(x)
 
+    # Evaluate cv
+    cv = cv_loss(A, Xn, Yn, x)
+
+    debug.print("cv = {}, grad = {}, x = {}", cv, gradient, x)
     # Output
     out = {
         "mu": nY * mu_GP(A, Xn, Yn, jnp.zeros((1, d)), x),
@@ -158,8 +162,8 @@ def SPRE(A, X, Y, x, str_):
         "cov_GP": lambda Xs: nY**2 * cov_GP(A, Xn, Xs / nX, x),
         "mu_cv": mu_cv,
         "var_cv": var_cv,
-        "cv": cv_loss(A, Xn, Yn, x),
-        #"cv_grad": jnp.array(gradient)
+        "cv": cv,
+        "cv_grad": jnp.array(gradient)
     }
 
     return out

@@ -1,5 +1,11 @@
-import numpy as np
+# Python modules
+import jax.numpy as jnp
+from jax import grad, debug
 import matplotlib.pyplot as plt
+
+# Application modules
+from SPRE_stepwise import SPRE_stepwise
+from GRE_stepwise import GRE_stepwise
 
 def extrapolation(X, Y, options=None):
     """
@@ -42,14 +48,15 @@ def extrapolation(X, Y, options=None):
     else:
         raise ValueError(f"Unknown extrapolation method: {name}")
 
+    errors = jnp.sqrt(out["var_cv"])
+
     # Plot LOOCV fit if applicable
     if plot and name != "MRE" and "mu_cv" in out and "var_cv" in out:
         n_train = X.shape[0]
         plt.figure()
-        plt.errorbar(np.arange(1, n_train + 1), out["mu_cv"], np.sqrt(out["var_cv"]),
-                     fmt='bo', label='predicted')
-        plt.scatter(np.arange(1, n_train + 1), Y, color='k', marker='x', label='actual')
-        plt.xticks(np.arange(1, n_train + 1))
+        plt.errorbar(jnp.arange(1, n_train + 1), out["mu_cv"].flatten(), yerr = errors, fmt='bo', label='predicted')
+        plt.scatter(jnp.arange(1, n_train + 1), Y, color='k', marker='x', label='actual')
+        plt.xticks(jnp.arange(1, n_train + 1))
         plt.xlabel(r'$i$')
         plt.ylabel(r'$f(\mathbf{x}_i)$')
         plt.title(f"Leave-one-out cross validation ({name})")

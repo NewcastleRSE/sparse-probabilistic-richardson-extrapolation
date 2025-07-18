@@ -1,11 +1,13 @@
 # Python modules
 import jax.numpy as jnp
-#from jax.scipy.optimize import minimize
+from jax.scipy.optimize import minimize
 from jaxopt import GradientDescent
 
+#from scipy.optimize import minimize
+
 # Application modules
-from src.initial_translation.kernel import kernel, get_default_args
-from src.initial_translation import SPRE
+from kernel import kernel, get_default_args
+from SPRE import SPRE
 
 
 def SPRE_opt(A, X, Y, str_):
@@ -27,6 +29,13 @@ def SPRE_opt(A, X, Y, str_):
             - cv: scalar, LOOCV criterion
     """
 
+    print("SPRE_opt")
+    print(A)
+    print(X)
+    print(Y)
+    print(str_)
+    
+
     d = X.shape[1]
 
     # Get initial default parameters from kernel for x
@@ -35,17 +44,41 @@ def SPRE_opt(A, X, Y, str_):
     # Objective function
     # LOOCV (negative log likelihood of held-out datum)
     def objective(x):
-        out = SPRE.SPRE(A, X, Y, x, str_)
-        return -out['cv'] #, -out['cv_grad']
+        out = SPRE(A, X, Y, x, str_)        
+        return -out['cv'], -out['cv_grad']
     
-    solver = GradientDescent(fun = objective, maxiter=200, implicit_diff = False, tol = 0.01)
+    '''
+    # Optimization
+    result = minimize(
+        fun = objective,
+        x0 = x0,  
+        #method = 'BFGS',
+        #tol = 1e-3
+        #options={
+        #    'maxiter': 10 # set to 10 for speed
+        #}
+    )
+   
+    print(result)
+    return {
+        'x': result.x,
+        'cv': result.fun
+    }
+    '''
+    
+    
+    solver = GradientDescent(fun = objective, maxiter=100, value_and_grad = True, stepsize=1e-3)#, tol=1e-3)
+    print("x0 = ", x0)
     result = solver.run(x0)
-    result_value = objective(result.params)
+    result_value, _ = objective(result.params)
 
+    print(result)
+    print(result_value)
     return {
         'x'  : result.params,
         'cv' : result_value
     }
+    
 
     '''
     # Optimization
@@ -59,7 +92,7 @@ def SPRE_opt(A, X, Y, str_):
         #}
     )
    
-
+    print(result)
     return {
         'x': result.x,
         'cv': result.fun

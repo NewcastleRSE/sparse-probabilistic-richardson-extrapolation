@@ -3,3 +3,4 @@ scikit-learn==1.7.0
 jax==0.6.2
 jaxopt==0.8.5
 tqdm==4.67.1
+matplotlib==3.10.3

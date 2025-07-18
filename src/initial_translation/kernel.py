@@ -5,7 +5,7 @@ import jax.numpy as jnp
 from inspect import signature
 
 # Application modules
-from src.initial_translation.helper_functions import x2fx, softplus, cellsum, white
+from helper_functions import x2fx, softplus, cellsum, white
 
 def cdist_jax(XA, XB):
     """
@@ -99,7 +99,8 @@ def kernel(spec, d):
         # x = p x 1
         def kernal_function(X1, X2, x = x0):
             amp = ep + softplus(x[0])
-            return amp * base(X1)[:, None] * k_base(X1, X2, x = x0[1:]) * base(X2)[None, :]
+            return amp * base(X1)[:, None] * k_base(X1, X2, x = x[1:]) * base(X2)[None, :]
+            #return (ep + softplus(x[0])) * base(X1) * k_base(X1, X2, x[1:]) * base(X2).T
         
     else:
         raise ValueError(f"Unknown kernel specification: {spec}")

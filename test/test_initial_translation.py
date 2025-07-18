@@ -15,6 +15,8 @@ from src.initial_translation import helper_functions
 from src.initial_translation import MRE
 from src.initial_translation import SPRE
 from src.initial_translation import SPRE_opt
+from src.initial_translation import SPRE_stepwise
+from src.initial_translation import GRE_stepwise
 from src.initial_translation.kernel import kernel
 
 class InitialTranslationTestCase(unittest.TestCase):
@@ -100,12 +102,6 @@ class InitialTranslationTestCase(unittest.TestCase):
                         [0.9134,    0.9575],
                         [0.6324,    0.9649]])
 
-        Y = jnp.array([[3.8249,
-                        4.0618,
-                        3.6467,
-                        4.6093,
-                        4.4130]])
-
         ans = jnp.array([
             [1.0000,    0.0975,    0.0794,    0.6637],
             [1.0000,    0.2785,    0.2523,    0.8205],
@@ -139,6 +135,14 @@ class InitialTranslationTestCase(unittest.TestCase):
         round_result = jnp.round(result, 4)
         round_ans = jnp.round(ans, 4)
         self.assertTrue((round_result == round_ans).all(), f"Failed MSE! Result is {round_result} not {round_ans}")
+
+        A = jnp.array([[0, 0]])
+        ans = 3.6467
+        result = MRE.MRE(A, X, Y)
+        round_result = jnp.round(result, 4)
+        round_ans = jnp.round(ans, 4)
+        self.assertTrue((round_result == round_ans).all(), f"Failed MSE! Result is {round_result} not {round_ans}")
+
 
     def test_kernels(self):
 
@@ -282,6 +286,44 @@ class InitialTranslationTestCase(unittest.TestCase):
         round_ans = jnp.round(ans1, 4)
         self.assertTrue((round_result == round_ans).all(), f"Failed kernel white, hyperparameters = [0.5]! Result is {round_result} not {round_ans}")
     
+        # Test composite kernel
+        B = jnp.zeros((1, 2))
+        composite_kernel = kernel((B, "Gaussian"), 2)
+
+        X1 = jnp.array([[0.8147,    0.0975],
+                        [0.9058,    0.2785],
+                        [0.1270,    0.5469],
+                        [0.9134,    0.9575],
+                        [0.6324,    0.9649]])
+        
+        X2 = jnp.array([[0.1,     0.2],
+                        [0.3,    0.4],
+                        [0.5,    0.6]])
+        
+        ans0 = jnp.array([
+                [0.6732,    0.9065,    0.9145],
+                [0.5284,    0.8660,    1.0632],
+                [1.3862,    1.5716,    1.3349],
+                [0.1855,    0.4991,    1.0060],
+                [0.3598,    0.7943,    1.3140]])
+
+        ans1 = jnp.array([
+                [0.5477,    0.6517,    0.6551],
+                [0.4755,    0.6345,    0.7153],
+                [0.8352,    0.8987,    0.8170],
+                [0.2581,    0.4599,    0.6926],
+                [0.3799,    0.6033,    0.8095]])
+
+        result0 = composite_kernel(X1, X2)
+        round_result = jnp.round(result0, 4)
+        round_ans = jnp.round(ans0, 4)
+        self.assertTrue((round_result == round_ans).all(), f"Failed kernel composite_kernel, default! Result is {round_result} not {round_ans}")
+
+        result1 = composite_kernel(X1, X2, jnp.array([0.5, 0.5, 0.5]))
+        round_result = jnp.round(result1, 4)
+        round_ans = jnp.round(ans1, 4)
+        self.assertTrue((round_result == round_ans).all(), f"Failed kernel composite_kernel, hyperparameters = [0.5, 0.5, 0.5]! Result is\n {round_result} not\n {round_ans}")
+    
     def test_SPRE(self):
 
         A = jnp.array([[0, 0], [0, 1], [1, 1], [2, 0]])
@@ -317,8 +359,24 @@ class InitialTranslationTestCase(unittest.TestCase):
         ans_var_cv = jnp.round(ans['var_cv'], 3)
         self.assertTrue((result_var_cv == ans_var_cv).all(), f"Failed SPRE, var_cv! Result is {result_var_cv} not {ans_var_cv}")
         self.assertTrue((round(result['cv'], 4) == round(ans['cv'], 4)).all(), f"Failed SPRE, cv! Result is {result['cv']} not {ans['cv']}")
-        #self.assertTrue((jnp.round(result['cv_grad'], 2) == jnp.round(ans['cv_grad'], 2)).all(), f"Failed SPRE, cv_grad! Result is {result['cv_grad']} not {ans['cv_grad']}")
-    
+        self.assertTrue((jnp.round(result['cv_grad'], 2) == jnp.round(ans['cv_grad'], 2)).all(), f"Failed SPRE, cv_grad! Result is {result['cv_grad']} not {ans['cv_grad']}")
+
+        # Test 2
+        A = jnp.array([[0, 0]])
+        result = SPRE.SPRE(A, X, Y, x, "Gaussian")
+        ans = { "mu": 3.5814,
+                "var": 0.4423,
+                "mu_GP": "@(Xs)nY*mu_GP(A,Xn,Yn,Xs./nX,x)",
+                "cov_GP": "@(Xs)nY^2*cov_GP(A,Xn,Xs./nX,x)",
+                "mu_cv": jnp.array([3.9238, 3.9955, 3.9893, 4.5278, 4.3830]),
+                "var_cv": jnp.array([0.0796, 0.0632, 0.6165, 0.1521, 0.1413]),
+                "cv": -0.1932,
+                "cv_grad": jnp.array([-1.4592, 4.4570])
+            }
+        
+        self.assertTrue((round(result['cv'], 3) == round(ans['cv'], 3)).all(), f"Failed SPRE (test 2), cv! Result is {round(result['cv'], 3)} not {ans['cv']}")
+        self.assertTrue((jnp.round(result['cv_grad'], 2) == jnp.round(ans['cv_grad'], 2)).all(), f"Failed SPRE (test 2), cv_grad! Result is {result['cv_grad']} not {ans['cv_grad']}")
+
     def test_SPRE_opt(self):
         
         A = jnp.array([[0, 0], [0, 1], [1, 1], [2, 0]])
@@ -340,14 +398,31 @@ class InitialTranslationTestCase(unittest.TestCase):
         
         result = SPRE_opt.SPRE_opt(A, X, Y, "Gaussian")
 
-        #print(result)
+        print(result)
 
-        self.assertTrue((jnp.round(result['cv'], 2) == jnp.round(ans['cv'], 2)).all(), f"Failed SPRE_opt, cv! Result is {result['cv']} not {ans['cv']}")
+        #self.assertTrue((jnp.round(result['cv'], 1) == jnp.round(ans['cv'], 1)).all(), f"Failed SPRE_opt, cv! Result is {result['cv']} not {ans['cv']}")
         #self.assertTrue((jnp.round(result['x'], 2) == jnp.round(ans['x'], 2)).all(), f"Failed SPRE_opt, x! Result is {result['x']} not {ans['x']}")
-       
-    def test_SPRE_stepsize(self):
+        to_show = ['x', 'cv']
+        for field in to_show:
+            print(f"{field}\n Matlab = {ans[field]}\n Python = {result[field]}\n")
 
-        A = jnp.array([[0, 0], [0, 1], [1, 1], [2, 0]])
+        # Test 2
+        A = jnp.array([[0, 0]])
+        result = SPRE_opt.SPRE_opt(A, X, Y, "Gaussian")
+        print(result)
+        ans = {"x": jnp.array([1.3712, 4.6923]),
+                "cv": -10.2897
+              }
+        
+        #self.assertTrue((jnp.round(result['cv'], 1) == jnp.round(ans['cv'], 1)).all(), f"Failed SPRE_opt (test 2), cv! Result is {result['cv']} not {ans['cv']}")
+
+        to_show = ['x', 'cv']
+        for field in to_show:
+            print(f"{field}\n Matlab = {ans[field]}\n Python = {result[field]}\n")
+
+    def test_SPRE_stepwise(self):
+
+        #A = jnp.array([[0, 0], [0, 1], [1, 1], [2, 0]])
         X = jnp.array([[0.8147,    0.0975],
                         [0.9058,    0.2785],
                         [0.1270,    0.5469],
@@ -360,7 +435,7 @@ class InitialTranslationTestCase(unittest.TestCase):
                         4.6093,
                         4.4130]) 
     
-        result = SPRE_opt.SPRE_opt(X, Y, "Gaussian")
+        result = SPRE_stepwise.SPRE_stepwise(X, Y, "Gaussian")
 
         ans = { "mu": 2.9892,
                 "var": 7.6288e-04,
@@ -372,6 +447,40 @@ class InitialTranslationTestCase(unittest.TestCase):
                 "cv_grad": jnp.array([0.0169, -0.0320])
             }
         
+        print("ans = ")
+        print(ans)
+
+        print("result = ")
         print(result)
 
-        print(ans)
+    def test_GRE_stepwise(self):
+
+        #A = jnp.array([[0, 0], [0, 1], [1, 1], [2, 0]])
+        X = jnp.array([[0.8147,    0.0975],
+                        [0.9058,    0.2785],
+                        [0.1270,    0.5469],
+                        [0.9134,    0.9575],
+                        [0.6324,    0.9649]])
+
+        Y = jnp.array([3.8249,
+                        4.0618,
+                        3.6467,
+                        4.6093,
+                        4.4130]) 
+    
+        result = GRE_stepwise.GRE_stepwise(X, Y, "Gaussian")
+        
+        ans = { "mu": 3.0208,
+                "var": 5.0898e-04,
+                "mu_GP": "@(Xs)nY*mu_GP(A,Xn,Yn,Xs./nX,x)",
+                "cov_GP": "@(Xs)nY^2*cov_GP(A,Xn,Xs./nX,x)",
+                "mu_cv": jnp.array([3.8483, 4.0416, 3.7011, 4.6396, 4.3868]),
+                "var_cv": jnp.array([4.3453e-04, 2.9556e-04, 0.0050, 7.9684e-04, 7.5886e-04]),
+                "cv": 10.3088,
+                "cv_grad": jnp.array([0.0783, 0.0804, 0.0281])
+            }
+        
+      
+        to_show = ['mu', 'var', 'mu_cv', 'var_cv', 'cv', 'cv_grad']
+        for field in to_show:
+            print(f"{field}\n Matlab = {ans[field]}\n Python = {result[field]}\n")

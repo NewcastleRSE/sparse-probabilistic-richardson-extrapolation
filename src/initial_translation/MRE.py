@@ -4,7 +4,7 @@ import jax.numpy as jnp
 from sklearn.neighbors import NearestNeighbors
 
 # Application modules
-from src.initial_translation.helper_functions import x2fx
+from helper_functions import x2fx
 
 def MRE(A, X, Y):
     """
