@@ -19,33 +19,47 @@ The new method, called Sparse Probabilistic Richardson Extrapolation, is both si
 
 ## Built With
 
-This section is intended to list the frameworks and tools you're using to develop this software. Please link to the home page or documentation in each case.
-
-[Framework 1](https://something.com)  
-[Framework 2](https://something.com)  
-[Framework 3](https://something.com)  
+[Python 3](https://www.python.com)
 
 ## Getting Started
 
 ### Prerequisites
 
-Any tools or versions of languages needed to run code. For example, specific Python or Node versions. Minimum hardware requirements also go here.
+The current Python version is **Python 3.12**, and the same version should be used for local testing and development. You can find the correct version of Python [here](https://www.python.org/downloads/).
 
 ### Installation
 
-How to build or install the application.
+1. Set up Python virtual environment `python3 -m venv .venv`. If you have multiple Python versions on your computer, you may need to specify the Python version (e.g., `python3.12 -m venv .venv`).
+2. Run venv with `source .venv/bin/activate`
+3. Install dependencies `python -m pip install -r requirements-dev.txt`
 
 ### Running Locally
 
-How to run the application on your local system. Examples of this would include `venv`, `anaconda`, `node`, `Docker` or `minikube`. 
+1. Set up a Python virtual environment in the root of the cloned repo.
+```
+python -m venv .venv
+```
+2. Activate the virtual environment.
+```
+source .venv/bin/activate
+```
+3. Install required Python modules
+```
+pip install -r requirements.txt
+```
+
+4.  Copy the file `extrapaths.pth` file to `.venv/lib/pythonX.Y/site-packages/extrapaths.pth`, which `venv` uses to expand its module search path so that the tests can be ran. If you are running Windows then copy the file `extrapaths_win.pth` file to `.venv/lib/site-packages/extrapaths_win.pth`
 
 ### Running Tests
 
-How to run tests on your local system.
+The `unittest` tests are run from the root directory of the repo, for example to run the 
+```
+python -m unittest test.test_sparse_pre
+```
 
 ## Deployment
 
-Instructions on how to deploy to the staging or production systems. Examples of this would include cloud, HPC or virtual machine. Deployment should be done via GitHub Workflows but information on how these work and the different triggers should go here.
+TBA
 
 ## Contributing
 
@@ -54,11 +68,6 @@ Protected and can only be pushed to via pull requests. It should be considered s
 
 ### Dev Branch
 Should be considered fragile; code should compile and run, but features may be prone to errors.
-
-### Feature Branches
-A branch per feature that is being worked on.
-
-https://nvie.com/posts/a-successful-git-branching-model/
 
 ## Acknowledgements
 This work was funded by a grant from the UK Research Councils, EPSRC grant ref. EP/W019590/1, “Harnessing the Power of Stein Discrepancies in Bayesian Computation”.
