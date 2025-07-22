@@ -12,10 +12,8 @@ import jax.numpy as jnp
 from src.sparse_pre import helper_functions
 from src.sparse_pre import MRE
 from src.sparse_pre.SPRE import SPRE
-from src.sparse_pre import SPRE_opt
 from src.sparse_pre import SPRE_stepwise
 from src.sparse_pre import GRE_stepwise
-from src.sparse_pre.kernel import kernel
 
 class SPRETestCase(unittest.TestCase):
     '''
@@ -153,11 +151,10 @@ class SPRETestCase(unittest.TestCase):
         X2 = jnp.array([[0.1,     0.2],
                         [0.3,    0.4],
                         [0.5,    0.6]])
-        
+          
         # Test Gaussian
-        gauss = kernel("Gaussian", 2)
-
-        result0 = gauss(X1, X2)
+        spre = SPRE("Gaussian", X1.shape[1])
+        result0 = spre.kernel(X1, X2)
 
         ans0 = jnp.array([[0.5126,    0.6903,    0.6964],
                     [0.4024,    0.6594,    0.8096],
@@ -177,28 +174,28 @@ class SPRETestCase(unittest.TestCase):
                         [0.2649,    0.4722,    0.7110],
                         [0.3900,    0.6194,    0.8310]])
         
-        result1 = gauss(X1, X2, [0.5, 0.5])
+        result1 = spre.kernel(X1, X2, [0.5, 0.5])
 
         round_result = jnp.round(result1, 4)
         round_ans = jnp.round(ans1, 4)
         self.assertTrue((round_result == round_ans).all(), f"Failed kernel Gaussian, hyperparameters = [0.5, 0.5]! Result is {round_result} not {round_ans}")
 
         # Test GaussianARD
-        gauss_ard = kernel("GaussianARD", 2)
+        spre = SPRE("GaussianARD", X1.shape[1])
 
-        result0 = gauss_ard(X1, X2)
+        result0 = spre.kernel(X1, X2)
         round_result = jnp.round(result0, 4)
         round_ans = jnp.round(ans0, 4)
         self.assertTrue((round_result == round_ans).all(), f"Failed kernel GaussianARD, default! Result is {round_result} not {round_ans}")
 
-        result1 = gauss_ard(X1, X2, [0.5, 0.5, 0.5])
+        result1 = spre.kernel(X1, X2, [0.5, 0.5, 0.5])
         round_result = jnp.round(result1, 4)
         round_ans = jnp.round(ans1, 4)
         self.assertTrue((round_result == round_ans).all(), f"Failed kernel GaussianARD, hyperparameters = [0.5, 0.5, 0.5]! Result is {round_result} not {round_ans}")
 
         # Test Matern1/2 kernel
-        matern1_2 = kernel("Matern1/2", 2)
-
+        spre = SPRE("Matern1/2", X1.shape[1])
+      
         ans0 = jnp.array([
                 [0.7578,    0.8335,    0.8361],
                 [0.7089,    0.8204,    0.8854],
@@ -213,19 +210,19 @@ class SPRETestCase(unittest.TestCase):
                 [0.3112,    0.4159,    0.5558],
                 [0.3742,    0.4970,    0.6539]])
 
-        result0 = matern1_2(X1, X2)
+        result0 = spre.kernel(X1, X2)
         round_result = jnp.round(result0, 4)
         round_ans = jnp.round(ans0, 4)
         self.assertTrue((round_result == round_ans).all(), f"Failed kernel Matern1/2, default! Result is {round_result} not {round_ans}")
 
-        result1 = matern1_2(X1, X2, [0.5, 0.5])
+        result1 = spre.kernel(X1, X2, [0.5, 0.5])
         round_result = jnp.round(result1, 4)
         round_ans = jnp.round(ans1, 4)
         self.assertTrue((round_result == round_ans).all(), f"Failed kernel Matern1/2, hyperparameters = [0.5, 0.5]! Result is {round_result} not {round_ans}")
 
         # Test Matern3/2 kernel
-        matern3_2 = kernel("Matern3/2", 2)
-
+        spre = SPRE("Matern3/2", X1.shape[1])
+      
         ans0 = jnp.array([
                 [0.9893,    1.0681,    1.0706],
                 [0.9335,    1.0551,    1.1165],
@@ -240,19 +237,19 @@ class SPRETestCase(unittest.TestCase):
                 [0.4017,    0.5519,    0.7268],
                 [0.4935,    0.6576,    0.8256]])
 
-        result0 = matern3_2(X1, X2)
+        result0 = spre.kernel(X1, X2)
         round_result = jnp.round(result0, 4)
         round_ans = jnp.round(ans0, 4)
         self.assertTrue((round_result == round_ans).all(), f"Failed kernel Matern3/2, default! Result is {round_result} not {round_ans}")
 
-        result1 = matern3_2(X1, X2, [0.5, 0.5])
+        result1 = spre.kernel(X1, X2, [0.5, 0.5])
         round_result = jnp.round(result1, 4)
         round_ans = jnp.round(ans1, 4)
         self.assertTrue((round_result == round_ans).all(), f"Failed kernel Matern3/2, hyperparameters = [0.5, 0.5]! Result is {round_result} not {round_ans}")
 
         # Test white kernel
-        white_kernel = kernel("white", 2)
-
+        spre = SPRE("white", X1.shape[1])
+      
         X1 = jnp.array([[0.1,     0.2],
                         [0.3,    0.4],
                         [0.5,    0.6],
@@ -274,19 +271,19 @@ class SPRETestCase(unittest.TestCase):
                 [0,    0.9741,         0]])
         
 
-        result0 = white_kernel(X1, X2)
+        result0 = spre.kernel(X1, X2)
         round_result = jnp.round(result0, 4)
         round_ans = jnp.round(ans0, 4)
         self.assertTrue((round_result == round_ans).all(), f"Failed kernel white, default! Result is {round_result} not {round_ans}")
 
-        result1 = white_kernel(X1, X2, jnp.array([0.5]))
+        result1 = spre.kernel(X1, X2, jnp.array([0.5]))
         round_result = jnp.round(result1, 4)
         round_ans = jnp.round(ans1, 4)
         self.assertTrue((round_result == round_ans).all(), f"Failed kernel white, hyperparameters = [0.5]! Result is {round_result} not {round_ans}")
     
         # Test composite kernel
-        B = jnp.zeros((1, 2))
-        composite_kernel = kernel((B, "Gaussian"), 2)
+        B = jnp.zeros((1, 2))        
+        spre = SPRE("Gaussian", X1.shape[1], B)
 
         X1 = jnp.array([[0.8147,    0.0975],
                         [0.9058,    0.2785],
@@ -312,12 +309,12 @@ class SPRETestCase(unittest.TestCase):
                 [0.2581,    0.4599,    0.6926],
                 [0.3799,    0.6033,    0.8095]])
 
-        result0 = composite_kernel(X1, X2)
+        result0 = spre.kernel(X1, X2)
         round_result = jnp.round(result0, 4)
         round_ans = jnp.round(ans0, 4)
         self.assertTrue((round_result == round_ans).all(), f"Failed kernel composite_kernel, default! Result is {round_result} not {round_ans}")
 
-        result1 = composite_kernel(X1, X2, jnp.array([0.5, 0.5, 0.5]))
+        result1 = spre.kernel(X1, X2, jnp.array([0.5, 0.5, 0.5]))
         round_result = jnp.round(result1, 4)
         round_ans = jnp.round(ans1, 4)
         self.assertTrue((round_result == round_ans).all(), f"Failed kernel composite_kernel, hyperparameters = [0.5, 0.5, 0.5]! Result is\n {round_result} not\n {round_ans}")
@@ -439,6 +436,8 @@ class SPRETestCase(unittest.TestCase):
 
     def test_SPRE_stepwise(self):
 
+        
+
         #A = jnp.array([[0, 0], [0, 1], [1, 1], [2, 0]])
         X = jnp.array([[0.8147,    0.0975],
                         [0.9058,    0.2785],
@@ -452,7 +451,13 @@ class SPRETestCase(unittest.TestCase):
                         4.6093,
                         4.4130]) 
     
-        result = SPRE_stepwise.SPRE_stepwise(X, Y, "Gaussian")
+        # Set up SPRE object
+        spre = SPRE("Gaussian", X.shape[1])
+
+        # Set data
+        spre.set_normalised_data(X, Y)
+
+        result = spre.stepwise_selection()
 
         ans = { "mu": 2.9892,
                 "var": 7.6288e-04,

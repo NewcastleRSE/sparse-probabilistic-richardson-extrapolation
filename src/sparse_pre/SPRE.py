@@ -2,9 +2,10 @@
 import jax.numpy as jnp
 from jax import grad, debug
 from jaxopt import GradientDescent
+from tqdm import tqdm  # For progress bars
 
 # Application modules
-from helper_functions import x2fx, softplus, cellsum, white, remove_row
+from helper_functions import x2fx, softplus, cellsum, white, remove_row, stepwise
 
 class SPRE:
     '''
@@ -30,7 +31,10 @@ class SPRE:
         self.dimension = dimension
 
         # Set up the kernel to use
-        self.set_kernel(kernel_spec, gre_base)
+        self.set_kernel_spec(kernel_spec, gre_base)
+       
+        # Set kernel cache
+        self.kernel_cache = {}
 
     def cdist_jax(self, XA, XB):
         """
@@ -42,68 +46,10 @@ class SPRE:
         XB_sq = jnp.sum(XB ** 2, axis=1)  # (n,)
         cross_term = jnp.dot(XA, XB.T)  # (m, n)
         
-        dists = jnp.sqrt(XA_sq - 2 * cross_term + XB_sq)  # broadcasting
+        dists = jnp.sqrt(XA_sq - 2 * cross_term + XB_sq)  
         return dists
 
-    def _create_kernel(self, kernel_spec : str):
-        '''
-        Creates the kernel function to use for analysis, such that kernal_function(X1, X2, x)
-        where X1 and X2 are simulation data output and x is array of hyperparameters for the kernel.
-            X1 = n1 x dimension
-            X2 = n2 x dimension
-            x = p x 1
-        Where n1 and n2 are the number of observations and p the number of hyper parameters.
-
-        Parameters:  
-            kernel_spec : str               Name of the kernel to set up and use
-
-        Returns:
-            function         
-        '''
-
-        if kernel_spec == "Gaussian":
-            # Set default parameters for Gaussian kernel
-            self.default_kernel_parameters = [1.0, 0.1]
-            def kernal_function(X1, X2, x = self.default_kernel_parameters):
-                return (self.ep + softplus(x[0])) * jnp.exp(-self.cdist_jax(X1, X2) ** 2 / softplus(x[1])**2)
-
-        elif kernel_spec == "GaussianARD":            
-            # Set default parameters GaussianARD kernel
-            self.default_kernel_parameters = [1.0] 
-            self.default_kernel_parameters.extend([0.1] * self.dimension)
-            def kernal_function(X1, X2, x = self.default_kernel_parameters):
-                amp = self.ep + softplus(x[0])
-                lengthscales = [self.cdist_jax(X1[:, [i]], X2[:, [i]])**2 / softplus(x[i+1])**2 for i in range(self.dimension)]
-                return amp * jnp.exp(-cellsum(lengthscales))
-            
-        elif kernel_spec == "white":
-            # Set default parameters for white kernel
-            self.default_kernel_parameters = [1.0] 
-            def kernal_function(X1, X2, x = self.default_kernel_parameters):
-                return (self.ep + softplus(x[0])) * white(X1, X2)
-
-        elif kernel_spec == "Matern1/2":
-            # Set default parameters for Matern1/2 kernel
-            self.default_kernel_parameters = [1.0, 1.0] 
-            def kernal_function(X1, X2, x = self.default_kernel_parameters):
-                return (self.ep + softplus(x[0])) * jnp.exp(-self.cdist_jax(X1, X2) / softplus(x[1]))
-
-        elif kernel_spec == "Matern3/2":
-            # Set default parameters for Matern3/2 kernel
-            self.default_kernel_parameters = [1.0, 1.0]
-            def kernal_function(X1, X2, x = self.default_kernel_parameters):
-                r = self.cdist_jax(X1, X2)
-                l = softplus(x[1])
-                sqrt3_r_l = jnp.sqrt(3) * r / l
-                return (self.ep + softplus(x[0])) * (1 + sqrt3_r_l) * jnp.exp(-sqrt3_r_l)
-                 
-        else:
-            raise ValueError(f"Unknown kernel specification: {kernel_spec}")
-
-        # Return kernel function 
-        return kernal_function
-
-    def set_kernel(self, kernel_spec : str, gre_base : jnp.ndarray = None):
+    def set_kernel_spec(self, kernel_spec : str, gre_base : jnp.ndarray = None):
         '''
         Sets up the kernel function to use for analysis, such that kernal_function(X1, X2, x)
         where X1 and X2 are simulation data output and x is array of hyperparameters for the kernel.
@@ -114,37 +60,126 @@ class SPRE:
 
         Parameters:  
             kernel_spec : str               Name of the kernel to set up and use         
-            gre_base : jnp.ndarray            Basis for compatability layer for GRE             
+            gre_base : jnp.ndarray          Basis for compatability layer for GRE             
         Returns:
             None         
         '''
-         
+
         if gre_base is None:
             # Create kernal function
-            kernel_function = self._create_kernel(kernel_spec)
-        
+            self.kernel_spec = kernel_spec
+    
         else: 
             # Compatability layer for GRE 
-             
-            # Create base kernel 
-            kernel_base = self._create_kernel(kernel_spec)
+            self.kernel_spec = "GRE"
+            self.kernel_base = kernel_spec
+            self.gre_base = gre_base    
 
-            # Set default parameters for x for base, and then new kernal function         
-            default_base_paras = [1.0]
-            self.default_kernel_parameters = default_base_paras.extend(self.default_kernel_parameters)      
+        # Set default parameters
+        self.set_kernel_default_parameters(self.kernel_spec) 
+       
+    def set_kernel_default_parameters(self, kernel_spec : str):
+         
+        # Set default parameters
+        match kernel_spec:
+            case "Gaussian":
+                self.default_kernel_parameters = [1.0, 0.1]                 
+            case "GaussianARD":
+                self.default_kernel_parameters = [1.0] 
+                self.default_kernel_parameters.extend([0.1] * self.dimension)      
+            case "white":
+                self.default_kernel_parameters = [1.0] 
+            case "Matern1/2":
+                self.default_kernel_parameters = [1.0, 1.0]   
+            case "Matern3/2":
+                self.default_kernel_parameters = [1.0, 1.0]
+            case "GRE":
+                self.set_kernel_default_parameters(self.kernel_base)
+                base_default_parameters = self.default_kernel_parameters
+                self.default_kernel_parameters = [1.0] 
+                self.default_kernel_parameters.extend(base_default_parameters)                  
+            case _:
+                raise ValueError(f"Unknown kernel specification: {kernel_spec}")
+            
+    def set_kernel_cache(self):
 
-            # Define kernel function
-            def kernel_function(X1, X2, x = self.default_kernel_parameters):
+        self.kernel_cache = {}
+
+        for i in range(self.X_normalised.shape[0]):
+            X = remove_row(self.X_normalised, i)           
+            Xs = self.X_normalised[i:(i+1), :]
+            self.kernel_cache[f"XX{i}"] = self.calculate_kernel_cached_bit(X, X)         
+            self.kernel_cache[f"XXs{i}"] = self.calculate_kernel_cached_bit(X, Xs) 
+            self.kernel_cache[f"XsXs{i}"] = self.calculate_kernel_cached_bit(Xs, Xs)        
+            self.kernel_cache[f"XsX{i}"] = self.calculate_kernel_cached_bit(Xs, X) 
+              
+    def calculate_kernel_cached_bit(self, X1, X2):
+        match self.kernel_spec:
+            case "Gaussian":
+                return -self.cdist_jax(X1, X2) ** 2 
+            
+            case "GaussianARD":                
+                return None
+            
+            case "white":
+                return white(X1, X2)
+
+            case "Matern1/2":
+                return -self.cdist_jax(X1, X2)
+
+            case "Matern3/2":
+                return jnp.sqrt(3) * self.cdist_jax(X1, X2)
+            
+            case "GRE":
+                self.kernel_spec = self.kernel_base
+                ans = self.calculate_kernel_cached_bit(X1, X2)
+                self.kernel_spec = "GRE"
+                return ans
+            case _:
+                raise ValueError(f"Unknown kernel specification: {self.kernel_spec}")
+
+    def get_kernel_cached_bit(self, X1, X2, cache_key):
+        if cache_key is not None and cache_key in self.kernel_cache:
+            return self.kernel_cache[cache_key]   
+        else:
+            return self.calculate_kernel_cached_bit(X1, X2)
+       
+    def kernel(self, X1, X2, x = None, cache_key = None):
+
+        if x is None:
+            x = self.default_kernel_parameters
+
+        match self.kernel_spec:
+            case "Gaussian":
+                return (self.ep + softplus(x[0])) * jnp.exp(self.get_kernel_cached_bit(X1, X2, cache_key) / softplus(x[1])**2)
+            
+            case "GaussianARD":
+                amp = self.ep + softplus(x[0])
+                lengthscales = [self.cdist_jax(X1[:, [i]], X2[:, [i]])**2 / softplus(x[i+1])**2 for i in range(self.dimension)]
+                return amp * jnp.exp(-cellsum(lengthscales))
+            
+            case "white":
+                return (self.ep + softplus(x[0])) * self.get_kernel_cached_bit(X1, X2, cache_key)
+
+            case "Matern1/2":
+                return (self.ep + softplus(x[0])) * jnp.exp(-self.cdist_jax(X1, X2) / softplus(x[1]))
+
+            case "Matern3/2":              
+                l = softplus(x[1])
+                sqrt3_r_l = self.get_kernel_cached_bit(X1, X2, cache_key) / l
+                return (self.ep + softplus(x[0])) * (1 + sqrt3_r_l) * jnp.exp(-sqrt3_r_l)
+            
+            case "GRE":
                 amp = self.ep + softplus(x[0])
                 # Convergence rate ansatz b(x)
-                base_X1 = jnp.sum(x2fx(X1, gre_base), axis=1)
-                base_X2 = jnp.sum(x2fx(X2, gre_base), axis=1)
-                return amp * base_X1[:, None] * kernel_base(X1, X2, x = x[1:]) * base_X2[None, :]
-               
-        # Store kernel function in class for later use
-        self.kernel = kernel_function
+                base_X1 = jnp.sum(x2fx(X1, self.gre_base), axis=1)
+                base_X2 = jnp.sum(x2fx(X2, self.gre_base), axis=1)
+                self.kernel_spec = self.kernel_base
+                ans = amp * base_X1[:, None] * self.kernel(X1, X2, x = x[1:], cache_key = cache_key) * base_X2[None, :]
+                self.kernel_spec = "GRE"
+                return ans 
 
-    # Basis functions
+     # Basis functions
     # A = m x d
     # X = n x d
     # Xs = n_test x d
@@ -173,22 +208,12 @@ class SPRE:
         VA = self.V(X)
         return jnp.linalg.inv(VA.T @ K_inv @ VA) @ (VA.T @ K_inv @ Y)
 
-    # Predictive mean
-        # A = m x d
-        # X = n_train x d
-        # Y = n_train x 1
-        # Xs = n_test x d
-        # x = p x 1
+
     def mu_GP(self, X, Y, Xs, x):
         #function R^d -> R, predictive mean for fitted GP
         K_inv = jnp.linalg.inv(self.kernel(X, X, x))
         return self.kernel(Xs, X, x) @ K_inv @ Y + self.residual(X, Xs, x).T @ self.beta(X, Y, x)
-
-    # Predictive covariance
-        # A = m x d
-        # X = n_train x d
-        # Xs = n_test x d
-        # x = p x 1
+  
     def cov_GP(self, X, Xs, x):
         # function R^d x R^d -> R, predictive covariance for fitted GP
         K_inv = jnp.linalg.inv(self.kernel(X, X, x))
@@ -199,32 +224,67 @@ class SPRE:
                 + residual_X_Xs.T @ jnp.linalg.inv(VA.T @ K_inv @ VA) @ residual_X_Xs)
 
     # Cross-validation local loss (log-likelihood of test data)
+    def cv_local_loss(self, x, row_num):
+        # Cross-validation local loss (log-likelihood of test data)
         # A = m x d
         # X = n_train x d
         # Y = n_train x 1
         # Xs = n_test x d
         # Ys = n_test x 1
         # x = p x 1
-    def cv_local_loss(self, X, Y, Xs, Ys, x):
-        #cov_val = self.cov_GP(X, Xs, x)
-        #mu_val = self.mu_GP(X, Y, Xs, x)
-        # Calculate cov_GP
-        K_inv = jnp.linalg.inv(self.kernel(X, X, x))
-        VA = self.V(X)
-        #Calculate residual     
-        kernel_X_Xs = self.kernel(X, Xs, x)
-        residual_X_Xs = self.v(Xs) - self.V(X).T @ K_inv @ kernel_X_Xs
+
+        X = remove_row(self.X_normalised, row_num)
+        Y = remove_row(self.Y_normalised, row_num)
+        Xs = self.X_normalised[row_num:(row_num+1), :]
+        Ys = self.Y_normalised[row_num:(row_num+1)]
+
+        # Calculate some bits firstly
+        
+        K_inv = jnp.linalg.inv(self.kernel(X, X, x, cache_key = f"XX{row_num}"))
+        kernel_X_Xs = self.kernel(X, Xs, x, cache_key = f"XXs{row_num}")
+        
+        if self.kernel_spec != "GRE":            
+            kernel_Xs_X = kernel_X_Xs.T 
+        else:
+            kernel_Xs_X = self.kernel(Xs, X, x, cache_key = f"XsX{row_num}")
+
+      
+        # Basis functions
+        # A = m x d
+        # X = n x d
+        # Xs = n_test x d
+        VA = x2fx(X, self.sparse_basis)
+        vAT = x2fx(Xs, self.sparse_basis).T
+
+        # Residual term
+        # A = m x d
+        # X = n_train x d
+        # Xs = n_test x d
+        # x = p x 1     
+        residual_X_Xs = vAT - VA.T @ K_inv @ kernel_X_Xs
     
-        # Calculate cov_GP
-        kernel_Xs_X = self.kernel(Xs, X, x)
-        cov_val = (self.kernel(Xs, Xs, x)
+        # Predictive covariance
+        # A = m x d
+        # X = n_train x d
+        # Xs = n_test x d
+        # x = p x 1  
+        cov_val = (self.kernel(Xs, Xs, x, cache_key = f"XsXs{row_num}")
                 - kernel_Xs_X @ K_inv @ kernel_X_Xs
                 + residual_X_Xs.T @ jnp.linalg.inv(VA.T @ K_inv @ VA) @ residual_X_Xs)
         
-        # Calculate beta 
+        # Coefficient estimator, beta
+        # A = m x d
+        # X = n_train x d
+        # Y = n_train x 1
+        # x = p x 1 
         beta_X_Y = jnp.linalg.inv(VA.T @ K_inv @ VA) @ (VA.T @ K_inv @ Y)
     
-        # Calculate mu_GP
+        # Predictive mean
+        # A = m x d
+        # X = n_train x d
+        # Y = n_train x 1
+        # Xs = n_test x d
+        # x = p x 1
         mu_val = kernel_Xs_X @ K_inv @ Y + residual_X_Xs.T @ beta_X_Y
 
         diff = Ys - mu_val
@@ -240,12 +300,9 @@ class SPRE:
         # x = p x 1
     def cv_loss(self, x):
         return sum(
-            self.cv_local_loss(                
-                remove_row(self.X_normalised, i),
-                remove_row(self.Y_normalised, i),
-                self.X_normalised[i:i+1, :],
-                self.Y_normalised[i:i+1],
-                x
+            self.cv_local_loss(                   
+                x,
+                i
             ) for i in range(self.X_normalised.shape[0])
         )
 
@@ -376,7 +433,8 @@ class SPRE:
         }
         '''
         
-        
+        self.set_kernel_cache()
+
         solver = GradientDescent(fun = self.objective, maxiter=100, value_and_grad = True, stepsize=1e-3)#, tol=1e-3)
         
         result = solver.run(jnp.array(self.default_kernel_parameters))
@@ -406,3 +464,82 @@ class SPRE:
             'cv': result.fun
         }
         '''
+
+    def stepwise_selection(self):
+        """
+        Stepwise model selection for SPRE.
+
+        Parameters:
+            X       : ndarray of shape (n_train, d), training inputs
+            Y       : ndarray of shape (n_train,), training outputs
+            k_name  : str, kernel name ("Gaussian", "GaussianARD", "Matern1/2", "Matern3/2", "white")
+
+        Returns:
+            out     : dict, result of SPRE using optimal model
+                    % out.mu      = scalar, predictive mean for f(0)
+                    % out.cov     = scalar, predictive variance for f(0)
+                    % out.mu_GP   = function R^d -> R, predictive mean for fitted GP
+                    % out.cov_GP  = function R^d x R^d -> R, predictive covariance for fitted GP
+                    % out.mu_cv   = n_train x 1, LOOCV predictive means
+                    % out.var_cv  = n_train x 1, LOOCV predictive variances
+                    % out.cv      = scalar, LOOCV criterion
+                    % out.cv_grad = p x 1, gradient of LOOCV criterion
+        """
+
+        A = jnp.zeros((1, self.dimension), dtype=int)  # Initialise with just an intercept
+        #A = jnp.array([[0, 0]])
+        self.set_sparse_basis(A)
+
+        #A = jnp.array([[0, 0], [0, 1], [1, 1], [2, 0]])
+        order = 0
+        fit = self.perform_extrapolation_optimization()
+        #print("stepwise")
+        #print(A)
+        #print(X)
+        #print(Y)
+        #print(k_name)
+        #print(fit)
+        cv = fit['cv']
+
+        carry_on = 0 # True
+
+        while carry_on:
+            order += 1
+            A_extra = stepwise(A, order)  # Generate new predictors of given order
+            n_extra = A_extra.shape[0]
+            to_include = jnp.zeros(n_extra, dtype=bool)
+
+            print(f"Fitting interactions of order {order}:")
+
+            for i in tqdm(range(n_extra), desc="Stepwise progress"):
+                A_new = jnp.vstack([A, A_extra[i]])
+                self.set_sparse_basis(A_new)
+                fit_new = self.perform_extrapolation_optimization()
+                cv_new = fit_new['cv']
+                if cv_new < cv:
+                    to_include[i] = True
+
+            if jnp.any(to_include):
+                A_updated = jnp.vstack([A, A_extra[to_include]])
+                self.set_sparse_basis(A_updated)
+                fit_updated = self.perform_extrapolation_optimization()
+                cv_updated = fit_updated['cv']
+                if cv_updated >= cv:
+                    carry_on = False
+                else:
+                    A = A_updated
+                    fit = fit_updated
+                    cv = cv_updated
+            else:
+                carry_on = False
+
+        # Optimal parameters
+        x_opt = fit['x']
+        print(x_opt)
+        #print(A)
+        #print(X)
+        #print(Y)
+        # Final model with best kernel parameters and basis A
+        out = self.perform_extrapolation(x_opt, return_mu_and_var=True)
+
+        return out
