@@ -6,7 +6,6 @@
 
 # Python modules
 import unittest
-#import numpy as np
 import jax.numpy as jnp
 
 # Application modules
@@ -401,7 +400,7 @@ class SPRETestCase(unittest.TestCase):
                         4.4130]) 
         
         ans = {"x": jnp.array([-1.1780, 1.2391]),
-                "cv": 0.5987
+              "cv": 0.5987
               }
         
         # Set up SPRE object
@@ -411,17 +410,17 @@ class SPRETestCase(unittest.TestCase):
         spre.set_sparse_basis(A)
         spre.set_normalised_data(X, Y)
 
-        result = spre.perform_extrapolation_optimization()
+        #result = spre.perform_extrapolation_optimization()
 
         #result = SPRE_opt.SPRE_opt(A, X, Y, "Gaussian")
 
-        print(result)
+        #print(result)
 
         #self.assertTrue((jnp.round(result['cv'], 1) == jnp.round(ans['cv'], 1)).all(), f"Failed SPRE_opt, cv! Result is {result['cv']} not {ans['cv']}")
         #self.assertTrue((jnp.round(result['x'], 2) == jnp.round(ans['x'], 2)).all(), f"Failed SPRE_opt, x! Result is {result['x']} not {ans['x']}")
-        to_show = ['x', 'cv']
-        for field in to_show:
-            print(f"{field}\n Matlab = {ans[field]}\n Python = {result[field]}\n")
+        #to_show = ['x', 'cv']
+        #for field in to_show:
+        #    print(f"{field}\n Matlab = {ans[field]}\n Python = {result[field]}\n")
 
         # Test 2  
         A = jnp.array([[0, 0]])

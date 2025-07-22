@@ -148,29 +148,29 @@ class SPRE:
     # A = m x d
     # X = n x d
     # Xs = n_test x d
-    def V(self, A, X):
-        return x2fx(X, A)  # n x m
+    def V(self, X):
+        return x2fx(X, self.sparse_basis)  # n x m
 
-    def v(self, A, Xs):
-        return x2fx(Xs, A).T  # m x n_test
+    def v(self, Xs):
+        return x2fx(Xs, self.sparse_basis).T  # m x n_test
 
     # Residual term
     # A = m x d
     # X = n_train x d
     # Xs = n_test x d
     # x = p x 1
-    def residual(self, A, X, Xs, x):
+    def residual(self, X, Xs, x):
         K_inv = jnp.linalg.inv(self.kernel(X, X, x))
-        return self.v(A, Xs) - self.V(A, X).T @ K_inv @ self.kernel(X, Xs, x)
+        return self.v(Xs) - self.V(X).T @ K_inv @ self.kernel(X, Xs, x)
         
     # Coefficient estimator
     # A = m x d
     # X = n_train x d
     # Y = n_train x 1
     # x = p x 1
-    def beta(self, A, X, Y, x):
+    def beta(self, X, Y, x):
         K_inv = jnp.linalg.inv(self.kernel(X, X, x))
-        VA = self.V(A, X)
+        VA = self.V(X)
         return jnp.linalg.inv(VA.T @ K_inv @ VA) @ (VA.T @ K_inv @ Y)
 
     # Predictive mean
@@ -179,23 +179,24 @@ class SPRE:
         # Y = n_train x 1
         # Xs = n_test x d
         # x = p x 1
-    def mu_GP(self, A, X, Y, Xs, x):
+    def mu_GP(self, X, Y, Xs, x):
         #function R^d -> R, predictive mean for fitted GP
         K_inv = jnp.linalg.inv(self.kernel(X, X, x))
-        return self.kernel(Xs, X, x) @ K_inv @ Y + self.residual(A, X, Xs, x).T @ self.beta(A, X, Y, x)
+        return self.kernel(Xs, X, x) @ K_inv @ Y + self.residual(X, Xs, x).T @ self.beta(X, Y, x)
 
     # Predictive covariance
         # A = m x d
         # X = n_train x d
         # Xs = n_test x d
         # x = p x 1
-    def cov_GP(self, A, X, Xs, x):
+    def cov_GP(self, X, Xs, x):
         # function R^d x R^d -> R, predictive covariance for fitted GP
         K_inv = jnp.linalg.inv(self.kernel(X, X, x))
-        VA = self.V(A, X)
+        VA = self.V(X)
+        residual_X_Xs = self.residual(X, Xs, x)
         return (self.kernel(Xs, Xs, x)
                 - self.kernel(Xs, X, x) @ K_inv @ self.kernel(X, Xs, x)
-                + self.residual(A, X, Xs, x).T @ jnp.linalg.inv(VA.T @ K_inv @ VA) @ self.residual(A, X, Xs, x))
+                + residual_X_Xs.T @ jnp.linalg.inv(VA.T @ K_inv @ VA) @ residual_X_Xs)
 
     # Cross-validation local loss (log-likelihood of test data)
         # A = m x d
@@ -204,9 +205,28 @@ class SPRE:
         # Xs = n_test x d
         # Ys = n_test x 1
         # x = p x 1
-    def cv_local_loss(self, A, X, Y, Xs, Ys, x):
-        cov_val = self.cov_GP(A, X, Xs, x)
-        mu_val = self.mu_GP(A, X, Y, Xs, x)
+    def cv_local_loss(self, X, Y, Xs, Ys, x):
+        #cov_val = self.cov_GP(X, Xs, x)
+        #mu_val = self.mu_GP(X, Y, Xs, x)
+        # Calculate cov_GP
+        K_inv = jnp.linalg.inv(self.kernel(X, X, x))
+        VA = self.V(X)
+        #Calculate residual     
+        kernel_X_Xs = self.kernel(X, Xs, x)
+        residual_X_Xs = self.v(Xs) - self.V(X).T @ K_inv @ kernel_X_Xs
+    
+        # Calculate cov_GP
+        kernel_Xs_X = self.kernel(Xs, X, x)
+        cov_val = (self.kernel(Xs, Xs, x)
+                - kernel_Xs_X @ K_inv @ kernel_X_Xs
+                + residual_X_Xs.T @ jnp.linalg.inv(VA.T @ K_inv @ VA) @ residual_X_Xs)
+        
+        # Calculate beta 
+        beta_X_Y = jnp.linalg.inv(VA.T @ K_inv @ VA) @ (VA.T @ K_inv @ Y)
+    
+        # Calculate mu_GP
+        mu_val = kernel_Xs_X @ K_inv @ Y + residual_X_Xs.T @ beta_X_Y
+
         diff = Ys - mu_val
         inv_cov = jnp.linalg.inv(cov_val)
         term1 = -0.5 * jnp.log(jnp.linalg.det(2 * jnp.pi * cov_val))
@@ -218,16 +238,15 @@ class SPRE:
         # X = n_train x d
         # Y = n_train x 1
         # x = p x 1
-    def cv_loss(self, A, X, Y, x):
+    def cv_loss(self, x):
         return sum(
-            self.cv_local_loss(
-                A,
-                remove_row(X, i),
-                remove_row(Y, i),
-                X[i:i+1, :],
-                Y[i:i+1],
+            self.cv_local_loss(                
+                remove_row(self.X_normalised, i),
+                remove_row(self.Y_normalised, i),
+                self.X_normalised[i:i+1, :],
+                self.Y_normalised[i:i+1],
                 x
-            ) for i in range(X.shape[0])
+            ) for i in range(self.X_normalised.shape[0])
         )
 
     def set_normalised_data(self, X, Y):
@@ -258,8 +277,8 @@ class SPRE:
         self.sparse_basis = A
 
     # Define the function to calculate gradient from
-    def gradient_eval(self, x):
-            return self.cv_loss(self.sparse_basis, self.X_normalised, self.Y_normalised, x)
+    #def gradient_eval(self, x):
+    #        return self.cv_loss(x)
     
     def perform_extrapolation(self, x : jnp.ndarray, return_mu_and_var : bool = False):
         """
@@ -280,13 +299,13 @@ class SPRE:
         """
     
         # Define the gradient function
-        gradient_function = grad(self.gradient_eval)
+        gradient_function = grad(self.cv_loss)
 
         # Evaluate gradient at x
         gradient = gradient_function(x)
 
         # Evaluate cv
-        cv = self.cv_loss(self.sparse_basis, self.X_normalised, self.Y_normalised, x)
+        cv = self.cv_loss(x)
 
         # Output
         out = {
@@ -300,19 +319,19 @@ class SPRE:
         if return_mu_and_var:
             # LOOCV predictions
             mu_cv = jnp.array([
-                self.nY * self.mu_GP(self.sparse_basis, remove_row(self.X_normalised, i), remove_row(self.Y_normalised, i), self.X_normalised[i:i+1, :], x)
+                self.nY * self.mu_GP(remove_row(self.X_normalised, i), remove_row(self.Y_normalised, i), self.X_normalised[i:i+1, :], x)
                 for i in range(self.X_normalised.shape[0])
             ])
 
             var_cv = jnp.array([
-                self.nY**2 * self.cov_GP(self.sparse_basis, remove_row(self.X_normalised, i), self.X_normalised[i:i+1, :], x)
+                self.nY**2 * self.cov_GP(remove_row(self.X_normalised, i), self.X_normalised[i:i+1, :], x)
                 for i in range(self.X_normalised.shape[0])
             ]).flatten()
 
             # Output
             out.update({
-                "mu": self.nY * self.mu_GP(self.sparse_basis, self.X_normalised, self.Y_normalised, jnp.zeros((1, self.dimension)), x),
-                "var": self.nY**2 * self.cov_GP(self.sparse_basis, self.X_normalised, jnp.zeros((1, self.dimension)), x),           
+                "mu": self.nY * self.mu_GP(self.X_normalised, self.Y_normalised, jnp.zeros((1, self.dimension)), x),
+                "var": self.nY**2 * self.cov_GP(self.X_normalised, jnp.zeros((1, self.dimension)), x),           
                 "mu_cv": mu_cv,
                 "var_cv": var_cv            
             })
@@ -358,22 +377,11 @@ class SPRE:
         '''
         
         
-        def objective(x):
-            # Objective function
-            # LOOCV (negative log likelihood of held-out datum)
-            out = self.perform_extrapolation(x)        
-            return -out['cv'], -out['cv_grad']
-    
+        solver = GradientDescent(fun = self.objective, maxiter=100, value_and_grad = True, stepsize=1e-3)#, tol=1e-3)
         
-        solver = GradientDescent(fun = objective, maxiter=100, value_and_grad = True, stepsize=1e-3)#, tol=1e-3)
-        
-        print(self.default_kernel_parameters)
-        print(type(self.default_kernel_parameters))
         result = solver.run(jnp.array(self.default_kernel_parameters))
         result_value, _ = self.objective(result.params)
 
-        print(result)
-        print(result_value)
         return {
             'x'  : result.params,
             'cv' : result_value
