@@ -70,12 +70,14 @@ class SPRE:
         if gre_base is None:
             # Create kernal function
             self.kernel_spec = kernel_spec
-    
+            
         else: 
             # Compatability layer for GRE 
             self.kernel_spec = "GRE"
             self.kernel_base = kernel_spec
-            self.gre_base = gre_base    
+              
+        # Set GRE base (set to None if not used)
+        self.gre_base = gre_base
 
         # Set default parameters
         self.set_kernel_default_parameters(self.kernel_spec) 
@@ -208,7 +210,7 @@ class SPRE:
     def beta(self, X, Y, x):
         K_inv = jnp.linalg.inv(self.kernel(X, X, x))
         VA = self.V(X)
-        return jnp.linalg.inv(VA.T @ K_inv @ VA) @ (VA.T @ K_inv @ Y)
+        return jnp.linalg.pinv(VA.T @ K_inv @ VA, hermitian = True) @ (VA.T @ K_inv @ Y)
 
 
     def mu_GP(self, X, Y, Xs, x):
@@ -229,15 +231,21 @@ class SPRE:
         #inv( V(A,X)' * inv(k(X,X,x)) * V(A,X) );
         
         pt30 = VA.T @ K_inv @ VA
-        pt30 = jnp.round(pt30,4)
+        #pt30 = jnp.round(pt30,4)
         print(f"pt30 = {pt30}")
-        pt3 = np.linalg.inv(pt30)
+        pt3 = jnp.linalg.inv(pt30)
+        pt3_ps = jnp.linalg.pinv(pt30, hermitian = True)#, rcond = 1e-16)
+        lin_check = jnp.linalg.cond(pt30)
+        print(f"Cond = {lin_check}")
         #pt3 = jnp.linalg.inv(pt30)        
         #pt3 = jnp.linalg.solve(pt30, jnp.identity(pt30.shape[0]))
         pt4 = (VA.T @ K_inv @ Y)
         print(f"pt3 = {pt3}")
+        print(f"pt3_ps = {pt3_ps}")
         pt3Check = pt30 @ pt3
         print(f"pt3Check = {pt3Check}")
+        pt3Check_ps = pt30 @ pt3_ps
+        print(f"pt3Check_ps = {pt3Check_ps}")
         print(f"pt4 = {pt4}\n")
         pt31 = VA
         pt32 = K_inv
@@ -257,7 +265,7 @@ class SPRE:
                 + residual_X_Xs.T @ jnp.linalg.inv(VA.T @ K_inv @ VA) @ residual_X_Xs)
 
     # Cross-validation local loss (log-likelihood of test data)
-    def cv_local_loss(self, x, row_num):
+    def cv_local_loss(self, x, row_num, return_info = False):
         # Cross-validation local loss (log-likelihood of test data)
         # A = m x d
         # X = n_train x d
@@ -293,25 +301,28 @@ class SPRE:
         # A = m x d
         # X = n_train x d
         # Xs = n_test x d
-        # x = p x 1     
-        residual_X_Xs = vAT - VA.T @ K_inv @ kernel_X_Xs
+        # x = p x 1   
+        VA_T_at_K_inv = VA.T @ K_inv  
+        residual_X_Xs = vAT - VA_T_at_K_inv @ kernel_X_Xs
     
         # Predictive covariance
         # A = m x d
         # X = n_train x d
         # Xs = n_test x d
         # x = p x 1  
+        #inv_VA_T_at_K_inv_at_VA = jnp.linalg.inv(VA_T_at_K_inv @ VA)
+        inv_VA_T_at_K_inv_at_VA = jnp.linalg.pinv(VA_T_at_K_inv @ VA, hermitian = True)
         cov_val = (self.kernel(Xs, Xs, x, cache_key = f"XsXs{row_num}")
                 - kernel_Xs_X @ K_inv @ kernel_X_Xs
-                + residual_X_Xs.T @ jnp.linalg.inv(VA.T @ K_inv @ VA) @ residual_X_Xs)
+                + residual_X_Xs.T @ inv_VA_T_at_K_inv_at_VA @ residual_X_Xs)
         
         # Coefficient estimator, beta
         # A = m x d
         # X = n_train x d
         # Y = n_train x 1
-        # x = p x 1 
-        beta_X_Y = jnp.linalg.inv(VA.T @ K_inv @ VA) @ (VA.T @ K_inv @ Y)
-    
+        # x = p x 1          
+        beta_X_Y = inv_VA_T_at_K_inv_at_VA @ (VA_T_at_K_inv @ Y)
+        
         # Predictive mean
         # A = m x d
         # X = n_train x d
@@ -324,6 +335,7 @@ class SPRE:
         inv_cov = jnp.linalg.inv(cov_val)
         term1 = -0.5 * jnp.log(jnp.linalg.det(2 * jnp.pi * cov_val))
         term2 = -0.5 * diff.T @ inv_cov @ diff
+        
         return term1 + term2
 
     # LOOCV loss 
