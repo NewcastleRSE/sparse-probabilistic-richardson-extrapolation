@@ -453,6 +453,47 @@ class InitialTranslationTestCase(unittest.TestCase):
         print("result = ")
         print(result)
 
+    def test_GRE(self):
+
+        A = jnp.array([[0, 0], [0, 1], [1, 1], [2, 0]])
+        X = jnp.array([[0.8147,    0.0975],
+                        [0.9058,    0.2785],
+                        [0.1270,    0.5469],
+                        [0.9134,    0.9575],
+                        [0.6324,    0.9649]])
+
+        Y = jnp.array([3.8249,
+                        4.0618,
+                        3.6467,
+                        4.6093,
+                        4.4130]) 
+
+        x = [0.9, 0.5, 0.5]
+        B = jnp.array([[0.55, 0.66]])
+        result = SPRE.SPRE(A, X, Y, x, (B, "Gaussian"))
+
+        ans = { "mu": 3.2575,
+                "var": 2.1722,
+                "mu_GP": "@(Xs)nY*mu_GP(A,Xn,Yn,Xs./nX,x)",
+                "cov_GP": "@(Xs)nY^2*cov_GP(A,Xn,Xs./nX,x)",
+                "mu_cv": jnp.array([3.5501, 4.5639, 3.8842, 4.8592, 4.2607]),
+                "var_cv": jnp.array([0.5933, 1.9808, 0.4433, 0.4906, 0.1823]),
+                "cv": -3.5704,
+                "cv_grad": jnp.array([-1.2498, -1.3942, 3.2989])
+            }
+      
+        thres = 0.0001
+        self.assertTrue((abs(result["mu"][0] - ans["mu"]) < thres).all(), f"Failed SPRE, mu! Result is {result['mu'][0]} not {ans['mu']}")
+        self.assertTrue((abs(result["var"][0][0] - ans["var"]) < thres).all(), f"Failed SPRE, var! Result is {result['var'][0][0]} not {ans['var']}")
+        self.assertTrue((abs(result["mu_cv"].flatten() - ans["mu_cv"]) < thres).all(), f"Failed SPRE, mu_cv! Result is {result['mu_cv']} not {ans['mu_cv']}")
+        result_var_cv = result['var_cv']
+        ans_var_cv = ans['var_cv']
+        self.assertTrue((abs(result_var_cv - ans_var_cv) < thres).all(), f"Failed SPRE, var_cv! Result is {result_var_cv} not {ans_var_cv}")
+        self.assertTrue((abs(result['cv'] - ans['cv']) < thres).all(), f"Failed SPRE, cv! Result is {result['cv']} not {ans['cv']}")
+        thres = 0.01
+        self.assertTrue((abs(result['cv_grad'] - ans['cv_grad']) < thres).all(), f"Failed SPRE, cv_grad! Result is {result['cv_grad']} not {ans['cv_grad']}")
+
+        
     def test_GRE_stepwise(self):
 
         #A = jnp.array([[0, 0], [0, 1], [1, 1], [2, 0]])

@@ -3,6 +3,8 @@ import jax.numpy as jnp
 from jax import grad, debug
 from jaxopt import GradientDescent
 from tqdm import tqdm  # For progress bars
+from sklearn.neighbors import NearestNeighbors
+import numpy as np
 
 # Application modules
 from helper_functions import x2fx, softplus, cellsum, white, remove_row, stepwise
@@ -179,7 +181,7 @@ class SPRE:
                 self.kernel_spec = "GRE"
                 return ans 
 
-     # Basis functions
+    # Basis functions
     # A = m x d
     # X = n x d
     # Xs = n_test x d
@@ -212,6 +214,37 @@ class SPRE:
     def mu_GP(self, X, Y, Xs, x):
         #function R^d -> R, predictive mean for fitted GP
         K_inv = jnp.linalg.inv(self.kernel(X, X, x))
+
+        ############
+        pt1 = self.kernel(Xs, X, x) @ K_inv @ Y
+        pt2 = self.residual(X, Xs, x).T @ self.beta(X, Y, x)
+        pt21 = self.residual(X, Xs, x).T
+        pt22 = self.beta(X, Y, x)
+        print(f"pt1 = {pt1}")
+        print(f"pt2 = {pt2}")
+        print(f"pt21 = {pt21}")
+        print(f"pt22 = {pt22}\n")
+        K_inv = jnp.linalg.inv(self.kernel(X, X, x))
+        VA = self.V(X)
+        #inv( V(A,X)' * inv(k(X,X,x)) * V(A,X) );
+        
+        pt30 = VA.T @ K_inv @ VA
+        pt30 = jnp.round(pt30,4)
+        print(f"pt30 = {pt30}")
+        pt3 = np.linalg.inv(pt30)
+        #pt3 = jnp.linalg.inv(pt30)        
+        #pt3 = jnp.linalg.solve(pt30, jnp.identity(pt30.shape[0]))
+        pt4 = (VA.T @ K_inv @ Y)
+        print(f"pt3 = {pt3}")
+        pt3Check = pt30 @ pt3
+        print(f"pt3Check = {pt3Check}")
+        print(f"pt4 = {pt4}\n")
+        pt31 = VA
+        pt32 = K_inv
+        print(f"pt31 = {pt31}")
+        print(f"pt32 = {pt32}\n")
+        #################
+
         return self.kernel(Xs, X, x) @ K_inv @ Y + self.residual(X, Xs, x).T @ self.beta(X, Y, x)
   
     def cov_GP(self, X, Xs, x):
@@ -386,12 +419,15 @@ class SPRE:
             ]).flatten()
 
             # Output
-            out.update({
+            out0 = out
+            out = {
                 "mu": self.nY * self.mu_GP(self.X_normalised, self.Y_normalised, jnp.zeros((1, self.dimension)), x),
                 "var": self.nY**2 * self.cov_GP(self.X_normalised, jnp.zeros((1, self.dimension)), x),           
                 "mu_cv": mu_cv,
                 "var_cv": var_cv            
-            })
+            }
+            out.update(out0)
+            
 
         return out
 
@@ -490,6 +526,10 @@ class SPRE:
         #A = jnp.array([[0, 0]])
         self.set_sparse_basis(A)
 
+        # Handle selection differently if doing GRE
+        if self.gre_base is not None:
+            return self._GRE_stepwise_selection()
+        
         #A = jnp.array([[0, 0], [0, 1], [1, 1], [2, 0]])
         order = 0
         fit = self.perform_extrapolation_optimization()
@@ -543,3 +583,66 @@ class SPRE:
         out = self.perform_extrapolation(x_opt, return_mu_and_var=True)
 
         return out
+    
+    def _GRE_stepwise_selection(self):
+        """
+        Stepwise model selection for GRE (Gauss-Richardson Extrapolation).
+
+        Parameters:
+            None
+
+        Returns:
+            out : dict
+                Dictionary with predictive mean, variance, and fitted model details.
+        """
+       
+        B = jnp.zeros((1, self.dimension), dtype=int)    # initial rate function: only intercept
+        order = 0
+
+        fit = self.perform_extrapolation_optimization()
+        cv = fit["cv"]
+
+        carry_on = True
+        while carry_on:
+            order += 1
+            B_extra = stepwise(B, order)  # Generate all predictors of the next order
+            n_extra = B_extra.shape[0]
+
+            print(f"Fitting interactions of order {order}...")
+
+            to_include = jnp.zeros(n_extra, dtype=bool)
+            for i in range(n_extra):
+                B_new = jnp.vstack([B, B_extra[i, :]])
+                self.set_kernel_spec(self.kernel_base, B_new)
+                fit_new = self.perform_extrapolation_optimization()
+                cv_new = fit_new["cv"]
+
+                if cv_new < cv:
+                    to_include[i] = True
+
+                # Progress bar substitute
+                #cwbar((i + 1) / n_extra)
+
+            if jnp.any(to_include):
+                B_updated = jnp.vstack([B, B_extra[to_include, :]])
+                self.set_kernel_spec(self.kernel_base, B_updated)
+                fit_updated = self.perform_extrapolation_optimization()
+                cv_updated = fit_updated["cv"]
+
+                if cv_updated >= cv:
+                    carry_on = False
+                else:
+                    fit = fit_updated
+                    B = B_updated
+                    cv = cv_updated
+            else:
+                carry_on = False
+
+            #cwbar("done")
+
+        # Final GP fit with optimal parameters
+        x_opt = fit["x"]
+        out = self.perform_extrapolation(x_opt, return_mu_and_var=True)
+
+        return out
+    

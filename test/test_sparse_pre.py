@@ -10,10 +10,8 @@ import jax.numpy as jnp
 
 # Application modules
 from src.sparse_pre import helper_functions
-from src.sparse_pre import MRE
+from src.sparse_pre.MRE import MRE
 from src.sparse_pre.SPRE import SPRE
-from src.sparse_pre import SPRE_stepwise
-from src.sparse_pre import GRE_stepwise
 
 class SPRETestCase(unittest.TestCase):
     '''
@@ -105,10 +103,15 @@ class SPRETestCase(unittest.TestCase):
             [1.0000,    0.9575,    0.8746,    0.8343],
             [1.0000,    0.9649,    0.6102,    0.3999]])
         
+        thres = 0.0001
         result = helper_functions.x2fx(X, A)
-        round_result = jnp.round(result, 4)
-        round_ans = jnp.round(ans, 4)
-        self.assertTrue((round_result == round_ans).all(), f"Failed x2fx! Result is {round_result} not {round_ans}")
+        self.assertTrue((abs(result - ans) < thres).all(), f"Failed x2fx! Result is {result} not {ans}")
+
+        #A = jnp.array([[0, 0], [0, 1], [1, 1], [1, 0]])
+        #ans =   
+        #result = helper_functions.x2fx(X, A)
+        #self.assertTrue((abs(result - ans) < thres).all(), f"Failed x2fx! Result is {result} not {ans}")
+
 
     def test_MRE(self):
 
@@ -127,17 +130,16 @@ class SPRETestCase(unittest.TestCase):
 
         ans = 3.6664
         
-        result = MRE.MRE(A, X, Y)
-        round_result = jnp.round(result, 4)
-        round_ans = jnp.round(ans, 4)
-        self.assertTrue((round_result == round_ans).all(), f"Failed MSE! Result is {round_result} not {round_ans}")
+        result = MRE(A, X, Y)
+        thres = 0.0001
+
+        self.assertTrue((abs(result - ans) < thres).all(), f"Failed MSE! Result is {result} not {ans}")
 
         A = jnp.array([[0, 0]])
         ans = 3.6467
-        result = MRE.MRE(A, X, Y)
-        round_result = jnp.round(result, 4)
-        round_ans = jnp.round(ans, 4)
-        self.assertTrue((round_result == round_ans).all(), f"Failed MSE! Result is {round_result} not {round_ans}")
+        result = MRE(A, X, Y)
+      
+        self.assertTrue((abs(result - ans) < thres).all(), f"Failed MSE! Result is {result} not {ans}")
 
 
     def test_kernels(self):
@@ -154,7 +156,7 @@ class SPRETestCase(unittest.TestCase):
           
         # Test Gaussian
         spre = SPRE("Gaussian", X1.shape[1])
-        result0 = spre.kernel(X1, X2)
+        result = spre.kernel(X1, X2)
 
         ans0 = jnp.array([[0.5126,    0.6903,    0.6964],
                     [0.4024,    0.6594,    0.8096],
@@ -162,9 +164,8 @@ class SPRETestCase(unittest.TestCase):
                     [0.1413,    0.3801,    0.7660],
                     [0.2739,    0.6049,    1.0006]])
         
-        round_result = jnp.round(result0, 4)
-        round_ans = jnp.round(ans0, 4)
-        self.assertTrue((round_result == round_ans).all(), f"Failed kernel Gaussian, default! Result is {round_result} not {round_ans}")
+        thres = 0.0001
+        self.assertTrue((abs(result - ans0) < thres).all(), f"Failed kernel Gaussian, default! Result is {result} not {ans0}")
 
         # Now test with different hyper parameters
         ans1 = jnp.array([
@@ -174,24 +175,18 @@ class SPRETestCase(unittest.TestCase):
                         [0.2649,    0.4722,    0.7110],
                         [0.3900,    0.6194,    0.8310]])
         
-        result1 = spre.kernel(X1, X2, [0.5, 0.5])
+        result = spre.kernel(X1, X2, [0.5, 0.5])
 
-        round_result = jnp.round(result1, 4)
-        round_ans = jnp.round(ans1, 4)
-        self.assertTrue((round_result == round_ans).all(), f"Failed kernel Gaussian, hyperparameters = [0.5, 0.5]! Result is {round_result} not {round_ans}")
+        self.assertTrue((abs(result - ans1) < thres).all(), f"Failed kernel Gaussian, hyperparameters = [0.5, 0.5]! Result is {result} not {ans1}")
 
         # Test GaussianARD
         spre = SPRE("GaussianARD", X1.shape[1])
 
-        result0 = spre.kernel(X1, X2)
-        round_result = jnp.round(result0, 4)
-        round_ans = jnp.round(ans0, 4)
-        self.assertTrue((round_result == round_ans).all(), f"Failed kernel GaussianARD, default! Result is {round_result} not {round_ans}")
+        result = spre.kernel(X1, X2)
+        self.assertTrue((abs(result - ans0) < thres).all(), f"Failed kernel GaussianARD, default! Result is {result} not {ans0}")
 
-        result1 = spre.kernel(X1, X2, [0.5, 0.5, 0.5])
-        round_result = jnp.round(result1, 4)
-        round_ans = jnp.round(ans1, 4)
-        self.assertTrue((round_result == round_ans).all(), f"Failed kernel GaussianARD, hyperparameters = [0.5, 0.5, 0.5]! Result is {round_result} not {round_ans}")
+        result = spre.kernel(X1, X2, [0.5, 0.5, 0.5])
+        self.assertTrue((abs(result - ans1) < thres).all(), f"Failed kernel GaussianARD, hyperparameters = [0.5, 0.5, 0.5]! Result is {result} not {ans1}")
 
         # Test Matern1/2 kernel
         spre = SPRE("Matern1/2", X1.shape[1])
@@ -210,15 +205,11 @@ class SPRETestCase(unittest.TestCase):
                 [0.3112,    0.4159,    0.5558],
                 [0.3742,    0.4970,    0.6539]])
 
-        result0 = spre.kernel(X1, X2)
-        round_result = jnp.round(result0, 4)
-        round_ans = jnp.round(ans0, 4)
-        self.assertTrue((round_result == round_ans).all(), f"Failed kernel Matern1/2, default! Result is {round_result} not {round_ans}")
+        result = spre.kernel(X1, X2)      
+        self.assertTrue((abs(result - ans0) < thres).all(), f"Failed kernel Matern1/2, default! Result is {result} not {ans0}")
 
-        result1 = spre.kernel(X1, X2, [0.5, 0.5])
-        round_result = jnp.round(result1, 4)
-        round_ans = jnp.round(ans1, 4)
-        self.assertTrue((round_result == round_ans).all(), f"Failed kernel Matern1/2, hyperparameters = [0.5, 0.5]! Result is {round_result} not {round_ans}")
+        result = spre.kernel(X1, X2, [0.5, 0.5])       
+        self.assertTrue((abs(result - ans1) < thres).all(), f"Failed kernel Matern1/2, hyperparameters = [0.5, 0.5]! Result is {result} not {ans1}")
 
         # Test Matern3/2 kernel
         spre = SPRE("Matern3/2", X1.shape[1])
@@ -237,15 +228,11 @@ class SPRETestCase(unittest.TestCase):
                 [0.4017,    0.5519,    0.7268],
                 [0.4935,    0.6576,    0.8256]])
 
-        result0 = spre.kernel(X1, X2)
-        round_result = jnp.round(result0, 4)
-        round_ans = jnp.round(ans0, 4)
-        self.assertTrue((round_result == round_ans).all(), f"Failed kernel Matern3/2, default! Result is {round_result} not {round_ans}")
+        result = spre.kernel(X1, X2)      
+        self.assertTrue((abs(result - ans0) < thres).all(), f"Failed kernel Matern3/2, default! Result is {result} not {ans0}")
 
-        result1 = spre.kernel(X1, X2, [0.5, 0.5])
-        round_result = jnp.round(result1, 4)
-        round_ans = jnp.round(ans1, 4)
-        self.assertTrue((round_result == round_ans).all(), f"Failed kernel Matern3/2, hyperparameters = [0.5, 0.5]! Result is {round_result} not {round_ans}")
+        result = spre.kernel(X1, X2, [0.5, 0.5]) 
+        self.assertTrue((abs(result - ans1) < thres).all(), f"Failed kernel Matern3/2, hyperparameters = [0.5, 0.5]! Result is {result} not {ans1}")
 
         # Test white kernel
         spre = SPRE("white", X1.shape[1])
@@ -271,15 +258,11 @@ class SPRETestCase(unittest.TestCase):
                 [0,    0.9741,         0]])
         
 
-        result0 = spre.kernel(X1, X2)
-        round_result = jnp.round(result0, 4)
-        round_ans = jnp.round(ans0, 4)
-        self.assertTrue((round_result == round_ans).all(), f"Failed kernel white, default! Result is {round_result} not {round_ans}")
+        result = spre.kernel(X1, X2)       
+        self.assertTrue((abs(result - ans0) < thres).all(), f"Failed kernel white, default! Result is {result} not {ans0}")
 
-        result1 = spre.kernel(X1, X2, jnp.array([0.5]))
-        round_result = jnp.round(result1, 4)
-        round_ans = jnp.round(ans1, 4)
-        self.assertTrue((round_result == round_ans).all(), f"Failed kernel white, hyperparameters = [0.5]! Result is {round_result} not {round_ans}")
+        result = spre.kernel(X1, X2, jnp.array([0.5]))       
+        self.assertTrue((abs(result - ans1) < thres).all(), f"Failed kernel white, hyperparameters = [0.5]! Result is {result} not {ans1}")
     
         # Test composite kernel
         B = jnp.zeros((1, 2))        
@@ -309,19 +292,15 @@ class SPRETestCase(unittest.TestCase):
                 [0.2581,    0.4599,    0.6926],
                 [0.3799,    0.6033,    0.8095]])
 
-        result0 = spre.kernel(X1, X2)
-        round_result = jnp.round(result0, 4)
-        round_ans = jnp.round(ans0, 4)
-        self.assertTrue((round_result == round_ans).all(), f"Failed kernel composite_kernel, default! Result is {round_result} not {round_ans}")
+        result = spre.kernel(X1, X2)      
+        self.assertTrue((abs(result - ans0) < thres).all(), f"Failed kernel composite_kernel, default! Result is {result} not {ans0}")
 
-        result1 = spre.kernel(X1, X2, jnp.array([0.5, 0.5, 0.5]))
-        round_result = jnp.round(result1, 4)
-        round_ans = jnp.round(ans1, 4)
-        self.assertTrue((round_result == round_ans).all(), f"Failed kernel composite_kernel, hyperparameters = [0.5, 0.5, 0.5]! Result is\n {round_result} not\n {round_ans}")
+        result = spre.kernel(X1, X2, jnp.array([0.5, 0.5, 0.5]))
+        self.assertTrue((abs(result - ans1) < thres).all(), f"Failed kernel composite_kernel, hyperparameters = [0.5, 0.5, 0.5]! Result is\n {result} not\n {ans1}")
     
     def test_SPRE(self):
-
-        A = jnp.array([[0, 0], [0, 1], [1, 1], [2, 0]])
+  
+        A = jnp.array([[0, 0], [0, 1], [1, 1], [1, 0]])    
         X = jnp.array([[0.8147,    0.0975],
                         [0.9058,    0.2785],
                         [0.1270,    0.5469],
@@ -344,7 +323,36 @@ class SPRETestCase(unittest.TestCase):
         spre.set_normalised_data(X, Y)
 
         result = spre.perform_extrapolation(x, return_mu_and_var=True)
+        print(result)
+
+        ans = { "mu": 2.9720,
+                "var": 1.8634,
+                "mu_GP": "@(Xs)nY*mu_GP(A,Xn,Yn,Xs./nX,x)",
+                "cov_GP": "@(Xs)nY^2*cov_GP(A,Xn,Xs./nX,x)",
+                "mu_cv": jnp.array([3.8350, 4.0527, 3.6050, 32.5128, 4.4413]),
+                "var_cv": jnp.array([0.1134, 0.0910, 1.9240, 8.6131e+05, 0.8833]),
+                "cv": -9.5990,
+                "cv_grad": jnp.array([-1.5961, 4.8491])
+            }
+      
+        thres = 0.0001
+        self.assertTrue((abs(result["mu"][0] - ans["mu"]) < thres).all(), f"Failed SPRE, mu! Result is {result['mu'][0]} not {ans['mu']}")
+        self.assertTrue((abs(result["var"][0][0] - ans["var"]) < thres).all(), f"Failed SPRE, var! Result is {result['var'][0][0]} not {ans['var']}")
+        self.assertTrue((abs(result["mu_cv"].flatten() - ans["mu_cv"]) < thres).all(), f"Failed SPRE, mu_cv! Result is {result['mu_cv']} not {ans['mu_cv']}")
+        result_var_cv = result['var_cv']
+        ans_var_cv = ans['var_cv']
+        self.assertTrue((abs(result_var_cv - ans_var_cv) < thres).all(), f"Failed SPRE, var_cv! Result is {result_var_cv} not {ans_var_cv}")
+        self.assertTrue((abs(result['cv'] - ans['cv']) < thres).all(), f"Failed SPRE, cv! Result is {result['cv']} not {ans['cv']}")
+        thres = 0.001
+        self.assertTrue((abs(result['cv_grad'] - ans['cv_grad']) < thres).all(), f"Failed SPRE, cv_grad! Result is {result['cv_grad']} not {ans['cv_grad']} -- differences: {result['cv_grad'] - ans['cv_grad']}")
+
+
+        # Test 2
+        A = jnp.array([[0, 0], [0, 1], [1, 1], [2, 0]])
+        spre.set_sparse_basis(A)
        
+        result = spre.perform_extrapolation(x, return_mu_and_var=True)
+        
         ans = { "mu": 3.1208,
                 "var": 1.7652,
                 "mu_GP": "@(Xs)nY*mu_GP(A,Xn,Yn,Xs./nX,x)",
@@ -355,16 +363,18 @@ class SPRETestCase(unittest.TestCase):
                 "cv_grad": jnp.array([-1.4598, 3.7235])
             }
       
-        self.assertTrue((round(result["mu"][0], 4) == round(ans["mu"], 4)).all(), f"Failed SPRE, mu! Result is {result['mu'][0]} not {ans['mu']}")
-        self.assertTrue((jnp.round(result["var"][0][0], 4) == jnp.round(ans["var"], 4)).all(), f"Failed SPRE, var! Result is {result['var'][0][0]} not {ans['var']}")
-        self.assertTrue((jnp.round(result["mu_cv"].flatten(), 4) == jnp.round(ans["mu_cv"], 4)).all(), f"Failed SPRE, mu_cv! Result is {result['mu_cv']} not {ans['mu_cv']}")
-        result_var_cv = jnp.round(result['var_cv'], 3)
-        ans_var_cv = jnp.round(ans['var_cv'], 3)
-        self.assertTrue((result_var_cv == ans_var_cv).all(), f"Failed SPRE, var_cv! Result is {result_var_cv} not {ans_var_cv}")
-        self.assertTrue((round(result['cv'], 4) == round(ans['cv'], 4)).all(), f"Failed SPRE, cv! Result is {result['cv']} not {ans['cv']}")
-        self.assertTrue((jnp.round(result['cv_grad'], 2) == jnp.round(ans['cv_grad'], 2)).all(), f"Failed SPRE, cv_grad! Result is {result['cv_grad']} not {ans['cv_grad']}")
+        thres = 0.0001
+        self.assertTrue((abs(result["mu"][0] - ans["mu"]) < thres).all(), f"Failed SPRE, mu! Result is {result['mu'][0]} not {ans['mu']}")
+        self.assertTrue((abs(result["var"][0][0] - ans["var"]) < thres).all(), f"Failed SPRE, var! Result is {result['var'][0][0]} not {ans['var']}")
+        self.assertTrue((abs(result["mu_cv"].flatten() - ans["mu_cv"]) < thres).all(), f"Failed SPRE, mu_cv! Result is {result['mu_cv']} not {ans['mu_cv']}")
+        result_var_cv = result['var_cv']
+        ans_var_cv = ans['var_cv']
+        self.assertTrue((abs(result_var_cv - ans_var_cv) < thres).all(), f"Failed SPRE, var_cv! Result is {result_var_cv} not {ans_var_cv}")
+        self.assertTrue((abs(result['cv'] - ans['cv']) < thres).all(), f"Failed SPRE, cv! Result is {result['cv']} not {ans['cv']}")
+        thres = 0.001
+        self.assertTrue((abs(result['cv_grad'] - ans['cv_grad']) < thres).all(), f"Failed SPRE, cv_grad! Result is {result['cv_grad']} not {ans['cv_grad']} -- differences: {result['cv_grad'] - ans['cv_grad']}")
 
-        # Test 2
+        # Test 3
         A = jnp.array([[0, 0]])
         spre.set_sparse_basis(A)
         result = spre.perform_extrapolation(x, return_mu_and_var=True)
@@ -378,8 +388,10 @@ class SPRETestCase(unittest.TestCase):
                 "cv_grad": jnp.array([-1.4592, 4.4570])
             }
         
-        self.assertTrue((round(result['cv'], 3) == round(ans['cv'], 3)).all(), f"Failed SPRE (test 2), cv! Result is {round(result['cv'], 3)} not {ans['cv']}")
-        self.assertTrue((jnp.round(result['cv_grad'], 2) == jnp.round(ans['cv_grad'], 2)).all(), f"Failed SPRE (test 2), cv_grad! Result is {result['cv_grad']} not {ans['cv_grad']}")
+        thres = 0.0001
+        self.assertTrue((abs(result['cv'] - ans['cv']) < thres).all(), f"Failed SPRE (test 3), cv! Result is {round(result['cv'], 3)} not {ans['cv']}")
+        #thres = 0.000001
+        self.assertTrue((abs(result['cv_grad'] - ans['cv_grad']) < thres).all(), f"Failed SPRE (test 3), cv_grad! Result is {result['cv_grad']} not {ans['cv_grad']} -- differences: {result['cv_grad'] - ans['cv_grad']}")
 
     def test_SPRE_opt(self):
         
@@ -436,8 +448,6 @@ class SPRETestCase(unittest.TestCase):
 
     def test_SPRE_stepwise(self):
 
-        
-
         #A = jnp.array([[0, 0], [0, 1], [1, 1], [2, 0]])
         X = jnp.array([[0.8147,    0.0975],
                         [0.9058,    0.2785],
@@ -490,8 +500,14 @@ class SPRETestCase(unittest.TestCase):
                         4.6093,
                         4.4130]) 
     
-        result = GRE_stepwise.GRE_stepwise(X, Y, "Gaussian")
-        
+        # Set up SPRE object
+        spre = SPRE("Gaussian", X.shape[1], jnp.zeros((1, X.shape[1]), dtype=int))
+
+        # Set data
+        spre.set_normalised_data(X, Y)
+
+        result = spre.stepwise_selection()
+ 
         ans = { "mu": 3.0208,
                 "var": 5.0898e-04,
                 "mu_GP": "@(Xs)nY*mu_GP(A,Xn,Yn,Xs./nX,x)",
@@ -502,7 +518,55 @@ class SPRETestCase(unittest.TestCase):
                 "cv_grad": jnp.array([0.0783, 0.0804, 0.0281])
             }
         
-      
+        print(result)
         to_show = ['mu', 'var', 'mu_cv', 'var_cv', 'cv', 'cv_grad']
         for field in to_show:
             print(f"{field}\n Matlab = {ans[field]}\n Python = {result[field]}\n")
+
+    def test_GRE(self):
+
+        A = jnp.array([[0, 0], [0, 1], [1, 1], [2, 0]])
+        X = jnp.array([[0.8147,    0.0975],
+                        [0.9058,    0.2785],
+                        [0.1270,    0.5469],
+                        [0.9134,    0.9575],
+                        [0.6324,    0.9649]])
+
+        Y = jnp.array([3.8249,
+                        4.0618,
+                        3.6467,
+                        4.6093,
+                        4.4130]) 
+
+        x = [0.9, 0.5, 0.5]
+        B = jnp.array([[0.55, 0.66]])
+       
+        # Set up SPRE object
+        spre = SPRE("Gaussian", X.shape[1], B)
+
+        # Set data
+        spre.set_normalised_data(X, Y)
+        spre.set_sparse_basis(A)
+
+        result = spre.perform_extrapolation(x, return_mu_and_var=True)
+
+        ans = { "mu": 3.2575,
+                "var": 2.1722,
+                "mu_GP": "@(Xs)nY*mu_GP(A,Xn,Yn,Xs./nX,x)",
+                "cov_GP": "@(Xs)nY^2*cov_GP(A,Xn,Xs./nX,x)",
+                "mu_cv": jnp.array([3.5501, 4.5639, 3.8842, 4.8592, 4.2607]),
+                "var_cv": jnp.array([0.5933, 1.9808, 0.4433, 0.4906, 0.1823]),
+                "cv": -3.5704,
+                "cv_grad": jnp.array([-1.2498, -1.3942, 3.2989])
+            }
+      
+        thres = 0.001
+        self.assertTrue((abs(result["mu"][0] - ans["mu"]) < thres).all(), f"Failed SPRE, mu! Result is {result['mu'][0]} not {ans['mu']}")
+        self.assertTrue((abs(result["var"][0][0] - ans["var"]) < thres).all(), f"Failed SPRE, var! Result is {result['var'][0][0]} not {ans['var']}")
+        self.assertTrue((abs(result["mu_cv"].flatten() - ans["mu_cv"]) < thres).all(), f"Failed SPRE, mu_cv! Result is {result['mu_cv']} not {ans['mu_cv']}")
+        result_var_cv = result['var_cv']
+        ans_var_cv = ans['var_cv']
+        self.assertTrue((abs(result_var_cv - ans_var_cv) < thres).all(), f"Failed SPRE, var_cv! Result is {result_var_cv} not {ans_var_cv}")
+        self.assertTrue((abs(result['cv'] - ans['cv']) < thres).all(), f"Failed SPRE, cv! Result is {result['cv']} not {ans['cv']}")
+        thres = 0.01
+        self.assertTrue((abs(result['cv_grad'] - ans['cv_grad']) < thres).all(), f"Failed SPRE, cv_grad! Result is {result['cv_grad']} not {ans['cv_grad']}")
