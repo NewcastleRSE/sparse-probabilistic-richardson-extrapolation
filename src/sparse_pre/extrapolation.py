@@ -4,8 +4,7 @@ from jax import grad, debug
 import matplotlib.pyplot as plt
 
 # Application modules
-from SPRE_stepwise import SPRE_stepwise
-from GRE_stepwise import GRE_stepwise
+from SPRE import SPRE
 
 def extrapolation(X, Y, options=None):
     """
@@ -38,13 +37,24 @@ def extrapolation(X, Y, options=None):
     k_name = options.get("k_name", "white")
     plot = options.get("plot", True)
 
-    # Select extrapolation method
-    if name == "MRE":
-        raise NotImplementedError("MRE extrapolation is not implemented yet.")
+    # Set up SPRE object
+    if name == "SPRE":
+        spre = SPRE(k_name, X.shape[1])
     elif name == "GRE":
-        out = GRE_stepwise(X, Y, k_name)
-    elif name == "SPRE":
-        out = SPRE_stepwise(X, Y, k_name)
+        spre = SPRE(k_name, X.shape[1], jnp.zeros((1, X.shape[1]), dtype=int))
+    elif name == "MRE":
+        raise NotImplementedError("MRE extrapolation is not implemented yet.")
+    else:
+        raise ValueError(f"Unknown extrapolation method: {name}")
+    
+    # Set data
+    spre.set_normalised_data(X, Y)
+
+    # Select extrapolation method
+    if name == "SPRE" or name == "GRE":
+        out = spre.stepwise_selection()
+    elif name == "MRE":
+        raise NotImplementedError("MRE extrapolation is not implemented yet.")
     else:
         raise ValueError(f"Unknown extrapolation method: {name}")
 

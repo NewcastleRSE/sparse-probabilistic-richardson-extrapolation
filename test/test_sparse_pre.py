@@ -335,7 +335,7 @@ class SPRETestCase(unittest.TestCase):
                 "cv_grad": jnp.array([-1.5961, 4.8491])
             }
       
-        thres = 1e8 #0.0001
+        thres = 0.0001
         self.assertTrue((abs(result["mu"][0] - ans["mu"]) < thres).all(), f"Failed SPRE, mu! Result is {result['mu'][0]} not {ans['mu']}")
         self.assertTrue((abs(result["var"][0][0] - ans["var"]) < thres).all(), f"Failed SPRE, var! Result is {result['var'][0][0]} not {ans['var']}")
         self.assertTrue((abs(result["mu_cv"].flatten() - ans["mu_cv"]) < thres).all(), f"Failed SPRE, mu_cv! Result is {result['mu_cv']} not {ans['mu_cv']}")
@@ -343,7 +343,7 @@ class SPRETestCase(unittest.TestCase):
         ans_var_cv = ans['var_cv']
         self.assertTrue((abs(result_var_cv - ans_var_cv) < thres).all(), f"Failed SPRE, var_cv! Result is {result_var_cv} not {ans_var_cv}")
         self.assertTrue((abs(result['cv'] - ans['cv']) < thres).all(), f"Failed SPRE, cv! Result is {result['cv']} not {ans['cv']}")
-        thres = 0.1
+        thres = 0.0001
         self.assertTrue((abs(result['cv_grad'] - ans['cv_grad']) < thres).all(), f"Failed SPRE, cv_grad! Result is {result['cv_grad']} not {ans['cv_grad']} -- differences: {result['cv_grad'] - ans['cv_grad']}")
 
 
@@ -419,17 +419,15 @@ class SPRETestCase(unittest.TestCase):
         spre.set_sparse_basis(A)
         spre.set_normalised_data(X, Y)
 
-        #result = spre.perform_extrapolation_optimization()
+        result = spre.perform_extrapolation_optimization()
 
-        #result = SPRE_opt.SPRE_opt(A, X, Y, "Gaussian")
-
-        #print(result)
+        print(result)
 
         #self.assertTrue((jnp.round(result['cv'], 1) == jnp.round(ans['cv'], 1)).all(), f"Failed SPRE_opt, cv! Result is {result['cv']} not {ans['cv']}")
         #self.assertTrue((jnp.round(result['x'], 2) == jnp.round(ans['x'], 2)).all(), f"Failed SPRE_opt, x! Result is {result['x']} not {ans['x']}")
-        #to_show = ['x', 'cv']
-        #for field in to_show:
-        #    print(f"{field}\n Matlab = {ans[field]}\n Python = {result[field]}\n")
+        to_show = ['x', 'cv']
+        for field in to_show:
+            print(f"{field}\n Matlab = {ans[field]}\n Python = {result[field]}\n")
 
         # Test 2  
         A = jnp.array([[0, 0]])

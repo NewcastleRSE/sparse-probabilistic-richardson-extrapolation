@@ -183,89 +183,8 @@ class SPRE:
                 self.kernel_spec = "GRE"
                 return ans 
 
-    # Basis functions
-    # A = m x d
-    # X = n x d
-    # Xs = n_test x d
-    def V(self, X):
-        return x2fx(X, self.sparse_basis)  # n x m
-
-    def v(self, Xs):
-        return x2fx(Xs, self.sparse_basis).T  # m x n_test
-
-    # Residual term
-    # A = m x d
-    # X = n_train x d
-    # Xs = n_test x d
-    # x = p x 1
-    def residual(self, X, Xs, x):
-        K_inv = jnp.linalg.inv(self.kernel(X, X, x))
-        return self.v(Xs) - self.V(X).T @ K_inv @ self.kernel(X, Xs, x)
-        
-    # Coefficient estimator
-    # A = m x d
-    # X = n_train x d
-    # Y = n_train x 1
-    # x = p x 1
-    def beta(self, X, Y, x):
-        K_inv = jnp.linalg.inv(self.kernel(X, X, x))
-        VA = self.V(X)
-        return jnp.linalg.pinv(VA.T @ K_inv @ VA, hermitian = True) @ (VA.T @ K_inv @ Y)
-
-
-    def mu_GP(self, X, Y, Xs, x):
-        #function R^d -> R, predictive mean for fitted GP
-        K_inv = jnp.linalg.inv(self.kernel(X, X, x))
-
-        ############
-        pt1 = self.kernel(Xs, X, x) @ K_inv @ Y
-        pt2 = self.residual(X, Xs, x).T @ self.beta(X, Y, x)
-        pt21 = self.residual(X, Xs, x).T
-        pt22 = self.beta(X, Y, x)
-        print(f"pt1 = {pt1}")
-        print(f"pt2 = {pt2}")
-        print(f"pt21 = {pt21}")
-        print(f"pt22 = {pt22}\n")
-        K_inv = jnp.linalg.inv(self.kernel(X, X, x))
-        VA = self.V(X)
-        #inv( V(A,X)' * inv(k(X,X,x)) * V(A,X) );
-        
-        pt30 = VA.T @ K_inv @ VA
-        #pt30 = jnp.round(pt30,4)
-        print(f"pt30 = {pt30}")
-        pt3 = jnp.linalg.inv(pt30)
-        pt3_ps = jnp.linalg.pinv(pt30, hermitian = True)#, rcond = 1e-16)
-        lin_check = jnp.linalg.cond(pt30)
-        print(f"Cond = {lin_check}")
-        #pt3 = jnp.linalg.inv(pt30)        
-        #pt3 = jnp.linalg.solve(pt30, jnp.identity(pt30.shape[0]))
-        pt4 = (VA.T @ K_inv @ Y)
-        print(f"pt3 = {pt3}")
-        print(f"pt3_ps = {pt3_ps}")
-        pt3Check = pt30 @ pt3
-        print(f"pt3Check = {pt3Check}")
-        pt3Check_ps = pt30 @ pt3_ps
-        print(f"pt3Check_ps = {pt3Check_ps}")
-        print(f"pt4 = {pt4}\n")
-        pt31 = VA
-        pt32 = K_inv
-        print(f"pt31 = {pt31}")
-        print(f"pt32 = {pt32}\n")
-        #################
-
-        return self.kernel(Xs, X, x) @ K_inv @ Y + self.residual(X, Xs, x).T @ self.beta(X, Y, x)
-  
-    def cov_GP(self, X, Xs, x):
-        # function R^d x R^d -> R, predictive covariance for fitted GP
-        K_inv = jnp.linalg.inv(self.kernel(X, X, x))
-        VA = self.V(X)
-        residual_X_Xs = self.residual(X, Xs, x)
-        return (self.kernel(Xs, Xs, x)
-                - self.kernel(Xs, X, x) @ K_inv @ self.kernel(X, Xs, x)
-                + residual_X_Xs.T @ jnp.linalg.inv(VA.T @ K_inv @ VA) @ residual_X_Xs)
-
     # Cross-validation local loss (log-likelihood of test data)
-    def cv_local_loss(self, x, row_num, return_info = False):
+    def cv_local_loss(self, x, row_num, return_mu_cov = False):
         # Cross-validation local loss (log-likelihood of test data)
         # A = m x d
         # X = n_train x d
@@ -279,15 +198,27 @@ class SPRE:
         Xs = self.X_normalised[row_num:(row_num+1), :]
         Ys = self.Y_normalised[row_num:(row_num+1)]
 
-        # Calculate some bits firstly
-        
-        K_inv = jnp.linalg.inv(self.kernel(X, X, x, cache_key = f"XX{row_num}"))
-        kernel_X_Xs = self.kernel(X, Xs, x, cache_key = f"XXs{row_num}")
+        return self.cv_loss_calculation(X, Y, Xs, Ys, x, str(row_num), return_mu_cov)
+
+    # Loss (log-likelihood of test data)
+    def cv_loss_calculation(self, X, Y, Xs, Ys, x, row_num_str = "_", return_mu_cov = False):
+        # Cross-validation local loss (log-likelihood of test data)
+        # A = m x d
+        # X = n_train x d
+        # Y = n_train x 1
+        # Xs = n_test x d
+        # Ys = n_test x 1
+        # x = p x 1
+    
+        # Calculate some bits firstly    
+        K_inv = jnp.linalg.inv(self.kernel(X, X, x, cache_key = f"XX{row_num_str}"))
+        kernel_Xs_Xs = self.kernel(Xs, Xs, x, cache_key = f"XsXs{row_num_str}")
+        kernel_X_Xs = self.kernel(X, Xs, x, cache_key = f"XXs{row_num_str}")
         
         if self.kernel_spec != "GRE":            
             kernel_Xs_X = kernel_X_Xs.T 
         else:
-            kernel_Xs_X = self.kernel(Xs, X, x, cache_key = f"XsX{row_num}")
+            kernel_Xs_X = self.kernel(Xs, X, x, cache_key = f"XsX{row_num_str}")
 
       
         # Basis functions
@@ -312,7 +243,7 @@ class SPRE:
         # x = p x 1  
         #inv_VA_T_at_K_inv_at_VA = jnp.linalg.inv(VA_T_at_K_inv @ VA)
         inv_VA_T_at_K_inv_at_VA = jnp.linalg.pinv(VA_T_at_K_inv @ VA, hermitian = True)
-        cov_val = (self.kernel(Xs, Xs, x, cache_key = f"XsXs{row_num}")
+        cov_val = (kernel_Xs_Xs
                 - kernel_Xs_X @ K_inv @ kernel_X_Xs
                 + residual_X_Xs.T @ inv_VA_T_at_K_inv_at_VA @ residual_X_Xs)
         
@@ -330,6 +261,10 @@ class SPRE:
         # Xs = n_test x d
         # x = p x 1
         mu_val = kernel_Xs_X @ K_inv @ Y + residual_X_Xs.T @ beta_X_Y
+
+        # Return mu and cov instead
+        if return_mu_cov:
+            return mu_val, cov_val
 
         diff = Ys - mu_val
         inv_cov = jnp.linalg.inv(cov_val)
@@ -415,26 +350,24 @@ class SPRE:
             "cv_grad": jnp.array(gradient)
         }
 
-        debug.print("cv = {}, grad = {}, x = {}", cv, gradient, x)
+        #debug.print("cv = {}, grad = {}, x = {}", cv, gradient, x)
 
         # Add extra ouput if requested
         if return_mu_and_var:
             # LOOCV predictions
-            mu_cv = jnp.array([
-                self.nY * self.mu_GP(remove_row(self.X_normalised, i), remove_row(self.Y_normalised, i), self.X_normalised[i:i+1, :], x)
-                for i in range(self.X_normalised.shape[0])
-            ])
-
-            var_cv = jnp.array([
-                self.nY**2 * self.cov_GP(remove_row(self.X_normalised, i), self.X_normalised[i:i+1, :], x)
-                for i in range(self.X_normalised.shape[0])
-            ]).flatten()
-
+            mu_cv = jnp.zeros(self.X_normalised.shape[0])
+            var_cv = jnp.zeros(self.X_normalised.shape[0])
+            for i in range(self.X_normalised.shape[0]):               
+                mu_val, cov_val = self.cv_local_loss(x, i, return_mu_cov = True)               
+                mu_cv = mu_cv.at[i].set((self.nY * mu_val[0]))              
+                var_cv = var_cv.at[i].set((self.nY**2 * cov_val[0][0]))
+              
             # Output
+            mu_value, cov_value = self.cv_loss_calculation(self.X_normalised, self.Y_normalised, jnp.zeros((1, self.dimension)), jnp.zeros((1, self.dimension)), x, return_mu_cov = True)
             out0 = out
             out = {
-                "mu": self.nY * self.mu_GP(self.X_normalised, self.Y_normalised, jnp.zeros((1, self.dimension)), x),
-                "var": self.nY**2 * self.cov_GP(self.X_normalised, jnp.zeros((1, self.dimension)), x),           
+                "mu": self.nY * mu_value,
+                "var": self.nY**2 * cov_value,           
                 "mu_cv": mu_cv,
                 "var_cv": var_cv            
             }
