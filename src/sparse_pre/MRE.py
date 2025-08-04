@@ -1,5 +1,12 @@
+##############################################################################
+# Multivariate Richardson Extrapolation (MRE)
+# 
+# Based on the methods and original MatLab code by Chris Oates.
+#
+# Richard Howey, July 2025 - April 2026
+##############################################################################
+
 # Python modules
-#import numpy as np
 import jax.numpy as jnp
 from sklearn.neighbors import NearestNeighbors
 

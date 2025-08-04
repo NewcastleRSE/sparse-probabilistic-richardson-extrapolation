@@ -1,5 +1,13 @@
+##############################################################################
+# Sparse Probabilistic Richardson Extrapolation (SPRE)
+# Helper functions use by the SPRE methods.
+# 
+# Based on the methods and original MatLab code by Chris Oates.
+#
+# Richard Howey, July 2025 - April 2026
+##############################################################################
+
 # Python modules
-# import numpy as np
 import jax.numpy as jnp
 
 def cellsum(arrays : list) -> jnp.array:

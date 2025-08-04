@@ -1,3 +1,13 @@
+##############################################################################
+# Sparse Probabilistic Richardson Extrapolation (SPRE)
+# Function to perform SPRE, Multivariate Richardson Extrapolation (MRE) or
+# Gauss-Richardson Extrapolation (GRE) with plotting option.
+# 
+# Based on the methods and original MatLab code by Chris Oates.
+#
+# Richard Howey, July 2025 - April 2026
+##############################################################################
+
 # Python modules
 import jax.numpy as jnp
 from jax import grad, debug
@@ -6,7 +16,7 @@ import matplotlib.pyplot as plt
 # Application modules
 from SPRE import SPRE
 
-def extrapolation(X, Y, options=None):
+def extrapolation(X, Y, options = None):
     """
     Extrapolation to estimate f(0) from input-output training data (X, Y).
 

@@ -1,3 +1,14 @@
+##############################################################################
+# Sparse Probabilistic Richardson Extrapolation (SPRE)
+# Example script to run SPRE using the extrapolation function.
+# Run using:
+#            python test.py
+#
+# Based on the methods and original MatLab code by Chris Oates.
+#
+# Richard Howey, July 2025 - April 2026
+##############################################################################
+
 # Python modules
 import jax.numpy as jnp
 from jax import random
