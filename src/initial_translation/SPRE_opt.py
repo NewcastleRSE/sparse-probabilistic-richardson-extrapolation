@@ -7,7 +7,7 @@ from jaxopt import GradientDescent
 
 # Application modules
 from kernel import kernel, get_default_args
-from SPRE import SPRE
+from initial_translation.SPRE_fn import SPRE
 
 
 def SPRE_opt(A, X, Y, str_):

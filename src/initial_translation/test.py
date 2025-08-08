@@ -3,7 +3,7 @@ import jax.numpy as jnp
 from jax import random
 
 # Application modules
-from extrapolation import extrapolation
+from initial_translation.extrapolation_fn import extrapolation
 
 # Set random seed
 key = random.key(2)

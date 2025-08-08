@@ -6,7 +6,7 @@ from tqdm import tqdm  # For progress bars
 from kernel import kernel
 from helper_functions import stepwise
 from SPRE_opt import SPRE_opt
-from SPRE import SPRE
+from initial_translation.SPRE_fn import SPRE
 
 def GRE_stepwise(X, Y, k_name):
     """

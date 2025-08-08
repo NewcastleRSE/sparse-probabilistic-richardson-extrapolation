@@ -14,7 +14,7 @@ from jax import grad, debug
 import matplotlib.pyplot as plt
 
 # Application modules
-from SPRE import SPRE
+from sparse_pre.SPRE import SPRE
 
 def extrapolation(X, Y, options = None):
     """
@@ -30,7 +30,7 @@ def extrapolation(X, Y, options = None):
                 - "name"   : str, one of {"MRE", "GRE", "SPRE"} (default: "SPRE")
                 - "k_name" : str, one of {"Gaussian", "GaussianARD", "Matern1/2", "Matern3/2", "white"} (default: "white")
                 - "plot"   : bool, whether to plot LOOCV results (default: True)
-
+       
     Returns:
         out : dict
             A dictionary containing:

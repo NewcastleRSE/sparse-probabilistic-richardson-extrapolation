@@ -14,7 +14,7 @@ import jax.numpy as jnp
 from jax import random
 
 # Application modules
-from extrapolation import extrapolation
+from sparse_pre.extrapolation import extrapolation
 
 # Set random seed
 key = random.key(2)

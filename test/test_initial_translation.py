@@ -12,8 +12,8 @@ from jax.test_util import check_grads
 
 # Application modules
 from src.initial_translation import helper_functions
-from src.initial_translation import MRE
-from src.initial_translation import SPRE
+from initial_translation import MRE_fn
+from initial_translation import SPRE_fn
 from src.initial_translation import SPRE_opt
 from src.initial_translation import SPRE_stepwise
 from src.initial_translation import GRE_stepwise
@@ -131,14 +131,14 @@ class InitialTranslationTestCase(unittest.TestCase):
 
         ans = 3.6664
         
-        result = MRE.MRE(A, X, Y)
+        result = MRE_fn.MRE(A, X, Y)
         round_result = jnp.round(result, 4)
         round_ans = jnp.round(ans, 4)
         self.assertTrue((round_result == round_ans).all(), f"Failed MSE! Result is {round_result} not {round_ans}")
 
         A = jnp.array([[0, 0]])
         ans = 3.6467
-        result = MRE.MRE(A, X, Y)
+        result = MRE_fn.MRE(A, X, Y)
         round_result = jnp.round(result, 4)
         round_ans = jnp.round(ans, 4)
         self.assertTrue((round_result == round_ans).all(), f"Failed MSE! Result is {round_result} not {round_ans}")
@@ -340,7 +340,7 @@ class InitialTranslationTestCase(unittest.TestCase):
                         4.4130]) 
 
         x = [0.5, 0.5]
-        result = SPRE.SPRE(A, X, Y, x, "Gaussian")
+        result = SPRE_fn.SPRE(A, X, Y, x, "Gaussian")
 
         ans = { "mu": 3.1208,
                 "var": 1.7652,
@@ -363,7 +363,7 @@ class InitialTranslationTestCase(unittest.TestCase):
 
         # Test 2
         A = jnp.array([[0, 0]])
-        result = SPRE.SPRE(A, X, Y, x, "Gaussian")
+        result = SPRE_fn.SPRE(A, X, Y, x, "Gaussian")
         ans = { "mu": 3.5814,
                 "var": 0.4423,
                 "mu_GP": "@(Xs)nY*mu_GP(A,Xn,Yn,Xs./nX,x)",
@@ -470,7 +470,7 @@ class InitialTranslationTestCase(unittest.TestCase):
 
         x = [0.9, 0.5, 0.5]
         B = jnp.array([[0.55, 0.66]])
-        result = SPRE.SPRE(A, X, Y, x, (B, "Gaussian"))
+        result = SPRE_fn.SPRE(A, X, Y, x, (B, "Gaussian"))
 
         ans = { "mu": 3.2575,
                 "var": 2.1722,
