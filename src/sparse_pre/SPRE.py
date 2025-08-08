@@ -16,7 +16,7 @@ from sklearn.neighbors import NearestNeighbors
 import numpy as np
 
 # Application modules
-from helper_functions import x2fx, softplus, cellsum, white, remove_row, stepwise
+from sparse_pre.helper_functions import x2fx, softplus, cellsum, white, remove_row, stepwise
 
 class SPRE:
     """

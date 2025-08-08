@@ -11,7 +11,7 @@ import jax.numpy as jnp
 from sklearn.neighbors import NearestNeighbors
 
 # Application modules
-from helper_functions import x2fx
+from sparse_pre.helper_functions import x2fx
 
 def MRE(A, X, Y):
     """
