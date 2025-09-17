@@ -17,8 +17,7 @@ def sir_model(t, y, beta, gamma, N):
     dRdt = gamma * I
     return [dSdt, dIdt, dRdt]
 
-def run_sir_model(diff_tol = 1e-8, integrate_tol = 1e-6, do_plot = False):
-
+def run_sir_model(diff_tol = 1e-8, integrate_tol = 1e-8, do_plot = False):
 
     # -----------------------------
     # Parameters
@@ -32,8 +31,11 @@ def run_sir_model(diff_tol = 1e-8, integrate_tol = 1e-6, do_plot = False):
     R0 = 0
     y0 = [S0, I0, R0]
 
-    t_span = (0, 160)
-    t_eval = np.linspace(*t_span, 500)
+    # Time span to evalute the SIR model
+    t_span = (0, 80)
+
+    # Timepoints at which to store values
+    t_eval = np.linspace(*t_span, 1000000)
 
     # -----------------------------
     # Solve SIR system together
@@ -45,20 +47,11 @@ def run_sir_model(diff_tol = 1e-8, integrate_tol = 1e-6, do_plot = False):
         args=(beta, gamma, N),
         t_eval=t_eval,
         method='RK45',
-        atol=diff_tol  
+        rtol=diff_tol  
     )
 
     S, I, R = sol.y
     t = sol.t
-
-    # -----------------------------
-    # Tolerance-controlled integral of I(t)
-    # -----------------------------
-    # Interpolate I(t) for smooth integration
-    I_interp = interp1d(t, I, kind='cubic', fill_value="extrapolate")
-
-    # Integrate I(t) using adaptive quadrature (quad)
-    total_infected, err = quad(I_interp, t_span[0], t_span[1], epsabs=integrate_tol, epsrel=integrate_tol)
 
     if do_plot:
         # -----------------------------
@@ -70,22 +63,28 @@ def run_sir_model(diff_tol = 1e-8, integrate_tol = 1e-6, do_plot = False):
         plt.plot(t, R, label='Recovered')
         plt.xlabel('Time (days)')
         plt.ylabel('Population')
-        plt.title('SIR Model with Adaptive Integral of Infected')
+        plt.title('SIR Model')
         plt.legend()
         plt.grid()
         plt.tight_layout()
         plt.show()
 
     # -----------------------------
-    # Print total infected
+    # Tolerance-controlled integral of I(t)
     # -----------------------------
-    #print(f"Total infected over time (adaptive integral): {total_infected:.4f}")
-    #print(f"Estimated integration error: {err:.2e}")
+    # Interpolate I(t) for smooth integration
+    I_interp = interp1d(t, I, kind='cubic', fill_value="extrapolate")
 
-    return total_infected 
+    # Integrate I(t) using adaptive quadrature (quad)
+    infected_person_days, err = quad(I_interp, t_span[0], t_span[1], epsrel=integrate_tol)
+
+    # Return the total number of "person-days of infection"
+    # Indicates the burden on a helathcare system
+    return infected_person_days
 
 # Values to try
-X = np.array([[1e-2, 1e-2], [1e-2, 1e-4], [1e-3, 1e-3], [1e-4, 1e-2], [1e-4, 1e-4], [1e-5, 1e-4]])
+X = np.array([[1e-2, 1e-7], [1e-3, 1e-6], [1e-6, 1e-3], [1e-7, 1e-2]])
+X *= 0.1
 
 # Results
 Y = np.array([])
@@ -102,18 +101,17 @@ print(f"Y = {Y}")
 # Define options
 options = {
     "name": "SPRE",
-    "k_name":  "Gaussian", #"GaussianARD" #"Matern3/2" #"Matern1/2" #"Gaussian"
+    "k_name":  "Gaussian", #"Matern3/2", # "Gaussian", #"GaussianARD" #"Matern3/2" #"Matern1/2" #"Gaussian"
     "plot" : True
 }
 
 # Assume extrapolation is a defined function returning a dict with 'mu' and 'var'
 out = extrapolation(X, Y, options)
-
 print(f"Predict f(0) = {out['mu'][0]} +/- {np.sqrt(out['var'][0][0])}\n")
 
 # Compute accurate answer
 acc_step = 1e-8
-y_accuarte = run_sir_model(1e-8, 1e-8)
+y_accuarte = run_sir_model(acc_step, acc_step, do_plot = True)
 
 print(f"\nAccurate prediction using step {acc_step} gives f(0) = {y_accuarte:.4f}\n")
 

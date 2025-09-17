@@ -357,6 +357,9 @@ class SPRE:
 
         # Return mu and cov instead
         if return_mu_cov:
+            # Avoid numerical error giving negative values
+            if cov_val[0][0] < 0:
+                cov_val = cov_val.at[0].set(0)
             return mu_val, cov_val
 
         diff = Ys - mu_val
@@ -530,7 +533,7 @@ class SPRE:
         Returns:
             out     : dict, result of SPRE using optimal model
                     out.mu      = scalar, predictive mean for f(0)
-                    out.cov     = scalar, predictive variance for f(0)
+                    out.var     = scalar, predictive variance for f(0)
                     out.mu_GP   = function R^d -> R, predictive mean for fitted GP
                     out.cov_GP  = function R^d x R^d -> R, predictive covariance for fitted GP
                     out.mu_cv   = n_train x 1, LOOCV predictive means
