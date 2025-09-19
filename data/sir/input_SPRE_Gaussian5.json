@@ -1,0 +1,15 @@
+{
+  "N": 1000,
+  "beta": 0.4,
+  "gamma": 0.1,
+  "initial_infected": 1,
+  "total_time": 120,
+  "X": [[1e-3, 1e-7], [5e-3, 5e-7], [5e-7, 5e-3], [1e-7, 1e-3]],
+  "h_values": [0.001, 0.002, 0.003, 0.004, 0.005, 0.006, 0.007, 0.008, 0.009, 0.01],
+  "final_tols": [1e-10, 1e-10],
+  "results_filename": "output_SPRE_Gaussian5.dat",
+  "results_plot_filename": "output_SPRE_Gaussian5_results.png",
+  "final_sir_plot_filename": "output_SPRE_Gaussian5_sir.png",
+  "extrapolation_name": "SPRE",
+  "extrapolation_kernel": "Gaussian"
+}
