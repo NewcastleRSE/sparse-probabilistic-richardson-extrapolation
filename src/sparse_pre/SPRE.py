@@ -122,7 +122,13 @@ class SPRE:
             case "Matern3/2":
                 self.default_kernel_parameters = [1.0, 1.0]
             case "GRE":
+                # Get default kernel parameters for kernel base
+                self.kernel_spec = self.kernel_base
                 self.set_kernel_default_parameters()
+                # Set base and spec variable back
+                self.kernel_base = self.kernel_spec
+                self.kernel_spec = "GRE"
+                # Set final default kernel parameters               
                 base_default_parameters = self.default_kernel_parameters
                 self.default_kernel_parameters = [1.0] 
                 self.default_kernel_parameters.extend(base_default_parameters)                  
@@ -629,8 +635,8 @@ class SPRE:
                 fit_new = self.perform_extrapolation_optimization()
                 cv_new = fit_new["cv"]
 
-                if cv_new < cv:
-                    to_include[i] = True
+                if cv_new < cv:                    
+                    to_include = to_include.at[i].set(True)
 
                 # Progress bar substitute
                 #cwbar((i + 1) / n_extra)
