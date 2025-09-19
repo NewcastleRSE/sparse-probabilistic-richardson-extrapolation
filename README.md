@@ -52,10 +52,9 @@ pip install -r requirements.txt
 
 ### Running Tests
 
-The `unittest` tests are run from the root directory of the repo, for example to run the 
-```
-python -m unittest test.test_sparse_pre
-```
+From `sparse-probabilistic-richardson-extrapolation/src` directory unit tests can be ran with (for example):
+
+`python -m unittest -v test.test_sparse_pre`
 
 ## Deployment
 
