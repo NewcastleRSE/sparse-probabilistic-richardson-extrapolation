@@ -9,9 +9,10 @@ import unittest
 import jax.numpy as jnp
 
 # Application modules
-from src.sparse_pre import helper_functions
-from src.sparse_pre.MRE import MRE
-from src.sparse_pre.SPRE import SPRE
+from sparse_pre import helper_functions
+from sparse_pre.MRE import MRE
+from sparse_pre.SPRE import SPRE
+
 
 class SPRETestCase(unittest.TestCase):
     '''

@@ -122,7 +122,13 @@ class SPRE:
             case "Matern3/2":
                 self.default_kernel_parameters = [1.0, 1.0]
             case "GRE":
+                # Get default kernel parameters for kernel base
+                self.kernel_spec = self.kernel_base
                 self.set_kernel_default_parameters()
+                # Set base and spec variable back
+                self.kernel_base = self.kernel_spec
+                self.kernel_spec = "GRE"
+                # Set final default kernel parameters               
                 base_default_parameters = self.default_kernel_parameters
                 self.default_kernel_parameters = [1.0] 
                 self.default_kernel_parameters.extend(base_default_parameters)                  
@@ -357,6 +363,9 @@ class SPRE:
 
         # Return mu and cov instead
         if return_mu_cov:
+            # Avoid numerical error giving negative values
+            if cov_val[0][0] < 0:
+                cov_val = cov_val.at[0].set(0)
             return mu_val, cov_val
 
         diff = Ys - mu_val
@@ -530,7 +539,7 @@ class SPRE:
         Returns:
             out     : dict, result of SPRE using optimal model
                     out.mu      = scalar, predictive mean for f(0)
-                    out.cov     = scalar, predictive variance for f(0)
+                    out.var     = scalar, predictive variance for f(0)
                     out.mu_GP   = function R^d -> R, predictive mean for fitted GP
                     out.cov_GP  = function R^d x R^d -> R, predictive covariance for fitted GP
                     out.mu_cv   = n_train x 1, LOOCV predictive means
@@ -626,8 +635,8 @@ class SPRE:
                 fit_new = self.perform_extrapolation_optimization()
                 cv_new = fit_new["cv"]
 
-                if cv_new < cv:
-                    to_include[i] = True
+                if cv_new < cv:                    
+                    to_include = to_include.at[i].set(True)
 
                 # Progress bar substitute
                 #cwbar((i + 1) / n_extra)

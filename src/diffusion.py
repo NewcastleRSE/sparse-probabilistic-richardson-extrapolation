@@ -16,7 +16,7 @@ def simulate_advection_diffusion_2d(
     t_final=0.1,            # simulation end time
     theta=0.5,              # theta-method parameter (0=explicit, 0.5=CN, 1=implicit)
     u0_func=None,           # initial condition function u0(x,y)
-    show_plot=False         # Show plot or not
+    show_plot=True          # Show plot or not
 ):
     """
     Simulate 2D advection–diffusion equation on a uniform periodic grid.
@@ -109,7 +109,7 @@ def simulate_advection_diffusion_2d(
         t += dt
 
     if show_plot:
-        plt.contourf(X, Y, u_final, levels=50, cmap='viridis')
+        plt.contourf(X, Y, t_final, levels=50, cmap='viridis')
         plt.colorbar()
         plt.xlabel("x")
         plt.ylabel("y")

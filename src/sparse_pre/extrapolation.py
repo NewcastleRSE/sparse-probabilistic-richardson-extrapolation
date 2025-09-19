@@ -30,6 +30,7 @@ def extrapolation(X, Y, options = None):
                 - "name"   : str, one of {"MRE", "GRE", "SPRE"} (default: "SPRE")
                 - "k_name" : str, one of {"Gaussian", "GaussianARD", "Matern1/2", "Matern3/2", "white"} (default: "white")
                 - "plot"   : bool, whether to plot LOOCV results (default: True)
+                - "plot_filename" : filename to plot LOOCV results (default: True)
        
     Returns:
         out : dict
@@ -46,6 +47,7 @@ def extrapolation(X, Y, options = None):
     name = options.get("name", "SPRE")
     k_name = options.get("k_name", "white")
     plot = options.get("plot", True)
+    plot_filename = options.get("plot_filename", "")
 
     # Set up SPRE object
     if name == "SPRE":
@@ -69,10 +71,11 @@ def extrapolation(X, Y, options = None):
         raise ValueError(f"Unknown extrapolation method: {name}")
 
     errors = jnp.sqrt(out["var_cv"])
-
+ 
     # Plot LOOCV fit if applicable
-    if plot and name != "MRE" and "mu_cv" in out and "var_cv" in out:
+    if (plot or plot_filename) and name != "MRE" and "mu_cv" in out and "var_cv" in out:
         n_train = X.shape[0]
+        plt.close('all') 
         plt.figure()
         plt.errorbar(jnp.arange(1, n_train + 1), out["mu_cv"].flatten(), yerr = errors, fmt='bo', label='predicted')
         plt.scatter(jnp.arange(1, n_train + 1), Y, color='k', marker='x', label='actual')
@@ -81,6 +84,10 @@ def extrapolation(X, Y, options = None):
         plt.ylabel(r'$f(\mathbf{x}_i)$')
         plt.title(f"Leave-one-out cross validation ({name})")
         plt.legend()
-        plt.show()
+        # Write file and/or show plot
+        if plot_filename:
+            plt.savefig(plot_filename) 
+        if plot:
+            plt.show()
 
     return out

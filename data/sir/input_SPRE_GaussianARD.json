@@ -1,0 +1,15 @@
+{
+  "N": 1000,
+  "beta": 0.3,
+  "gamma": 0.1,
+  "initial_infected": 1,
+  "total_time": 120,
+  "X": [[1e-2, 1e-7], [1e-3, 1e-6], [1e-6, 1e-3], [1e-7, 1e-2]],
+  "h_values": [0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.25, 1.5, 1.75, 2],
+  "final_tols": [1e-8, 1e-8],
+  "results_filename": "output_SPRE_GaussianARD.dat",
+  "results_plot_filename": "output_SPRE_GaussianARD_results.png",
+  "final_sir_plot_filename": "output_SPRE_GaussianARD_sir.png",
+  "extrapolation_name": "SPRE",
+  "extrapolation_kernel": "GaussianARD"
+}
