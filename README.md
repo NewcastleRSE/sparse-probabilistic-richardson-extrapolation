@@ -41,9 +41,9 @@ How to run the application on your local system. Examples of this would include 
 
 ### Running Tests
 
-From `sparse-probabilistic-richardson-extrapolation/src` directory unit tests can be ran with:
+From `sparse-probabilistic-richardson-extrapolation/src` directory unit tests can be ran with (for example):
 
-`python -m unittest -v test.test_initial_translation`
+`python -m unittest -v test.test_sparse_pre`
 
 ## Deployment
 
