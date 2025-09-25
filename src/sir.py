@@ -191,7 +191,7 @@ for i, h in enumerate(h_values):
     extrapolation_results.extend(out['var_cv'])
   
     if i == 0:
-        all_extrapolation_results = extrapolation_results
+        all_extrapolation_results = np.matrix(extrapolation_results)
     else:
         all_extrapolation_results = np.vstack((all_extrapolation_results, extrapolation_results))
 
