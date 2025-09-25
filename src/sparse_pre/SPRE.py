@@ -458,7 +458,10 @@ class SPRE:
             "cv_grad": jnp.array(gradient)
         }
 
-        #debug.print("cv = {}, grad = {}, x = {}", cv, gradient, x)
+        # Uncomment to output info on fitting kernel parameters
+        # debug.print("cv = {}, grad = {}, x = {}", cv, gradient, x)
+        # As table easy to copy and paste with neg log like and gradient
+        debug.print("{}, {}, {}, {}, {}", -cv, -gradient[0], -gradient[1], x[0], x[1]) 
 
         # Add extra ouput if requested
         if return_mu_and_var:
@@ -494,7 +497,7 @@ class SPRE:
         """
 
         # Return the negative log likelihood using LOOCV with gradient
-        out = self.perform_extrapolation(x)        
+        out = self.perform_extrapolation(x)     
         return -out['cv'], -out['cv_grad']
         
     def perform_extrapolation_optimization(self) -> dict:
@@ -514,7 +517,7 @@ class SPRE:
         self.set_kernel_cache()
 
         # Set up the solver to use
-        solver = GradientDescent(fun = self.objective, maxiter=100, value_and_grad = True, stepsize=1e-3)#, tol=1e-3)
+        solver = GradientDescent(fun = self.objective, maxiter=1000, value_and_grad = True)#, stepsize=1e-1)#, tol=1e-3)
         
         # Fit the best hyperparameters for the kernel
         result = solver.run(jnp.array(self.default_kernel_parameters))

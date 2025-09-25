@@ -445,6 +445,44 @@ class SPRETestCase(unittest.TestCase):
         for field in to_show:
             print(f"{field}\n Matlab = {ans[field]}\n Python = {result[field]}\n")
 
+    def test_SPRE_opt_try(self):
+        '''
+        Test to output loss, gradient and hyper-parameters to help develop the code to fit the hyperparameters
+        '''
+        
+        A = jnp.array([[0, 0], [0, 1], [1, 1], [2, 0]])
+        X = jnp.array([[0.8147,    0.0975],
+                        [0.9058,    0.2785],
+                        [0.1270,    0.5469],
+                        [0.9134,    0.9575],
+                        [0.6324,    0.9649]])
+
+        Y = jnp.array([3.8249,
+                        4.0618,
+                        3.6467,
+                        4.6093,
+                        4.4130]) 
+        
+        ans = {"x": jnp.array([-1.1780, 1.2391]),
+              "cv": 0.5987
+              }
+        
+        # Set up SPRE object
+        spre = SPRE("Gaussian", A.shape[1])
+
+        # Set data
+        spre.set_sparse_basis(A)
+        spre.set_normalised_data(X, Y)
+
+        result = spre.perform_extrapolation_optimization()
+
+        #print(result)
+        #to_show = ['x', 'cv']
+        #for field in to_show:
+        #    print(f"{field}\n Matlab = {ans[field]}\n Python = {result[field]}\n")
+
+       
+
     def test_SPRE_stepwise(self):
 
         #A = jnp.array([[0, 0], [0, 1], [1, 1], [2, 0]])
