@@ -409,7 +409,8 @@ class SPRETestCase(unittest.TestCase):
                         4.6093,
                         4.4130]) 
 
-        x = [0.5, 0.5]
+        #x = [0.5, 0.5]
+        x = [3.245772123336792, 5.657604694366455]
 
         # Set up SPRE object
         spre = SPRE("Gaussian", A.shape[1])
@@ -429,7 +430,29 @@ class SPRETestCase(unittest.TestCase):
                 "cv": -0.1932,
                 "cv_grad": jnp.array([-1.4592, 4.4570])
             }
-        
+
+        ''' 
+        ans2 = 
+                mu: 3.0106
+        var: 4.2912e-04
+      mu_GP: @(Xs)nY*mu_GP(A,Xn,Yn,Xs./nX,x)
+     cov_GP: @(Xs)nY^2*cov_GP(A,Xn,Xs./nX,x)
+      mu_cv: [3.8474 4.0421 3.6963 4.6408 4.3869]
+     var_cv: [4.3486e-04 2.9516e-04 0.0051 7.9681e-04 7.5929e-04]
+         cv: 10.3989
+    cv_grad: [0.0148 0.0464]
+
+        {'mu': Array([3.0148942], dtype=float32),
+        'var': Array([[0.]], dtype=float32),
+        'mu_cv': Array([3.8465989, 4.040699 , 3.6942513, 4.641085 , 4.386685 ],
+                          dtype=float32),
+        'var_cv': Array([3.1281338e-04, 1.0977647e-03, 8.2917316e-03, 3.9802133e-05, 0.0000000e+00],
+                 dtype=float32),
+        'cv': Array(nan, dtype=float32),
+        'cv_grad': Array([ 39.174683, 177.97368 ], dtype=float32)}
+    
+        print(result)
+        '''
         thres = 0.0001
         self.assertTrue((abs(result['cv'] - ans['cv']) < thres).all(), f"Failed SPRE (test 3), cv! Result is {round(result['cv'], 3)} not {ans['cv']}")
         #thres = 0.000001

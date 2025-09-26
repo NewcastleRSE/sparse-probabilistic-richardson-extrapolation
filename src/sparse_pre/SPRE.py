@@ -501,7 +501,7 @@ class SPRE:
 
         # Return the negative log likelihood using LOOCV with gradient
         out = self.perform_extrapolation(x)     
-        return -out['cv'] #, -out['cv_grad']
+        return -out['cv'] , -out['cv_grad']
         
     def perform_extrapolation_optimization(self) -> dict:
         """
@@ -519,58 +519,64 @@ class SPRE:
         # Set up the cach with values to use
         self.set_kernel_cache()
 
-        # Set up the solver to use
-        #solver = GradientDescent(fun = self.objective, maxiter=1000, value_and_grad = True, stepsize=1e-3)#, tol=1e-3)
-        #solver = BFGS(fun = self.objective, maxiter=1000, value_and_grad = True)#, stepsize=1e-3)#, tol=1e-3)
-        #solver = LBFGS(fun = self.objective, maxiter=1000, value_and_grad = True)
+        if False:
+            # Set up the solver to use
+            #solver = GradientDescent(fun = self.objective, maxiter=1000, value_and_grad = True, stepsize=1e-3)#, tol=1e-3)
+            #solver = BFGS(fun = self.objective, maxiter=1000, value_and_grad = True)#, stepsize=1e-3)#, tol=1e-3)
+            #solver = LBFGS(fun = self.objective, maxiter=1000, value_and_grad = True)
 
-        # Define the gradient function
-        #hess_function = hessian(self.cv_loss)
+            # Define the gradient function
+            hess_function = hessian(self.cv_loss)
 
-        # Evaluate gradient at x
-        # hess = hess_function(x)
+            # Evaluate gradient at x
+            # hess = hess_function(x)
+            options = {
+                    'hess': hess_function
+            }
+            solver = ScipyMinimize(fun = self.objective, maxiter=1000, value_and_grad = True, method = 'trust-ncg', option=options)
+            # method the method argument for scipy.optimize.minimize. 
+            # Should be one of * ‘Nelder-Mead’ * ‘Powell’ * ‘CG’ * ‘BFGS’ * ‘Newton-CG’ * ‘L-BFGS-B’ * ‘TNC’ * ‘COBYLA’ *
+            #  ‘SLSQP’ * ‘trust-constr’ * ‘dogleg’ * ‘trust-ncg’ * ‘trust-exact’ * ‘trust-krylov’
+            # Fit the best hyperparameters for the kernel
+            result = solver.run(jnp.array(self.default_kernel_parameters))
 
-        #solver = ScipyMinimize(fun = self.objective, maxiter=1000, value_and_grad = True, method = 'trust-ncg', hess=hess_function)
-        # method the method argument for scipy.optimize.minimize. 
-        # Should be one of * ‘Nelder-Mead’ * ‘Powell’ * ‘CG’ * ‘BFGS’ * ‘Newton-CG’ * ‘L-BFGS-B’ * ‘TNC’ * ‘COBYLA’ *
-        #  ‘SLSQP’ * ‘trust-constr’ * ‘dogleg’ * ‘trust-ncg’ * ‘trust-exact’ * ‘trust-krylov’
-        # Fit the best hyperparameters for the kernel
-        #result = solver.run(jnp.array(self.default_kernel_parameters))
-
-        # Evaluate the final LOOCV negative log likelihood result 
-        #result_value, _ = self.objective(result.params)
+            # Evaluate the final LOOCV negative log likelihood result 
+            result_value, _ = self.objective(result.params)
+            result_params = result.params
 
         #############################
         # JIT the full Hessian (only if dim is small)
-        if False:
-            _hess = jax.jit(jax.hessian(self.cv_loss))
-            _grad = jax.jit(jax.grad(self.cv_loss))
+        if True:
+            #_hess = jax.jit(jax.hessian(self.cv_loss))
+            #_grad = jax.jit(jax.grad(self.cv_loss))
+            _hess = jax.hessian(self.cv_loss)
+            _grad = jax.grad(self.cv_loss)
 
             def scipy_hess(x_onp):
                 x_jnp = jnp.asarray(x_onp)
-                return np.asarray(_hess(x_jnp))
+                return -np.asarray(_hess(x_jnp))
 
             def scipy_fun(x_onp):
                 x_jnp = jnp.asarray(x_onp)            # numpy -> jax
-                return float(self.objective(x_jnp))             # scalar float
+                return float(self.objective(x_jnp)[0])             # scalar float
 
-            def scipy_jac(x_onp):
-                print(x_onp)
-                x_jnp = jnp.asarray(np.atleast_1d(x_onp))
-                return np.asarray(_grad(x_jnp))     # return numpy array
+            def scipy_jac(x_onp):                
+                x_jnp = jnp.asarray(x_onp)
+                return -np.asarray(_grad(x_jnp))     # return numpy array
 
             result = minimize(scipy_fun,
                         self.default_kernel_parameters,
-                        method='trust-ncg',   # or 'trust-ncg' but trust-exact expects full Hessian
+                        method='trust-krylov',   # or 'trust-ncg' but trust-exact expects full Hessian
                         jac=scipy_jac,
                         hess=scipy_hess,
                         options={'maxiter': 1000, 'disp': False})
 
             result_value, _ = self.objective(result.x)
+            result_params = result.x
         ##############################################
 
         return {
-            'x'  : result.x,
+            'x'  : result_params,
             'cv' : result_value
         }
 
