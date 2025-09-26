@@ -394,6 +394,48 @@ class SPRETestCase(unittest.TestCase):
         #thres = 0.000001
         self.assertTrue((abs(result['cv_grad'] - ans['cv_grad']) < thres).all(), f"Failed SPRE (test 3), cv_grad! Result is {result['cv_grad']} not {ans['cv_grad']} -- differences: {result['cv_grad'] - ans['cv_grad']}")
 
+    def test_SPRE_try2(self):
+  
+        A = jnp.array([[0, 0]])
+        X = jnp.array([[0.8147,    0.0975],
+                        [0.9058,    0.2785],
+                        [0.1270,    0.5469],
+                        [0.9134,    0.9575],
+                        [0.6324,    0.9649]])
+
+        Y = jnp.array([3.8249,
+                        4.0618,
+                        3.6467,
+                        4.6093,
+                        4.4130]) 
+
+        x = [0.5, 0.5]
+
+        # Set up SPRE object
+        spre = SPRE("Gaussian", A.shape[1])
+
+        # Set data
+        spre.set_normalised_data(X, Y)
+        # Test 3
+        
+        spre.set_sparse_basis(A)
+        result = spre.perform_extrapolation(x, return_mu_and_var=True)
+        ans = { "mu": 3.5814,
+                "var": 0.4423,
+                "mu_GP": "@(Xs)nY*mu_GP(A,Xn,Yn,Xs./nX,x)",
+                "cov_GP": "@(Xs)nY^2*cov_GP(A,Xn,Xs./nX,x)",
+                "mu_cv": jnp.array([3.9238, 3.9955, 3.9893, 4.5278, 4.3830]),
+                "var_cv": jnp.array([0.0796, 0.0632, 0.6165, 0.1521, 0.1413]),
+                "cv": -0.1932,
+                "cv_grad": jnp.array([-1.4592, 4.4570])
+            }
+        
+        thres = 0.0001
+        self.assertTrue((abs(result['cv'] - ans['cv']) < thres).all(), f"Failed SPRE (test 3), cv! Result is {round(result['cv'], 3)} not {ans['cv']}")
+        #thres = 0.000001
+        self.assertTrue((abs(result['cv_grad'] - ans['cv_grad']) < thres).all(), f"Failed SPRE (test 3), cv_grad! Result is {result['cv_grad']} not {ans['cv_grad']} -- differences: {result['cv_grad'] - ans['cv_grad']}")
+
+
     def test_SPRE_opt(self):
         
         A = jnp.array([[0, 0], [0, 1], [1, 1], [2, 0]])
@@ -481,7 +523,37 @@ class SPRETestCase(unittest.TestCase):
         #for field in to_show:
         #    print(f"{field}\n Matlab = {ans[field]}\n Python = {result[field]}\n")
 
-       
+    def test_SPRE_opt_try2(self):
+        '''
+        Test to output loss, gradient and hyper-parameters to help develop the code to fit the hyperparameters
+        '''
+        
+        A = jnp.array([[0, 0]])
+        X = jnp.array([[0.8147,    0.0975],
+                        [0.9058,    0.2785],
+                        [0.1270,    0.5469],
+                        [0.9134,    0.9575],
+                        [0.6324,    0.9649]])
+
+        Y = jnp.array([3.8249,
+                        4.0618,
+                        3.6467,
+                        4.6093,
+                        4.4130]) 
+        
+        ans = {"x": jnp.array([-1.1780, 1.2391]),
+              "cv": 0.5987
+              }
+        
+        # Set up SPRE object
+        spre = SPRE("Gaussian", A.shape[1])
+
+        # Set data
+        spre.set_sparse_basis(A)
+        spre.set_normalised_data(X, Y)
+
+        result = spre.perform_extrapolation_optimization()
+
 
     def test_SPRE_stepwise(self):
 

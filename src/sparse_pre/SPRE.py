@@ -9,11 +9,14 @@
 
 # Python modules
 import jax.numpy as jnp
-from jax import grad, debug
-from jaxopt import GradientDescent
+from jax import grad, debug, hessian
+from jaxopt import GradientDescent, BFGS, LBFGS, ScipyMinimize
 from tqdm import tqdm  # For progress bars
 from sklearn.neighbors import NearestNeighbors
 import numpy as np
+import scipy
+import jax
+from scipy.optimize import minimize
 
 # Application modules
 from sparse_pre.helper_functions import x2fx, softplus, cellsum, white, remove_row, stepwise
@@ -455,7 +458,7 @@ class SPRE:
         # Output
         out = {
             "cv": cv,
-            "cv_grad": jnp.array(gradient)
+            "cv_grad": jnp.array(gradient)          
         }
 
         # Uncomment to output info on fitting kernel parameters
@@ -498,7 +501,7 @@ class SPRE:
 
         # Return the negative log likelihood using LOOCV with gradient
         out = self.perform_extrapolation(x)     
-        return -out['cv'], -out['cv_grad']
+        return -out['cv'] #, -out['cv_grad']
         
     def perform_extrapolation_optimization(self) -> dict:
         """
@@ -517,16 +520,57 @@ class SPRE:
         self.set_kernel_cache()
 
         # Set up the solver to use
-        solver = GradientDescent(fun = self.objective, maxiter=1000, value_and_grad = True)#, stepsize=1e-1)#, tol=1e-3)
-        
+        #solver = GradientDescent(fun = self.objective, maxiter=1000, value_and_grad = True, stepsize=1e-3)#, tol=1e-3)
+        #solver = BFGS(fun = self.objective, maxiter=1000, value_and_grad = True)#, stepsize=1e-3)#, tol=1e-3)
+        #solver = LBFGS(fun = self.objective, maxiter=1000, value_and_grad = True)
+
+        # Define the gradient function
+        #hess_function = hessian(self.cv_loss)
+
+        # Evaluate gradient at x
+        # hess = hess_function(x)
+
+        #solver = ScipyMinimize(fun = self.objective, maxiter=1000, value_and_grad = True, method = 'trust-ncg', hess=hess_function)
+        # method the method argument for scipy.optimize.minimize. 
+        # Should be one of * ‘Nelder-Mead’ * ‘Powell’ * ‘CG’ * ‘BFGS’ * ‘Newton-CG’ * ‘L-BFGS-B’ * ‘TNC’ * ‘COBYLA’ *
+        #  ‘SLSQP’ * ‘trust-constr’ * ‘dogleg’ * ‘trust-ncg’ * ‘trust-exact’ * ‘trust-krylov’
         # Fit the best hyperparameters for the kernel
-        result = solver.run(jnp.array(self.default_kernel_parameters))
+        #result = solver.run(jnp.array(self.default_kernel_parameters))
 
         # Evaluate the final LOOCV negative log likelihood result 
-        result_value, _ = self.objective(result.params)
+        #result_value, _ = self.objective(result.params)
+
+        #############################
+        # JIT the full Hessian (only if dim is small)
+        if False:
+            _hess = jax.jit(jax.hessian(self.cv_loss))
+            _grad = jax.jit(jax.grad(self.cv_loss))
+
+            def scipy_hess(x_onp):
+                x_jnp = jnp.asarray(x_onp)
+                return np.asarray(_hess(x_jnp))
+
+            def scipy_fun(x_onp):
+                x_jnp = jnp.asarray(x_onp)            # numpy -> jax
+                return float(self.objective(x_jnp))             # scalar float
+
+            def scipy_jac(x_onp):
+                print(x_onp)
+                x_jnp = jnp.asarray(np.atleast_1d(x_onp))
+                return np.asarray(_grad(x_jnp))     # return numpy array
+
+            result = minimize(scipy_fun,
+                        self.default_kernel_parameters,
+                        method='trust-ncg',   # or 'trust-ncg' but trust-exact expects full Hessian
+                        jac=scipy_jac,
+                        hess=scipy_hess,
+                        options={'maxiter': 1000, 'disp': False})
+
+            result_value, _ = self.objective(result.x)
+        ##############################################
 
         return {
-            'x'  : result.params,
+            'x'  : result.x,
             'cv' : result_value
         }
 
