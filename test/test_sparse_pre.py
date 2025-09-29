@@ -7,6 +7,8 @@
 # Python modules
 import unittest
 import jax.numpy as jnp
+import jax
+jax.config.update("jax_enable_x64", True)
 
 # Application modules
 from sparse_pre import helper_functions
@@ -409,16 +411,15 @@ class SPRETestCase(unittest.TestCase):
                         4.6093,
                         4.4130]) 
 
-        #x = [0.5, 0.5]
-        x = [3.245772123336792, 5.657604694366455]
+        x = [0.5, 0.5]
 
         # Set up SPRE object
         spre = SPRE("Gaussian", A.shape[1])
 
         # Set data
         spre.set_normalised_data(X, Y)
-        # Test 3
-        
+
+        # Test 3        
         spre.set_sparse_basis(A)
         result = spre.perform_extrapolation(x, return_mu_and_var=True)
         ans = { "mu": 3.5814,
@@ -431,33 +432,58 @@ class SPRETestCase(unittest.TestCase):
                 "cv_grad": jnp.array([-1.4592, 4.4570])
             }
 
-        ''' 
-        ans2 = 
-                mu: 3.0106
-        var: 4.2912e-04
-      mu_GP: @(Xs)nY*mu_GP(A,Xn,Yn,Xs./nX,x)
-     cov_GP: @(Xs)nY^2*cov_GP(A,Xn,Xs./nX,x)
-      mu_cv: [3.8474 4.0421 3.6963 4.6408 4.3869]
-     var_cv: [4.3486e-04 2.9516e-04 0.0051 7.9681e-04 7.5929e-04]
-         cv: 10.3989
-    cv_grad: [0.0148 0.0464]
-
-        {'mu': Array([3.0148942], dtype=float32),
-        'var': Array([[0.]], dtype=float32),
-        'mu_cv': Array([3.8465989, 4.040699 , 3.6942513, 4.641085 , 4.386685 ],
-                          dtype=float32),
-        'var_cv': Array([3.1281338e-04, 1.0977647e-03, 8.2917316e-03, 3.9802133e-05, 0.0000000e+00],
-                 dtype=float32),
-        'cv': Array(nan, dtype=float32),
-        'cv_grad': Array([ 39.174683, 177.97368 ], dtype=float32)}
-    
         print(result)
-        '''
         thres = 0.0001
         self.assertTrue((abs(result['cv'] - ans['cv']) < thres).all(), f"Failed SPRE (test 3), cv! Result is {round(result['cv'], 3)} not {ans['cv']}")
         #thres = 0.000001
         self.assertTrue((abs(result['cv_grad'] - ans['cv_grad']) < thres).all(), f"Failed SPRE (test 3), cv_grad! Result is {result['cv_grad']} not {ans['cv_grad']} -- differences: {result['cv_grad'] - ans['cv_grad']}")
 
+    def test_SPRE_try3(self):
+  
+        A = jnp.array([[0, 0]])
+        X = jnp.array([[0.8147,    0.0975],
+                        [0.9058,    0.2785],
+                        [0.1270,    0.5469],
+                        [0.9134,    0.9575],
+                        [0.6324,    0.9649]])
+
+        Y = jnp.array([3.8249,
+                        4.0618,
+                        3.6467,
+                        4.6093,
+                        4.4130]) 
+
+        x = [3.245772123336792, 5.657604694366455]
+
+        # Set up SPRE object
+        spre = SPRE("Gaussian", A.shape[1])
+
+        # Set data
+        spre.set_normalised_data(X, Y)
+        # Test 3
+        
+        spre.set_sparse_basis(A)
+        result = spre.perform_extrapolation(x, return_mu_and_var=True)
+       
+        ans = {"mu": 3.010569826795539,
+                "var": 4.291200850578709e-04,
+                "mu_GP": "@(Xs)nY*mu_GP(A,Xn,Yn,Xs./nX,x)",
+                "cov_GP": "@(Xs)nY^2*cov_GP(A,Xn,Xs./nX,x)",
+                "mu_cv": jnp.array([3.847364164082203, 4.042131067700186, 3.696305071782295, 4.640838689958968, 4.386904339170414]),
+                "var_cv": jnp.array([4.348589368436001e-04, 2.951591731441563e-04, 0.005078675521808, 7.968098945826360e-04, 7.592869926159027e-04]),
+                "cv": 10.398882255754817,
+                "cv_grad": jnp.array([0.014786163213055, 0.046412966963239])
+            }
+        
+        print("Python\n")
+        print(result)
+        print("MatLab\n")
+        print(ans)
+
+        thres = 0.000001
+        self.assertTrue((abs(result['cv'] - ans['cv']) < thres).all(), f"Failed SPRE (test 3), cv! Result is {round(result['cv'], 3)} not {ans['cv']}")
+        
+        self.assertTrue((abs(result['cv_grad'] - ans['cv_grad']) < thres).all(), f"Failed SPRE (test 3), cv_grad! Result is {result['cv_grad']} not {ans['cv_grad']} -- differences: {result['cv_grad'] - ans['cv_grad']}")
 
     def test_SPRE_opt(self):
         

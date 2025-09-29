@@ -17,6 +17,7 @@ import numpy as np
 import scipy
 import jax
 from scipy.optimize import minimize
+jax.config.update("jax_enable_x64", True)
 
 # Application modules
 from sparse_pre.helper_functions import x2fx, softplus, cellsum, white, remove_row, stepwise
@@ -67,7 +68,10 @@ class SPRE:
         XB_sq = jnp.sum(XB ** 2, axis = 1)  # (n,)
         cross_term = jnp.dot(XA, XB.T)  # (m, n)
        
-        dists = jnp.sqrt(XA_sq - 2 * cross_term + XB_sq)
+        # Ensure no problems with negative sqrt if value is -1e16
+        nums = XA_sq - 2 * cross_term + XB_sq
+        dists = jnp.where(nums >= 0, jnp.sqrt(nums), 0.0)
+        
         return dists
 
     def set_kernel_spec(self, kernel_spec : str, gre_base : jnp.ndarray = None):
@@ -175,6 +179,11 @@ class SPRE:
 
         match self.kernel_spec:
             case "Gaussian":
+                
+                num = self.cdist_jax(X1, X2)
+                #if jnp.isnan(num).any():
+                #    debug.print("X1 = {},\n X2 = {},\n num = {}",X1,X2,num)
+
                 return -self.cdist_jax(X1, X2) ** 2 
             
             case "GaussianARD":                
@@ -208,7 +217,7 @@ class SPRE:
         Returns:
             jnp.ndarray                
         """
-
+    
         # Check the cached part exists and return it, if not then calculate it.
         if cache_key is not None and cache_key in self.kernel_cache:
             return self.kernel_cache[cache_key]   
@@ -236,6 +245,7 @@ class SPRE:
         # Calculate the kernel depending on the set kernel to use
         match self.kernel_spec:
             case "Gaussian":
+                #debug.print("X1 = {},\n X2 = {},\n calc = {}",X1,X2,self.get_kernel_cached_bit(X1, X2, cache_key))
                 return (self.ep + softplus(x[0])) * jnp.exp(self.get_kernel_cached_bit(X1, X2, cache_key) / softplus(x[1])**2)
             
             case "GaussianARD":
@@ -298,7 +308,7 @@ class SPRE:
             Xs : jnp.ndarray          The left-out row of X  
             Ys : jnp.ndarray          The left-out row of Y
             x : jnp.ndarray           Vector of kernel hyperparameters to use when evaluating the kernel
-            row_num : int             Row number to leave out for leave-one-out cross validation.
+            row_num_str : str         Row number to leave out for leave-one-out cross validation.
             return_mu_cov : bool      Whether to return mu and cov instead of the loss    
         Returns:
             float or tuple               
@@ -314,6 +324,7 @@ class SPRE:
     
         # Calculate some bits firstly    
         K_inv = jnp.linalg.inv(self.kernel(X, X, x, cache_key = f"XX{row_num_str}"))
+        #K_inv = jnp.linalg.pinv(self.kernel(X, X, x, cache_key = f"XX{row_num_str}"))
         kernel_Xs_Xs = self.kernel(Xs, Xs, x, cache_key = f"XsXs{row_num_str}")
         kernel_X_Xs = self.kernel(X, Xs, x, cache_key = f"XXs{row_num_str}")
         
@@ -343,11 +354,30 @@ class SPRE:
         # X = n_train x d
         # Xs = n_test x d
         # x = p x 1  
-        #inv_VA_T_at_K_inv_at_VA = jnp.linalg.inv(VA_T_at_K_inv @ VA)
-        inv_VA_T_at_K_inv_at_VA = jnp.linalg.pinv(VA_T_at_K_inv @ VA, hermitian = True)
+        inv_VA_T_at_K_inv_at_VA = jnp.linalg.inv(VA_T_at_K_inv @ VA)
+        #inv_VA_T_at_K_inv_at_VA = jnp.linalg.pinv(VA_T_at_K_inv @ VA, hermitian = True)
         cov_val = (kernel_Xs_Xs
                 - kernel_Xs_X @ K_inv @ kernel_X_Xs
                 + residual_X_Xs.T @ inv_VA_T_at_K_inv_at_VA @ residual_X_Xs)
+        
+        #if return_mu_cov:
+            #debug.print("{}\n {}\n {}\n {}\n", kernel_Xs_Xs, kernel_Xs_X, K_inv, kernel_X_Xs)
+            #debug.print("{k:.10f}\n", k = self.kernel(X, X, x, cache_key = f"XX{row_num_str}"))  
+            #debug.print("x = {x:.10f}", x=x)
+            #K_mat = self.kernel(X, X, x, cache_key = f"XX{row_num_str}")
+            #str_ = [[f"{x0:.16f}" for x0 in row] for row in K_mat]
+            #str_ = [f"{x0:.16f}" for x0 in K_mat]
+            #jax.debug.print("K_mat = {}", str_)
+            #str_ = [[f"{x0:.16f}" for x0 in row] for row in X]
+            #jax.debug.print("X = {}", str_)
+
+        #print(kernel_Xs_Xs)
+        #print(kernel_Xs_X)
+        #print(K_inv)
+        #print(kernel_X_Xs)
+
+        #cov_GP = @(A,X,Xs,x) k(Xs,Xs,x) - k(Xs,X,x) * inv(k(X,X,x)) * k(X,Xs,x) ...
+        #             + r(A,X,Xs,x)' * inv( V(A,X)' * inv(k(X,X,x)) * V(A,X) ) * r(A,X,Xs,x);
         
         # Coefficient estimator, beta
         # A = m x d (sparse matrix)
@@ -367,8 +397,8 @@ class SPRE:
         # Return mu and cov instead
         if return_mu_cov:
             # Avoid numerical error giving negative values
-            if cov_val[0][0] < 0:
-                cov_val = cov_val.at[0].set(0)
+            #if cov_val[0][0] < 0:
+            #    cov_val = cov_val.at[0].set(0)
             return mu_val, cov_val
 
         diff = Ys - mu_val
@@ -400,7 +430,7 @@ class SPRE:
             ) for i in range(self.X_normalised.shape[0])
         )
 
-    def set_normalised_data(self, X, Y):
+    def set_normalised_data(self, X : jnp.ndarray, Y : jnp.ndarray):
         """
         Parameters:
             A : jnp.ndarray             shape (m, d), binary matrix representing the sparse basis
@@ -413,6 +443,14 @@ class SPRE:
           
         # Data normalization   
         self.nX = self.ep + (jnp.max(X, axis=0) - jnp.min(X, axis=0))
+        
+        str_ = [f"{x0:.16f}" for x0 in self.nX]
+        str_2 = ", range = " + str((jnp.max(X, axis=0) - jnp.min(X, axis=0)))
+        #debug.print("nX = {}, range = {}", str_, str_2)
+
+        str_ = [[f"{x0:.16f}" for x0 in row] for row in X]
+        #debug.print("X before norm = {}", str_)
+
         self.nY = self.ep + (jnp.max(Y) - jnp.min(Y))
         self.X_normalised = X / self.nX
         self.Y_normalised = Y / self.nY

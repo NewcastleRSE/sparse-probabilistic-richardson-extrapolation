@@ -12,6 +12,8 @@
 import jax.numpy as jnp
 from jax import grad, debug
 import matplotlib.pyplot as plt
+import jax
+jax.config.update("jax_enable_x64", True)
 
 # Application modules
 from sparse_pre.SPRE import SPRE
