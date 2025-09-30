@@ -9,8 +9,10 @@
 
 # Python modules
 import jax.numpy as jnp
-import jax
-jax.config.update("jax_enable_x64", True)
+
+# Ensure 64-bit accuracy is used
+from jax import config
+config.update("jax_enable_x64", True)
 
 def cellsum(arrays : list) -> jnp.array:
     """

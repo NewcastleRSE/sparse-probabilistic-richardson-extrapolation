@@ -9,8 +9,10 @@
 # Python modules
 import jax.numpy as jnp
 from sklearn.neighbors import NearestNeighbors
-import jax
-jax.config.update("jax_enable_x64", True)
+
+# Ensure 64-bit accuracy is used
+from jax import config
+config.update("jax_enable_x64", True)
 
 # Application modules
 from sparse_pre.helper_functions import x2fx

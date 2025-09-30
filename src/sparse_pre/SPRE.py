@@ -9,15 +9,17 @@
 
 # Python modules
 import jax.numpy as jnp
-from jax import grad, debug, hessian
+from jax import grad, debug, hessian, jit
 from jaxopt import GradientDescent, BFGS, LBFGS, ScipyMinimize
 from tqdm import tqdm  # For progress bars
 from sklearn.neighbors import NearestNeighbors
 import numpy as np
 import scipy
-import jax
 from scipy.optimize import minimize
-jax.config.update("jax_enable_x64", True)
+
+# Ensure 64-bit accuracy is used
+from jax import config
+config.update("jax_enable_x64", True)
 
 # Application modules
 from sparse_pre.helper_functions import x2fx, softplus, cellsum, white, remove_row, stepwise
@@ -164,7 +166,20 @@ class SPRE:
             self.kernel_cache[f"XXs{i}"] = self.calculate_kernel_cached_bit(X, Xs) 
             self.kernel_cache[f"XsXs{i}"] = self.calculate_kernel_cached_bit(Xs, Xs)        
             self.kernel_cache[f"XsX{i}"] = self.calculate_kernel_cached_bit(Xs, X) 
-              
+
+    def clear_kernel_cache(self):
+        """
+        Clears the cache used for the kernel function.
+      
+        Parameters:  
+            None               
+        Returns:
+            None         
+        """
+
+        # Clear the cache
+        self.kernel_cache = {}
+
     def calculate_kernel_cached_bit(self, X1 : jnp.ndarray, X2 : jnp.ndarray) -> jnp.ndarray:
         """
         Calculates the appropriate parts of the kernel function which can be cached and reused depending
@@ -178,12 +193,7 @@ class SPRE:
         """
 
         match self.kernel_spec:
-            case "Gaussian":
-                
-                num = self.cdist_jax(X1, X2)
-                #if jnp.isnan(num).any():
-                #    debug.print("X1 = {},\n X2 = {},\n num = {}",X1,X2,num)
-
+            case "Gaussian":  
                 return -self.cdist_jax(X1, X2) ** 2 
             
             case "GaussianARD":                
@@ -244,8 +254,7 @@ class SPRE:
 
         # Calculate the kernel depending on the set kernel to use
         match self.kernel_spec:
-            case "Gaussian":
-                #debug.print("X1 = {},\n X2 = {},\n calc = {}",X1,X2,self.get_kernel_cached_bit(X1, X2, cache_key))
+            case "Gaussian":                
                 return (self.ep + softplus(x[0])) * jnp.exp(self.get_kernel_cached_bit(X1, X2, cache_key) / softplus(x[1])**2)
             
             case "GaussianARD":
@@ -323,8 +332,8 @@ class SPRE:
         # x = p x 1
     
         # Calculate some bits firstly    
-        K_inv = jnp.linalg.inv(self.kernel(X, X, x, cache_key = f"XX{row_num_str}"))
-        #K_inv = jnp.linalg.pinv(self.kernel(X, X, x, cache_key = f"XX{row_num_str}"))
+        #K_inv = jnp.linalg.inv(self.kernel(X, X, x, cache_key = f"XX{row_num_str}"))
+        K_inv = jnp.linalg.pinv(self.kernel(X, X, x, cache_key = f"XX{row_num_str}"))
         kernel_Xs_Xs = self.kernel(Xs, Xs, x, cache_key = f"XsXs{row_num_str}")
         kernel_X_Xs = self.kernel(X, Xs, x, cache_key = f"XXs{row_num_str}")
         
@@ -354,30 +363,11 @@ class SPRE:
         # X = n_train x d
         # Xs = n_test x d
         # x = p x 1  
-        inv_VA_T_at_K_inv_at_VA = jnp.linalg.inv(VA_T_at_K_inv @ VA)
-        #inv_VA_T_at_K_inv_at_VA = jnp.linalg.pinv(VA_T_at_K_inv @ VA, hermitian = True)
+        #inv_VA_T_at_K_inv_at_VA = jnp.linalg.inv(VA_T_at_K_inv @ VA)
+        inv_VA_T_at_K_inv_at_VA = jnp.linalg.pinv(VA_T_at_K_inv @ VA, hermitian = True)
         cov_val = (kernel_Xs_Xs
                 - kernel_Xs_X @ K_inv @ kernel_X_Xs
                 + residual_X_Xs.T @ inv_VA_T_at_K_inv_at_VA @ residual_X_Xs)
-        
-        #if return_mu_cov:
-            #debug.print("{}\n {}\n {}\n {}\n", kernel_Xs_Xs, kernel_Xs_X, K_inv, kernel_X_Xs)
-            #debug.print("{k:.10f}\n", k = self.kernel(X, X, x, cache_key = f"XX{row_num_str}"))  
-            #debug.print("x = {x:.10f}", x=x)
-            #K_mat = self.kernel(X, X, x, cache_key = f"XX{row_num_str}")
-            #str_ = [[f"{x0:.16f}" for x0 in row] for row in K_mat]
-            #str_ = [f"{x0:.16f}" for x0 in K_mat]
-            #jax.debug.print("K_mat = {}", str_)
-            #str_ = [[f"{x0:.16f}" for x0 in row] for row in X]
-            #jax.debug.print("X = {}", str_)
-
-        #print(kernel_Xs_Xs)
-        #print(kernel_Xs_X)
-        #print(K_inv)
-        #print(kernel_X_Xs)
-
-        #cov_GP = @(A,X,Xs,x) k(Xs,Xs,x) - k(Xs,X,x) * inv(k(X,X,x)) * k(X,Xs,x) ...
-        #             + r(A,X,Xs,x)' * inv( V(A,X)' * inv(k(X,X,x)) * V(A,X) ) * r(A,X,Xs,x);
         
         # Coefficient estimator, beta
         # A = m x d (sparse matrix)
@@ -397,8 +387,8 @@ class SPRE:
         # Return mu and cov instead
         if return_mu_cov:
             # Avoid numerical error giving negative values
-            #if cov_val[0][0] < 0:
-            #    cov_val = cov_val.at[0].set(0)
+            if cov_val[0][0] < 0:
+                cov_val = cov_val.at[0].set(0)
             return mu_val, cov_val
 
         diff = Ys - mu_val
@@ -443,14 +433,6 @@ class SPRE:
           
         # Data normalization   
         self.nX = self.ep + (jnp.max(X, axis=0) - jnp.min(X, axis=0))
-        
-        str_ = [f"{x0:.16f}" for x0 in self.nX]
-        str_2 = ", range = " + str((jnp.max(X, axis=0) - jnp.min(X, axis=0)))
-        #debug.print("nX = {}, range = {}", str_, str_2)
-
-        str_ = [[f"{x0:.16f}" for x0 in row] for row in X]
-        #debug.print("X before norm = {}", str_)
-
         self.nY = self.ep + (jnp.max(Y) - jnp.min(Y))
         self.X_normalised = X / self.nX
         self.Y_normalised = Y / self.nY
@@ -500,9 +482,8 @@ class SPRE:
         }
 
         # Uncomment to output info on fitting kernel parameters
-        # debug.print("cv = {}, grad = {}, x = {}", cv, gradient, x)
         # As table easy to copy and paste with neg log like and gradient
-        debug.print("{}, {}, {}, {}, {}", -cv, -gradient[0], -gradient[1], x[0], x[1]) 
+        # debug.print("{}, {}, {}, {}, {}", -cv, -gradient[0], -gradient[1], x[0], x[1]) 
 
         # Add extra ouput if requested
         if return_mu_and_var:
@@ -554,64 +535,43 @@ class SPRE:
                  cv = scalar, LOOCV criterion
         """
    
-        # Set up the cach with values to use
+        # Set up the cache with values to use
         self.set_kernel_cache()
 
-        if False:
-            # Set up the solver to use
-            #solver = GradientDescent(fun = self.objective, maxiter=1000, value_and_grad = True, stepsize=1e-3)#, tol=1e-3)
-            #solver = BFGS(fun = self.objective, maxiter=1000, value_and_grad = True)#, stepsize=1e-3)#, tol=1e-3)
-            #solver = LBFGS(fun = self.objective, maxiter=1000, value_and_grad = True)
-
-            # Define the gradient function
-            hess_function = hessian(self.cv_loss)
-
-            # Evaluate gradient at x
-            # hess = hess_function(x)
-            options = {
-                    'hess': hess_function
-            }
-            solver = ScipyMinimize(fun = self.objective, maxiter=1000, value_and_grad = True, method = 'trust-ncg', option=options)
-            # method the method argument for scipy.optimize.minimize. 
-            # Should be one of * ‘Nelder-Mead’ * ‘Powell’ * ‘CG’ * ‘BFGS’ * ‘Newton-CG’ * ‘L-BFGS-B’ * ‘TNC’ * ‘COBYLA’ *
-            #  ‘SLSQP’ * ‘trust-constr’ * ‘dogleg’ * ‘trust-ncg’ * ‘trust-exact’ * ‘trust-krylov’
-            # Fit the best hyperparameters for the kernel
-            result = solver.run(jnp.array(self.default_kernel_parameters))
-
-            # Evaluate the final LOOCV negative log likelihood result 
-            result_value, _ = self.objective(result.params)
-            result_params = result.params
-
+     
         #############################
         # JIT the full Hessian (only if dim is small)
-        if True:
-            #_hess = jax.jit(jax.hessian(self.cv_loss))
-            #_grad = jax.jit(jax.grad(self.cv_loss))
-            _hess = jax.hessian(self.cv_loss)
-            _grad = jax.grad(self.cv_loss)
+        
+        #_hess = jax.jit(jax.hessian(self.cv_loss))
+        #_grad = jax.jit(jax.grad(self.cv_loss))
+        _hess = jit(hessian(self.cv_loss))
+        _grad = jit(grad(self.cv_loss))
 
-            def scipy_hess(x_onp):
-                x_jnp = jnp.asarray(x_onp)
-                return -np.asarray(_hess(x_jnp))
+        def scipy_hess(x_onp):
+            x_jnp = jnp.asarray(x_onp)
+            return -np.asarray(_hess(x_jnp))
 
-            def scipy_fun(x_onp):
-                x_jnp = jnp.asarray(x_onp)            # numpy -> jax
-                return float(self.objective(x_jnp)[0])             # scalar float
+        def scipy_fun(x_onp):
+            x_jnp = jnp.asarray(x_onp)            # numpy -> jax
+            return float(self.objective(x_jnp)[0])             # scalar float
 
-            def scipy_jac(x_onp):                
-                x_jnp = jnp.asarray(x_onp)
-                return -np.asarray(_grad(x_jnp))     # return numpy array
+        def scipy_jac(x_onp):                
+            x_jnp = jnp.asarray(x_onp)
+            return -np.asarray(_grad(x_jnp))     # return numpy array
 
-            result = minimize(scipy_fun,
-                        self.default_kernel_parameters,
-                        method='trust-krylov',   # or 'trust-ncg' but trust-exact expects full Hessian
-                        jac=scipy_jac,
-                        hess=scipy_hess,
-                        options={'maxiter': 1000, 'disp': False})
+        result = minimize(scipy_fun,
+                    self.default_kernel_parameters,                    
+                    method='trust-krylov',   # or trust-krylov, 'trust-ncg' but trust-exact expects full Hessian
+                    jac=scipy_jac,
+                    hess=scipy_hess,
+                    options={'maxiter': 1000, 'disp': False})
 
-            result_value, _ = self.objective(result.x)
-            result_params = result.x
+        result_value, _ = self.objective(result.x)
+        result_params = result.x
         ##############################################
+
+        # Clear the cache after use
+        self.clear_kernel_cache()
 
         return {
             'x'  : result_params,
@@ -649,10 +609,8 @@ class SPRE:
         
         order = 0
         fit = self.perform_extrapolation_optimization()
-    
         cv = fit['cv']
-
-        carry_on = 0
+        carry_on = True
 
         while carry_on:
             order += 1
@@ -668,7 +626,7 @@ class SPRE:
                 fit_new = self.perform_extrapolation_optimization()
                 cv_new = fit_new['cv']
                 if cv_new < cv:
-                    to_include[i] = True
+                    to_include = to_include.at[i].set(True)
 
             if jnp.any(to_include):
                 A_updated = jnp.vstack([A, A_extra[to_include]])
@@ -688,6 +646,7 @@ class SPRE:
         x_opt = fit['x']
        
         # Final model with best kernel parameters and basis A
+        self.set_sparse_basis(A)
         out = self.perform_extrapolation(x_opt, return_mu_and_var = True)
 
         return out
@@ -705,7 +664,7 @@ class SPRE:
         """
        
         # initial rate function: only intercept
-        B = jnp.zeros((1, self.dimension), dtype=int)    
+        B = jnp.zeros((1, self.dimension), dtype=int)      
         order = 0
 
         fit = self.perform_extrapolation_optimization()
@@ -739,7 +698,7 @@ class SPRE:
                 cv_updated = fit_updated["cv"]
 
                 if cv_updated >= cv:
-                    carry_on = False
+                    carry_on = False                    
                 else:
                     fit = fit_updated
                     B = B_updated
@@ -750,7 +709,8 @@ class SPRE:
             #cwbar("done")
 
         # Final GP fit with optimal parameters
-        x_opt = fit["x"]
+        x_opt = fit["x"]       
+        self.set_kernel_spec(self.kernel_base, B)
         out = self.perform_extrapolation(x_opt, return_mu_and_var=True)
 
         return out
