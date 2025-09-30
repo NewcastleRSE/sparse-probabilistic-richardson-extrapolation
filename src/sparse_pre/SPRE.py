@@ -10,12 +10,13 @@
 # Python modules
 import jax.numpy as jnp
 from jax import grad, debug, hessian, jit
-from jaxopt import GradientDescent, BFGS, LBFGS, ScipyMinimize
+#from jaxopt import GradientDescent, BFGS, LBFGS, ScipyMinimize
 from tqdm import tqdm  # For progress bars
 from sklearn.neighbors import NearestNeighbors
 import numpy as np
 import scipy
 from scipy.optimize import minimize
+import optax
 
 # Ensure 64-bit accuracy is used
 from jax import config
@@ -52,6 +53,10 @@ class SPRE:
        
         # Set kernel cache - used to speed up calculations
         self.kernel_cache = {}
+
+        self._hess = jit(hessian(self.cv_loss))
+        self._grad = jit(grad(self.cv_loss))
+        
 
     def cdist_jax(self, XA : jnp.ndarray, XB : jnp.ndarray) -> jnp.ndarray:
         """
@@ -521,6 +526,18 @@ class SPRE:
         # Return the negative log likelihood using LOOCV with gradient
         out = self.perform_extrapolation(x)     
         return -out['cv'] , -out['cv_grad']
+
+    def scipy_hess(self, x_onp):
+        x_jnp = jnp.asarray(x_onp)
+        return -np.asarray(self._hess(x_jnp))
+
+    def scipy_fun(self, x_onp):
+        x_jnp = jnp.asarray(x_onp)            # numpy -> jax
+        return float(self.objective(x_jnp)[0])             # scalar float
+
+    def scipy_jac(self, x_onp):                
+        x_jnp = jnp.asarray(x_onp)
+        return -np.asarray(self._grad(x_jnp))     # return numpy array
         
     def perform_extrapolation_optimization(self) -> dict:
         """
@@ -538,36 +555,25 @@ class SPRE:
         # Set up the cache with values to use
         self.set_kernel_cache()
 
-     
+        #############################
+
+
         #############################
         # JIT the full Hessian (only if dim is small)
         
         #_hess = jax.jit(jax.hessian(self.cv_loss))
         #_grad = jax.jit(jax.grad(self.cv_loss))
-        _hess = jit(hessian(self.cv_loss))
-        _grad = jit(grad(self.cv_loss))
+        if True:
+            
+            result = minimize(self.scipy_fun,
+                        self.default_kernel_parameters,                    
+                        method='trust-krylov',   # or trust-krylov, 'trust-ncg' but trust-exact expects full Hessian
+                        jac=self.scipy_jac,
+                        hess=self.scipy_hess,
+                        options={'maxiter': 1000, 'disp': False})
 
-        def scipy_hess(x_onp):
-            x_jnp = jnp.asarray(x_onp)
-            return -np.asarray(_hess(x_jnp))
-
-        def scipy_fun(x_onp):
-            x_jnp = jnp.asarray(x_onp)            # numpy -> jax
-            return float(self.objective(x_jnp)[0])             # scalar float
-
-        def scipy_jac(x_onp):                
-            x_jnp = jnp.asarray(x_onp)
-            return -np.asarray(_grad(x_jnp))     # return numpy array
-
-        result = minimize(scipy_fun,
-                    self.default_kernel_parameters,                    
-                    method='trust-krylov',   # or trust-krylov, 'trust-ncg' but trust-exact expects full Hessian
-                    jac=scipy_jac,
-                    hess=scipy_hess,
-                    options={'maxiter': 1000, 'disp': False})
-
-        result_value, _ = self.objective(result.x)
-        result_params = result.x
+            result_value, _ = self.objective(result.x)
+            result_params = result.x
         ##############################################
 
         # Clear the cache after use

@@ -1,7 +1,8 @@
 numpy==2.3.1
 scikit-learn==1.7.0
-jax==0.6.2
+jax==0.7.2
 jaxopt==0.8.5
 tqdm==4.67.1
 matplotlib==3.10.3
 pandas==2.3.2
+optax==0.2.6
