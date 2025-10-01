@@ -7,9 +7,9 @@
   "X": [[1e-3, 1e-7], [5e-3, 5e-7], [5e-7, 5e-3], [1e-7, 1e-3]],
   "h_values": [0.001, 0.002, 0.003, 0.004, 0.005, 0.006, 0.007, 0.008, 0.009, 0.01],
   "final_tols": [1e-10, 1e-10],
-  "results_filename": "output_SPRE_Gaussian5.dat",
-  "results_plot_filename": "output_SPRE_Gaussian5_results.png",
-  "final_sir_plot_filename": "output_SPRE_Gaussian5_sir.png",
+  "results_filename": "output_SPRE_Gaussian5_update1.dat",
+  "results_plot_filename": "output_SPRE_Gaussian5_results_update1.png",
+  "final_sir_plot_filename": "output_SPRE_Gaussian5_sir_update1.png",
   "extrapolation_name": "SPRE",
   "extrapolation_kernel": "Gaussian"
 }

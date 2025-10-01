@@ -9,11 +9,15 @@
 
 # Python modules
 import jax.numpy as jnp
-from jax import grad, debug
-from jaxopt import GradientDescent
+from jax import grad, debug, hessian, jit
 from tqdm import tqdm  # For progress bars
 from sklearn.neighbors import NearestNeighbors
 import numpy as np
+from scipy.optimize import minimize
+
+# Ensure 64-bit accuracy is used
+from jax import config
+config.update("jax_enable_x64", True)
 
 # Application modules
 from sparse_pre.helper_functions import x2fx, softplus, cellsum, white, remove_row, stepwise
@@ -43,10 +47,7 @@ class SPRE:
 
         # Set up the kernel to use
         self.set_kernel_spec(kernel_spec, gre_base)
-       
-        # Set kernel cache - used to speed up calculations
-        self.kernel_cache = {}
-
+        
     def cdist_jax(self, XA : jnp.ndarray, XB : jnp.ndarray) -> jnp.ndarray:
         """
         Computes pairwise Euclidean distances between two sets of vectors (rows of XA and XB).
@@ -64,7 +65,10 @@ class SPRE:
         XB_sq = jnp.sum(XB ** 2, axis = 1)  # (n,)
         cross_term = jnp.dot(XA, XB.T)  # (m, n)
        
-        dists = jnp.sqrt(XA_sq - 2 * cross_term + XB_sq)
+        # Ensure no problems with negative sqrt if value is -1e16
+        nums = XA_sq - 2 * cross_term + XB_sq
+        dists = jnp.where(nums >= 0, jnp.sqrt(nums), 0.0)
+        
         return dists
 
     def set_kernel_spec(self, kernel_spec : str, gre_base : jnp.ndarray = None):
@@ -135,83 +139,6 @@ class SPRE:
             case _:
                 raise ValueError(f"Unknown kernel specification: {self.kernel_spec}")
             
-    def set_kernel_cache(self):
-        """
-        Calculates and stores values in the kernel function cache. This is used to
-        to speed up calculations of the loss.
-      
-        Parameters:  
-            None               
-        Returns:
-            None         
-        """
-
-        # Clear the cache
-        self.kernel_cache = {}
-
-        # Loop thro' each row of the data and store calculations in the cache
-        for i in range(self.X_normalised.shape[0]):
-            X = remove_row(self.X_normalised, i)           
-            Xs = self.X_normalised[i:(i+1), :]
-            self.kernel_cache[f"XX{i}"] = self.calculate_kernel_cached_bit(X, X)         
-            self.kernel_cache[f"XXs{i}"] = self.calculate_kernel_cached_bit(X, Xs) 
-            self.kernel_cache[f"XsXs{i}"] = self.calculate_kernel_cached_bit(Xs, Xs)        
-            self.kernel_cache[f"XsX{i}"] = self.calculate_kernel_cached_bit(Xs, X) 
-              
-    def calculate_kernel_cached_bit(self, X1 : jnp.ndarray, X2 : jnp.ndarray) -> jnp.ndarray:
-        """
-        Calculates the appropriate parts of the kernel function which can be cached and reused depending
-        on which kernel is being used. 
-      
-         Parameters:  
-            X1 : jnp.ndarray          First array    
-            X2 : jnp.ndarray          Second array           
-        Returns:
-            jnp.ndarray                
-        """
-
-        match self.kernel_spec:
-            case "Gaussian":
-                return -self.cdist_jax(X1, X2) ** 2 
-            
-            case "GaussianARD":                
-                return None
-            
-            case "white":
-                return white(X1, X2)
-
-            case "Matern1/2":
-                return -self.cdist_jax(X1, X2)
-
-            case "Matern3/2":
-                return jnp.sqrt(3) * self.cdist_jax(X1, X2)
-            
-            case "GRE":
-                self.kernel_spec = self.kernel_base
-                ans = self.calculate_kernel_cached_bit(X1, X2)
-                self.kernel_spec = "GRE"
-                return ans
-            case _:
-                raise ValueError(f"Unknown kernel specification: {self.kernel_spec}")
-
-    def get_kernel_cached_bit(self, X1 : jnp.ndarray, X2 : jnp.ndarray, cache_key : str) -> jnp.ndarray:
-        """
-        Returns the appropriate part of the kernel function which has been cached. 
-      
-        Parameters:  
-            X1 : jnp.ndarray          First array    
-            X2 : jnp.ndarray          Second array
-            cache_key : str           Name of the cached part to return           
-        Returns:
-            jnp.ndarray                
-        """
-
-        # Check the cached part exists and return it, if not then calculate it.
-        if cache_key is not None and cache_key in self.kernel_cache:
-            return self.kernel_cache[cache_key]   
-        else:
-            return self.calculate_kernel_cached_bit(X1, X2)
-       
     def kernel(self, X1 : jnp.ndarray, X2 : jnp.ndarray, x  : jnp.ndarray = None, cache_key : str = None) -> jnp.ndarray:
         """
         Returns the appropriate part of the kernel function which has been cached. 
@@ -232,8 +159,8 @@ class SPRE:
 
         # Calculate the kernel depending on the set kernel to use
         match self.kernel_spec:
-            case "Gaussian":
-                return (self.ep + softplus(x[0])) * jnp.exp(self.get_kernel_cached_bit(X1, X2, cache_key) / softplus(x[1])**2)
+            case "Gaussian":                
+                return (self.ep + softplus(x[0])) * jnp.exp((-self.cdist_jax(X1, X2) ** 2)/ softplus(x[1])**2)
             
             case "GaussianARD":
                 amp = self.ep + softplus(x[0])
@@ -241,14 +168,14 @@ class SPRE:
                 return amp * jnp.exp(-cellsum(lengthscales))
             
             case "white":
-                return (self.ep + softplus(x[0])) * self.get_kernel_cached_bit(X1, X2, cache_key)
+                return (self.ep + softplus(x[0])) * white(X1, X2)
 
             case "Matern1/2":
                 return (self.ep + softplus(x[0])) * jnp.exp(-self.cdist_jax(X1, X2) / softplus(x[1]))
 
             case "Matern3/2":              
                 l = softplus(x[1])
-                sqrt3_r_l = self.get_kernel_cached_bit(X1, X2, cache_key) / l
+                sqrt3_r_l = jnp.sqrt(3) * self.cdist_jax(X1, X2) / l
                 return (self.ep + softplus(x[0])) * (1 + sqrt3_r_l) * jnp.exp(-sqrt3_r_l)
             
             case "GRE":
@@ -261,7 +188,7 @@ class SPRE:
                 self.kernel_spec = "GRE"
                 return ans 
 
-    def cv_local_loss(self, x  : jnp.ndarray, row_num : int, return_mu_cov : bool = False) -> object:
+    def cv_local_loss(self, x : jnp.ndarray, row_num : int, return_mu_cov : bool = False) -> object:
         """
         Sets arrays to use for cross-validation local loss (log-likelihood of test data) and returns result.
       
@@ -295,7 +222,7 @@ class SPRE:
             Xs : jnp.ndarray          The left-out row of X  
             Ys : jnp.ndarray          The left-out row of Y
             x : jnp.ndarray           Vector of kernel hyperparameters to use when evaluating the kernel
-            row_num : int             Row number to leave out for leave-one-out cross validation.
+            row_num_str : str         Row number to leave out for leave-one-out cross validation.
             return_mu_cov : bool      Whether to return mu and cov instead of the loss    
         Returns:
             float or tuple               
@@ -310,7 +237,8 @@ class SPRE:
         # x = p x 1
     
         # Calculate some bits firstly    
-        K_inv = jnp.linalg.inv(self.kernel(X, X, x, cache_key = f"XX{row_num_str}"))
+        #K_inv = jnp.linalg.inv(self.kernel(X, X, x, cache_key = f"XX{row_num_str}"))
+        K_inv = jnp.linalg.pinv(self.kernel(X, X, x, cache_key = f"XX{row_num_str}"))
         kernel_Xs_Xs = self.kernel(Xs, Xs, x, cache_key = f"XsXs{row_num_str}")
         kernel_X_Xs = self.kernel(X, Xs, x, cache_key = f"XXs{row_num_str}")
         
@@ -375,7 +303,6 @@ class SPRE:
         
         return term1 + term2
 
-    
     def cv_loss(self, x : jnp.ndarray) -> float:
         """
         Calculate the loss (log-likelihood of test data) using leave-one-out cross validation (LOOCV).
@@ -397,7 +324,7 @@ class SPRE:
             ) for i in range(self.X_normalised.shape[0])
         )
 
-    def set_normalised_data(self, X, Y):
+    def set_normalised_data(self, X : jnp.ndarray, Y : jnp.ndarray):
         """
         Parameters:
             A : jnp.ndarray             shape (m, d), binary matrix representing the sparse basis
@@ -443,24 +370,22 @@ class SPRE:
                 - cv_grad: p x 1, gradient of LOOCV criterion
         """
     
-        # Define the gradient function
-        gradient_function = grad(self.cv_loss)
-
-        # Evaluate gradient at x
-        gradient = gradient_function(x)
-
         # Evaluate cv
         cv = self.cv_loss(x)
 
         # Output
         out = {
-            "cv": cv,
-            "cv_grad": jnp.array(gradient)
+            "cv": cv
+            #"cv_grad": jnp.array(gradient)          
         }
 
-        #debug.print("cv = {}, grad = {}, x = {}", cv, gradient, x)
+        # Uncomment to output info on fitting kernel parameters
+        # As table easy to copy and paste with neg log like and gradient    
+        #gradient_function = grad(self.cv_loss) # Define the gradient function 
+        #gradient = gradient_function(x) # Evaluate gradient at x
+        #debug.print("{}, {}, {}, {}, {}", -cv, -gradient[0], -gradient[1], x[0], x[1]) 
 
-        # Add extra ouput if requested
+        # Add extra output if requested
         if return_mu_and_var:
             # LOOCV predictions
             mu_cv = jnp.zeros(self.X_normalised.shape[0])
@@ -483,19 +408,32 @@ class SPRE:
             
         return out
 
-    def objective(self, x : jnp.ndarray) -> tuple:
+    def objective(self, x : jnp.ndarray) -> float:
         """
         Objective function used to fit the hyperparameters of the kernel.
         
         Parameters:
             x : jnp.ndarray             shape (p,), kernel hyperparameters
         Returns:
-            tuple
+            float
         """
 
         # Return the negative log likelihood using LOOCV with gradient
-        out = self.perform_extrapolation(x)        
-        return -out['cv'], -out['cv_grad']
+        out = self.jit_perform_extrapolation(x)     
+        return -out['cv'] #, -out['cv_grad']
+
+    def scipy_hess(self, x_onp):
+        x_jnp = jnp.asarray(x_onp)
+        return -np.asarray(self.jit_hess(x_jnp))
+
+    def scipy_fun(self, x_onp):
+        x_jnp = jnp.asarray(x_onp)            # numpy -> jax
+        #return float(self.objective(x_jnp))             # scalar float
+        return self.objective(x_jnp).astype(np.float64)
+
+    def scipy_jac(self, x_onp):                
+        x_jnp = jnp.asarray(x_onp)
+        return -np.asarray(self.jit_grad(x_jnp))     # return numpy array
         
     def perform_extrapolation_optimization(self) -> dict:
         """
@@ -510,20 +448,24 @@ class SPRE:
                  cv = scalar, LOOCV criterion
         """
    
-        # Set up the cach with values to use
-        self.set_kernel_cache()
+        # "Just in time" compilation to speed up the fitting.
+        # Repeated each time here as some class variables may have changed
+        self.jit_hess = jit(hessian(self.cv_loss))
+        self.jit_grad = jit(grad(self.cv_loss))
+        self.jit_perform_extrapolation = jit(self.perform_extrapolation)
 
-        # Set up the solver to use
-        solver = GradientDescent(fun = self.objective, maxiter=100, value_and_grad = True, stepsize=1e-3)#, tol=1e-3)
-        
-        # Fit the best hyperparameters for the kernel
-        result = solver.run(jnp.array(self.default_kernel_parameters))
+        result = minimize(self.scipy_fun,
+                    self.default_kernel_parameters,                    
+                    method='trust-krylov',   # trust-krylov is trust region fitting algorithm
+                    jac=self.scipy_jac,
+                    hess=self.scipy_hess,
+                    options={'maxiter': 1000, 'disp': False})
 
-        # Evaluate the final LOOCV negative log likelihood result 
-        result_value, _ = self.objective(result.params)
-
+        result_value = self.objective(result.x)
+        result_params = result.x
+       
         return {
-            'x'  : result.params,
+            'x'  : result_params,
             'cv' : result_value
         }
 
@@ -558,10 +500,8 @@ class SPRE:
         
         order = 0
         fit = self.perform_extrapolation_optimization()
-    
         cv = fit['cv']
-
-        carry_on = 0
+        carry_on = True
 
         while carry_on:
             order += 1
@@ -577,7 +517,7 @@ class SPRE:
                 fit_new = self.perform_extrapolation_optimization()
                 cv_new = fit_new['cv']
                 if cv_new < cv:
-                    to_include[i] = True
+                    to_include = to_include.at[i].set(True)
 
             if jnp.any(to_include):
                 A_updated = jnp.vstack([A, A_extra[to_include]])
@@ -597,6 +537,7 @@ class SPRE:
         x_opt = fit['x']
        
         # Final model with best kernel parameters and basis A
+        self.set_sparse_basis(A)
         out = self.perform_extrapolation(x_opt, return_mu_and_var = True)
 
         return out
@@ -614,7 +555,7 @@ class SPRE:
         """
        
         # initial rate function: only intercept
-        B = jnp.zeros((1, self.dimension), dtype=int)    
+        B = jnp.zeros((1, self.dimension), dtype=int)      
         order = 0
 
         fit = self.perform_extrapolation_optimization()
@@ -629,7 +570,7 @@ class SPRE:
             print(f"Fitting interactions of order {order}...")
 
             to_include = jnp.zeros(n_extra, dtype=bool)
-            for i in range(n_extra):
+            for i in tqdm(range(n_extra), desc="Stepwise progress"):
                 B_new = jnp.vstack([B, B_extra[i, :]])
                 self.set_kernel_spec(self.kernel_base, B_new)
                 fit_new = self.perform_extrapolation_optimization()
@@ -638,9 +579,6 @@ class SPRE:
                 if cv_new < cv:                    
                     to_include = to_include.at[i].set(True)
 
-                # Progress bar substitute
-                #cwbar((i + 1) / n_extra)
-
             if jnp.any(to_include):
                 B_updated = jnp.vstack([B, B_extra[to_include, :]])
                 self.set_kernel_spec(self.kernel_base, B_updated)
@@ -648,7 +586,7 @@ class SPRE:
                 cv_updated = fit_updated["cv"]
 
                 if cv_updated >= cv:
-                    carry_on = False
+                    carry_on = False                    
                 else:
                     fit = fit_updated
                     B = B_updated
@@ -656,10 +594,9 @@ class SPRE:
             else:
                 carry_on = False
 
-            #cwbar("done")
-
         # Final GP fit with optimal parameters
-        x_opt = fit["x"]
+        x_opt = fit["x"]       
+        self.set_kernel_spec(self.kernel_base, B)
         out = self.perform_extrapolation(x_opt, return_mu_and_var=True)
 
         return out

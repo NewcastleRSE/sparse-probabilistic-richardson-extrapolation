@@ -13,6 +13,10 @@ import jax.numpy as jnp
 from jax import grad, debug
 import matplotlib.pyplot as plt
 
+# Ensure 64-bit accuracy is used
+from jax import config
+config.update("jax_enable_x64", True)
+
 # Application modules
 from sparse_pre.SPRE import SPRE
 

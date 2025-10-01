@@ -10,6 +10,10 @@
 # Python modules
 import jax.numpy as jnp
 
+# Ensure 64-bit accuracy is used
+from jax import config
+config.update("jax_enable_x64", True)
+
 def cellsum(arrays : list) -> jnp.array:
     """
     Pointwise addition for a collection of arrays stored in a list.
