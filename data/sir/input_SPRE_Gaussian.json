@@ -7,9 +7,9 @@
   "X": [[1e-2, 1e-7], [1e-3, 1e-6], [1e-6, 1e-3], [1e-7, 1e-2]],
   "h_values": [0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.25, 1.5, 1.75, 2],
   "final_tols": [1e-8, 1e-8],
-  "results_filename": "output_SPRE_Gaussian_update1.dat",
-  "results_plot_filename": "output_SPRE_Gaussian_results_update1.png",
-  "final_sir_plot_filename": "output_SPRE_Gaussian_sir_update1.png",
+  "results_filename": "output_SPRE_Gaussian_update2.dat",
+  "results_plot_filename": "output_SPRE_Gaussian_results_update2.png",
+  "final_sir_plot_filename": "output_SPRE_Gaussian_sir_update2.png",
   "extrapolation_name": "SPRE",
   "extrapolation_kernel": "Gaussian"
 }

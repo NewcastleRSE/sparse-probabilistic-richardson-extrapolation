@@ -10,13 +10,10 @@
 # Python modules
 import jax.numpy as jnp
 from jax import grad, debug, hessian, jit
-#from jaxopt import GradientDescent, BFGS, LBFGS, ScipyMinimize
 from tqdm import tqdm  # For progress bars
 from sklearn.neighbors import NearestNeighbors
 import numpy as np
-import scipy
 from scipy.optimize import minimize
-import optax
 
 # Ensure 64-bit accuracy is used
 from jax import config
@@ -50,14 +47,7 @@ class SPRE:
 
         # Set up the kernel to use
         self.set_kernel_spec(kernel_spec, gre_base)
-       
-        # Set kernel cache - used to speed up calculations
-        self.kernel_cache = {}
-
-        self._hess = jit(hessian(self.cv_loss))
-        self._grad = jit(grad(self.cv_loss))
         
-
     def cdist_jax(self, XA : jnp.ndarray, XB : jnp.ndarray) -> jnp.ndarray:
         """
         Computes pairwise Euclidean distances between two sets of vectors (rows of XA and XB).
@@ -149,96 +139,6 @@ class SPRE:
             case _:
                 raise ValueError(f"Unknown kernel specification: {self.kernel_spec}")
             
-    def set_kernel_cache(self):
-        """
-        Calculates and stores values in the kernel function cache. This is used to
-        to speed up calculations of the loss.
-      
-        Parameters:  
-            None               
-        Returns:
-            None         
-        """
-
-        # Clear the cache
-        self.kernel_cache = {}
-
-        # Loop thro' each row of the data and store calculations in the cache
-        for i in range(self.X_normalised.shape[0]):
-            X = remove_row(self.X_normalised, i)           
-            Xs = self.X_normalised[i:(i+1), :]
-            self.kernel_cache[f"XX{i}"] = self.calculate_kernel_cached_bit(X, X)         
-            self.kernel_cache[f"XXs{i}"] = self.calculate_kernel_cached_bit(X, Xs) 
-            self.kernel_cache[f"XsXs{i}"] = self.calculate_kernel_cached_bit(Xs, Xs)        
-            self.kernel_cache[f"XsX{i}"] = self.calculate_kernel_cached_bit(Xs, X) 
-
-    def clear_kernel_cache(self):
-        """
-        Clears the cache used for the kernel function.
-      
-        Parameters:  
-            None               
-        Returns:
-            None         
-        """
-
-        # Clear the cache
-        self.kernel_cache = {}
-
-    def calculate_kernel_cached_bit(self, X1 : jnp.ndarray, X2 : jnp.ndarray) -> jnp.ndarray:
-        """
-        Calculates the appropriate parts of the kernel function which can be cached and reused depending
-        on which kernel is being used. 
-      
-         Parameters:  
-            X1 : jnp.ndarray          First array    
-            X2 : jnp.ndarray          Second array           
-        Returns:
-            jnp.ndarray                
-        """
-
-        match self.kernel_spec:
-            case "Gaussian":  
-                return -self.cdist_jax(X1, X2) ** 2 
-            
-            case "GaussianARD":                
-                return None
-            
-            case "white":
-                return white(X1, X2)
-
-            case "Matern1/2":
-                return -self.cdist_jax(X1, X2)
-
-            case "Matern3/2":
-                return jnp.sqrt(3) * self.cdist_jax(X1, X2)
-            
-            case "GRE":
-                self.kernel_spec = self.kernel_base
-                ans = self.calculate_kernel_cached_bit(X1, X2)
-                self.kernel_spec = "GRE"
-                return ans
-            case _:
-                raise ValueError(f"Unknown kernel specification: {self.kernel_spec}")
-
-    def get_kernel_cached_bit(self, X1 : jnp.ndarray, X2 : jnp.ndarray, cache_key : str) -> jnp.ndarray:
-        """
-        Returns the appropriate part of the kernel function which has been cached. 
-      
-        Parameters:  
-            X1 : jnp.ndarray          First array    
-            X2 : jnp.ndarray          Second array
-            cache_key : str           Name of the cached part to return           
-        Returns:
-            jnp.ndarray                
-        """
-    
-        # Check the cached part exists and return it, if not then calculate it.
-        if cache_key is not None and cache_key in self.kernel_cache:
-            return self.kernel_cache[cache_key]   
-        else:
-            return self.calculate_kernel_cached_bit(X1, X2)
-       
     def kernel(self, X1 : jnp.ndarray, X2 : jnp.ndarray, x  : jnp.ndarray = None, cache_key : str = None) -> jnp.ndarray:
         """
         Returns the appropriate part of the kernel function which has been cached. 
@@ -260,7 +160,7 @@ class SPRE:
         # Calculate the kernel depending on the set kernel to use
         match self.kernel_spec:
             case "Gaussian":                
-                return (self.ep + softplus(x[0])) * jnp.exp(self.get_kernel_cached_bit(X1, X2, cache_key) / softplus(x[1])**2)
+                return (self.ep + softplus(x[0])) * jnp.exp((-self.cdist_jax(X1, X2) ** 2)/ softplus(x[1])**2)
             
             case "GaussianARD":
                 amp = self.ep + softplus(x[0])
@@ -268,14 +168,14 @@ class SPRE:
                 return amp * jnp.exp(-cellsum(lengthscales))
             
             case "white":
-                return (self.ep + softplus(x[0])) * self.get_kernel_cached_bit(X1, X2, cache_key)
+                return (self.ep + softplus(x[0])) * white(X1, X2)
 
             case "Matern1/2":
                 return (self.ep + softplus(x[0])) * jnp.exp(-self.cdist_jax(X1, X2) / softplus(x[1]))
 
             case "Matern3/2":              
                 l = softplus(x[1])
-                sqrt3_r_l = self.get_kernel_cached_bit(X1, X2, cache_key) / l
+                sqrt3_r_l = jnp.sqrt(3) * self.cdist_jax(X1, X2) / l
                 return (self.ep + softplus(x[0])) * (1 + sqrt3_r_l) * jnp.exp(-sqrt3_r_l)
             
             case "GRE":
@@ -288,7 +188,7 @@ class SPRE:
                 self.kernel_spec = "GRE"
                 return ans 
 
-    def cv_local_loss(self, x  : jnp.ndarray, row_num : int, return_mu_cov : bool = False) -> object:
+    def cv_local_loss(self, x : jnp.ndarray, row_num : int, return_mu_cov : bool = False) -> object:
         """
         Sets arrays to use for cross-validation local loss (log-likelihood of test data) and returns result.
       
@@ -403,7 +303,6 @@ class SPRE:
         
         return term1 + term2
 
-    
     def cv_loss(self, x : jnp.ndarray) -> float:
         """
         Calculate the loss (log-likelihood of test data) using leave-one-out cross validation (LOOCV).
@@ -471,26 +370,22 @@ class SPRE:
                 - cv_grad: p x 1, gradient of LOOCV criterion
         """
     
-        # Define the gradient function
-        gradient_function = grad(self.cv_loss)
-
-        # Evaluate gradient at x
-        gradient = gradient_function(x)
-
         # Evaluate cv
         cv = self.cv_loss(x)
 
         # Output
         out = {
-            "cv": cv,
-            "cv_grad": jnp.array(gradient)          
+            "cv": cv
+            #"cv_grad": jnp.array(gradient)          
         }
 
         # Uncomment to output info on fitting kernel parameters
-        # As table easy to copy and paste with neg log like and gradient
-        # debug.print("{}, {}, {}, {}, {}", -cv, -gradient[0], -gradient[1], x[0], x[1]) 
+        # As table easy to copy and paste with neg log like and gradient    
+        #gradient_function = grad(self.cv_loss) # Define the gradient function 
+        #gradient = gradient_function(x) # Evaluate gradient at x
+        #debug.print("{}, {}, {}, {}, {}", -cv, -gradient[0], -gradient[1], x[0], x[1]) 
 
-        # Add extra ouput if requested
+        # Add extra output if requested
         if return_mu_and_var:
             # LOOCV predictions
             mu_cv = jnp.zeros(self.X_normalised.shape[0])
@@ -513,31 +408,32 @@ class SPRE:
             
         return out
 
-    def objective(self, x : jnp.ndarray) -> tuple:
+    def objective(self, x : jnp.ndarray) -> float:
         """
         Objective function used to fit the hyperparameters of the kernel.
         
         Parameters:
             x : jnp.ndarray             shape (p,), kernel hyperparameters
         Returns:
-            tuple
+            float
         """
 
         # Return the negative log likelihood using LOOCV with gradient
-        out = self.perform_extrapolation(x)     
-        return -out['cv'] , -out['cv_grad']
+        out = self.jit_perform_extrapolation(x)     
+        return -out['cv'] #, -out['cv_grad']
 
     def scipy_hess(self, x_onp):
         x_jnp = jnp.asarray(x_onp)
-        return -np.asarray(self._hess(x_jnp))
+        return -np.asarray(self.jit_hess(x_jnp))
 
     def scipy_fun(self, x_onp):
         x_jnp = jnp.asarray(x_onp)            # numpy -> jax
-        return float(self.objective(x_jnp)[0])             # scalar float
+        #return float(self.objective(x_jnp))             # scalar float
+        return self.objective(x_jnp).astype(np.float64)
 
     def scipy_jac(self, x_onp):                
         x_jnp = jnp.asarray(x_onp)
-        return -np.asarray(self._grad(x_jnp))     # return numpy array
+        return -np.asarray(self.jit_grad(x_jnp))     # return numpy array
         
     def perform_extrapolation_optimization(self) -> dict:
         """
@@ -552,33 +448,22 @@ class SPRE:
                  cv = scalar, LOOCV criterion
         """
    
-        # Set up the cache with values to use
-        self.set_kernel_cache()
+        # "Just in time" compilation to speed up the fitting.
+        # Repeated each time here as some class variables may have changed
+        self.jit_hess = jit(hessian(self.cv_loss))
+        self.jit_grad = jit(grad(self.cv_loss))
+        self.jit_perform_extrapolation = jit(self.perform_extrapolation)
 
-        #############################
+        result = minimize(self.scipy_fun,
+                    self.default_kernel_parameters,                    
+                    method='trust-krylov',   # trust-krylov is trust region fitting algorithm
+                    jac=self.scipy_jac,
+                    hess=self.scipy_hess,
+                    options={'maxiter': 1000, 'disp': False})
 
-
-        #############################
-        # JIT the full Hessian (only if dim is small)
-        
-        #_hess = jax.jit(jax.hessian(self.cv_loss))
-        #_grad = jax.jit(jax.grad(self.cv_loss))
-        if True:
-            
-            result = minimize(self.scipy_fun,
-                        self.default_kernel_parameters,                    
-                        method='trust-krylov',   # or trust-krylov, 'trust-ncg' but trust-exact expects full Hessian
-                        jac=self.scipy_jac,
-                        hess=self.scipy_hess,
-                        options={'maxiter': 1000, 'disp': False})
-
-            result_value, _ = self.objective(result.x)
-            result_params = result.x
-        ##############################################
-
-        # Clear the cache after use
-        self.clear_kernel_cache()
-
+        result_value = self.objective(result.x)
+        result_params = result.x
+       
         return {
             'x'  : result_params,
             'cv' : result_value
@@ -685,7 +570,7 @@ class SPRE:
             print(f"Fitting interactions of order {order}...")
 
             to_include = jnp.zeros(n_extra, dtype=bool)
-            for i in range(n_extra):
+            for i in tqdm(range(n_extra), desc="Stepwise progress"):
                 B_new = jnp.vstack([B, B_extra[i, :]])
                 self.set_kernel_spec(self.kernel_base, B_new)
                 fit_new = self.perform_extrapolation_optimization()
@@ -693,9 +578,6 @@ class SPRE:
 
                 if cv_new < cv:                    
                     to_include = to_include.at[i].set(True)
-
-                # Progress bar substitute
-                #cwbar((i + 1) / n_extra)
 
             if jnp.any(to_include):
                 B_updated = jnp.vstack([B, B_extra[to_include, :]])
@@ -711,8 +593,6 @@ class SPRE:
                     cv = cv_updated
             else:
                 carry_on = False
-
-            #cwbar("done")
 
         # Final GP fit with optimal parameters
         x_opt = fit["x"]       
