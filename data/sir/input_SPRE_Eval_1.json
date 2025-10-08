@@ -1,0 +1,16 @@
+{
+  "N": 1000,
+  "beta": 0.3,
+  "gamma": 0.1,
+  "initial_infected": 1,
+  "total_time": 120,
+  "evaluation": true,
+  "X": [1, 2, 3, 4, 5],
+  "h_values": [0.01, 0.1],
+  "final_tols": [1e-8],
+  "results_filename": "output_SPRE_Gaussian_eval_1.dat",
+  "results_plot_filename": "output_SPRE_Gaussian_eval_1.png",
+  "final_sir_plot_filename": "",
+  "extrapolation_name": "SPRE",
+  "extrapolation_kernel": "Gaussian"
+}

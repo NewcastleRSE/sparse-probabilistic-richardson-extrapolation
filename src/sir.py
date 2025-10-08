@@ -43,7 +43,8 @@ def sir_model(t : float, y : tuple, beta : float, gamma : float, N : int) -> tup
 
 def run_sir_model(diff_tol : float = 1e-8, integrate_tol : float = 1e-8,
                    N : int = 1000, beta: float = 0.3, gamma : float = 0.1,
-                   initial_infected : int = 1, total_time : float = 120, plot_filename : str = ""):
+                   initial_infected : int = 1, total_time : float = 120,
+                  plot_filename : str = "", evaluation : bool = False):
     """
     Runs SIR model and saves results    
     """
@@ -95,20 +96,24 @@ def run_sir_model(diff_tol : float = 1e-8, integrate_tol : float = 1e-8,
         plt.savefig(plot_filename)  
         plt.show()
 
-    # -----------------------------
-    # Tolerance-controlled integral of I(t)
-    # -----------------------------
-    # Interpolate I(t) for smooth integration
-    I_interp = interp1d(t, I, kind='cubic', fill_value="extrapolate")
+    if evaluation:
+        # Return number of recovered on last day
+        return R[-1]
+    else:
+        # -----------------------------
+        # Tolerance-controlled integral of I(t)
+        # -----------------------------
+        # Interpolate I(t) for smooth integration
+        I_interp = interp1d(t, I, kind='cubic', fill_value="extrapolate")
 
-    # Integrate I(t) using adaptive quadrature (quad)
-    infected_person_days, err = quad(I_interp, t_span[0], t_span[1], epsrel=integrate_tol)
+        # Integrate I(t) using adaptive quadrature (quad)
+        infected_person_days, err = quad(I_interp, t_span[0], t_span[1], epsrel=integrate_tol)
 
-    print(f"Estimate using R(120)/gamma is {R[-1]/gamma}\n")
+        print(f"Estimate using R(120)/gamma is {R[-1]/gamma}\n")
 
-    # Return the total number of "person-days of infection"
-    # Indicates the burden on a helathcare system
-    return infected_person_days
+        # Return the total number of "person-days of infection"
+        # Indicates the burden on a helathcare system
+        return infected_person_days
 
 # ----------------------------------------------------------
 # Read in parameters and options for running SPRE with various tolerences
@@ -138,6 +143,12 @@ X = params["X"]
 h_values = params["h_values"]
 final_tols = params["final_tols"]
 
+# Check if running evalution of SPRE method
+if "evaluation" in params.keys():
+    evaluation = params["evaluation"]
+else:
+    evaluation = False
+
 # Files to save results
 def add_path(path, filename):
     new_filename = ""
@@ -151,7 +162,6 @@ final_sir_plot_filename = add_path(write_dir, params["final_sir_plot_filename"])
 
 # Values to try
 X = np.array(X)
-
 
 # Apply SPRE
 # Define options
@@ -171,7 +181,11 @@ for i, h in enumerate(h_values):
 
     # Get results
     for x in X:
-        y = run_sir_model(h * x[0], h * x[1], N, beta, gamma, initial_infected, total_time)
+        if evaluation:
+            y = run_sir_model(h * x, 0, N, beta, gamma, initial_infected, total_time, evaluation = evaluation)
+        else:
+            y = run_sir_model(h * x[0], h * x[1], N, beta, gamma, initial_infected, total_time)
+
         Y = np.append(Y, y)
 
     #print(f"X = {X}")
@@ -208,7 +222,10 @@ if results_filename:
     # Write to file with tab separation
     df.to_csv(results_filename, sep="\t", index=False)
 
-if results_plot_filename:
+if evaluation:
+    pass
+
+if not evaluation and results_plot_filename:
     # Calculate error bars (standard deviation = sqrt(var))
     errors = np.sqrt(df["var"])
 
