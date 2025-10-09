@@ -1,9 +1,10 @@
 ##############################################################################
-# SIR model used as an example for the SPRE method
-# Susceptible, Infectious (or Infected) and Recovered (or Removed)
+# This model describes a fast chemical or biochemical equilibrium in which one substance (x(t))
+#  instantaneously adjusts to a slowly changing external condition (represented by time (t)),
+#  while another quantity (y(t)) is produced from (x) through a simple stoichiometric relationship. 
 #
 # From root directory, for example run
-# python .\src\sir.py .\data\sir\input_1.json
+# python .\chem_equil\sir.py .\data\chem_equil\input_1.json
 #
 # Richard Howey, July 2025 - April 2026
 ##############################################################################
@@ -21,27 +22,24 @@ import pandas as pd
 # Application modules
 from sparse_pre.extrapolation import extrapolation
 
-def sir_model(t : float, y : tuple, beta : float, gamma : float, N : int) -> tuple:
+def chem_equil_model(t : float, vals : tuple) -> tuple:
     """
-    SIR model differential equations. Returns current gradients of S, I and R
+    Chemical equilibrium model. Returns current gradients of x and y
 
     Parameters:  
         t : float            Current time
-        y : tuple            Current values of S, I and R stored as a tuple
-        beta : float         Infection rate parameter
-        gamma : float        Recovery rate parameter
-        N : int              Total population size
+        vals : tuple         Current values of x1 and x2 R stored as a tuple
     Returns:
         tuple                Current gradients of S, I and R
     """
 
-    S, I, R = y
-    dSdt = -beta * S * I / N
-    dIdt = beta * S * I / N - gamma * I
-    dRdt = gamma * I
-    return (dSdt, dIdt, dRdt)
+    x1, x2 = vals
+    dx1dt = 0.5/x1
+    dx2dt = 1.5*x1
+   
+    return (dx1dt, dx2dt)
 
-def run_sir_model(diff_tol : float = 1e-8, integrate_tol : float = 1e-8,
+def run_chem_equil_model(diff_tol : float = 1e-8, integrate_tol : float = 1e-8,
                    N : int = 1000, beta: float = 0.3, gamma : float = 0.1,
                    initial_infected : int = 1, total_time : float = 120,
                   plot_filename : str = "", evaluation : bool = False):
