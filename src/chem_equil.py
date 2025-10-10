@@ -39,19 +39,17 @@ def chem_equil_model(t : float, vals : tuple) -> tuple:
    
     return (dx1dt, dx2dt)
 
-def run_chem_equil_model(diff_tol : float = 1e-8, integrate_tol : float = 1e-8,
-                   N : int = 1000, beta: float = 0.3, gamma : float = 0.1,
-                   initial_infected : int = 1, total_time : float = 120,
+def run_chem_equil_model(diff_tol : float = 1e-8, 
+                  total_time : float = 120,
                   plot_filename : str = "", evaluation : bool = False):
     """
-    Runs SIR model and saves results    
+    Runs model for fast chemical equilibrium with time-varying forcing    
     """
    
     
-    S0 = N - initial_infected
-    I0 = initial_infected
-    R0 = 0
-    y0 = [S0, I0, R0]
+    x1_0 = 1
+    x2_0 = 1
+    y0 = [x1_0, x2_0]
 
     # Time span to evalute the SIR model
     t_span = (0, total_time)
@@ -61,19 +59,19 @@ def run_chem_equil_model(diff_tol : float = 1e-8, integrate_tol : float = 1e-8,
     t_eval = np.linspace(*t_span, number_of_points)
 
     # -----------------------------
-    # Solve SIR system together
+    # Solve system together
     # -----------------------------
     sol = solve_ivp(
-        fun=sir_model,
+        fun=chem_equil_model,
         t_span=t_span,
         y0=y0,
-        args=(beta, gamma, N),
+        args=None,
         t_eval=t_eval,
         method='RK45',
         rtol=diff_tol  
     )
 
-    S, I, R = sol.y
+    x1, x2 = sol.y
     t = sol.t
 
     if plot_filename:
@@ -82,36 +80,22 @@ def run_chem_equil_model(diff_tol : float = 1e-8, integrate_tol : float = 1e-8,
         # -----------------------------
         plt.close('all') 
         plt.figure(figsize=(10, 6))
-        plt.plot(t, S, label='Susceptible')
-        plt.plot(t, I, label='Infected')
-        plt.plot(t, R, label='Recovered')
-        plt.xlabel('Time (days)')
-        plt.ylabel('Population')
-        plt.title('SIR Model')
+        plt.plot(t, x1, label='intermediate species')
+        plt.plot(t, x2, label='product species')
+      
+        plt.xlabel('time')
+        plt.ylabel('concentration')
+        plt.title('Fast Chemical Equilibrium with Time-Varying Forcing')
         plt.legend()
         plt.grid()
         plt.tight_layout()
         plt.savefig(plot_filename)  
         plt.show()
 
-    if evaluation:
-        # Return number of recovered on last day
-        return R[-1]
-    else:
-        # -----------------------------
-        # Tolerance-controlled integral of I(t)
-        # -----------------------------
-        # Interpolate I(t) for smooth integration
-        I_interp = interp1d(t, I, kind='cubic', fill_value="extrapolate")
-
-        # Integrate I(t) using adaptive quadrature (quad)
-        infected_person_days, err = quad(I_interp, t_span[0], t_span[1], epsrel=integrate_tol)
-
-        print(f"Estimate using R(120)/gamma is {R[-1]/gamma}\n")
-
-        # Return the total number of "person-days of infection"
-        # Indicates the burden on a helathcare system
-        return infected_person_days
+    
+    # Return final product species
+    return x2[-1]
+   
 
 # ----------------------------------------------------------
 # Read in parameters and options for running SPRE with various tolerences
@@ -126,16 +110,6 @@ with open(parameter_filename) as f:
 # Get the directory of the input file
 write_dir = os.path.dirname(parameter_filename)
 
-# Total indviduals
-N = params["N"]
-
-# Infection rate
-beta = params["beta"]
-
-# Recovery rate
-gamma = params["gamma"]
-
-initial_infected = params["initial_infected"]
 total_time = params["total_time"]
 X = params["X"]
 h_values = params["h_values"]
@@ -156,10 +130,10 @@ def add_path(path, filename):
 
 results_filename = add_path(write_dir, params["results_filename"])
 results_plot_filename = add_path(write_dir, params["results_plot_filename"])
-final_sir_plot_filename = add_path(write_dir, params["final_sir_plot_filename"])
+final_model_plot_filename = add_path(write_dir, params["final_model_plot_filename"])
 
 do_results_plot = params["results_plot_filename"] != ""
-do_final_sir_plot = params["final_sir_plot_filename"] != ""
+do_final_model_plot = params["final_model_plot_filename"] != ""
 
 if evaluation:
     results_eval_filename = add_path(write_dir, params["results_eval_filename"])
@@ -167,8 +141,9 @@ if evaluation:
     do_results_eval_plot = params["results_eval_plot_filename"] != ""
 
 # Get "true" value by using very small time step
-if final_tols is not None:
-    y_accurate = run_sir_model(final_tols[0], 0 if evaluation else final_tols[1], N, beta, gamma, initial_infected, total_time, plot_filename = "", evaluation = evaluation)
+#if final_tols is not None:
+# y_accurate = run_chem_equil_model(final_tols[0], total_time, plot_filename = "", evaluation = evaluation)
+y_accurate = np.pow(total_time + 1, 3/2)
 
 # Values to try
 X = np.array(X)
@@ -192,9 +167,9 @@ for i, h in enumerate(h_values):
     # Get results
     for x in X:
         if evaluation:
-            y = run_sir_model(h * x, 0, N, beta, gamma, initial_infected, total_time, evaluation = evaluation)
+            y = run_chem_equil_model(h * x, total_time, evaluation = evaluation)
         else:
-            y = run_sir_model(h * x[0], h * x[1], N, beta, gamma, initial_infected, total_time)
+            y = run_chem_equil_model(h * x[0], total_time)
 
         Y = np.append(Y, y)
 
@@ -203,7 +178,7 @@ for i, h in enumerate(h_values):
  
     # Assume extrapolation is a defined function returning a dict with 'mu' and 'var'
     if do_results_plot:
-        options["plot_filename"] = results_plot_filename.replace(".png", f"_LOOCV_{i}.png").replace("sir\\", "sir\\loocv_plots\\")
+        options["plot_filename"] = results_plot_filename.replace(".png", f"_LOOCV_{i}.png").replace("chem_equil\\", "chem_equil\\loocv_plots\\")
 
     out = extrapolation(X, Y, options)
     print(f"Predict f(0) = {out['mu'][0]} +/- {np.sqrt(out['var'][0][0])}\n")
@@ -268,6 +243,8 @@ if evaluation:
         plt.figure()
         plt.plot(df_abs["h"], df_abs["abs_err_best_estimate"], marker='o', linestyle='solid', linewidth=2, markersize=12, label="best estimate")
         plt.plot(df_abs["h"], df_abs["abs_err_spre_estimate"], marker='o', linestyle='solid', linewidth=2, markersize=12, label="SPRE estimate")
+        plt.xscale('log')
+        plt.yscale('log')
         plt.xlabel("time step size")
         plt.ylabel("absolute error")
         plt.title("Absolute Errors of f(0) Estimates")
@@ -303,8 +280,8 @@ else:
         plt.show()
 
 
-if do_final_sir_plot:
-    _ = run_sir_model(final_tols[0], final_tols[1], N, beta, gamma, initial_infected, total_time, plot_filename = final_sir_plot_filename)
+if do_final_model_plot:
+    _ = run_chem_equil_model(final_tols[0], total_time, plot_filename = final_model_plot_filename)
 
 
 

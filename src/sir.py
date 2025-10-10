@@ -270,6 +270,8 @@ if evaluation:
         plt.figure()
         plt.plot(df_abs["h"], df_abs["abs_err_best_estimate"], marker='o', linestyle='solid', linewidth=2, markersize=12, label="best estimate")
         plt.plot(df_abs["h"], df_abs["abs_err_spre_estimate"], marker='o', linestyle='solid', linewidth=2, markersize=12, label="SPRE estimate")
+        plt.xscale('log')
+        plt.yscale('log')
         plt.xlabel("time step size")
         plt.ylabel("absolute error")
         plt.title("Absolute Errors of f(0) Estimates")
