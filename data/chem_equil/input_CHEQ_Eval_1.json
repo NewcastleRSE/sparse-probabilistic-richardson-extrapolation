@@ -9,6 +9,7 @@
   "results_eval_plot_filename": "output_CHEQ_abs_errors_eval_1.png",
   "results_plot_filename": "output_CHEQ_eval_1.png",
   "final_model_plot_filename": "output_CHEQ_plot_eval_1.png",
+  "results_f0_filename": "output_CHEQ_f0_eval_1.dat",
   "extrapolation_name": "SPRE",
   "extrapolation_kernel": "Gaussian"
 }

@@ -4,7 +4,7 @@
 #  while another quantity (y(t)) is produced from (x) through a simple stoichiometric relationship. 
 #
 # From root directory, for example run
-# python .\chem_equil\sir.py .\data\chem_equil\input_1.json
+# python .\src\chem_equil.py .\data\chem_equil\input_CHEQ_Eval_1.json
 #
 # Richard Howey, July 2025 - April 2026
 ##############################################################################
@@ -131,12 +131,14 @@ def add_path(path, filename):
 results_filename = add_path(write_dir, params["results_filename"])
 results_plot_filename = add_path(write_dir, params["results_plot_filename"])
 final_model_plot_filename = add_path(write_dir, params["final_model_plot_filename"])
+results_plot_filename = add_path(write_dir, params["results_plot_filename"])
 
 do_results_plot = params["results_plot_filename"] != ""
 do_final_model_plot = params["final_model_plot_filename"] != ""
 
 if evaluation:
     results_eval_filename = add_path(write_dir, params["results_eval_filename"])
+    results_fx_filename = add_path(write_dir, params["results_fx_filename"])
     results_eval_plot_filename = add_path(write_dir, params["results_eval_plot_filename"])
     do_results_eval_plot = params["results_eval_plot_filename"] != ""
 
@@ -199,14 +201,15 @@ for i, h in enumerate(h_values):
     if evaluation:
         # Create row of results for absolute error table
         # h, true_value, best_estimate, spre_estimate, abs_err_best_estimate, abs_err_spre_estimate
+        # Also record results for f(0) for all values of x in X, given in Y
         table_row = np.array([h, y_accurate, Y[0], out['mu'][0], np.abs(y_accurate - Y[0]), np.abs(y_accurate - out['mu'][0])])
 
         if i == 0:
             abs_error_table = np.matrix(table_row)
+            fx_table = np.matrix(Y)
         else:
             abs_error_table = np.vstack((abs_error_table, table_row))
-
-
+            fx_table = np.vstack((fx_table, Y))
 
 # Create dataframe of results
 number_of_x = X.shape[0]
@@ -252,6 +255,12 @@ if evaluation:
         plt.legend()
         plt.savefig(results_eval_plot_filename) 
         plt.show()
+
+    # Write f(0) results to file
+    if results_fx_filename:
+        # Write to file with tab separation
+        df_fx = pd.DataFrame(fx_table)
+        df_fx.to_csv(results_fx_filename, sep="\t", index=False, columns=None)
 
 else:
     if do_results_plot:
