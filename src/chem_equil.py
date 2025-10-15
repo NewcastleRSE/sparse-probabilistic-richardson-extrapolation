@@ -67,8 +67,10 @@ def run_chem_equil_model(diff_tol : float = 1e-8,
         y0=y0,
         args=None,
         t_eval=t_eval,
-        method='RK45',
-        rtol=diff_tol  
+        #method='RK45',
+        #rtol=diff_tol  
+        method='LSODA',
+        min_step=diff_tol
     )
 
     x1, x2 = sol.y
