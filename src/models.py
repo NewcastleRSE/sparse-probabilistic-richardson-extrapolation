@@ -9,6 +9,7 @@ import numpy as np
 import numpy.typing as npt
 import json
 import os
+from pathlib import Path
 import pandas as pd
 from scipy.integrate import solve_ivp, quad
 from scipy.interpolate import interp1d
@@ -78,7 +79,7 @@ class Model:
         
         # Get the directory of the input file
         write_dir = os.path.dirname(parameter_filename)
-
+  
         self.results_filename = self.add_path(write_dir, self.results_filename)
         self.results_plot_filename = self.add_path(write_dir, self.results_plot_filename)
         self.final_model_plot_filename = self.add_path(write_dir, self.final_model_plot_filename)
@@ -123,7 +124,7 @@ class Model:
         self.diff_solution = sol
 
         return self.get_final_quantity(discrete_paras)
-
+     
     def run_analysis(self):
              
         # Values to try
@@ -151,8 +152,14 @@ class Model:
                 Y = np.append(Y, y)
 
             # Assume extrapolation is a defined function returning a dict with 'mu' and 'var'
-            if self.do_results_plot:
-                options["plot_filename"] = self.results_plot_filename.replace(".png", f"_LOOCV_{i}.png").replace("chem_equil\\", "chem_equil\\loocv_plots\\")
+            if self.do_results_plot: 
+                filepath = Path(self.results_plot_filename.replace(".png", f"_LOOCV_{i}.png"))
+                # Add LOOCV directory if it does not exist
+                loocv_filepath = filepath.parent / "loocv_plots"
+                loocv_filepath.mkdir(parents=True, exist_ok=True)
+                # Save result in LOOCV directory
+                new_filepath = filepath.parent / "loocv_plots" / filepath.name              
+                options["plot_filename"] = new_filepath
 
             out = extrapolation(X, Y, options)
             print(f"Predict f(0) = {out['mu'][0]} +/- {np.sqrt(out['var'][0][0])}\n")
