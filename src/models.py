@@ -119,6 +119,10 @@ class Model:
             t_eval=t_eval,
             method='RK45',
             rtol=discrete_paras[0]
+            #method='LSODA',
+            #min_step=discrete_paras[0],
+            #max_step=discrete_paras[0],
+            #initial_step=discrete_paras[0]
         )
 
         self.diff_solution = sol

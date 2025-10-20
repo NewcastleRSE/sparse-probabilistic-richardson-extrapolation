@@ -2,7 +2,7 @@
   "total_time": 100,
   "evaluation": true,
   "X": [[1], [2], [3]],
-  "h_values": [1e-8, 1e-7, 1e-6, 1e-5, 1e-4, 1e-3],
+  "h_values": [1e-15, 1e-14, 1e-13, 1e-12, 1e-11, 1e-10, 1e-9, 1e-8, 1e-7, 1e-6, 1e-5, 1e-4, 1e-3],
   "final_tols": [1e-8],
   "results_filename": "output_CHEQ_LSODA_5.dat",
   "results_eval_filename": "output_CHEQ_abs_errors_LSODA_5.dat",
