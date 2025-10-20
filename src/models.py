@@ -14,6 +14,7 @@ import pandas as pd
 from scipy.integrate import solve_ivp, quad
 from scipy.interpolate import interp1d
 import matplotlib.pyplot as plt
+from pde import CartesianGrid, DiffusionPDE, ScalarField
 
 # Application modules
 from sparse_pre.extrapolation import extrapolation
@@ -425,3 +426,70 @@ class ChemEquilModel(Model):
         x1, x2 = self.diff_solution.y
         # Return final product species
         return x2[-1]
+
+class DiffusionModel(Model):
+    """
+    Diffusion equation on a Cartesian grid
+    """
+    def __init__(self, params, parameter_filename):
+        # Call Parent’s constructor to set parameters
+        super().__init__(params, parameter_filename)
+
+        # Set initial SIR model
+        self.model_name = "Diffusion"
+       
+    def run_model(self, discrete_paras):
+        
+        num_x_partitions = self.grid[0] # * discrete_paras[0] #np.round(1.0/discrete_paras[0])
+        num_y_partitions = self.grid[1] # * discrete_paras[0] #np.round(1.0/discrete_paras[1])
+        dt = self.time_step# / discrete_paras[0]
+
+        # Span of x and y, number of divisions in each dimension
+        grid = CartesianGrid([self.x_range, self.y_range], [num_x_partitions, num_y_partitions])  # generate grid
+        state = ScalarField(grid)  # generate initial condition
+        state.insert(self.start_pos, self.start_amount)
+
+        eq = DiffusionPDE(self.diffusivity)  # define the pde
+        self.result = eq.solve(state, t_range=[0, self.total_time], dt=discrete_paras[0])
+
+        return self.get_final_quantity(discrete_paras)
+
+    def plot_diff_solution(self):
+        self.result.plot(cmap="magma")
+        plt.savefig(self.results_eval_plot_filename) 
+
+    def set_true_value(self):
+        # Get corner value
+        self.true_value = self.diffusion_solution_2d(-1, -1, self.total_time) 
+
+    def get_final_quantity(self, discrete_paras : npt.NDArray) -> float:
+        
+        # Return final product species in corner
+        return self.result.data[0, 0]   
+    
+    def diffusion_solution_2d(self, x, y, t):
+        """
+        Analytic solution of the 2D diffusion equation for a point-source initial condition.
+
+        Parameters
+        ----------
+        x, y : array_like or float
+            Spatial coordinates (can be scalars or NumPy arrays of the same shape).
+        t : float
+            Time at which to evaluate the solution (must be > 0).
+      
+        Returns
+        -------
+        c : ndarray or float
+            Concentration value(s) at position (x, y) and time t.
+        """
+
+        x = np.asarray(x)
+        y = np.asarray(y)
+        if t <= 0:
+            raise ValueError("Time t must be positive for the analytic solution.")
+        
+        r2 = (x - self.start_pos[0])**2 + (y - self.start_pos[1])**2
+        prefactor = 1.0 / (4 * np.pi * self.diffusivity * t)
+        exponent = -r2 / (4 * self.diffusivity * t)
+        return prefactor * np.exp(exponent)
