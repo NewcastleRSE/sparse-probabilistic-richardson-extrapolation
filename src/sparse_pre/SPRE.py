@@ -90,6 +90,7 @@ class SPRE:
         if gre_base is None:
             # Create kernal function
             self.kernel_spec = kernel_spec
+            self.kernel_base = None
             
         else: 
             # Compatability layer for GRE 
@@ -111,7 +112,7 @@ class SPRE:
         Returns:
             None         
         """
-
+       
         # Set default parameters
         match self.kernel_spec:
             case "Gaussian":
@@ -139,15 +140,14 @@ class SPRE:
             case _:
                 raise ValueError(f"Unknown kernel specification: {self.kernel_spec}")
             
-    def kernel(self, X1 : jnp.ndarray, X2 : jnp.ndarray, x  : jnp.ndarray = None, cache_key : str = None) -> jnp.ndarray:
+    def kernel(self, X1 : jnp.ndarray, X2 : jnp.ndarray, x  : jnp.ndarray = None) -> jnp.ndarray:
         """
-        Returns the appropriate part of the kernel function which has been cached. 
+        Returns evalution of the kernel function. 
       
         Parameters:  
             X1 : jnp.ndarray          First array    
             X2 : jnp.ndarray          Second array
             x : jnp.ndarray           Vector of kernel hyperparameters to use when evaluating the kernel
-            cache_key : str           Name of the cached part to use, if any  
                  
         Returns:
             jnp.ndarray                
@@ -184,7 +184,7 @@ class SPRE:
                 base_X1 = jnp.sum(x2fx(X1, self.gre_base), axis=1)
                 base_X2 = jnp.sum(x2fx(X2, self.gre_base), axis=1)
                 self.kernel_spec = self.kernel_base
-                ans = amp * base_X1[:, None] * self.kernel(X1, X2, x = x[1:], cache_key = cache_key) * base_X2[None, :]
+                ans = amp * base_X1[:, None] * self.kernel(X1, X2, x = x[1:]) * base_X2[None, :]
                 self.kernel_spec = "GRE"
                 return ans 
 
@@ -237,16 +237,16 @@ class SPRE:
         # x = p x 1
     
         # Calculate some bits firstly    
-        #K_inv = jnp.linalg.inv(self.kernel(X, X, x, cache_key = f"XX{row_num_str}"))
-        K_inv = jnp.linalg.pinv(self.kernel(X, X, x, cache_key = f"XX{row_num_str}"))
-        kernel_Xs_Xs = self.kernel(Xs, Xs, x, cache_key = f"XsXs{row_num_str}")
-        kernel_X_Xs = self.kernel(X, Xs, x, cache_key = f"XXs{row_num_str}")
+        #K_inv = jnp.linalg.inv(self.kernel(X, X, x))
+        K_inv = jnp.linalg.pinv(self.kernel(X, X, x))
+        kernel_Xs_Xs = self.kernel(Xs, Xs, x)
+        kernel_X_Xs = self.kernel(X, Xs, x)
         
         # For most kernels kernel_Xs_X and kernel_X_Xs are the same
         if self.kernel_spec != "GRE":            
             kernel_Xs_X = kernel_X_Xs.T 
         else:
-            kernel_Xs_X = self.kernel(Xs, X, x, cache_key = f"XsX{row_num_str}")
+            kernel_Xs_X = self.kernel(Xs, X, x)
 
         # Basis functions
         # A = m x d (sparse matrix)
@@ -495,7 +495,7 @@ class SPRE:
         self.set_sparse_basis(A)
 
         # Handle selection differently if doing GRE
-        if self.gre_base is not None:
+        if self.kernel_base is not None:
             return self._GRE_stepwise_selection()
         
         order = 0

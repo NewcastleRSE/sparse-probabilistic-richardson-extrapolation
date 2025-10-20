@@ -1,9 +1,10 @@
 ##############################################################################
-# SIR model used as an example for the SPRE method
-# Susceptible, Infectious (or Infected) and Recovered (or Removed)
+# This model describes a fast chemical or biochemical equilibrium in which one substance (x(t))
+#  instantaneously adjusts to a slowly changing external condition (represented by time (t)),
+#  while another quantity (y(t)) is produced from (x) through a simple stoichiometric relationship. 
 #
 # From root directory, for example run
-# python .\src\sir.py .\data\sir\input_1.json
+# python .\src\chem_equil.py .\data\chem_equil\input_CHEQ_Eval_1.json
 #
 # Richard Howey, July 2025 - April 2026
 ##############################################################################
@@ -21,39 +22,34 @@ import pandas as pd
 # Application modules
 from sparse_pre.extrapolation import extrapolation
 
-def sir_model(t : float, y : tuple, beta : float, gamma : float, N : int) -> tuple:
+def chem_equil_model(t : float, vals : tuple) -> tuple:
     """
-    SIR model differential equations. Returns current gradients of S, I and R
+    Chemical equilibrium model. Returns current gradients of x and y
 
     Parameters:  
         t : float            Current time
-        y : tuple            Current values of S, I and R stored as a tuple
-        beta : float         Infection rate parameter
-        gamma : float        Recovery rate parameter
-        N : int              Total population size
+        vals : tuple         Current values of x1 and x2 R stored as a tuple
     Returns:
         tuple                Current gradients of S, I and R
     """
 
-    S, I, R = y
-    dSdt = -beta * S * I / N
-    dIdt = beta * S * I / N - gamma * I
-    dRdt = gamma * I
-    return (dSdt, dIdt, dRdt)
+    x1, x2 = vals
+    dx1dt = 0.5/x1
+    dx2dt = 1.5*x1
+   
+    return (dx1dt, dx2dt)
 
-def run_sir_model(diff_tol : float = 1e-8, integrate_tol : float = 1e-8,
-                   N : int = 1000, beta: float = 0.3, gamma : float = 0.1,
-                   initial_infected : int = 1, total_time : float = 120,
+def run_chem_equil_model(diff_tol : float = 1e-8, 
+                  total_time : float = 120,
                   plot_filename : str = "", evaluation : bool = False):
     """
-    Runs SIR model and saves results    
+    Runs model for fast chemical equilibrium with time-varying forcing    
     """
    
     
-    S0 = N - initial_infected
-    I0 = initial_infected
-    R0 = 0
-    y0 = [S0, I0, R0]
+    x1_0 = 1
+    x2_0 = 1
+    y0 = [x1_0, x2_0]
 
     # Time span to evalute the SIR model
     t_span = (0, total_time)
@@ -63,19 +59,21 @@ def run_sir_model(diff_tol : float = 1e-8, integrate_tol : float = 1e-8,
     t_eval = np.linspace(*t_span, number_of_points)
 
     # -----------------------------
-    # Solve SIR system together
+    # Solve system together
     # -----------------------------
     sol = solve_ivp(
-        fun=sir_model,
+        fun=chem_equil_model,
         t_span=t_span,
         y0=y0,
-        args=(beta, gamma, N),
+        args=None,
         t_eval=t_eval,
-        method='RK45',
-        rtol=diff_tol  
+        #method='RK45',
+        #rtol=diff_tol  
+        method='LSODA',
+        min_step=diff_tol
     )
 
-    S, I, R = sol.y
+    x1, x2 = sol.y
     t = sol.t
 
     if plot_filename:
@@ -84,36 +82,22 @@ def run_sir_model(diff_tol : float = 1e-8, integrate_tol : float = 1e-8,
         # -----------------------------
         plt.close('all') 
         plt.figure(figsize=(10, 6))
-        plt.plot(t, S, label='Susceptible')
-        plt.plot(t, I, label='Infected')
-        plt.plot(t, R, label='Recovered')
-        plt.xlabel('Time (days)')
-        plt.ylabel('Population')
-        plt.title('SIR Model')
+        plt.plot(t, x1, label='intermediate species')
+        plt.plot(t, x2, label='product species')
+      
+        plt.xlabel('time')
+        plt.ylabel('concentration')
+        plt.title('Fast Chemical Equilibrium with Time-Varying Forcing')
         plt.legend()
         plt.grid()
         plt.tight_layout()
         plt.savefig(plot_filename)  
         plt.show()
 
-    if evaluation:
-        # Return number of recovered on last day
-        return R[-1]
-    else:
-        # -----------------------------
-        # Tolerance-controlled integral of I(t)
-        # -----------------------------
-        # Interpolate I(t) for smooth integration
-        I_interp = interp1d(t, I, kind='cubic', fill_value="extrapolate")
-
-        # Integrate I(t) using adaptive quadrature (quad)
-        infected_person_days, err = quad(I_interp, t_span[0], t_span[1], epsrel=integrate_tol)
-
-        print(f"Estimate using R(120)/gamma is {R[-1]/gamma}\n")
-
-        # Return the total number of "person-days of infection"
-        # Indicates the burden on a helathcare system
-        return infected_person_days
+    
+    # Return final product species
+    return x2[-1]
+   
 
 # ----------------------------------------------------------
 # Read in parameters and options for running SPRE with various tolerences
@@ -128,16 +112,6 @@ with open(parameter_filename) as f:
 # Get the directory of the input file
 write_dir = os.path.dirname(parameter_filename)
 
-# Total indviduals
-N = params["N"]
-
-# Infection rate
-beta = params["beta"]
-
-# Recovery rate
-gamma = params["gamma"]
-
-initial_infected = params["initial_infected"]
 total_time = params["total_time"]
 X = params["X"]
 h_values = params["h_values"]
@@ -158,19 +132,22 @@ def add_path(path, filename):
 
 results_filename = add_path(write_dir, params["results_filename"])
 results_plot_filename = add_path(write_dir, params["results_plot_filename"])
-final_sir_plot_filename = add_path(write_dir, params["final_sir_plot_filename"])
+final_model_plot_filename = add_path(write_dir, params["final_model_plot_filename"])
+results_plot_filename = add_path(write_dir, params["results_plot_filename"])
 
 do_results_plot = params["results_plot_filename"] != ""
-do_final_sir_plot = params["final_sir_plot_filename"] != ""
+do_final_model_plot = params["final_model_plot_filename"] != ""
 
 if evaluation:
     results_eval_filename = add_path(write_dir, params["results_eval_filename"])
+    results_fx_filename = add_path(write_dir, params["results_fx_filename"])
     results_eval_plot_filename = add_path(write_dir, params["results_eval_plot_filename"])
     do_results_eval_plot = params["results_eval_plot_filename"] != ""
 
 # Get "true" value by using very small time step
-if final_tols is not None:
-    y_accurate = run_sir_model(final_tols[0], 0 if evaluation else final_tols[1], N, beta, gamma, initial_infected, total_time, plot_filename = "", evaluation = evaluation)
+#if final_tols is not None:
+# y_accurate = run_chem_equil_model(final_tols[0], total_time, plot_filename = "", evaluation = evaluation)
+y_accurate = np.pow(total_time + 1, 3/2)
 
 # Values to try
 X = np.array(X)
@@ -194,9 +171,9 @@ for i, h in enumerate(h_values):
     # Get results
     for x in X:
         if evaluation:
-            y = run_sir_model(h * x, 0, N, beta, gamma, initial_infected, total_time, evaluation = evaluation)
+            y = run_chem_equil_model(h * x, total_time, evaluation = evaluation)
         else:
-            y = run_sir_model(h * x[0], h * x[1], N, beta, gamma, initial_infected, total_time)
+            y = run_chem_equil_model(h * x[0], total_time)
 
         Y = np.append(Y, y)
 
@@ -205,7 +182,7 @@ for i, h in enumerate(h_values):
  
     # Assume extrapolation is a defined function returning a dict with 'mu' and 'var'
     if do_results_plot:
-        options["plot_filename"] = results_plot_filename.replace(".png", f"_LOOCV_{i}.png").replace("sir\\", "sir\\loocv_plots\\")
+        options["plot_filename"] = results_plot_filename.replace(".png", f"_LOOCV_{i}.png").replace("chem_equil\\", "chem_equil\\loocv_plots\\")
 
     out = extrapolation(X, Y, options)
     print(f"Predict f(0) = {out['mu'][0]} +/- {np.sqrt(out['var'][0][0])}\n")
@@ -226,14 +203,15 @@ for i, h in enumerate(h_values):
     if evaluation:
         # Create row of results for absolute error table
         # h, true_value, best_estimate, spre_estimate, abs_err_best_estimate, abs_err_spre_estimate
+        # Also record results for f(0) for all values of x in X, given in Y
         table_row = np.array([h, y_accurate, Y[0], out['mu'][0], np.abs(y_accurate - Y[0]), np.abs(y_accurate - out['mu'][0])])
 
         if i == 0:
             abs_error_table = np.matrix(table_row)
+            fx_table = np.matrix(Y)
         else:
             abs_error_table = np.vstack((abs_error_table, table_row))
-
-
+            fx_table = np.vstack((fx_table, Y))
 
 # Create dataframe of results
 number_of_x = X.shape[0]
@@ -280,6 +258,12 @@ if evaluation:
         plt.savefig(results_eval_plot_filename) 
         plt.show()
 
+    # Write f(0) results to file
+    if results_fx_filename:
+        # Write to file with tab separation
+        df_fx = pd.DataFrame(fx_table)
+        df_fx.to_csv(results_fx_filename, sep="\t", index=False, columns=None)
+
 else:
     if do_results_plot:
         # Calculate error bars (standard deviation = sqrt(var))
@@ -307,8 +291,8 @@ else:
         plt.show()
 
 
-if do_final_sir_plot:
-    _ = run_sir_model(final_tols[0], final_tols[1], N, beta, gamma, initial_infected, total_time, plot_filename = final_sir_plot_filename)
+if do_final_model_plot:
+    _ = run_chem_equil_model(final_tols[0], total_time, plot_filename = final_model_plot_filename)
 
 
 

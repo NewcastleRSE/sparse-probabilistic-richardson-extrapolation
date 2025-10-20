@@ -2,10 +2,9 @@
 .venv/
 .venv2/
 *.env
+loocv_plots/
+
 __pycache__
-data/sir/loocv_plots/
-data/sir/*.png
-data/sir/*.dat
 
 # MacOS
 .DS_Store

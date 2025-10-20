@@ -82,32 +82,25 @@ def stepwise(A : jnp.array, order : int) -> jnp.array:
     out = jnp.unique(expanded.reshape(-1, d), axis=0)
     return out
 
-def white(X1, X2):
+def white(X1: jnp.ndarray, X2: jnp.ndarray) -> jnp.ndarray:
     """
-    White noise kernel.
+    White noise kernel (JIT-friendly, no Python loops or dynamic shapes).
 
     Parameters:
-        X1 : jnp.array
-            of shape (n1, d)
-        X2 : jnp.array
-            of shape (n2, d)
+        X1 : jnp.ndarray of shape (n1, d)
+        X2 : jnp.ndarray of shape (n2, d)
 
     Returns:
-        jnp.array
-            of shape (n1, n2)
+        jnp.ndarray of shape (n1, n2)
     """
-    n1 = X1.shape[0]
-    n2 = X2.shape[0]
+    # Compare all pairs of rows between X1 and X2
+    # X1[:, None, :] shape -> (n1, 1, d)
+    # X2[None, :, :] shape -> (1, n2, d)
+    # Broadcasting gives (n1, n2, d)
+    eq = jnp.all(X1[:, None, :] == X2[None, :, :], axis=-1)
 
-    out = jnp.zeros((n1, n2))
-
-    # Loop thro' each row in X1 and check where it appears in X2 if anywhere
-    # out[i, j] = 1 indicates that row i in X1 is the same as row j in X2
-    for row in range(n1):
-        matching_rows = jnp.where((X2 == X1[row,:]).all(axis = 1))
-        out = out.at[row, matching_rows].set(1)
-
-    return out
+    # Convert boolean to float (1.0 for equal rows, 0.0 otherwise)
+    return eq.astype(X1.dtype)
 
 def x2fx(X : jnp.array, A : jnp.array) -> jnp.array:
     """
