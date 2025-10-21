@@ -100,7 +100,7 @@ class Model:
         """
         Runs model by solving diff equations   
         """
-     
+
         y0 = self.get_initial_condition()
       
         # Time span to evalute the model
@@ -149,11 +149,14 @@ class Model:
         for i, h in enumerate(self.h_values):
             # Results, Y is model output
             Y = np.array([])
-            extrapolation_results = []
+            if isinstance(h, (list, tuple)):
+                extrapolation_results = h.copy()
+            else:
+                extrapolation_results = [h]
 
             # Get results
             for x in X:                                            
-                y = self.run_model(h * x)
+                y = self.run_model(np.array(h) * np.array(x))
                 Y = np.append(Y, y)
 
             # Assume extrapolation is a defined function returning a dict with 'mu' and 'var'
@@ -169,7 +172,7 @@ class Model:
             out = extrapolation(X, Y, options)
             print(f"Predict f(0) = {out['mu'][0]} +/- {np.sqrt(out['var'][0][0])}\n")
             
-            extrapolation_results.extend([h, out['mu'][0], out['var'][0][0]])
+            extrapolation_results.extend([out['mu'][0], out['var'][0][0]])
 
             # Append results for each point
             extrapolation_results.extend(out['mu_cv'])
@@ -185,7 +188,12 @@ class Model:
             if self.evaluation:
                 # Create row of results for absolute error table
                 # h, true_value, best_estimate, spre_estimate, abs_err_best_estimate, abs_err_spre_estimate
-                table_row = np.array([h, self.true_value, Y[0], out['mu'][0], np.abs(self.true_value - Y[0]), np.abs(self.true_value - out['mu'][0])])
+                if isinstance(h, (list, tuple)):
+                    table_row = h.copy()
+                else:
+                    table_row = [h]
+
+                table_row.extend(np.array([self.true_value, Y[0], out['mu'][0], np.abs(self.true_value - Y[0]), np.abs(self.true_value - out['mu'][0])]))
 
                 if i == 0:
                     self.abs_error_table = np.matrix(table_row)
@@ -194,7 +202,13 @@ class Model:
 
             # Create dataframe of results
             number_of_x = X.shape[0]
-            header = ["h", "mu", "var"] + [f"mu_cv{n}" for n in range(1, number_of_x + 1)] + [f"var_cv{n}" for n in range(1, number_of_x + 1)]
+
+            if not isinstance(h, (list, tuple)):
+                header = ["h"]
+            else:
+                header = [f"h{i+1}" for i in range(len(h))]
+
+            header += ["mu", "var"] + [f"mu_cv{n}" for n in range(1, number_of_x + 1)] + [f"var_cv{n}" for n in range(1, number_of_x + 1)]
   
             # Create DataFrame
             self.df_all_extrapolation_results = pd.DataFrame(all_extrapolation_results, columns=header)
@@ -242,14 +256,17 @@ class Model:
 
     def plot_diff_solution(self):
 
+        # Get model output to plot
+        self.final_solution = self.run_model(self.final_tols)
+
         # -----------------------------
         # Plot Results
         # -----------------------------
         plt.close('all') 
         plt.figure(figsize=(10, 6))
-        for i, y in enumerate(self.diff_solution.y):
+        for i, y in enumerate(self.final_solution.y):
             variable_label = self.solution_labels[i] if len(self.solution_labels[i]) > i else ''
-            plt.plot(self.diff_solution.t, y, label=variable_label)
+            plt.plot(self.final_solution.t, y, label=variable_label)
            
         plt.xlabel(self.xlabel)
         plt.ylabel(self.ylabel)
@@ -269,7 +286,12 @@ class Model:
         #abs_error_table = np.vstack((all_extrapolation_results, extrapolation_results))
 
         # Create DataFrame
-        abs_header = ["h", "true_value", "best_estimate", "spre_estimate", "abs_err_best_estimate", "abs_err_spre_estimate"]
+        if not isinstance(self.h_values[0], (list, tuple)):
+            abs_header = ["h"]
+        else:
+            abs_header = [f"h{i+1}" for i in range(len(self.h_values[0]))]
+            
+        abs_header += ["true_value", "best_estimate", "spre_estimate", "abs_err_best_estimate", "abs_err_spre_estimate"]
         df_abs = pd.DataFrame(self.abs_error_table, columns=abs_header)
 
         # Write results to file
@@ -282,11 +304,11 @@ class Model:
 
             plt.close('all') 
             plt.figure()
-            plt.plot(df_abs["h"], df_abs["abs_err_best_estimate"], marker='o', linestyle='solid', linewidth=2, markersize=12, label="best estimate")
-            plt.plot(df_abs["h"], df_abs["abs_err_spre_estimate"], marker='o', linestyle='solid', linewidth=2, markersize=12, label="SPRE estimate")
+            plt.plot(df_abs[abs_header[0]], df_abs["abs_err_best_estimate"], marker='o', linestyle='solid', linewidth=2, markersize=12, label="best estimate")
+            plt.plot(df_abs[abs_header[0]], df_abs["abs_err_spre_estimate"], marker='o', linestyle='solid', linewidth=2, markersize=12, label="SPRE estimate")
             plt.xscale('log')
             plt.yscale('log')
-            plt.xlabel("discretization parameter")
+            plt.xlabel("first discretization parameter")
             plt.ylabel("absolute error")
             plt.title("Absolute Errors of f(0) Estimates")
             plt.grid(True)
@@ -440,21 +462,25 @@ class DiffusionModel(Model):
        
     def run_model(self, discrete_paras):
         
-        num_x_partitions = self.grid[0] # * discrete_paras[0] #np.round(1.0/discrete_paras[0])
-        num_y_partitions = self.grid[1] # * discrete_paras[0] #np.round(1.0/discrete_paras[1])
-        dt = self.time_step# / discrete_paras[0]
-
+        dt = discrete_paras[0]
+        num_x_partitions = discrete_paras[1] #np.round(1.0/discrete_paras[0])
+        num_y_partitions = discrete_paras[2] # * discrete_paras[0] #np.round(1.0/discrete_paras[1])
+        
         # Span of x and y, number of divisions in each dimension
         grid = CartesianGrid([self.x_range, self.y_range], [num_x_partitions, num_y_partitions])  # generate grid
         state = ScalarField(grid)  # generate initial condition
         state.insert(self.start_pos, self.start_amount)
 
         eq = DiffusionPDE(self.diffusivity)  # define the pde
-        self.result = eq.solve(state, t_range=[0, self.total_time], dt=discrete_paras[0])
+        self.result = eq.solve(state, t_range=[0, self.total_time], dt=dt)
 
         return self.get_final_quantity(discrete_paras)
 
     def plot_diff_solution(self):
+        # Get model output to plot
+        self.final_solution = self.run_model(self.final_tols)
+
+        # Use result from solver to plot result
         self.result.plot(cmap="magma")
         plt.savefig(self.results_eval_plot_filename) 
 
