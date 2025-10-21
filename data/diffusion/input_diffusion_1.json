@@ -10,13 +10,14 @@
   "X": [[1, 1, 1], [2, 0.5, 0.5], [4, 0.25, 0.25]],
   "h_values": [[1e-6, 128, 128], [1e-5, 64, 64], [1e-4, 32, 32], [1e-3, 16, 16]],
 
-  "final_tols": [1e-3, 32, 32],
+  "final_tols": [1e-6, 128, 128],
   "evaluation": true,
   "results_filename": "output_diffusion_1.dat",
   "results_eval_filename": "output_diffusion_abs_errors_eval_1.dat",
   "results_eval_plot_filename": "output_diffusion_abs_errors_eval_1.png",
   "results_plot_filename": "output_diffusion_eval_1.png",
   "final_model_plot_filename": "output_diffusion_plot_eval_1.png",
+  "final_mp4_filename": "output_diffusion_1.mp4",
   "results_fx_filename": "output_diffusion_fx_eval_1.dat",
   "extrapolation_name": "SPRE",
   "extrapolation_kernel": "Gaussian"

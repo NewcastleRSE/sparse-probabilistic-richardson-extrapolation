@@ -319,10 +319,9 @@ class SPRETestCase(unittest.TestCase):
         spre = SPRE("Gaussian", A.shape[1])
 
         # Set data
-        spre.set_sparse_basis(A)
         spre.set_normalised_data(X, Y)
 
-        result = spre.perform_extrapolation(x, return_mu_and_var=True)
+        result = spre.perform_extrapolation(x, A, return_mu_and_var=True)
       
         ans = { "mu": 2.972029043308896,
                 "var": 1.863371223464479,
@@ -349,10 +348,9 @@ class SPRETestCase(unittest.TestCase):
     
         # Test 2
         A = jnp.array([[0, 0], [0, 1], [1, 1], [2, 0]])
-        spre.set_sparse_basis(A)
         x = [0.5, 0.5]
     
-        result = spre.perform_extrapolation(x, return_mu_and_var=True)
+        result = spre.perform_extrapolation(x, A, return_mu_and_var=True)
       
         ans = { "mu": 3.120814707169809,
                 "var": 1.765226199913399,
@@ -376,8 +374,7 @@ class SPRETestCase(unittest.TestCase):
 
         # Test 3
         A = jnp.array([[0, 0]])
-        spre.set_sparse_basis(A)
-        result = spre.perform_extrapolation(x, return_mu_and_var=True)
+        result = spre.perform_extrapolation(x, A, return_mu_and_var=True)
         ans = { "mu": 3.581399043938413,
                 "var": 0.442290292657649,
                 "mu_GP": "@(Xs)nY*mu_GP(A,Xn,Yn,Xs./nX,x)",
@@ -416,8 +413,7 @@ class SPRETestCase(unittest.TestCase):
         spre.set_normalised_data(X, Y)
         # Test 3
         
-        spre.set_sparse_basis(A)
-        result = spre.perform_extrapolation(x, return_mu_and_var=True)
+        result = spre.perform_extrapolation(x, A, return_mu_and_var=True)
        
         ans = {"mu": 3.010569826795539,
                 "var": 4.291200850578709e-04,
@@ -466,10 +462,9 @@ class SPRETestCase(unittest.TestCase):
         spre = SPRE("Gaussian", A.shape[1])
 
         # Set data
-        spre.set_sparse_basis(A)
         spre.set_normalised_data(X, Y)
 
-        result = spre.perform_extrapolation_optimization()
+        result = spre.perform_extrapolation_optimization(A)
 
         print("Results expected to be slightly different as there are different local minima\n")
         print("Fitting 1\n")
@@ -480,8 +475,7 @@ class SPRETestCase(unittest.TestCase):
         # Test 2  
         print("Fitting 2\n")
         A = jnp.array([[0, 0]])
-        spre.set_sparse_basis(A)
-        result = spre.perform_extrapolation_optimization()
+        result = spre.perform_extrapolation_optimization(A)
         print(result)
         ans = {"x": jnp.array([1.371196330289256, 4.692309800011492]),
               "cv": -10.289692577682663
@@ -517,10 +511,9 @@ class SPRETestCase(unittest.TestCase):
         spre = SPRE("Gaussian", A.shape[1])
 
         # Set data
-        spre.set_sparse_basis(A)
         spre.set_normalised_data(X, Y)
 
-        result = spre.perform_extrapolation_optimization()
+        result = spre.perform_extrapolation_optimization(A)
 
         #print(result)
         to_show = ['x', 'cv']
@@ -553,10 +546,9 @@ class SPRETestCase(unittest.TestCase):
         spre = SPRE("Gaussian", A.shape[1])
 
         # Set data
-        spre.set_sparse_basis(A)
         spre.set_normalised_data(X, Y)
 
-        result = spre.perform_extrapolation_optimization()
+        result = spre.perform_extrapolation_optimization(A)
 
         to_show = ['x', 'cv']
         for field in to_show:
@@ -660,9 +652,8 @@ class SPRETestCase(unittest.TestCase):
 
         # Set data
         spre.set_normalised_data(X, Y)
-        spre.set_sparse_basis(A)
 
-        result = spre.perform_extrapolation(x, return_mu_and_var=True)
+        result = spre.perform_extrapolation(x, A, return_mu_and_var=True)
 
         ans = { "mu": 3.257507326688007,
                 "var": 2.172222509848281,

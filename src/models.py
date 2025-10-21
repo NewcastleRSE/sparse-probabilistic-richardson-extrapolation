@@ -14,7 +14,7 @@ import pandas as pd
 from scipy.integrate import solve_ivp, quad
 from scipy.interpolate import interp1d
 import matplotlib.pyplot as plt
-from pde import CartesianGrid, DiffusionPDE, ScalarField
+from pde import CartesianGrid, DiffusionPDE, ScalarField, PlotTracker
 
 # Application modules
 from sparse_pre.extrapolation import extrapolation
@@ -68,6 +68,9 @@ class Model:
 
         if "final_model_plot_filename" not in parameters.keys():
             self.final_model_plot_filename = None
+        
+        if "final_mp4_filename" not in parameters.keys():
+            self.final_mp4_filename = None
 
     # Files to save results
     def add_path(self, path : str, filename : str):
@@ -84,6 +87,7 @@ class Model:
         self.results_filename = self.add_path(write_dir, self.results_filename)
         self.results_plot_filename = self.add_path(write_dir, self.results_plot_filename)
         self.final_model_plot_filename = self.add_path(write_dir, self.final_model_plot_filename)
+        self.final_mp4_filename = self.add_path(write_dir, self.final_mp4_filename)
 
         self.do_results_plot = self.results_plot_filename != ""
         self.do_final_model_plot = self.final_model_plot_filename != ""
@@ -256,17 +260,14 @@ class Model:
 
     def plot_diff_solution(self):
 
-        # Get model output to plot
-        self.final_solution = self.run_model(self.final_tols)
-
         # -----------------------------
         # Plot Results
         # -----------------------------
         plt.close('all') 
         plt.figure(figsize=(10, 6))
-        for i, y in enumerate(self.final_solution.y):
+        for i, y in enumerate(self.diff_solution.y):
             variable_label = self.solution_labels[i] if len(self.solution_labels[i]) > i else ''
-            plt.plot(self.final_solution.t, y, label=variable_label)
+            plt.plot(self.diff_solution.t, y, label=variable_label)
            
         plt.xlabel(self.xlabel)
         plt.ylabel(self.ylabel)
@@ -478,11 +479,52 @@ class DiffusionModel(Model):
 
     def plot_diff_solution(self):
         # Get model output to plot
-        self.final_solution = self.run_model(self.final_tols)
+        _ = self.run_model(self.final_tols)
 
         # Use result from solver to plot result
-        self.result.plot(cmap="magma")
-        plt.savefig(self.results_eval_plot_filename) 
+        plot_ref= self.result.plot(cmap="magma")
+      
+        # Save file
+        if self.final_model_plot_filename: 
+            # get the Matplotlib figure
+            # Safely get the figure (works across versions)
+            if hasattr(plot_ref, "get_figure"):
+                fig = plot_ref.get_figure()
+            elif hasattr(plot_ref, "ax"):
+                fig = plot_ref.ax.figure
+            elif hasattr(plot_ref, "axes"):
+                fig = plot_ref.axes[0].figure
+            else:
+                raise AttributeError("Could not find figure in PlotReference")
+  
+            fig.savefig(self.final_model_plot_filename)
+
+        if self.final_mp4_filename:
+            self.record_mp4()
+
+    def record_mp4(self):
+        # Save animataion
+        dt = self.final_tols[0]
+        num_x_partitions = self.final_tols[1] #np.round(1.0/discrete_paras[0])
+        num_y_partitions = self.final_tols[2] # * discrete_paras[0] #np.round(1.0/discrete_paras[1])
+        
+        # Span of x and y, number of divisions in each dimension
+        grid = CartesianGrid([self.x_range, self.y_range], [num_x_partitions, num_y_partitions])  # generate grid
+        state = ScalarField(grid)  # generate initial condition
+        state.insert(self.start_pos, self.start_amount)
+
+        eq = DiffusionPDE(self.diffusivity)  # define the pde
+
+        # Save the animation
+        tracker = PlotTracker(
+            interrupts=1,
+            movie=self.final_mp4_filename,      # specify the movie filename here
+            plot_args={"cmap": "magma"},        # optional additional plot args
+            show=False
+        )
+
+        eq.solve(state, t_range=[0, self.total_time], dt=dt, tracker=tracker)
+        
 
     def set_true_value(self):
         # Get corner value
