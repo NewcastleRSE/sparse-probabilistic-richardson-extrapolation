@@ -531,10 +531,10 @@ class SPRE:
                     to_include = to_include.at[i].set(True)
 
             if jnp.any(to_include):
-                A_updated = jnp.vstack([A, A_extra[to_include]])              
+                A_updated = jnp.vstack([A, A_extra[to_include]])                          
                 fit_updated = self.perform_extrapolation_optimization(A_updated, do_jit)
                 cv_updated = fit_updated['cv']
-                if cv_updated >= cv:
+                if cv_updated >= cv:             
                     carry_on = False
                 else:
                     A = A_updated

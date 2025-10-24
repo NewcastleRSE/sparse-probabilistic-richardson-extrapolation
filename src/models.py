@@ -172,7 +172,7 @@ class Model:
                 # Save result in LOOCV directory
                 new_filepath = filepath.parent / "loocv_plots" / filepath.name              
                 options["plot_filename"] = new_filepath
-
+            
             out = extrapolation(X, Y, options)
             print(f"Predict f(0) = {out['mu'][0]} +/- {np.sqrt(out['var'][0][0])}\n")
             
@@ -482,7 +482,7 @@ class DiffusionModel(Model):
         _ = self.run_model(self.final_tols)
 
         # Use result from solver to plot result
-        plot_ref= self.result.plot(cmap="magma")
+        plot_ref = self.result.plot(cmap="magma")
       
         # Save file
         if self.final_model_plot_filename: 
@@ -517,12 +517,15 @@ class DiffusionModel(Model):
 
         # Save the animation
         tracker = PlotTracker(
-            interrupts=1,
+            title="Diffusion",
+            interrupts=0.01,
             movie=self.final_mp4_filename,      # specify the movie filename here
-            plot_args={"cmap": "magma"},        # optional additional plot args
-            show=False
+            plot_args={"cmap": "magma", "vmin": 0, "vmax": 1},        # optional additional plot args
+            show=False,
+            max_fps=20
         )
 
+        # seconds = num_frames / fps = (total_time / interupts) / fps = (100 / 1) / 20 = 100 / 20 = 5 
         eq.solve(state, t_range=[0, self.total_time], dt=dt, tracker=tracker)
         
 

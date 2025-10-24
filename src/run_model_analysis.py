@@ -26,9 +26,3 @@ model = models.get_model(parameter_filename)
 
 # Run the analysis
 model.run_analysis()
-
-
-
-
-
-
