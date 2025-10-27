@@ -295,6 +295,14 @@ class Model:
         abs_header += ["true_value", "best_estimate", "spre_estimate", "abs_err_best_estimate", "abs_err_spre_estimate"]
         df_abs = pd.DataFrame(self.abs_error_table, columns=abs_header)
 
+        # Get x coordinate values to plot against
+        x_vals = df_abs[abs_header[0]]
+        x_lab = "first discretization parameter"
+        if hasattr(self, "eval_plot_type"):
+            if self.eval_plot_type == 2:
+                x_vals = 2.0/df_abs[abs_header[2]]  
+                x_lab = "grid spacing"          
+
         # Write results to file
         if self.results_eval_filename:
             # Write to file with tab separation
@@ -305,11 +313,11 @@ class Model:
 
             plt.close('all') 
             plt.figure()
-            plt.plot(df_abs[abs_header[0]], df_abs["abs_err_best_estimate"], marker='o', linestyle='solid', linewidth=2, markersize=12, label="best estimate")
-            plt.plot(df_abs[abs_header[0]], df_abs["abs_err_spre_estimate"], marker='o', linestyle='solid', linewidth=2, markersize=12, label="SPRE estimate")
+            plt.plot(x_vals, df_abs["abs_err_best_estimate"], marker='o', linestyle='solid', linewidth=2, markersize=12, label="best estimate")
+            plt.plot(x_vals, df_abs["abs_err_spre_estimate"], marker='o', linestyle='solid', linewidth=2, markersize=12, label="SPRE estimate")
             plt.xscale('log')
             plt.yscale('log')
-            plt.xlabel("first discretization parameter")
+            plt.xlabel(x_lab)
             plt.ylabel("absolute error")
             plt.title("Absolute Errors of f(0) Estimates")
             plt.grid(True)
@@ -473,7 +481,7 @@ class DiffusionModel(Model):
         state.insert(self.start_pos, self.start_amount)
 
         eq = DiffusionPDE(self.diffusivity)  # define the pde
-        self.result = eq.solve(state, t_range=[0, self.total_time], dt=dt)
+        self.result = eq.solve(state, t_range=[0, self.total_time], dt=dt, tracker=None)
 
         return self.get_final_quantity(discrete_paras)
 

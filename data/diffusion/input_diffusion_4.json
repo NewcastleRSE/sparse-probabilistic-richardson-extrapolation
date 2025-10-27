@@ -1,0 +1,24 @@
+{
+  "model_name": "diffusion",
+  "diffusivity": 0.1,
+  "x_range": [-1, 1],
+  "y_range": [-1, 1],
+  "total_time": 1,
+  "start_pos": [0, 0], 
+  "start_amount": 1,
+  
+  "X": [[1, 1, 1], [2, 0.5, 0.5], [4, 0.25, 0.25]],
+  "h_values": [[1e-4, 128, 128], [1e-4, 128, 128], [1e-4, 128, 128], [1e-4, 128, 128], [1e-4, 128, 128], [1e-4, 128, 128], [1e-4, 128, 128], [1e-4, 128, 128]],
+
+  "final_tols": [1e-6, 32, 32],
+  "evaluation": true,
+  "results_filename": "output_diffusion_4.dat",
+  "results_eval_filename": "output_diffusion_abs_errors_eval_4.dat",
+  "results_eval_plot_filename": "",
+  "results_plot_filename": "",
+  "final_model_plot_filename": "",
+  "final_mp4_filename": "",
+  "results_fx_filename": "output_diffusion_fx_eval_4.dat",
+  "extrapolation_name": "SPRE",
+  "extrapolation_kernel": "Gaussian"
+}
