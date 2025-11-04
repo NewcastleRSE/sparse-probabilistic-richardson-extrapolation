@@ -159,8 +159,10 @@ class Model:
                 extrapolation_results = [h]
 
             # Get results
-            for x in X:                                            
-                y = self.run_model(np.array(h) * np.array(x))
+            for x in X:     
+                discrete_parameters = np.array(h) * np.array(x)   
+                print(f"Simulating model \"{self.model_name}\" with parameters {discrete_parameters}")                                    
+                y = self.run_model(discrete_parameters)
                 Y = np.append(Y, y)
 
             # Assume extrapolation is a defined function returning a dict with 'mu' and 'var'
@@ -297,7 +299,7 @@ class Model:
 
         # Get x coordinate values to plot against
         x_vals = df_abs[abs_header[0]]
-        x_lab = "first discretization parameter"
+        x_lab = "h"
         if hasattr(self, "eval_plot_type"):
             if self.eval_plot_type == 2:
                 x_vals = 2.0/df_abs[abs_header[2]]  
@@ -472,9 +474,11 @@ class DiffusionModel(Model):
     def run_model(self, discrete_paras):
         
         dt = discrete_paras[0]
-        num_x_partitions = discrete_paras[1] #np.round(1.0/discrete_paras[0])
-        num_y_partitions = discrete_paras[2] # * discrete_paras[0] #np.round(1.0/discrete_paras[1])
+        num_x_partitions = int(np.round(abs(self.x_range[1] - self.x_range[0])/discrete_paras[1]))
+        num_y_partitions = int(np.round(abs(self.y_range[1] - self.y_range[0])/discrete_paras[2]))
         
+        # Ouput info on what is being simulated
+        print(f"\tSimulating Diffusion Model with dt = {dt}, {num_x_partitions} x partitions and {num_y_partitions} y partitions")
         # Span of x and y, number of divisions in each dimension
         grid = CartesianGrid([self.x_range, self.y_range], [num_x_partitions, num_y_partitions])  # generate grid
         state = ScalarField(grid)  # generate initial condition
