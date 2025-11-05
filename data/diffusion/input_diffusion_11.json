@@ -13,13 +13,13 @@
   "final_tols": [1e-4, 0.125, 0.125],
   "evaluation": true,
  
-  "results_filename": "output_diffusion_12.dat",
-  "results_eval_filename": "output_diffusion_abs_errors_eval_12.dat",
-  "results_eval_plot_filename": "output_diffusion_abs_errors_eval_12.png",
+  "results_filename": "output_diffusion_11.dat",
+  "results_eval_filename": "output_diffusion_abs_errors_eval_11.dat",
+  "results_eval_plot_filename": "output_diffusion_abs_errors_eval_11.png",
   "results_plot_filename": "",
   "final_model_plot_filename": "",
   "final_mp4_filename": "",
-  "results_fx_filename": "output_diffusion_fx_eval_12.dat",
+  "results_fx_filename": "output_diffusion_fx_eval_11.dat",
   "extrapolation_name": "SPRE",
   "extrapolation_kernel": "Gaussian"
 }

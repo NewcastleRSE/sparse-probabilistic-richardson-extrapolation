@@ -82,19 +82,23 @@ class Model:
     def update_paths(self, parameter_filename : str):
         
         # Get the directory of the input file
-        write_dir = os.path.dirname(parameter_filename)
+        input_dir = Path(parameter_filename)
   
-        self.results_filename = self.add_path(write_dir, self.results_filename)
-        self.results_plot_filename = self.add_path(write_dir, self.results_plot_filename)
-        self.final_model_plot_filename = self.add_path(write_dir, self.final_model_plot_filename)
-        self.final_mp4_filename = self.add_path(write_dir, self.final_mp4_filename)
+        # Add results directory if it does not exist
+        results_dir = input_dir.parent / "results"
+        results_dir.mkdir(parents=True, exist_ok=True)
+
+        self.results_filename = self.add_path(results_dir, self.results_filename)
+        self.results_plot_filename = self.add_path(results_dir, self.results_plot_filename)
+        self.final_model_plot_filename = self.add_path(results_dir, self.final_model_plot_filename)
+        self.final_mp4_filename = self.add_path(results_dir, self.final_mp4_filename)
 
         self.do_results_plot = self.results_plot_filename != ""
         self.do_final_model_plot = self.final_model_plot_filename != ""
 
         if self.evaluation:
-            self.results_eval_filename = self.add_path(write_dir, self.results_eval_filename)
-            self.results_eval_plot_filename = self.add_path(write_dir, self.results_eval_plot_filename)
+            self.results_eval_filename = self.add_path(results_dir, self.results_eval_filename)
+            self.results_eval_plot_filename = self.add_path(results_dir, self.results_eval_plot_filename)
             self.do_results_eval_plot = self.results_eval_plot_filename != ""
 
     def set_true_value(self):
