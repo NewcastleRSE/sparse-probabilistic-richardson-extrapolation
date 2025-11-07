@@ -29,6 +29,7 @@ class Model:
         self.total_time = 120
         self.evaluation = False
         self.model_name = "Model not set"
+        self.use_model_cache = True
 
         # Set parmaters
         self.set_parameters(params)
@@ -84,6 +85,10 @@ class Model:
         # Get the directory of the input file
         input_dir = Path(parameter_filename)
   
+        # Add cache directory if it does not exist
+        self.cache_dir = input_dir.parent / "cache"
+        self.cache_dir.mkdir(parents=True, exist_ok=True)
+
         # Add results directory if it does not exist
         results_dir = input_dir.parent / "results"
         results_dir.mkdir(parents=True, exist_ok=True)
@@ -104,7 +109,28 @@ class Model:
     def set_true_value(self):
         self.true_value = 0
 
+    def update_model_cache(self, discrete_paras : npt.NDArray):
+        """
+        Updates the model cache.
+        """
+
+        cache_filename = ...
+        cache_filename = self.add_path(self.cache_dir, cache_filename)
+
+
     def run_model(self, discrete_paras : npt.NDArray) -> float:
+        """
+        Either runs model or looks up value in the cache   
+        """
+
+        if self.use_model_cache:
+            # Look up the value in the cache if it exists
+            
+
+        else:
+            y_result = self.run_model_simulation(discrete_paras)
+
+    def run_model_simulation(self, discrete_paras : npt.NDArray) -> float:
         """
         Runs model by solving diff equations   
         """
@@ -475,7 +501,7 @@ class DiffusionModel(Model):
         # Set initial SIR model
         self.model_name = "Diffusion"
        
-    def run_model(self, discrete_paras):
+    def run_model_simulation(self, discrete_paras):
         
         dt = discrete_paras[0]
         num_x_partitions = int(np.round(abs(self.x_range[1] - self.x_range[0])/discrete_paras[1]))
