@@ -9,6 +9,7 @@ import numpy as np
 import numpy.typing as npt
 import json
 import os
+import struct
 from pathlib import Path
 import pandas as pd
 from scipy.integrate import solve_ivp, quad
@@ -109,26 +110,48 @@ class Model:
     def set_true_value(self):
         self.true_value = 0
 
-    def update_model_cache(self, discrete_paras : npt.NDArray):
+    def get_cache_filename(self, discrete_paras : npt.NDArray):
+        """
+        Returns the model cache filename.
+        """
+
+        return self.model_name + "_".join(str(i) for i in discrete_paras) + ".bin"
+
+    def update_model_cache(self, discrete_paras : npt.NDArray, y : float):
         """
         Updates the model cache.
         """
 
-        cache_filename = ...
+        cache_filename = self.get_cache_filename(discrete_paras)
         cache_filename = self.add_path(self.cache_dir, cache_filename)
 
+        with open(cache_filename, "wb") as f:
+            f.write(struct.pack('d', y))  # 'd' = double (64-bit float)
 
     def run_model(self, discrete_paras : npt.NDArray) -> float:
         """
-        Either runs model or looks up value in the cache   
+        Either runs the model or looks up value in the cache   
         """
+
+        perform_model_simulation = True
+        cache_filename = self.get_cache_filename(discrete_paras)
+        cache_filename = self.add_path(self.cache_dir, cache_filename)
 
         if self.use_model_cache:
             # Look up the value in the cache if it exists
+            if os.path.exists(cache_filename):
+                with open(cache_filename, "rb") as f:
+                    data = f.read(8)
+                    y_result = struct.unpack('d', data)[0]       
+                    perform_model_simulation = False       
             
-
-        else:
+        if perform_model_simulation:
+            # Run the model
             y_result = self.run_model_simulation(discrete_paras)
+            # Record result in the cache
+            self.update_model_cache(discrete_paras, y_result)
+
+        return y_result
 
     def run_model_simulation(self, discrete_paras : npt.NDArray) -> float:
         """
@@ -570,7 +593,17 @@ class DiffusionModel(Model):
         # seconds = num_frames / fps = (total_time / interupts) / fps = (100 / 1) / 20 = 100 / 20 = 5 
         eq.solve(state, t_range=[0, self.total_time], dt=dt, tracker=tracker)
         
+    def get_cache_filename(self, discrete_paras : npt.NDArray):
+        """
+        Returns the model cache filename.
+        """
+        # Create filename with all settings and parameters used
+        filename = f"d_{self.diffusivity}_{self.x_range[0]}_{self.x_range[1]}_{self.y_range[0]}_{self.y_range[1]}_{self.total_time}"
+        filename += f"_{self.start_pos[0]}_{self.start_pos[1]}_{self.start_amount}_"
+        filename += "_".join(str(i) for i in discrete_paras) + ".bin"
 
+        return filename
+    
     def set_true_value(self):
         # Get corner value
         self.true_value = self.diffusion_solution_2d(-1, -1, self.total_time) 
