@@ -214,7 +214,7 @@ class Model:
             # Get results
             for x in X:     
                 discrete_parameters = np.array(h) * np.array(x)   
-                print(f"Simulating model \"{self.model_name}\" with parameters {discrete_parameters}")                                    
+                print(f"Running model \"{self.model_name}\" with parameters {discrete_parameters}")                                    
                 y = self.run_model(discrete_parameters)
                 Y = np.append(Y, y)
 
