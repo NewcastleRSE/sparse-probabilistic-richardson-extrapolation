@@ -5,5 +5,4 @@ jaxopt==0.8.5
 tqdm==4.67.1
 matplotlib==3.10.3
 pandas==2.3.2
-optax==0.2.6
 py-pde==0.47.2

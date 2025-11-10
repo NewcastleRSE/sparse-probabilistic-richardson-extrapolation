@@ -606,12 +606,12 @@ class DiffusionModel(Model):
     
     def set_true_value(self):
         # Get corner value
-        self.true_value = self.diffusion_solution_2d(-1, -1, self.total_time) 
+        self.true_value = self.diffusion_solution_2d(0, 0, self.total_time) 
 
     def get_final_quantity(self, discrete_paras : npt.NDArray) -> float:
         
-        # Return final product species in corner
-        return self.result.data[0, 0]   
+        # Return final product species in origin        
+        return self.result.interpolate([0, 0])  
     
     def diffusion_solution_2d(self, x, y, t):
         """
