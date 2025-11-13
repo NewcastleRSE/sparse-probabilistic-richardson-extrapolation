@@ -9,11 +9,13 @@ import numpy as np
 import numpy.typing as npt
 import json
 import os
+import struct
 from pathlib import Path
 import pandas as pd
 from scipy.integrate import solve_ivp, quad
 from scipy.interpolate import interp1d
 import matplotlib.pyplot as plt
+from pde import CartesianGrid, DiffusionPDE, ScalarField, PlotTracker
 
 # Application modules
 from sparse_pre.extrapolation import extrapolation
@@ -28,6 +30,7 @@ class Model:
         self.total_time = 120
         self.evaluation = False
         self.model_name = "Model not set"
+        self.use_model_cache = True
 
         # Set parmaters
         self.set_parameters(params)
@@ -67,6 +70,12 @@ class Model:
 
         if "final_model_plot_filename" not in parameters.keys():
             self.final_model_plot_filename = None
+        
+        if "final_mp4_filename" not in parameters.keys():
+            self.final_mp4_filename = None
+
+        if "results_fx_filename" not in parameters.keys():
+            self.results_fx_filename = None
 
     # Files to save results
     def add_path(self, path : str, filename : str):
@@ -78,28 +87,81 @@ class Model:
     def update_paths(self, parameter_filename : str):
         
         # Get the directory of the input file
-        write_dir = os.path.dirname(parameter_filename)
+        input_dir = Path(parameter_filename)
   
-        self.results_filename = self.add_path(write_dir, self.results_filename)
-        self.results_plot_filename = self.add_path(write_dir, self.results_plot_filename)
-        self.final_model_plot_filename = self.add_path(write_dir, self.final_model_plot_filename)
+        # Add cache directory if it does not exist
+        self.cache_dir = input_dir.parent / "cache"
+        self.cache_dir.mkdir(parents=True, exist_ok=True)
+
+        # Add results directory if it does not exist
+        results_dir = input_dir.parent / "results"
+        results_dir.mkdir(parents=True, exist_ok=True)
+
+        self.results_filename = self.add_path(results_dir, self.results_filename)
+        self.results_plot_filename = self.add_path(results_dir, self.results_plot_filename)
+        self.final_model_plot_filename = self.add_path(results_dir, self.final_model_plot_filename)
+        self.final_mp4_filename = self.add_path(results_dir, self.final_mp4_filename)
+        self.results_fx_filename = self.add_path(results_dir, self.results_fx_filename)
 
         self.do_results_plot = self.results_plot_filename != ""
         self.do_final_model_plot = self.final_model_plot_filename != ""
 
         if self.evaluation:
-            self.results_eval_filename = self.add_path(write_dir, self.results_eval_filename)
-            self.results_eval_plot_filename = self.add_path(write_dir, self.results_eval_plot_filename)
+            self.results_eval_filename = self.add_path(results_dir, self.results_eval_filename)
+            self.results_eval_plot_filename = self.add_path(results_dir, self.results_eval_plot_filename)
             self.do_results_eval_plot = self.results_eval_plot_filename != ""
 
     def set_true_value(self):
         self.true_value = 0
 
+    def get_cache_filename(self, discrete_paras : npt.NDArray):
+        """
+        Returns the model cache filename.
+        """
+
+        return self.model_name + "_".join(str(i) for i in discrete_paras) + ".bin"
+
+    def update_model_cache(self, discrete_paras : npt.NDArray, y : float):
+        """
+        Updates the model cache.
+        """
+
+        cache_filename = self.get_cache_filename(discrete_paras)
+        cache_filename = self.add_path(self.cache_dir, cache_filename)
+
+        with open(cache_filename, "wb") as f:
+            f.write(struct.pack('d', y))  # 'd' = double (64-bit float)
+
     def run_model(self, discrete_paras : npt.NDArray) -> float:
+        """
+        Either runs the model or looks up value in the cache   
+        """
+
+        perform_model_simulation = True
+        cache_filename = self.get_cache_filename(discrete_paras)
+        cache_filename = self.add_path(self.cache_dir, cache_filename)
+
+        if self.use_model_cache:
+            # Look up the value in the cache if it exists
+            if os.path.exists(cache_filename):
+                with open(cache_filename, "rb") as f:
+                    data = f.read(8)
+                    y_result = struct.unpack('d', data)[0]       
+                    perform_model_simulation = False       
+            
+        if perform_model_simulation:
+            # Run the model
+            y_result = self.run_model_simulation(discrete_paras)
+            # Record result in the cache
+            self.update_model_cache(discrete_paras, y_result)
+
+        return y_result
+
+    def run_model_simulation(self, discrete_paras : npt.NDArray) -> float:
         """
         Runs model by solving diff equations   
         """
-     
+
         y0 = self.get_initial_condition()
       
         # Time span to evalute the model
@@ -148,11 +210,16 @@ class Model:
         for i, h in enumerate(self.h_values):
             # Results, Y is model output
             Y = np.array([])
-            extrapolation_results = []
+            if isinstance(h, (list, tuple)):
+                extrapolation_results = h.copy()
+            else:
+                extrapolation_results = [h]
 
             # Get results
-            for x in X:                                            
-                y = self.run_model(h * x)
+            for x in X:     
+                discrete_parameters = np.array(h) * np.array(x)   
+                print(f"Running model \"{self.model_name}\" with parameters {discrete_parameters}")                                    
+                y = self.run_model(discrete_parameters)
                 Y = np.append(Y, y)
 
             # Assume extrapolation is a defined function returning a dict with 'mu' and 'var'
@@ -164,11 +231,11 @@ class Model:
                 # Save result in LOOCV directory
                 new_filepath = filepath.parent / "loocv_plots" / filepath.name              
                 options["plot_filename"] = new_filepath
-
-            out = extrapolation(X, Y, options)
+            
+            out = extrapolation(X*h, Y, options)
             print(f"Predict f(0) = {out['mu'][0]} +/- {np.sqrt(out['var'][0][0])}\n")
             
-            extrapolation_results.extend([h, out['mu'][0], out['var'][0][0]])
+            extrapolation_results.extend([out['mu'][0], out['var'][0][0]])
 
             # Append results for each point
             extrapolation_results.extend(out['mu_cv'])
@@ -184,16 +251,37 @@ class Model:
             if self.evaluation:
                 # Create row of results for absolute error table
                 # h, true_value, best_estimate, spre_estimate, abs_err_best_estimate, abs_err_spre_estimate
-                table_row = np.array([h, self.true_value, Y[0], out['mu'][0], np.abs(self.true_value - Y[0]), np.abs(self.true_value - out['mu'][0])])
+                if isinstance(h, (list, tuple)):
+                    table_row = h.copy()
+                else:
+                    table_row = [h]
+
+                table_row.extend(np.array([self.true_value, Y[0], out['mu'][0], np.abs(self.true_value - Y[0]), np.abs(self.true_value - out['mu'][0])]))
 
                 if i == 0:
                     self.abs_error_table = np.matrix(table_row)
                 else:
                     self.abs_error_table = np.vstack((self.abs_error_table, table_row))
 
+            # Save X and Y values if filename given
+            if self.results_fx_filename:
+                filename = self.results_fx_filename.replace(".", f"_{i}.")               
+                dataXY = np.column_stack((X*h, Y))
+                header = [f"X{i+1}" for i in range(len(discrete_parameters))]
+                header.extend("Y")
+                header = "\t".join(header)
+                # Save file
+                np.savetxt(filename, dataXY, delimiter="\t", fmt="%.17g", header=header, comments='')
+
             # Create dataframe of results
             number_of_x = X.shape[0]
-            header = ["h", "mu", "var"] + [f"mu_cv{n}" for n in range(1, number_of_x + 1)] + [f"var_cv{n}" for n in range(1, number_of_x + 1)]
+
+            if not isinstance(h, (list, tuple)):
+                header = ["h"]
+            else:
+                header = [f"h{i+1}" for i in range(len(h))]
+
+            header += ["mu", "var"] + [f"mu_cv{n}" for n in range(1, number_of_x + 1)] + [f"var_cv{n}" for n in range(1, number_of_x + 1)]
   
             # Create DataFrame
             self.df_all_extrapolation_results = pd.DataFrame(all_extrapolation_results, columns=header)
@@ -268,8 +356,21 @@ class Model:
         #abs_error_table = np.vstack((all_extrapolation_results, extrapolation_results))
 
         # Create DataFrame
-        abs_header = ["h", "true_value", "best_estimate", "spre_estimate", "abs_err_best_estimate", "abs_err_spre_estimate"]
+        if not isinstance(self.h_values[0], (list, tuple)):
+            abs_header = ["h"]
+        else:
+            abs_header = [f"h{i+1}" for i in range(len(self.h_values[0]))]
+            
+        abs_header += ["true_value", "best_estimate", "spre_estimate", "abs_err_best_estimate", "abs_err_spre_estimate"]
         df_abs = pd.DataFrame(self.abs_error_table, columns=abs_header)
+
+        # Get x coordinate values to plot against
+        x_vals = df_abs[abs_header[0]]
+        x_lab = "h"
+        if hasattr(self, "eval_plot_type"):
+            if self.eval_plot_type == 2:
+                x_vals = 2.0/df_abs[abs_header[2]]  
+                x_lab = "grid spacing"          
 
         # Write results to file
         if self.results_eval_filename:
@@ -281,11 +382,11 @@ class Model:
 
             plt.close('all') 
             plt.figure()
-            plt.plot(df_abs["h"], df_abs["abs_err_best_estimate"], marker='o', linestyle='solid', linewidth=2, markersize=12, label="best estimate")
-            plt.plot(df_abs["h"], df_abs["abs_err_spre_estimate"], marker='o', linestyle='solid', linewidth=2, markersize=12, label="SPRE estimate")
+            plt.plot(x_vals, df_abs["abs_err_best_estimate"], marker='o', linestyle='solid', linewidth=2, markersize=12, label="best estimate")
+            plt.plot(x_vals, df_abs["abs_err_spre_estimate"], marker='o', linestyle='solid', linewidth=2, markersize=12, label="SPRE estimate")
             plt.xscale('log')
             plt.yscale('log')
-            plt.xlabel("discretization parameter")
+            plt.xlabel(x_lab)
             plt.ylabel("absolute error")
             plt.title("Absolute Errors of f(0) Estimates")
             plt.grid(True)
@@ -425,3 +526,130 @@ class ChemEquilModel(Model):
         x1, x2 = self.diff_solution.y
         # Return final product species
         return x2[-1]
+
+class DiffusionModel(Model):
+    """
+    Diffusion equation on a Cartesian grid
+    """
+    def __init__(self, params, parameter_filename):
+        # Call Parent’s constructor to set parameters
+        super().__init__(params, parameter_filename)
+
+        # Set initial SIR model
+        self.model_name = "Diffusion"
+       
+    def run_model_simulation(self, discrete_paras):
+        
+        dt = discrete_paras[0]
+        num_x_partitions = int(np.round(abs(self.x_range[1] - self.x_range[0])/discrete_paras[1]))
+        num_y_partitions = int(np.round(abs(self.y_range[1] - self.y_range[0])/discrete_paras[2]))
+        
+        # Ouput info on what is being simulated
+        print(f"\tSimulating Diffusion Model with dt = {dt}, {num_x_partitions} x partitions and {num_y_partitions} y partitions")
+        # Span of x and y, number of divisions in each dimension
+        grid = CartesianGrid([self.x_range, self.y_range], [num_x_partitions, num_y_partitions])  # generate grid
+        state = ScalarField(grid)  # generate initial condition
+        state.insert(self.start_pos, self.start_amount)
+
+        eq = DiffusionPDE(self.diffusivity)  # define the pde
+        self.result = eq.solve(state, t_range=[0, self.total_time], dt=dt, tracker=None)
+
+        return self.get_final_quantity(discrete_paras)
+
+    def plot_diff_solution(self):
+        # Get model output to plot
+        _ = self.run_model(self.final_tols)
+
+        # Use result from solver to plot result
+        plot_ref = self.result.plot(cmap="magma")
+      
+        # Save file
+        if self.final_model_plot_filename: 
+            # get the Matplotlib figure
+            # Safely get the figure (works across versions)
+            if hasattr(plot_ref, "get_figure"):
+                fig = plot_ref.get_figure()
+            elif hasattr(plot_ref, "ax"):
+                fig = plot_ref.ax.figure
+            elif hasattr(plot_ref, "axes"):
+                fig = plot_ref.axes[0].figure
+            else:
+                raise AttributeError("Could not find figure in PlotReference")
+  
+            fig.savefig(self.final_model_plot_filename)
+
+        if self.final_mp4_filename:
+            self.record_mp4()
+
+    def record_mp4(self):
+        # Save animataion
+        dt = self.final_tols[0]
+        num_x_partitions = self.final_tols[1] #np.round(1.0/discrete_paras[0])
+        num_y_partitions = self.final_tols[2] # * discrete_paras[0] #np.round(1.0/discrete_paras[1])
+        
+        # Span of x and y, number of divisions in each dimension
+        grid = CartesianGrid([self.x_range, self.y_range], [num_x_partitions, num_y_partitions])  # generate grid
+        state = ScalarField(grid)  # generate initial condition
+        state.insert(self.start_pos, self.start_amount)
+
+        eq = DiffusionPDE(self.diffusivity)  # define the pde
+
+        # Save the animation
+        tracker = PlotTracker(
+            title="Diffusion",
+            interrupts=0.01,
+            movie=self.final_mp4_filename,      # specify the movie filename here
+            plot_args={"cmap": "magma", "vmin": 0, "vmax": 1},        # optional additional plot args
+            show=False,
+            max_fps=20
+        )
+
+        # seconds = num_frames / fps = (total_time / interupts) / fps = (100 / 1) / 20 = 100 / 20 = 5 
+        eq.solve(state, t_range=[0, self.total_time], dt=dt, tracker=tracker)
+        
+    def get_cache_filename(self, discrete_paras : npt.NDArray):
+        """
+        Returns the model cache filename.
+        """
+        # Create filename with all settings and parameters used
+        filename = f"d_{self.diffusivity}_{self.x_range[0]}_{self.x_range[1]}_{self.y_range[0]}_{self.y_range[1]}_{self.total_time}"
+        filename += f"_{self.start_pos[0]}_{self.start_pos[1]}_{self.start_amount}_"
+        filename += "_".join(str(i) for i in discrete_paras) + ".bin"
+
+        return filename
+    
+    def set_true_value(self):
+        # Get corner value
+        self.true_value = self.diffusion_solution_2d(0, 0, self.total_time) 
+
+    def get_final_quantity(self, discrete_paras : npt.NDArray) -> float:
+        
+        # Return final product species in origin        
+        return self.result.interpolate([0, 0])  
+    
+    def diffusion_solution_2d(self, x, y, t):
+        """
+        Analytic solution of the 2D diffusion equation for a point-source initial condition.
+
+        Parameters
+        ----------
+        x, y : array_like or float
+            Spatial coordinates (can be scalars or NumPy arrays of the same shape).
+        t : float
+            Time at which to evaluate the solution (must be > 0).
+      
+        Returns
+        -------
+        c : ndarray or float
+            Concentration value(s) at position (x, y) and time t.
+        """
+
+        x = np.asarray(x)
+        y = np.asarray(y)
+        if t <= 0:
+            raise ValueError("Time t must be positive for the analytic solution.")
+        
+        r2 = (x - self.start_pos[0])**2 + (y - self.start_pos[1])**2
+        prefactor = 1.0 / (4 * np.pi * self.diffusivity * t)
+        exponent = -r2 / (4 * self.diffusivity * t)
+        return prefactor * np.exp(exponent)

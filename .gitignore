@@ -3,6 +3,7 @@
 .venv2/
 *.env
 loocv_plots/
+ffmpeg*
 
 __pycache__
 

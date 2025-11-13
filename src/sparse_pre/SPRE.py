@@ -188,12 +188,13 @@ class SPRE:
                 self.kernel_spec = "GRE"
                 return ans 
 
-    def cv_local_loss(self, x : jnp.ndarray, row_num : int, return_mu_cov : bool = False) -> object:
+    def cv_local_loss(self, x : jnp.ndarray, A : jnp.ndarray, row_num : int, return_mu_cov : bool = False) -> object:
         """
         Sets arrays to use for cross-validation local loss (log-likelihood of test data) and returns result.
       
-        Parameters:  
+        Parameters:    
             x : jnp.ndarray           Vector of kernel hyperparameters to use when evaluating the kernel
+            A : jnp.ndarray           binary matrix representing the sparse basis  
             row_num : int             Row number to leave out for leave-one-out cross validation.
             return_mu_cov : bool      Whether to return mu and cov instead of the local loss    
         Returns:
@@ -209,14 +210,15 @@ class SPRE:
         Xs = self.X_normalised[row_num:(row_num+1), :]
         Ys = self.Y_normalised[row_num:(row_num+1)]
 
-        return self.cv_loss_calculation(X, Y, Xs, Ys, x, str(row_num), return_mu_cov)
+        return self.cv_loss_calculation(A, X, Y, Xs, Ys, x, str(row_num), return_mu_cov)
 
     # Loss (log-likelihood of test data)
-    def cv_loss_calculation(self, X : jnp.ndarray, Y : jnp.ndarray, Xs : jnp.ndarray, Ys : jnp.ndarray, x : jnp.ndarray, row_num_str : str = "_", return_mu_cov : bool = False):
+    def cv_loss_calculation(self, A : jnp.ndarray, X : jnp.ndarray, Y : jnp.ndarray, Xs : jnp.ndarray, Ys : jnp.ndarray, x : jnp.ndarray, row_num_str : str = "_", return_mu_cov : bool = False):
         """
         Calculates cross-validation local loss (log-likelihood of test data).
       
         Parameters:  
+            A : jnp.ndarray           binary matrix representing the sparse basis     
             X : jnp.ndarray           Input array of discretized parameters for simulation model 
             Y : jnp.ndarray           Output values of the simulation model
             Xs : jnp.ndarray          The left-out row of X  
@@ -252,8 +254,8 @@ class SPRE:
         # A = m x d (sparse matrix)
         # X = n x d
         # Xs = n_test x d
-        VA = x2fx(X, self.sparse_basis)
-        vAT = x2fx(Xs, self.sparse_basis).T
+        VA = x2fx(X, A)
+        vAT = x2fx(Xs, A).T
 
         # Residual term
         # A = m x d (sparse matrix)
@@ -303,12 +305,13 @@ class SPRE:
         
         return term1 + term2
 
-    def cv_loss(self, x : jnp.ndarray) -> float:
+    def cv_loss(self, x : jnp.ndarray, A : jnp.ndarray) -> float:
         """
         Calculate the loss (log-likelihood of test data) using leave-one-out cross validation (LOOCV).
       
         Parameters:  
             x : jnp.ndarray           Vector of kernel hyperparameters to use when evaluating the kernel
+            A : jnp.ndarray           binary matrix representing the sparse basis 
         Returns:
             float              
         """
@@ -320,6 +323,7 @@ class SPRE:
         return sum(
             self.cv_local_loss(                   
                 x,
+                A,
                 i
             ) for i in range(self.X_normalised.shape[0])
         )
@@ -340,24 +344,15 @@ class SPRE:
         self.nY = self.ep + (jnp.max(Y) - jnp.min(Y))
         self.X_normalised = X / self.nX
         self.Y_normalised = Y / self.nY
-
-    def set_sparse_basis(self, A):
-        """
-        Parameters:
-            A : jnp.ndarray             shape (m, d), binary matrix representing the sparse basis     
-        
-        Returns:
-            None    
-        """
-        self.sparse_basis = A
     
-    def perform_extrapolation(self, x : jnp.ndarray, return_mu_and_var : bool = False) -> dict:
+    def perform_extrapolation(self, x : jnp.ndarray, A : jnp.ndarray, return_mu_and_var : bool = False) -> dict:
         """
         Perform Sparse Probabilistic Richardson Extrapolation (SPRE) for the given values of
         the kernel parameters.
         
         Parameters:
             x : jnp.ndarray             shape (p,), kernel parameters
+            A : jnp.ndarray             binary matrix representing the sparse basis
             return_mu_and_var : bool    Whether to return variables: mu, mu_cv, var and var_cv
 
         Returns:
@@ -371,7 +366,7 @@ class SPRE:
         """
     
         # Evaluate cv
-        cv = self.cv_loss(x)
+        cv = self.cv_loss(x, A)
 
         # Output
         out = {
@@ -391,12 +386,12 @@ class SPRE:
             mu_cv = jnp.zeros(self.X_normalised.shape[0])
             var_cv = jnp.zeros(self.X_normalised.shape[0])
             for i in range(self.X_normalised.shape[0]):               
-                mu_val, cov_val = self.cv_local_loss(x, i, return_mu_cov = True)               
+                mu_val, cov_val = self.cv_local_loss(x, A, i, return_mu_cov = True)               
                 mu_cv = mu_cv.at[i].set((self.nY * mu_val[0]))              
                 var_cv = var_cv.at[i].set((self.nY**2 * cov_val[0][0]))
               
             # Output
-            mu_value, cov_value = self.cv_loss_calculation(self.X_normalised, self.Y_normalised, jnp.zeros((1, self.dimension)), jnp.zeros((1, self.dimension)), x, return_mu_cov = True)
+            mu_value, cov_value = self.cv_loss_calculation(A, self.X_normalised, self.Y_normalised, jnp.zeros((1, self.dimension)), jnp.zeros((1, self.dimension)), x, return_mu_cov = True)
             out0 = out
             out = {
                 "mu": self.nY * mu_value,
@@ -408,66 +403,77 @@ class SPRE:
             
         return out
 
-    def objective(self, x : jnp.ndarray) -> float:
+    def objective(self, x : jnp.ndarray, A : jnp.ndarray) -> float:
         """
         Objective function used to fit the hyperparameters of the kernel.
         
         Parameters:
             x : jnp.ndarray             shape (p,), kernel hyperparameters
+            A : jnp.ndarray             binary matrix representing the sparse basis
         Returns:
             float
         """
 
         # Return the negative log likelihood using LOOCV with gradient
-        out = self.jit_perform_extrapolation(x)     
+        out = self.jit_perform_extrapolation(x, A)     
         return -out['cv'] #, -out['cv_grad']
 
-    def scipy_hess(self, x_onp):
+    def scipy_hess(self, x_onp, A):
         x_jnp = jnp.asarray(x_onp)
-        return -np.asarray(self.jit_hess(x_jnp))
+        A_jnp = jnp.asarray(A)
+        return -np.asarray(self.jit_hess(x_jnp, A_jnp))
 
-    def scipy_fun(self, x_onp):
+    def scipy_fun(self, x_onp, A):
         x_jnp = jnp.asarray(x_onp)            # numpy -> jax
+        A_jnp = jnp.asarray(A)
         #return float(self.objective(x_jnp))             # scalar float
-        return self.objective(x_jnp).astype(np.float64)
+        return self.objective(x_jnp, A_jnp).astype(np.float64)
 
-    def scipy_jac(self, x_onp):                
+    def scipy_jac(self, x_onp, A):                
         x_jnp = jnp.asarray(x_onp)
-        return -np.asarray(self.jit_grad(x_jnp))     # return numpy array
+        A_jnp = jnp.asarray(A)
+        return -np.asarray(self.jit_grad(x_jnp, A_jnp))     # return numpy array
         
-    def perform_extrapolation_optimization(self) -> dict:
+    def perform_extrapolation_optimization(self, A : jnp.ndarray, do_jit : bool = True) -> dict:
         """
         Optimize kernel hyperparameters for SPRE.
 
         Parameters:
-           None
-          
+            A : jnp.ndarray           binary matrix representing the sparse basis
+            do_jit : bool             Do "Just in time" compilation to speed up the fitting.
+                                      all "self" values must remain constant during this call otherwise
+                                      this should be set to True.
         Returns:
             out : dict with keys:
                  x  = p x 1, fitted kernel hyperparameters 
                  cv = scalar, LOOCV criterion
         """
-   
-        # "Just in time" compilation to speed up the fitting.
-        # Repeated each time here as some class variables may have changed
-        self.jit_hess = jit(hessian(self.cv_loss))
-        self.jit_grad = jit(grad(self.cv_loss))
-        self.jit_perform_extrapolation = jit(self.perform_extrapolation)
+
+        if do_jit:
+            self.prepare_jit_for_extrapolation_optimization()
 
         result = minimize(self.scipy_fun,
                     self.default_kernel_parameters,                    
                     method='trust-krylov',   # trust-krylov is trust region fitting algorithm
                     jac=self.scipy_jac,
                     hess=self.scipy_hess,
+                    args=(A),
                     options={'maxiter': 1000, 'disp': False})
 
-        result_value = self.objective(result.x)
+        result_value = self.objective(result.x, A)
         result_params = result.x
        
         return {
             'x'  : result_params,
             'cv' : result_value
         }
+
+    def prepare_jit_for_extrapolation_optimization(self):
+        # "Just in time" compilation to speed up the fitting.
+        # Repeated each time here as some class variables may have changed
+        self.jit_hess = jit(hessian(self.cv_loss))
+        self.jit_grad = jit(grad(self.cv_loss))
+        self.jit_perform_extrapolation = jit(self.perform_extrapolation)
 
     def stepwise_selection(self) -> dict:
         """
@@ -492,16 +498,31 @@ class SPRE:
 
         # Initialise with just an intercept
         A = jnp.zeros((1, self.dimension), dtype=int)  
-        self.set_sparse_basis(A)
 
         # Handle selection differently if doing GRE
         if self.kernel_base is not None:
-            return self._GRE_stepwise_selection()
+            return self._GRE_stepwise_selection(A)
         
-        order = 0
-        fit = self.perform_extrapolation_optimization()
-        cv = fit['cv']
+        # Do "Just In Time" JIT compilation to speed up the fitting.
+        # Required before running perform_extrapolation_optimization
+        self.prepare_jit_for_extrapolation_optimization()
+
+        # No need to do JIT again
+        do_jit = False
+
+        # Try higher orders
         carry_on = True
+
+        # Fix A to test things
+        #if True:
+        #    carry_on = False
+        #    A1 = jnp.eye(self.dimension)
+        #    A = jnp.vstack([A, A1])
+
+        order = 0
+        fit = self.perform_extrapolation_optimization(A, do_jit)
+        cv = fit['cv']
+        
 
         while carry_on:
             order += 1
@@ -512,19 +533,17 @@ class SPRE:
             print(f"Fitting interactions of order {order}:")
 
             for i in tqdm(range(n_extra), desc="Stepwise progress"):
-                A_new = jnp.vstack([A, A_extra[i]])
-                self.set_sparse_basis(A_new)
-                fit_new = self.perform_extrapolation_optimization()
+                A_new = jnp.vstack([A, A_extra[i]])               
+                fit_new = self.perform_extrapolation_optimization(A_new, do_jit)
                 cv_new = fit_new['cv']
                 if cv_new < cv:
                     to_include = to_include.at[i].set(True)
 
             if jnp.any(to_include):
-                A_updated = jnp.vstack([A, A_extra[to_include]])
-                self.set_sparse_basis(A_updated)
-                fit_updated = self.perform_extrapolation_optimization()
+                A_updated = jnp.vstack([A, A_extra[to_include]])                          
+                fit_updated = self.perform_extrapolation_optimization(A_updated, do_jit)
                 cv_updated = fit_updated['cv']
-                if cv_updated >= cv:
+                if cv_updated >= cv:             
                     carry_on = False
                 else:
                     A = A_updated
@@ -537,28 +556,35 @@ class SPRE:
         x_opt = fit['x']
        
         # Final model with best kernel parameters and basis A
-        self.set_sparse_basis(A)
-        out = self.perform_extrapolation(x_opt, return_mu_and_var = True)
+        out = self.perform_extrapolation(x_opt, A, return_mu_and_var = True)
 
         return out
     
-    def _GRE_stepwise_selection(self) -> dict:
+    def _GRE_stepwise_selection(self, A : jnp.ndarray) -> dict:
         """
         Stepwise model selection for GRE (Gauss-Richardson Extrapolation).
 
         Parameters:
-            None
+            A : jnp.ndarray           binary matrix representing the sparse basis
 
         Returns:
             out : dict
                 Dictionary with predictive mean, variance, and fitted model details.
         """
        
+        # Do "Just In Time" JIT compilation to speed up the fitting.
+        # Required before running perform_extrapolation_optimization
+        self.prepare_jit_for_extrapolation_optimization()
+
+        # Need to update code to pass B to perform_extrapolation_optimization
+        #  if this can be set to False
+        do_jit = True
+
         # initial rate function: only intercept
         B = jnp.zeros((1, self.dimension), dtype=int)      
         order = 0
 
-        fit = self.perform_extrapolation_optimization()
+        fit = self.perform_extrapolation_optimization(A, do_jit)
         cv = fit["cv"]
 
         carry_on = True
@@ -572,8 +598,8 @@ class SPRE:
             to_include = jnp.zeros(n_extra, dtype=bool)
             for i in tqdm(range(n_extra), desc="Stepwise progress"):
                 B_new = jnp.vstack([B, B_extra[i, :]])
-                self.set_kernel_spec(self.kernel_base, B_new)
-                fit_new = self.perform_extrapolation_optimization()
+                self.set_kernel_spec(self.kernel_base, B_new)               
+                fit_new = self.perform_extrapolation_optimization(A, do_jit)
                 cv_new = fit_new["cv"]
 
                 if cv_new < cv:                    
@@ -581,8 +607,8 @@ class SPRE:
 
             if jnp.any(to_include):
                 B_updated = jnp.vstack([B, B_extra[to_include, :]])
-                self.set_kernel_spec(self.kernel_base, B_updated)
-                fit_updated = self.perform_extrapolation_optimization()
+                self.set_kernel_spec(self.kernel_base, B_updated)             
+                fit_updated = self.perform_extrapolation_optimization(A, do_jit)
                 cv_updated = fit_updated["cv"]
 
                 if cv_updated >= cv:
@@ -596,8 +622,9 @@ class SPRE:
 
         # Final GP fit with optimal parameters
         x_opt = fit["x"]       
-        self.set_kernel_spec(self.kernel_base, B)
-        out = self.perform_extrapolation(x_opt, return_mu_and_var=True)
+        self.set_kernel_spec(self.kernel_base, B)   
+        self.prepare_jit_for_extrapolation_optimization()  
+        out = self.perform_extrapolation(x_opt, A, return_mu_and_var=True)
 
         return out
     
