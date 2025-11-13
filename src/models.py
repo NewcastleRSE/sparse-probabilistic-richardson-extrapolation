@@ -74,6 +74,9 @@ class Model:
         if "final_mp4_filename" not in parameters.keys():
             self.final_mp4_filename = None
 
+        if "results_fx_filename" not in parameters.keys():
+            self.results_fx_filename = None
+
     # Files to save results
     def add_path(self, path : str, filename : str):
         new_filename = ""
@@ -98,6 +101,7 @@ class Model:
         self.results_plot_filename = self.add_path(results_dir, self.results_plot_filename)
         self.final_model_plot_filename = self.add_path(results_dir, self.final_model_plot_filename)
         self.final_mp4_filename = self.add_path(results_dir, self.final_mp4_filename)
+        self.results_fx_filename = self.add_path(results_dir, self.results_fx_filename)
 
         self.do_results_plot = self.results_plot_filename != ""
         self.do_final_model_plot = self.final_model_plot_filename != ""
@@ -228,7 +232,7 @@ class Model:
                 new_filepath = filepath.parent / "loocv_plots" / filepath.name              
                 options["plot_filename"] = new_filepath
             
-            out = extrapolation(X, Y, options)
+            out = extrapolation(X*h, Y, options)
             print(f"Predict f(0) = {out['mu'][0]} +/- {np.sqrt(out['var'][0][0])}\n")
             
             extrapolation_results.extend([out['mu'][0], out['var'][0][0]])
@@ -258,6 +262,16 @@ class Model:
                     self.abs_error_table = np.matrix(table_row)
                 else:
                     self.abs_error_table = np.vstack((self.abs_error_table, table_row))
+
+            # Save X and Y values if filename given
+            if self.results_fx_filename:
+                filename = self.results_fx_filename.replace(".", f"_{i}.")               
+                dataXY = np.column_stack((X*h, Y))
+                header = [f"X{i+1}" for i in range(len(discrete_parameters))]
+                header.extend("Y")
+                header = "\t".join(header)
+                # Save file
+                np.savetxt(filename, dataXY, delimiter="\t", fmt="%.17g", header=header, comments='')
 
             # Create dataframe of results
             number_of_x = X.shape[0]

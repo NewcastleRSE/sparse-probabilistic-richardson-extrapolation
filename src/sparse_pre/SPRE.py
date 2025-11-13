@@ -510,10 +510,19 @@ class SPRE:
         # No need to do JIT again
         do_jit = False
 
+        # Try higher orders
+        carry_on = True
+
+        # Fix A to test things
+        #if True:
+        #    carry_on = False
+        #    A1 = jnp.eye(self.dimension)
+        #    A = jnp.vstack([A, A1])
+
         order = 0
         fit = self.perform_extrapolation_optimization(A, do_jit)
         cv = fit['cv']
-        carry_on = True
+        
 
         while carry_on:
             order += 1
