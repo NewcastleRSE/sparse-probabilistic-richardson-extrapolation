@@ -9,7 +9,7 @@
 
 # Python modules
 import jax.numpy as jnp
-from jax import grad, debug, hessian, jit
+from jax import grad, debug, hessian, jit, lax
 from tqdm import tqdm  # For progress bars
 from sklearn.neighbors import NearestNeighbors
 import numpy as np
@@ -212,6 +212,25 @@ class SPRE:
 
         return self.cv_loss_calculation(A, X, Y, Xs, Ys, x, str(row_num), return_mu_cov)
 
+    def check_unisolvent(self, VA, m):
+
+        rank = jnp.linalg.matrix_rank(VA)
+
+        def on_true(_):
+            # Raising Python errors inside JIT is not allowed.
+            # Instead return a special value.
+            debug.print(
+            "WARNING: basis not linearly independent. Rank={rank}, m={m}",
+            rank=rank, m=m
+        )
+            #raise ValueError("The set X is not unisolvent")
+            return -1
+
+        def on_false(_):           
+            return 1   # everything OK
+
+        return lax.cond(rank < m, on_true, on_false, operand=None)
+
     # Loss (log-likelihood of test data)
     def cv_loss_calculation(self, A : jnp.ndarray, X : jnp.ndarray, Y : jnp.ndarray, Xs : jnp.ndarray, Ys : jnp.ndarray, x : jnp.ndarray, row_num_str : str = "_", return_mu_cov : bool = False):
         """
@@ -239,8 +258,8 @@ class SPRE:
         # x = p x 1
     
         # Calculate some bits firstly    
-        #K_inv = jnp.linalg.inv(self.kernel(X, X, x))
-        K_inv = jnp.linalg.pinv(self.kernel(X, X, x))
+        K_inv = jnp.linalg.inv(self.kernel(X, X, x))
+        #K_inv = jnp.linalg.pinv(self.kernel(X, X, x))
         kernel_Xs_Xs = self.kernel(Xs, Xs, x)
         kernel_X_Xs = self.kernel(X, Xs, x)
         
@@ -257,6 +276,10 @@ class SPRE:
         VA = x2fx(X, A)
         vAT = x2fx(Xs, A).T
 
+        # i.e. the basis function is not linearly independent
+        #status = self.check_unisolvent(VA, A.shape[0])
+            
+        
         # Residual term
         # A = m x d (sparse matrix)
         # X = n_train x d
@@ -270,8 +293,8 @@ class SPRE:
         # X = n_train x d
         # Xs = n_test x d
         # x = p x 1  
-        #inv_VA_T_at_K_inv_at_VA = jnp.linalg.inv(VA_T_at_K_inv @ VA)
-        inv_VA_T_at_K_inv_at_VA = jnp.linalg.pinv(VA_T_at_K_inv @ VA, hermitian = True)
+        inv_VA_T_at_K_inv_at_VA = jnp.linalg.inv(VA_T_at_K_inv @ VA)
+        #inv_VA_T_at_K_inv_at_VA = jnp.linalg.pinv(VA_T_at_K_inv @ VA, hermitian = True)
         cov_val = (kernel_Xs_Xs
                 - kernel_Xs_X @ K_inv @ kernel_X_Xs
                 + residual_X_Xs.T @ inv_VA_T_at_K_inv_at_VA @ residual_X_Xs)
@@ -423,7 +446,7 @@ class SPRE:
         A_jnp = jnp.asarray(A)
         return -np.asarray(self.jit_hess(x_jnp, A_jnp))
 
-    def scipy_fun(self, x_onp, A):
+    def scipy_objective(self, x_onp, A):
         x_jnp = jnp.asarray(x_onp)            # numpy -> jax
         A_jnp = jnp.asarray(A)
         #return float(self.objective(x_jnp))             # scalar float
@@ -452,7 +475,7 @@ class SPRE:
         if do_jit:
             self.prepare_jit_for_extrapolation_optimization()
 
-        result = minimize(self.scipy_fun,
+        result = minimize(self.scipy_objective,
                     self.default_kernel_parameters,                    
                     method='trust-krylov',   # trust-krylov is trust region fitting algorithm
                     jac=self.scipy_jac,
@@ -496,6 +519,9 @@ class SPRE:
                     out.cv_grad = p x 1, gradient of LOOCV criterion
         """
 
+        # Number of training points
+        n_train = self.X_normalised.shape[0]
+
         # Initialise with just an intercept
         A = jnp.zeros((1, self.dimension), dtype=int)  
 
@@ -519,27 +545,35 @@ class SPRE:
         #    A1 = jnp.eye(self.dimension)
         #    A = jnp.vstack([A, A1])
 
+        # Try restricting te order..?
+        #max_order = 1
+
         order = 0
         fit = self.perform_extrapolation_optimization(A, do_jit)
         cv = fit['cv']
         
 
-        while carry_on:
-            order += 1
-            A_extra = stepwise(A, order)  # Generate new predictors of given order
+        while carry_on: # and order < max_order:
+            m = A.shape[0] # Number of rows in base A
+            order += 1 # Consider the addition of higher order interactions
+            A_extra = stepwise(A, order)  # All predictors of the nex order to consider
             n_extra = A_extra.shape[0]
             to_include = jnp.zeros(n_extra, dtype=bool)
 
             print(f"Fitting interactions of order {order}:")
 
             for i in tqdm(range(n_extra), desc="Stepwise progress"):
-                A_new = jnp.vstack([A, A_extra[i]])               
+                A_new = jnp.vstack([A, A_extra[i]])  
+                ## Check maximum rank, must be >= m to be OK, m = number of rows in A
+                #VA = x2fx(self.X_normalised, A_new)
+                #rank = jnp.linalg.matrix_rank(VA)
+                #print(f"{rank}, {m}")             
                 fit_new = self.perform_extrapolation_optimization(A_new, do_jit)
                 cv_new = fit_new['cv']
-                if cv_new < cv:
+                if cv_new < cv: # If adding new predictor helped
                     to_include = to_include.at[i].set(True)
 
-            if jnp.any(to_include):
+            if jnp.any(to_include) and ((m + sum(to_include)) < (n_train - 1)):
                 A_updated = jnp.vstack([A, A_extra[to_include]])                          
                 fit_updated = self.perform_extrapolation_optimization(A_updated, do_jit)
                 cv_updated = fit_updated['cv']
