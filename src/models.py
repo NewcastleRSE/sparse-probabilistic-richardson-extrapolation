@@ -142,12 +142,14 @@ class Model:
         cache_filename = self.add_path(self.cache_dir, cache_filename)
 
         if self.use_model_cache:
+            
             # Look up the value in the cache if it exists
             if os.path.exists(cache_filename):
                 with open(cache_filename, "rb") as f:
                     data = f.read(8)
                     y_result = struct.unpack('d', data)[0]       
-                    perform_model_simulation = False       
+                    perform_model_simulation = False
+                    print(f"\tUsing cached value: {y_result}")         
             
         if perform_model_simulation:
             # Run the model
@@ -553,8 +555,10 @@ class DiffusionModel(Model):
 
         eq = DiffusionPDE(self.diffusivity)  # define the pde
         self.result = eq.solve(state, t_range=[0, self.total_time], dt=dt, tracker=None)
-
-        return self.get_final_quantity(discrete_paras)
+        
+        y = self.get_final_quantity(discrete_paras)
+        print(f"\tCalculated final value: {y}")
+        return y
 
     def plot_diff_solution(self):
         # Get model output to plot

@@ -212,24 +212,27 @@ class SPRE:
 
         return self.cv_loss_calculation(A, X, Y, Xs, Ys, x, str(row_num), return_mu_cov)
 
-    def check_unisolvent(self, VA, m):
+    def check_unisolvent(self, A):
 
+        m = A.shape[0]
+        VA = x2fx(self.X_normalised, A)
         rank = jnp.linalg.matrix_rank(VA)
 
         def on_true(_):
+            
+            return 1
+
+        def on_false(_):    
             # Raising Python errors inside JIT is not allowed.
             # Instead return a special value.
             debug.print(
-            "WARNING: basis not linearly independent. Rank={rank}, m={m}",
+            "\nWARNING: A non-unisolvent set encountered! Rank={rank}, m={m}",
             rank=rank, m=m
-        )
+        )       
             #raise ValueError("The set X is not unisolvent")
-            return -1
+            return -1   # everything OK
 
-        def on_false(_):           
-            return 1   # everything OK
-
-        return lax.cond(rank < m, on_true, on_false, operand=None)
+        return lax.cond(rank == m, on_true, on_false, operand=None)
 
     # Loss (log-likelihood of test data)
     def cv_loss_calculation(self, A : jnp.ndarray, X : jnp.ndarray, Y : jnp.ndarray, Xs : jnp.ndarray, Ys : jnp.ndarray, x : jnp.ndarray, row_num_str : str = "_", return_mu_cov : bool = False):
@@ -278,8 +281,7 @@ class SPRE:
 
         # i.e. the basis function is not linearly independent
         #status = self.check_unisolvent(VA, A.shape[0])
-            
-        
+             
         # Residual term
         # A = m x d (sparse matrix)
         # X = n_train x d
@@ -567,11 +569,12 @@ class SPRE:
                 ## Check maximum rank, must be >= m to be OK, m = number of rows in A
                 #VA = x2fx(self.X_normalised, A_new)
                 #rank = jnp.linalg.matrix_rank(VA)
-                #print(f"{rank}, {m}")             
-                fit_new = self.perform_extrapolation_optimization(A_new, do_jit)
-                cv_new = fit_new['cv']
-                if cv_new < cv: # If adding new predictor helped
-                    to_include = to_include.at[i].set(True)
+                #print(f"{rank}, {m}")
+                if self.check_unisolvent(A_new) > 0:             
+                    fit_new = self.perform_extrapolation_optimization(A_new, do_jit)
+                    cv_new = fit_new['cv']
+                    if cv_new < cv: # If adding new predictor helped
+                        to_include = to_include.at[i].set(True)
 
             if jnp.any(to_include) and ((m + sum(to_include)) < (n_train - 1)):
                 A_updated = jnp.vstack([A, A_extra[to_include]])                          
