@@ -212,14 +212,23 @@ class SPRE:
 
         return self.cv_loss_calculation(A, X, Y, Xs, Ys, x, str(row_num), return_mu_cov)
 
-    def check_unisolvent(self, A):
+    def check_unisolvent(self, A : jnp.ndarray) -> int:
+        """
+        Checks whether the basis A produces a unisolvent set.
+        Returns an int (rather than bool) in order to allow use of JAX JIT (just in time compilation).
+      
+        Parameters:  
+            A : jnp.ndarray           binary matrix representing the sparse basis        
+        Returns:
+            int              
+        """
 
         m = A.shape[0]
         VA = x2fx(self.X_normalised, A)
         rank = jnp.linalg.matrix_rank(VA)
 
         def on_true(_):
-            
+            # everything OK
             return 1
 
         def on_false(_):    
@@ -230,9 +239,9 @@ class SPRE:
             rank=rank, m=m
         )       
             #raise ValueError("The set X is not unisolvent")
-            return -1   # everything OK
+            return -1   
 
-        return lax.cond(rank == m, on_true, on_false, operand=None)
+        return lax.cond(rank == m, on_true, on_false, operand = None)
 
     # Loss (log-likelihood of test data)
     def cv_loss_calculation(self, A : jnp.ndarray, X : jnp.ndarray, Y : jnp.ndarray, Xs : jnp.ndarray, Ys : jnp.ndarray, x : jnp.ndarray, row_num_str : str = "_", return_mu_cov : bool = False):
@@ -443,20 +452,51 @@ class SPRE:
         out = self.jit_perform_extrapolation(x, A)     
         return -out['cv'] #, -out['cv_grad']
 
-    def scipy_hess(self, x_onp, A):
-        x_jnp = jnp.asarray(x_onp)
+    def scipy_hess(self, x_np : np.ndarray, A : np.ndarray) -> np.ndarray:
+        """
+        Wrapper to create hessian using numpy arrays using JAX calculated hessian.
+
+        Parameters:
+            x_np : np.ndarray         shape (p,), kernel hyperparameters
+            A : np.ndarray            binary matrix representing the sparse basis
+        Returns:
+            np.ndarray
+        """
+
+        x_jnp = jnp.asarray(x_np)
         A_jnp = jnp.asarray(A)
+        # Negate for negative log likelihood
         return -np.asarray(self.jit_hess(x_jnp, A_jnp))
 
-    def scipy_objective(self, x_onp, A):
-        x_jnp = jnp.asarray(x_onp)            # numpy -> jax
+    def scipy_objective(self, x_np : np.ndarray, A : np.ndarray) -> np.float64:
+        """
+        Wrapper to create objective function using numpy arrays.
+
+        Parameters:
+            x_np : np.ndarray         shape (p,), kernel hyperparameters
+            A : np.ndarray            binary matrix representing the sparse basis
+        Returns:
+            np.float64
+        """
+
+        x_jnp = jnp.asarray(x_np)            # numpy -> jax
         A_jnp = jnp.asarray(A)
-        #return float(self.objective(x_jnp))             # scalar float
         return self.objective(x_jnp, A_jnp).astype(np.float64)
 
-    def scipy_jac(self, x_onp, A):                
-        x_jnp = jnp.asarray(x_onp)
+    def scipy_jac(self, x_np : np.ndarray, A : np.ndarray) -> np.ndarray:
+        """
+        Wrapper to create Jacobian (gradient) using numpy arrays using JAX calculated Jacobian.
+
+        Parameters:
+            x_np : np.ndarray         shape (p,), kernel hyperparameters
+            A : np.ndarray            binary matrix representing the sparse basis
+        Returns:
+            np.ndarray
+        """
+
+        x_jnp = jnp.asarray(x_np)
         A_jnp = jnp.asarray(A)
+        # Negate for negative log likelihood
         return -np.asarray(self.jit_grad(x_jnp, A_jnp))     # return numpy array
         
     def perform_extrapolation_optimization(self, A : jnp.ndarray, do_jit : bool = True) -> dict:
@@ -480,8 +520,8 @@ class SPRE:
         result = minimize(self.scipy_objective,
                     self.default_kernel_parameters,                    
                     method='trust-krylov',   # trust-krylov is trust region fitting algorithm
-                    jac=self.scipy_jac,
-                    hess=self.scipy_hess,
+                    jac=self.scipy_jac,      # gradient
+                    hess=self.scipy_hess,    # hessian
                     args=(A),
                     options={'maxiter': 1000, 'disp': False})
 
@@ -494,8 +534,18 @@ class SPRE:
         }
 
     def prepare_jit_for_extrapolation_optimization(self):
+        """
+        Create gradient, hessian and extrapolation functions using JAX "Just in time" (JIT)
+        compilation to speed up calculations when fitting parameters.
+
+        Parameters:
+            None
+        Returns:
+            None
+        """
+
         # "Just in time" compilation to speed up the fitting.
-        # Repeated each time here as some class variables may have changed
+        # Note class variables may not change when these functions are called.
         self.jit_hess = jit(hessian(self.cv_loss))
         self.jit_grad = jit(grad(self.cv_loss))
         self.jit_perform_extrapolation = jit(self.perform_extrapolation)
@@ -541,21 +591,12 @@ class SPRE:
         # Try higher orders
         carry_on = True
 
-        # Fix A to test things
-        #if True:
-        #    carry_on = False
-        #    A1 = jnp.eye(self.dimension)
-        #    A = jnp.vstack([A, A1])
-
-        # Try restricting te order..?
-        #max_order = 1
-
         order = 0
         fit = self.perform_extrapolation_optimization(A, do_jit)
         cv = fit['cv']
         
-
-        while carry_on: # and order < max_order:
+        # Try expanding basis A for a better fit
+        while carry_on: 
             m = A.shape[0] # Number of rows in base A
             order += 1 # Consider the addition of higher order interactions
             A_extra = stepwise(A, order)  # All predictors of the nex order to consider
@@ -566,10 +607,7 @@ class SPRE:
 
             for i in tqdm(range(n_extra), desc="Stepwise progress"):
                 A_new = jnp.vstack([A, A_extra[i]])  
-                ## Check maximum rank, must be >= m to be OK, m = number of rows in A
-                #VA = x2fx(self.X_normalised, A_new)
-                #rank = jnp.linalg.matrix_rank(VA)
-                #print(f"{rank}, {m}")
+                ## Check maximum rank, must be m to be OK, m = number of rows in A               
                 if self.check_unisolvent(A_new) > 0:             
                     fit_new = self.perform_extrapolation_optimization(A_new, do_jit)
                     cv_new = fit_new['cv']
