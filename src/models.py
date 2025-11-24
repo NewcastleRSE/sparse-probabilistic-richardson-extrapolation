@@ -22,10 +22,20 @@ from sparse_pre.extrapolation import extrapolation
 
 class Model:
     """
-    Base model class
+    Base model class with common methods used for all model classes.
     """
 
     def __init__(self, params : dict, parameter_filename : str):
+        """
+        Sets up the model class with model parameters.
+
+        Parameters:  
+            params : dict               Parameters for the model.
+            parameter_filename : str    Filename and path of the file.      
+        Returns:
+            None         
+        """
+         
         # Set default parameters values  
         self.total_time = 120
         self.evaluation = False
@@ -46,25 +56,70 @@ class Model:
         self.ylabel = 'y'
         self.title = 'Model'
         
-    def __str__(self):
+    def __str__(self) -> str:
+        """
+        Returns string to describe model.
+
+        Parameters:  
+            None  
+        Returns:
+            None         
+        """
+
         return self.model_name
     
     def diff_model(self, t : float, y : tuple) -> tuple:
+        """
+        Returns current gradients of model variables. Used for differential equation models.
+
+        Parameters:  
+            t : float            Current time
+            y : tuple            Current values model variables
+        Returns:
+            tuple                Current gradients
+        """
+
         return (0, 0)
        
     def get_initial_condition(self) -> tuple:
+        """
+        Returns initial condition of a model - often set with model parameters.
+
+        Parameters:  
+            None
+        Returns:
+            tuple                Initial values of model variables.
+        """
+
         return (0, 0)
     
     def get_final_quantity(self, discrete_paras : npt.NDArray) -> float:
+        """
+        Returns the final evaluation of a model, derived from the final state of the model.
+
+        Parameters:  
+            discrete_paras : npt.NDArray        Discretisation parameters
+        Returns:
+            float   
+        """
+
         return 0
     
     def set_parameters(self, parameters : dict):
-        
-        """Set variables from a dictionary."""
+        """
+        Set model parameters from a dictionary.
+        Some unset parameters are then given default values.
+
+        Parameters:  
+            parameters : dict        Dictionary of parameter values
+        Returns:
+            None                
+        """
+         
         for key, value in parameters.items():
             setattr(self, key, value)
 
-        # Check if running evalution of SPRE method
+        # Check if running evalution of SPRE method, calculate absolute errors with true value.
         if "evaluation" not in parameters.keys():
             self.evaluation = False
 
@@ -79,13 +134,32 @@ class Model:
 
     # Files to save results
     def add_path(self, path : str, filename : str):
+        """
+        Sets up a file with path to save results or a plot to.
+        Returns an empty string if filename is not set.
+
+        Parameters:  
+            path : str        Path of where to store results.
+            filename : str    Filename of results.
+        Returns:
+            None                
+        """
+
         new_filename = ""
         if filename is not None and filename:
             new_filename = os.path.join(path, filename)
         return new_filename
         
     def update_paths(self, parameter_filename : str):
-        
+        """
+        Updates the paths of all filenames where a result/plot is stored.
+
+        Parameters:  
+            parameter_filename : str    Filename and path of the model parameter file.  
+        Returns:
+            None                
+        """
+
         # Get the directory of the input file
         input_dir = Path(parameter_filename)
   
@@ -112,35 +186,67 @@ class Model:
             self.do_results_eval_plot = self.results_eval_plot_filename != ""
 
     def set_true_value(self):
+        """
+        Sets the object variable "true_value" to the actual model outcome.
+        For example, from an analytic solution if known. This can be used to evaluate model accuracy.
+
+        Parameters:  
+            None
+        Returns:
+            None                
+        """
+
         self.true_value = 0
 
-    def get_cache_filename(self, discrete_paras : npt.NDArray):
+    def get_cache_filename(self, discrete_paras : npt.NDArray) -> str:
         """
-        Returns the model cache filename.
+        Returns the model cache filename based on the model parameters.
+
+        Parameters:  
+            discrete_paras : npt.NDArray   Discreteisation parameters
+        Returns:
+            str    
         """
 
         return self.model_name + "_".join(str(i) for i in discrete_paras) + ".bin"
 
     def update_model_cache(self, discrete_paras : npt.NDArray, y : float):
         """
-        Updates the model cache.
+        Updates the model cache of final outcome values.
+
+        Parameters:  
+            discrete_paras : npt.NDArray     Discreteisation parameters used to simulate model.
+            y : float                        Final calculated value.
+        Returns:
+            None   
         """
 
+        # Get the cache filename and then add the path.
         cache_filename = self.get_cache_filename(discrete_paras)
         cache_filename = self.add_path(self.cache_dir, cache_filename)
 
+        # Write the value to file in binary to store the precise number.
         with open(cache_filename, "wb") as f:
             f.write(struct.pack('d', y))  # 'd' = double (64-bit float)
 
     def run_model(self, discrete_paras : npt.NDArray) -> float:
         """
-        Either runs the model or looks up value in the cache   
+        Either runs the model or looks up previously simulated value in the cache.
+       
+        Parameters:  
+            discrete_paras : npt.NDArray     Discreteisation parameters used to simulate model.           
+        Returns:
+            float   
         """
 
+        # Whether to finally simulate the model or not.
         perform_model_simulation = True
+
+        # Get the cache filename and then add the path.
         cache_filename = self.get_cache_filename(discrete_paras)
         cache_filename = self.add_path(self.cache_dir, cache_filename)
 
+        # Use the cache unless requested not to.
         if self.use_model_cache:
             
             # Look up the value in the cache if it exists
@@ -150,7 +256,8 @@ class Model:
                     y_result = struct.unpack('d', data)[0]       
                     perform_model_simulation = False
                     print(f"\tUsing cached value: {y_result}")         
-            
+
+        # Value was not in cache or req'd to simulate again.     
         if perform_model_simulation:
             # Run the model
             y_result = self.run_model_simulation(discrete_paras)
@@ -161,7 +268,14 @@ class Model:
 
     def run_model_simulation(self, discrete_paras : npt.NDArray) -> float:
         """
-        Runs model by solving diff equations   
+        Runs model simulation by solving differiental equations.
+        Other models may override this to simulate models otherwise.
+        The final outcome of the model is returned.
+       
+        Parameters:  
+            discrete_paras : npt.NDArray     Discreteisation parameters used to simulate model.           
+        Returns:
+            float   
         """
 
         y0 = self.get_initial_condition()
@@ -194,7 +308,17 @@ class Model:
         return self.get_final_quantity(discrete_paras)
      
     def run_analysis(self):
-             
+        """
+        Runs analysis of the model by running SPRE on every set of discretisation parameters in X
+        scaled for by each value in h.
+        If self.evaluation is set to true evaluation results/plot is recorded comparing to the "true value".
+
+        Parameters:  
+            None
+        Returns:
+            None                
+        """
+
         # Values to try
         X = np.array(self.X)
 
@@ -296,17 +420,26 @@ class Model:
         
         # Do plots for the analysis if requested
         if self.evaluation:
-           self.plot_evaulation_results() 
+           self.plot_evaluation_results() 
 
-        else:
-            if self.do_results_plot:
-                self.plot_SPRE_results()
-                
+        # Do plot of SPRE estimates with error bars.
+        if self.do_results_plot:
+            self.plot_SPRE_results()
+
+        # Do plot of model simulation, e.g. solved differential equations  
         if self.do_final_model_plot:
-            _ = self.plot_diff_solution()
-
+            _ = self.plot_final_model()
 
     def plot_SPRE_results(self):
+        """
+        Plots SPRE estimates with error bars of 1 standard deviation against different values of h.
+
+        Parameters:  
+            None
+        Returns:
+            None                
+        """
+
         # Calculate error bars (standard deviation = sqrt(var))
         errors = np.sqrt(self.df_all_extrapolation_results["var"])
 
@@ -320,7 +453,7 @@ class Model:
         plt.grid(True)
 
         # Add horizontal dashed line with computed accurate answer
-        if self.final_tols is not None: 
+        if self.true_value is not None: 
             
             print(f"\nTrue value calculated as f(0) = {self.true_value}\n")
 
@@ -329,11 +462,17 @@ class Model:
         plt.savefig(self.results_plot_filename) 
         plt.show()    
 
-    def plot_diff_solution(self):
+    def plot_final_model(self):
+        """
+        Plots final simulated model.
 
-        # -----------------------------
+        Parameters:  
+            None
+        Returns:
+            None                
+        """
+
         # Plot Results
-        # -----------------------------
         plt.close('all') 
         plt.figure(figsize=(10, 6))
         for i, y in enumerate(self.diff_solution.y):
@@ -350,12 +489,23 @@ class Model:
             plt.savefig(self.final_model_plot_filename)  
         plt.show()
 
-    def plot_evaulation_results(self):
-        # Create table of absolute errors (wrt to "true" value) with
-        # 1) Smallest time step in set of time steps
-        # 2) SPRE estimate using all time steps in set
+    def plot_evaluation_results(self):
+        """
+        Plots absolute errors of SPRE estimate with the "true value" as a line plot on a log-log scale plot.
+        First point in X is also plotted as a reference, often with the smallest values in X, called "best estimate",
+        although may not be the best estimate in X.
 
-        #abs_error_table = np.vstack((all_extrapolation_results, extrapolation_results))
+        Table of absolute errors is also recorded.
+
+        Parameters:  
+            None
+        Returns:
+            None                
+        """
+
+        # Create table of absolute errors (wrt to "true" value) with
+        # 1) First point in X (smallest discretisation parameters).
+        # 2) SPRE estimate using all time steps in set
 
         # Create DataFrame
         if not isinstance(self.h_values[0], (list, tuple)):
@@ -397,6 +547,15 @@ class Model:
             plt.show()
 
 def get_model(parameter_filename : str) -> Model:
+    """
+    Returns model object for the appropriate model as stated in the model parameter file.
+
+    Parameters:  
+        parameter_filename : str    Filename and path of the file.  
+    Returns:
+        Model
+    """
+    
     # Get parameters
     with open(parameter_filename) as f:
         params = json.load(f)
@@ -412,13 +571,26 @@ def get_model(parameter_filename : str) -> Model:
     model_class_name = ''.join(word.capitalize() for word in parts)  + "Model"
 
     # Create model object
-    #model = getattr(diff_models, model_class_name)(params, parameter_filename)
     model = globals()[model_class_name](params, parameter_filename)
 
     return model
 
 class SirModel(Model):
-    def __init__(self, params, parameter_filename):
+    """
+    Class for SIR ("Susceptible", "Infected", "Recovered") model
+    """
+
+    def __init__(self, params : dict, parameter_filename : str):
+        """
+        Sets up the SIR model class with model parameters.
+
+        Parameters:  
+            params : dict               Parameters for the model.
+            parameter_filename : str    Filename and path of the file.      
+        Returns:
+            None         
+        """
+
         # Call Parent’s constructor to set parameters
         super().__init__(params, parameter_filename)
 
@@ -451,16 +623,42 @@ class SirModel(Model):
         return (dSdt, dIdt, dRdt)
 
     def get_initial_condition(self) -> tuple:
+        """
+        Returns initial condition of the SIR model.
 
+        Parameters:  
+            None
+        Returns:
+            tuple                Initial values of model variables.
+        """
+         
         S0 = self.N - self.initial_infected
         I0 = self.initial_infected
         R0 = 0
         return (S0, I0, R0)
 
     def set_true_value(self):
+        """
+        Sets the "true_value" of the SIR model by running the model with small discretisation parameters
+        as given in self.final_tols
+        
+        Parameters:  
+            None
+        Returns:
+            None                
+        """
+
         self.true_value = self.run_model(self.final_tols)
 
     def get_final_quantity(self, discrete_paras : npt.NDArray) -> float:
+        """
+        Returns the final evaluation of the SIR model, derived from the final state of the model.
+
+        Parameters:  
+            discrete_paras : npt.NDArray        Discretisation parameters
+        Returns:
+            float                          
+        """
 
         S, I, R = self.diff_solution.y
         t = self.diff_solution.t
@@ -488,7 +686,21 @@ class SirModel(Model):
             return infected_person_days
 
 class ChemEquilModel(Model):
+    """
+    Class for Fast Chemical Equilibrium differential equation model.
+    """
+
     def __init__(self, params, parameter_filename):
+        """
+        Sets up the Chemical Equilibrium model class with model parameters.
+
+        Parameters:  
+            params : dict               Parameters for the model.
+            parameter_filename : str    Filename and path of the file.      
+        Returns:
+            None         
+        """
+
         # Call Parent’s constructor to set parameters
         super().__init__(params, parameter_filename)
 
@@ -517,23 +729,61 @@ class ChemEquilModel(Model):
         return (dx1dt, dx2dt)
     
     def get_initial_condition(self) -> tuple:
+        """
+        Returns initial condition of the Chem Equil model.
+
+        Parameters:  
+            None
+        Returns:
+            tuple                Initial values of model variables.
+        """
+
         x1_0 = 1
         x2_0 = 1
         return (x1_0, x2_0)
 
     def set_true_value(self):
+        """
+        Sets the "true_value" of the Chem Equil model using analytic solution.
+        
+        Parameters:  
+            None
+        Returns:
+            None                
+        """
+         
         self.true_value = np.pow(self.total_time + 1, 3/2)
 
     def get_final_quantity(self, discrete_paras : npt.NDArray) -> float:
+        """
+        Returns the final evaluation of the Chem Equil model given by last value of x2.
+
+        Parameters:  
+            discrete_paras : npt.NDArray        Discretisation parameters
+        Returns:
+            float                          
+        """
+
         x1, x2 = self.diff_solution.y
         # Return final product species
         return x2[-1]
 
 class DiffusionModel(Model):
     """
-    Diffusion equation on a Cartesian grid
+    Class for Diffusion model on a Cartesian grid.
     """
+
     def __init__(self, params, parameter_filename):
+        """
+        Sets up the diffusion model class with model parameters.
+
+        Parameters:  
+            params : dict               Parameters for the model.
+            parameter_filename : str    Filename and path of the file.      
+        Returns:
+            None         
+        """
+         
         # Call Parent’s constructor to set parameters
         super().__init__(params, parameter_filename)
 
@@ -541,13 +791,24 @@ class DiffusionModel(Model):
         self.model_name = "Diffusion"
        
     def run_model_simulation(self, discrete_paras):
-        
+        """
+        Runs model simulation of diffusion model by using py-pde package and following example.
+        https://py-pde.readthedocs.io/en/latest/examples_gallery/simple_pdes/cartesian_grid.html#sphx-glr-examples-gallery-simple-pdes-cartesian-grid-py
+        Converts x and y discretisation parameters to the number of x and y divisions on the grid.
+
+        Parameters:  
+            discrete_paras : npt.NDArray     Discreteisation parameters used to simulate model.           
+        Returns:
+            float   
+        """
+
         dt = discrete_paras[0]
         num_x_partitions = int(np.round(abs(self.x_range[1] - self.x_range[0])/discrete_paras[1]))
         num_y_partitions = int(np.round(abs(self.y_range[1] - self.y_range[0])/discrete_paras[2]))
         
-        # Ouput info on what is being simulated
+        # Output info on what is being simulated
         print(f"\tSimulating Diffusion Model with dt = {dt}, {num_x_partitions} x partitions and {num_y_partitions} y partitions")
+
         # Span of x and y, number of divisions in each dimension
         grid = CartesianGrid([self.x_range, self.y_range], [num_x_partitions, num_y_partitions])  # generate grid
         state = ScalarField(grid)  # generate initial condition
@@ -560,7 +821,16 @@ class DiffusionModel(Model):
         print(f"\tCalculated final value: {y}")
         return y
 
-    def plot_diff_solution(self):
+    def plot_final_model(self):
+        """
+        Plots the final simulated grid for the diffusion model.
+
+        Parameters:  
+            None
+        Returns:
+            None                
+        """
+
         # Get model output to plot
         _ = self.run_model(self.final_tols)
 
@@ -586,10 +856,20 @@ class DiffusionModel(Model):
             self.record_mp4()
 
     def record_mp4(self):
+        """
+        Creates mp4 video of the simulated diffusion model.
+        Requires ffmpeg program.
+
+        Parameters:  
+            None
+        Returns:
+            None                
+        """
+
         # Save animataion
         dt = self.final_tols[0]
-        num_x_partitions = self.final_tols[1] #np.round(1.0/discrete_paras[0])
-        num_y_partitions = self.final_tols[2] # * discrete_paras[0] #np.round(1.0/discrete_paras[1])
+        num_x_partitions = self.final_tols[1] 
+        num_y_partitions = self.final_tols[2] 
         
         # Span of x and y, number of divisions in each dimension
         grid = CartesianGrid([self.x_range, self.y_range], [num_x_partitions, num_y_partitions])  # generate grid
@@ -613,8 +893,14 @@ class DiffusionModel(Model):
         
     def get_cache_filename(self, discrete_paras : npt.NDArray):
         """
-        Returns the model cache filename.
+        Returns the model cache filename for the diffusion based on the model parameters.
+
+        Parameters:  
+            discrete_paras : npt.NDArray   Discreteisation parameters
+        Returns:
+            str    
         """
+      
         # Create filename with all settings and parameters used
         filename = f"d_{self.diffusivity}_{self.x_range[0]}_{self.x_range[1]}_{self.y_range[0]}_{self.y_range[1]}_{self.total_time}"
         filename += f"_{self.start_pos[0]}_{self.start_pos[1]}_{self.start_amount}_"
@@ -623,29 +909,44 @@ class DiffusionModel(Model):
         return filename
     
     def set_true_value(self):
-        # Get corner value
+        """
+        Sets the "true_value" of the Chem Equil model using analytic solution.
+        
+        Parameters:  
+            None
+        Returns:
+            None                
+        """
+
+        # Get value at (0, 0) using analytic solution.
         self.true_value = self.diffusion_solution_2d(0, 0, self.total_time) 
 
     def get_final_quantity(self, discrete_paras : npt.NDArray) -> float:
-        
-        # Return final product species in origin        
+        """
+        Returns the final evaluation of the diffusion model given by value at (0, 0).
+
+        Parameters:  
+            discrete_paras : npt.NDArray        Discretisation parameters
+        Returns:
+            float                          
+        """
+
+        # Return value at (0,0) from simulated model.      
         return self.result.interpolate([0, 0])  
     
-    def diffusion_solution_2d(self, x, y, t):
+    def diffusion_solution_2d(self, x : float, y : float, t : float) -> float:
         """
         Analytic solution of the 2D diffusion equation for a point-source initial condition.
 
         Parameters
         ----------
-        x, y : array_like or float
-            Spatial coordinates (can be scalars or NumPy arrays of the same shape).
-        t : float
-            Time at which to evaluate the solution (must be > 0).
+        x : float      Spatial coordinates.
+        y : float            
+        t : float      Time at which to evaluate the solution (must be > 0).
       
         Returns
         -------
-        c : ndarray or float
-            Concentration value(s) at position (x, y) and time t.
+        c : float       Concentration value at position (x, y) and time t.
         """
 
         x = np.asarray(x)
