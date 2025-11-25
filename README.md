@@ -25,13 +25,13 @@ The new method, called Sparse Probabilistic Richardson Extrapolation, is both si
 
 ### Prerequisites
 
-The current Python version is **Python 3.12**, and the same version should be used for local testing and development. You can find the correct version of Python [here](https://www.python.org/downloads/).
+The current Python version is **Python 3.13.9**, and the same version should be used for local testing and development. You can find the correct version of Python [here](https://www.python.org/downloads/).
 
 ### Installation
 
 1. Set up Python virtual environment `python3 -m venv .venv`. If you have multiple Python versions on your computer, you may need to specify the Python version (e.g., `python3.12 -m venv .venv`).
 2. Run venv with `source .venv/bin/activate`
-3. Install dependencies `python -m pip install -r requirements-dev.txt`
+3. Install dependencies `python -m pip install -r requirements.txt`
 
 ### Running Locally
 
