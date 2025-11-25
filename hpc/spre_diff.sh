@@ -3,8 +3,8 @@
 #SBATCH --account=comet_spread
 #SBATCH --mem=2GB
 #SBATCH --cpus-per-task=1
-#SBATCH --time=20:00
-#SBATCH --output=data/diffusion/output_diffusion.log
+#SBATCH --time=60:00
+#SBATCH --output=data/diffusion/results/output_diffusion.log
 
 # Load modules
 

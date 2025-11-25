@@ -5,7 +5,7 @@
 #SBATCH --cpus-per-task=1
 #SBATCH --time=10:00
 #SBATCH --array=1-80                       # Run tasks 
-#SBATCH --output=data/diffusion/output_diffusion_array.log
+#SBATCH --output=data/diffusion/results/output_diffusion_array.log
 
 
 # Load modules
