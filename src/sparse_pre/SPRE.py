@@ -11,7 +11,6 @@
 import jax.numpy as jnp
 from jax import grad, debug, hessian, jit, lax
 from tqdm import tqdm  # For progress bars
-from sklearn.neighbors import NearestNeighbors
 import numpy as np
 from scipy.optimize import minimize
 
