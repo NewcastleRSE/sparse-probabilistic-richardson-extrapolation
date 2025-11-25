@@ -1,216 +1,0 @@
-Tue 25 Nov 11:57:31 GMT 2025
-Running on hmem009 SPRE analysis
-Running model "Diffusion" with parameters [4.73632813e-07 2.38281250e-01 2.14843750e-01]
-	Simulating Diffusion Model with dt = 4.736328125e-07, 8 x partitions and 9 y partitions
-	Calculated final value: 8.51015577506436
-Running model "Diffusion" with parameters [6.49414063e-07 1.44531250e-01 2.38281250e-01]
-	Simulating Diffusion Model with dt = 6.494140625e-07, 14 x partitions and 8 y partitions
-	Calculated final value: 6.568044301405718
-Running model "Diffusion" with parameters [1.22070313e-07 2.14843750e-01 1.67968750e-01]
-	Simulating Diffusion Model with dt = 1.220703125e-07, 9 x partitions and 12 y partitions
-	Calculated final value: 12.518904795892158
-Running model "Diffusion" with parameters [5.61523437e-07 1.91406250e-01 1.21093750e-01]
-	Simulating Diffusion Model with dt = 5.615234375e-07, 10 x partitions and 17 y partitions
-	Calculated final value: 18.036118599785016
-Running model "Diffusion" with parameters [3.85742188e-07 7.42187500e-02 9.76562500e-02]
-	Simulating Diffusion Model with dt = 3.857421875e-07, 27 x partitions and 20 y partitions
-	Calculated final value: 44.05266785515545
-Running model "Diffusion" with parameters [2.09960937e-07 1.67968750e-01 7.42187500e-02]
-	Simulating Diffusion Model with dt = 2.099609375e-07, 12 x partitions and 27 y partitions
-	Calculated final value: 28.061062976650753
-Running model "Diffusion" with parameters [2.97851562e-07 1.21093750e-01 1.91406250e-01]
-	Simulating Diffusion Model with dt = 2.978515625e-07, 17 x partitions and 10 y partitions
-	Calculated final value: 18.03615648701351
-Running model "Diffusion" with parameters [7.37304688e-07 9.76562500e-02 1.44531250e-01]
-	Simulating Diffusion Model with dt = 7.373046875e-07, 20 x partitions and 14 y partitions
-	Calculated final value: 15.168386920291743
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Running model "Diffusion" with parameters [6.06250000e-05 1.86157227e-03 2.14843750e-01]
-	Simulating Diffusion Model with dt = 6.0625e-05, 1074 x partitions and 9 y partitions
-	Calculated final value: -5.214887575827804e+127
-Running model "Diffusion" with parameters [8.31250000e-05 1.12915039e-03 2.38281250e-01]
-	Simulating Diffusion Model with dt = 8.3125e-05, 1771 x partitions and 8 y partitions
-	Calculated final value: -1.7812340381647767e+171
-Running model "Diffusion" with parameters [1.5625000e-05 1.6784668e-03 1.6796875e-01]
-	Simulating Diffusion Model with dt = 1.5625e-05, 1192 x partitions and 12 y partitions
-	Calculated final value: 2.5623809064367776e+53
-Running model "Diffusion" with parameters [7.18750000e-05 1.49536133e-03 1.21093750e-01]
-	Simulating Diffusion Model with dt = 7.1875e-05, 1337 x partitions and 17 y partitions
-	Calculated final value: 5.38629805338367e+152
-Running model "Diffusion" with parameters [4.93750000e-05 5.79833984e-04 9.76562500e-02]
-	Simulating Diffusion Model with dt = 4.9375e-05, 3449 x partitions and 20 y partitions
-	Calculated final value: nan
-Running model "Diffusion" with parameters [2.68750000e-05 1.31225586e-03 7.42187500e-02]
-	Simulating Diffusion Model with dt = 2.6875e-05, 1524 x partitions and 27 y partitions
-	Calculated final value: -7.777854820091641e+267
-Running model "Diffusion" with parameters [3.81250000e-05 9.46044922e-04 1.91406250e-01]
-	Simulating Diffusion Model with dt = 3.8125e-05, 2114 x partitions and 10 y partitions
-	Calculated final value: nan
-Running model "Diffusion" with parameters [9.43750000e-05 7.62939453e-04 1.44531250e-01]
-	Simulating Diffusion Model with dt = 9.4375e-05, 2621 x partitions and 14 y partitions
-	Calculated final value: 5.382149158930236e+193
-Traceback (most recent call last):
-  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/src/run_model_analysis.py", line 28, in <module>
-    model.run_analysis()
-  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/src/models.py", line 361, in run_analysis
-    out = extrapolation(X*h, Y, options)
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/src/sparse_pre/extrapolation.py", line 71, in extrapolation
-    out = spre.stepwise_selection()
-          ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/src/sparse_pre/SPRE.py", line 594, in stepwise_selection
-    fit = self.perform_extrapolation_optimization(A, do_jit)
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/src/sparse_pre/SPRE.py", line 519, in perform_extrapolation_optimization
-    result = minimize(self.scipy_objective,
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/.venv/lib/python3.12/site-packages/scipy/optimize/_minimize.py", line 809, in minimize
-    res = _minimize_trust_krylov(fun, x0, args, jac, hess, hessp,
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/.venv/lib/python3.12/site-packages/scipy/optimize/_trustregion_krylov.py", line 51, in _minimize_trust_krylov
-    return _minimize_trust_region(fun, x0, args=args, jac=jac,
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/.venv/lib/python3.12/site-packages/scipy/optimize/_trustregion.py", line 232, in _minimize_trust_region
-    while m.jac_mag >= gtol:
-          ^^^^^^^^^
-  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/.venv/lib/python3.12/site-packages/scipy/optimize/_trustregion.py", line 87, in jac_mag
-    self._g_mag = scipy.linalg.norm(self.jac)
-                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/.venv/lib/python3.12/site-packages/scipy/linalg/_misc.py", line 146, in norm
-    a = np.asarray_chkfinite(a)
-        ^^^^^^^^^^^^^^^^^^^^^^^
-  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/.venv/lib/python3.12/site-packages/numpy/lib/_function_base_impl.py", line 665, in asarray_chkfinite
-    raise ValueError(
-ValueError: array must not contain infs or NaNs
-Stepwise progress:  33%|███▎      | 1/3 [00:09<00:19,  9.85s/it]Stepwise progress: 100%|██████████| 3/3 [00:09<00:00,  3.30s/it]
-Tue 25 Nov 11:57:50 GMT 2025
-Total seconds: 49
-Fitting interactions of order 2:
-Stepwise progress:   0%|          | 0/5 [00:00<?, ?it/s]/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/.venv/lib/python3.12/site-packages/pde/solvers/explicit.py:95: RuntimeWarning: invalid value encountered in add
-  state_data += dt * rhs_pde(state_data, t)
-Stepwise progress:  20%|██        | 1/5 [00:08<00:34,  8.72s/it]Stepwise progress:  80%|████████  | 4/5 [00:08<00:01,  1.68s/it]Stepwise progress: 100%|██████████| 5/5 [00:08<00:00,  1.77s/it]
-Fitting interactions of order 3:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:09<00:18,  9.38s/it]Stepwise progress: 100%|██████████| 3/3 [00:09<00:00,  3.14s/it]
-Running model "Diffusion" with parameters [6.0625000e-05 2.3828125e-01 1.6784668e-03]
-	Simulating Diffusion Model with dt = 6.0625e-05, 8 x partitions and 1192 y partitions
-	Calculated final value: -3.83537416313383e+144
-Running model "Diffusion" with parameters [8.31250000e-05 1.44531250e-01 1.86157227e-03]
-	Simulating Diffusion Model with dt = 8.3125e-05, 14 x partitions and 1074 y partitions
-	Calculated final value: -3.3831180181165016e+112
-Running model "Diffusion" with parameters [1.56250000e-05 2.14843750e-01 1.31225586e-03]
-	Simulating Diffusion Model with dt = 1.5625e-05, 9 x partitions and 1524 y partitions
-	Calculated final value: 1.7407905556616897e+267
-Running model "Diffusion" with parameters [7.18750000e-05 1.91406250e-01 9.46044922e-04]
-	Simulating Diffusion Model with dt = 7.1875e-05, 10 x partitions and 2114 y partitions
-	Calculated final value: 4.536657292065573e+208
-Running model "Diffusion" with parameters [4.93750000e-05 7.42187500e-02 7.62939453e-04]
-	Simulating Diffusion Model with dt = 4.9375e-05, 27 x partitions and 2621 y partitions
-	Calculated final value: nan
-Running model "Diffusion" with parameters [2.68750000e-05 1.67968750e-01 5.79833984e-04]
-	Simulating Diffusion Model with dt = 2.6875e-05, 12 x partitions and 3449 y partitions
-	Calculated final value: nan
-Running model "Diffusion" with parameters [3.81250000e-05 1.21093750e-01 1.49536133e-03]
-	Simulating Diffusion Model with dt = 3.8125e-05, 17 x partitions and 1337 y partitions
-	Calculated final value: -2.2429799714860494e+203
-Running model "Diffusion" with parameters [9.43750000e-05 9.76562500e-02 1.12915039e-03]
-	Simulating Diffusion Model with dt = 9.4375e-05, 20 x partitions and 1771 y partitions
-	Calculated final value: 5.669047344658256e+156
-Traceback (most recent call last):
-  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/src/run_model_analysis.py", line 28, in <module>
-    model.run_analysis()
-  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/src/models.py", line 361, in run_analysis
-    out = extrapolation(X*h, Y, options)
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/src/sparse_pre/extrapolation.py", line 71, in extrapolation
-    out = spre.stepwise_selection()
-          ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/src/sparse_pre/SPRE.py", line 594, in stepwise_selection
-    fit = self.perform_extrapolation_optimization(A, do_jit)
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/src/sparse_pre/SPRE.py", line 519, in perform_extrapolation_optimization
-    result = minimize(self.scipy_objective,
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/.venv/lib/python3.12/site-packages/scipy/optimize/_minimize.py", line 809, in minimize
-    res = _minimize_trust_krylov(fun, x0, args, jac, hess, hessp,
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/.venv/lib/python3.12/site-packages/scipy/optimize/_trustregion_krylov.py", line 51, in _minimize_trust_krylov
-    return _minimize_trust_region(fun, x0, args=args, jac=jac,
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/.venv/lib/python3.12/site-packages/scipy/optimize/_trustregion.py", line 232, in _minimize_trust_region
-    while m.jac_mag >= gtol:
-          ^^^^^^^^^
-  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/.venv/lib/python3.12/site-packages/scipy/optimize/_trustregion.py", line 87, in jac_mag
-    self._g_mag = scipy.linalg.norm(self.jac)
-                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/.venv/lib/python3.12/site-packages/scipy/linalg/_misc.py", line 146, in norm
-    a = np.asarray_chkfinite(a)
-        ^^^^^^^^^^^^^^^^^^^^^^^
-  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/.venv/lib/python3.12/site-packages/numpy/lib/_function_base_impl.py", line 665, in asarray_chkfinite
-    raise ValueError(
-ValueError: array must not contain infs or NaNs
-Tue 25 Nov 11:58:23 GMT 2025
-Total seconds: 52
-Predict f(0) = 89.25638911860727 +/- 22.419175557132675
-
-Running model "Diffusion" with parameters [9.47265625e-07 2.38281250e-01 2.14843750e-01]
-	Simulating Diffusion Model with dt = 9.47265625e-07, 8 x partitions and 9 y partitions
-	Calculated final value: 8.51015493996122
-Running model "Diffusion" with parameters [1.29882813e-06 1.44531250e-01 2.38281250e-01]
-	Simulating Diffusion Model with dt = 1.298828125e-06, 14 x partitions and 8 y partitions
-	Calculated final value: 6.568016312449683
-Running model "Diffusion" with parameters [2.44140625e-07 2.14843750e-01 1.67968750e-01]
-	Simulating Diffusion Model with dt = 2.44140625e-07, 9 x partitions and 12 y partitions
-	Calculated final value: 12.518904214762488
-Running model "Diffusion" with parameters [1.12304687e-06 1.91406250e-01 1.21093750e-01]
-	Simulating Diffusion Model with dt = 1.123046875e-06, 10 x partitions and 17 y partitions
-	Calculated final value: 18.03593983414625
-Running model "Diffusion" with parameters [7.71484375e-07 7.42187500e-02 9.76562500e-02]
-	Simulating Diffusion Model with dt = 7.71484375e-07, 27 x partitions and 20 y partitions
-	Calculated final value: 44.05181533814788
-Running model "Diffusion" with parameters [4.19921875e-07 1.67968750e-01 7.42187500e-02]
-	Simulating Diffusion Model with dt = 4.19921875e-07, 12 x partitions and 27 y partitions
-	Calculated final value: 28.06101113956173
-Running model "Diffusion" with parameters [5.95703125e-07 1.21093750e-01 1.91406250e-01]
-	Simulating Diffusion Model with dt = 5.95703125e-07, 17 x partitions and 10 y partitions
-	Calculated final value: 18.036146795303498
-Running model "Diffusion" with parameters [1.47460938e-06 9.76562500e-02 1.44531250e-01]
-	Simulating Diffusion Model with dt = 1.474609375e-06, 20 x partitions and 14 y partitions
-	Calculated final value: 15.168216694848205
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:09<00:18,  9.16s/it]Stepwise progress: 100%|██████████| 3/3 [00:09<00:00,  3.07s/it]
-Fitting interactions of order 2:
-Stepwise progress:   0%|          | 0/5 [00:00<?, ?it/s]Stepwise progress:  20%|██        | 1/5 [00:08<00:35,  8.87s/it]Stepwise progress: 100%|██████████| 5/5 [00:08<00:00,  1.34s/it]Stepwise progress: 100%|██████████| 5/5 [00:08<00:00,  1.79s/it]
-Fitting interactions of order 3:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:08<00:16,  8.40s/it]Stepwise progress: 100%|██████████| 3/3 [00:08<00:00,  2.82s/it]
-Predict f(0) = 89.25408577318882 +/- 22.418760227458936
-
-Running model "Diffusion" with parameters [1.89453125e-06 2.38281250e-01 2.14843750e-01]
-	Simulating Diffusion Model with dt = 1.89453125e-06, 8 x partitions and 9 y partitions
-	Calculated final value: 8.51010858856381
-Running model "Diffusion" with parameters [2.59765625e-06 1.44531250e-01 2.38281250e-01]
-	Simulating Diffusion Model with dt = 2.59765625e-06, 14 x partitions and 8 y partitions
-	Calculated final value: 6.568013569621631
-Running model "Diffusion" with parameters [4.8828125e-07 2.1484375e-01 1.6796875e-01]
-	Simulating Diffusion Model with dt = 4.8828125e-07, 9 x partitions and 12 y partitions
-	Calculated final value: 12.518903052499736
-Running model "Diffusion" with parameters [2.24609375e-06 1.91406250e-01 1.21093750e-01]
-	Simulating Diffusion Model with dt = 2.24609375e-06, 10 x partitions and 17 y partitions
-	Calculated final value: 18.035582303512886
-Running model "Diffusion" with parameters [1.54296875e-06 7.42187500e-02 9.76562500e-02]
-	Simulating Diffusion Model with dt = 1.54296875e-06, 27 x partitions and 20 y partitions
-	Calculated final value: 44.050110319443974
-Running model "Diffusion" with parameters [8.3984375e-07 1.6796875e-01 7.4218750e-02]
-	Simulating Diffusion Model with dt = 8.3984375e-07, 12 x partitions and 27 y partitions
-	Calculated final value: 28.060907463371134
-Running model "Diffusion" with parameters [1.19140625e-06 1.21093750e-01 1.91406250e-01]
-	Simulating Diffusion Model with dt = 1.19140625e-06, 17 x partitions and 10 y partitions
-	Calculated final value: 18.035957147964826
-Running model "Diffusion" with parameters [2.94921875e-06 9.76562500e-02 1.44531250e-01]
-	Simulating Diffusion Model with dt = 2.94921875e-06, 20 x partitions and 14 y partitions
-	Calculated final value: 15.168183025622335
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:09<00:18,  9.25s/it]Stepwise progress: 100%|██████████| 3/3 [00:09<00:00,  3.10s/it]
-/tmp/slurmd/job1142446/slurm_script: line 24: 3863451 Killed                  python src/run_model_analysis.py data/diffusion/input_diffusion_$1.json
-Tue 25 Nov 12:00:34 GMT 2025
-Total seconds: 224
-slurmstepd: error: Detected 1 oom_kill event in StepId=1142446.batch. Some of the step tasks have been OOM Killed.
