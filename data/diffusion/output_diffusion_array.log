@@ -1,0 +1,52 @@
+Tue 25 Nov 14:55:42 GMT 2025
+Running on hmem009 SPRE analysis
+Running model "Diffusion" with parameters [1.90625000e-05 3.78417969e-03 5.98144531e-03]
+	Simulating Diffusion Model with dt = 1.90625e-05, 529 x partitions and 334 y partitions
+	Calculated final value: 79.25724096198172
+Running model "Diffusion" with parameters [1.56250000e-05 6.71386719e-03 5.24902344e-03]
+	Simulating Diffusion Model with dt = 1.5625e-05, 298 x partitions and 381 y partitions
+	Calculated final value: 79.36648680312965
+Running model "Diffusion" with parameters [8.98437500e-06 5.98144531e-03 3.78417969e-03]
+	Simulating Diffusion Model with dt = 8.984375e-06, 334 x partitions and 529 y partitions
+	Calculated final value: 79.3305878805743
+Tue 25 Nov 14:55:49 GMT 2025
+Total seconds: 12
+Tue 25 Nov 14:55:49 GMT 2025
+Total seconds: 12
+Tue 25 Nov 14:55:49 GMT 2025
+Total seconds: 12
+Running model "Diffusion" with parameters [6.17187500e-06 2.31933594e-03 3.05175781e-03]
+	Simulating Diffusion Model with dt = 6.171875e-06, 862 x partitions and 655 y partitions
+	Calculated final value: 79.51140474756455
+Tue 25 Nov 14:55:51 GMT 2025
+Total seconds: 14
+Running model "Diffusion" with parameters [4.88281250e-07 6.71386719e-03 5.24902344e-03]
+	Simulating Diffusion Model with dt = 4.8828125e-07, 298 x partitions and 381 y partitions
+	Calculated final value: 79.48635124435084
+Tue 25 Nov 14:55:52 GMT 2025
+Total seconds: 15
+Running model "Diffusion" with parameters [9.43750000e-05 3.05175781e-03 4.51660156e-03]
+	Simulating Diffusion Model with dt = 9.4375e-05, 655 x partitions and 443 y partitions
+	Calculated final value: 5.770229373620903e+75
+Running model "Diffusion" with parameters [1.67968750e-06 5.24902344e-03 2.31933594e-03]
+	Simulating Diffusion Model with dt = 1.6796875e-06, 381 x partitions and 862 y partitions
+	Calculated final value: 79.66848957828947
+Tue 25 Nov 14:55:54 GMT 2025
+Total seconds: 17
+Tue 25 Nov 14:55:54 GMT 2025
+Total seconds: 12
+Running model "Diffusion" with parameters [1.92871094e-07 2.31933594e-03 3.05175781e-03]
+	Simulating Diffusion Model with dt = 1.9287109375e-07, 862 x partitions and 655 y partitions
+	Calculated final value: 79.5942455845803
+Tue 25 Nov 14:56:03 GMT 2025
+Total seconds: 195
+Running model "Diffusion" with parameters [7.71484375e-07 2.31933594e-03 3.05175781e-03]
+	Simulating Diffusion Model with dt = 7.71484375e-07, 862 x partitions and 655 y partitions
+	Calculated final value: 79.5850326920331
+Tue 25 Nov 14:56:04 GMT 2025
+Total seconds: 27
+Running model "Diffusion" with parameters [9.64355469e-08 2.31933594e-03 3.05175781e-03]
+	Simulating Diffusion Model with dt = 9.6435546875e-08, 862 x partitions and 655 y partitions
+	Calculated final value: 79.59578127409024
+Tue 25 Nov 14:57:16 GMT 2025
+Total seconds: 268
