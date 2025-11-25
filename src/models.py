@@ -430,6 +430,38 @@ class Model:
         if self.do_final_model_plot:
             _ = self.plot_final_model()
 
+    def choose_h_column(self, df: pd.DataFrame) -> str:
+        """
+        Return 'h' if present in the DataFrame.
+        Otherwise return the h-like column ('h1', 'h2', ...)
+        with the largest numerical range.
+
+        Parameters:  
+            df : pd.DataFrame    Dataframe of results
+        Returns:
+            str 
+        """
+
+        # Case 1: exact "h" exists
+        if "h" in df.columns:
+            return "h"
+
+        # Case 2: search for h1, h2, h3, ... columns
+        h_candidates = [col for col in df.columns
+                        if col.startswith("h") and col != "h"]
+
+        if not h_candidates:
+            raise ValueError("No 'h', 'h1', 'h2', ... columns found.")
+
+        # Helper: compute range of a column
+        def col_range(col):
+            return df[col].max() - df[col].min()
+
+        # Pick column with largest spread
+        best = max(h_candidates, key=col_range)
+
+        return best
+
     def plot_SPRE_results(self):
         """
         Plots SPRE estimates with error bars of 1 standard deviation against different values of h.
@@ -443,10 +475,12 @@ class Model:
         # Calculate error bars (standard deviation = sqrt(var))
         errors = np.sqrt(self.df_all_extrapolation_results["var"])
 
+        h_col = self.choose_h_column(self.df_all_extrapolation_results)
+
         # Plot with error bars
         plt.close('all') 
         plt.figure()
-        plt.errorbar(self.df_all_extrapolation_results["h"], self.df_all_extrapolation_results["mu"], yerr=errors, fmt='o-', capsize=5, ecolor='black', markersize=6)
+        plt.errorbar(self.df_all_extrapolation_results[h_col], self.df_all_extrapolation_results["mu"], yerr=errors, fmt='o-', capsize=5, ecolor='black', markersize=6)
         plt.xlabel("h")
         plt.ylabel("mu")
         plt.title("Extrapolation Results")
@@ -517,7 +551,8 @@ class Model:
         df_abs = pd.DataFrame(self.abs_error_table, columns=abs_header)
 
         # Get x coordinate values to plot against
-        x_vals = df_abs[abs_header[0]]
+        h_col = self.choose_h_column(df_abs)
+        x_vals = df_abs[h_col]
         x_lab = "h"
         if hasattr(self, "eval_plot_type"):
             if self.eval_plot_type == 2:
