@@ -1,10 +1,8 @@
 ##############################################################################
-# This model describes a fast chemical or biochemical equilibrium in which one substance (x(t))
-#  instantaneously adjusts to a slowly changing external condition (represented by time (t)),
-#  while another quantity (y(t)) is produced from (x) through a simple stoichiometric relationship. 
+# Script to run SPRE analysis given a model parameter file.
 #
 # From root directory, for example run
-# python .\src\run_model_analysis.py .\data\chem_equil\input_1.json
+# python ./src/run_model_analysis.py ./data/chem_equil/input_1.json
 #
 # Richard Howey, July 2025 - April 2026
 ##############################################################################

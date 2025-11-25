@@ -430,6 +430,39 @@ class Model:
         if self.do_final_model_plot:
             _ = self.plot_final_model()
 
+    def simulate_ith_analysis_setting(self, sim_number : int):
+        """
+        Simulates model for the set up parameters for the ith 
+        discretisation parameters given by X and h arrays. The simulation outcome will then
+        be added to the cache which can be used in subsequent analyses.
+   
+        Parameters:  
+            sim_number : int
+        Returns:
+            None                
+        """
+
+        # Ensure the cache is not used 
+        self.use_model_cache = False
+
+        # Values to try
+        X = np.array(self.X)
+
+        # Discretisastion parameters setting count
+        count = 0
+
+        # Loop thro' different scalar values for multiplying set of tolerences
+        for h in self.h_values:
+           
+            # Loop thro' parameters in X
+            for x in X:
+                count += 1
+                # Only simulate this model
+                if count == sim_number:     
+                    discrete_parameters = np.array(h) * np.array(x)   
+                    print(f"Running model \"{self.model_name}\" with parameters {discrete_parameters}")                                    
+                    self.run_model(discrete_parameters)
+
     def choose_h_column(self, df: pd.DataFrame) -> str:
         """
         Return 'h' if present in the DataFrame.
