@@ -1,0 +1,9 @@
+Wed 26 Nov 11:28:12 GMT 2025
+Running on hmem009 model simulation for job 77 scenario 38
+/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/.venv/lib/python3.12/site-packages/pde/solvers/explicit.py:95: RuntimeWarning: invalid value encountered in add
+  state_data += dt * rhs_pde(state_data, t)
+Running model "Diffusion" with parameters [4.93750000e-05 5.79833984e-04 7.62939453e-04]
+	Simulating Diffusion Model with dt = 4.9375e-05, 3449 x partitions and 2621 y partitions
+	Calculated final value: nan
+Wed 26 Nov 11:28:46 GMT 2025
+Total seconds: 37

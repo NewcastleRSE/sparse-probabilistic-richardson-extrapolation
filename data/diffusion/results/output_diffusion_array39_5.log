@@ -1,0 +1,208 @@
+Wed 26 Nov 11:28:40 GMT 2025
+Running on hmem009 model simulation for job 5 scenario 39
+slurmstepd: error: slurm_get_node_energy: Socket timed out on send/recv operation
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Socket timed out on send/recv operation
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Socket timed out on send/recv operation
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Socket timed out on send/recv operation
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Socket timed out on send/recv operation
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Socket timed out on send/recv operation
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Socket timed out on send/recv operation
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Socket timed out on send/recv operation
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Socket timed out on send/recv operation
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Socket timed out on send/recv operation
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Socket timed out on send/recv operation
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Socket timed out on send/recv operation
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Socket timed out on send/recv operation
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Socket timed out on send/recv operation
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Socket timed out on send/recv operation
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Socket timed out on send/recv operation
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Socket timed out on send/recv operation
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Socket timed out on send/recv operation
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Socket timed out on send/recv operation
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Socket timed out on send/recv operation
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Socket timed out on send/recv operation
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Socket timed out on send/recv operation
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+Running model "Diffusion" with parameters [4.93750000e-08 1.44958496e-04 7.62939453e-04]
+	Simulating Diffusion Model with dt = 4.9375000000000004e-08, 13797 x partitions and 2621 y partitions
+	Calculated final value: 79.57994029337183
+Thu 27 Nov 01:41:09 GMT 2025
+Total seconds: 27399
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+Running model "Diffusion" with parameters [4.93750000e-08 1.44958496e-04 7.62939453e-04]
+	Simulating Diffusion Model with dt = 4.9375000000000004e-08, 13797 x partitions and 2621 y partitions
+	Calculated final value: 79.57994029337183
+Thu 27 Nov 02:10:49 GMT 2025
+Total seconds: 52930
+slurmstepd: error: slurm_get_node_energy: Connection timed out
+slurmstepd: error: _get_joules_task: can't get info from slurmd

@@ -1,11 +1,11 @@
 #!/bin/bash
 #SBATCH --partition=default_free
 #SBATCH --account=comet_spread
-#SBATCH --mem=2GB
+#SBATCH --mem=5GB
 #SBATCH --cpus-per-task=1
-#SBATCH --time=10:00
-#SBATCH --array=1-80                       # Run tasks 
-#SBATCH --output=data/diffusion/results/output_diffusion_array.log
+#SBATCH --time=48:00:00
+#SBATCH --array=3,5,6                       # Run tasks 
+#SBATCH --output=data/diffusion/results/output_diffusion_array39_%a.log
 
 
 # Load modules
@@ -19,7 +19,7 @@ source .venv/bin/activate
 TEMPDIR=/nobackup/proj/comet_spread/
 
 date
-echo "Running on $HOSTNAME SPRE analysis"
+echo "Running on $HOSTNAME model simulation for job $SLURM_ARRAY_TASK_ID scenario $1"
 
 #../new_knockoffgwas_pipeline/run_pre_knockoff_gwas.sh $SLURM_ARRAY_TASK_ID $SLURM_ARRAY_TASK_ID $DATA/Nicola pbc 0.1 results 2.5 3
 

@@ -1,0 +1,3 @@
+Wed 26 Nov 16:47:43 GMT 2025
+Running on compute031 model simulation for job 13 scenario 39
+slurmstepd: error: *** JOB 1143196 ON compute031 CANCELLED AT 2025-11-26T22:48:04 DUE TO TIME LIMIT ***

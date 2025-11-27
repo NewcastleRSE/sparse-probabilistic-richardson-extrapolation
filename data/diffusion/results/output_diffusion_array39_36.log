@@ -1,0 +1,7 @@
+Wed 26 Nov 13:57:12 GMT 2025
+Running on compute031 model simulation for job 36 scenario 39
+Running model "Diffusion" with parameters [7.18750000e-08 5.98144531e-03 9.46044922e-04]
+	Simulating Diffusion Model with dt = 7.1875e-08, 334 x partitions and 2114 y partitions
+	Calculated final value: 79.39319817432818
+Wed 26 Nov 14:10:39 GMT 2025
+Total seconds: 808
