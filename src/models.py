@@ -16,6 +16,9 @@ from scipy.integrate import solve_ivp, quad
 from scipy.interpolate import interp1d
 import matplotlib.pyplot as plt
 from pde import CartesianGrid, DiffusionPDE, ScalarField, PlotTracker
+import pybullet
+import pybullet_data
+import time
 
 # Application modules
 from sparse_pre.extrapolation import extrapolation
@@ -42,6 +45,9 @@ class Model:
         self.model_name = "Model not set"
         self.use_model_cache = True
 
+        # Set filenames
+        self.results_plot_filename = ""
+
         # Set parmaters
         self.set_parameters(params)
 
@@ -55,6 +61,8 @@ class Model:
         self.xlabel = 'time'
         self.ylabel = 'y'
         self.title = 'Model'
+
+        
         
     def __str__(self) -> str:
         """
@@ -855,7 +863,7 @@ class DiffusionModel(Model):
         # Call Parent’s constructor to set parameters
         super().__init__(params, parameter_filename)
 
-        # Set initial SIR model
+        # Set initial Diffussion model
         self.model_name = "Diffusion"
        
     def run_model_simulation(self, discrete_paras):
@@ -1026,3 +1034,170 @@ class DiffusionModel(Model):
         prefactor = 1.0 / (4 * np.pi * self.diffusivity * t)
         exponent = -r2 / (4 * self.diffusivity * t)
         return prefactor * np.exp(exponent)
+
+
+class PhysicsMugModel(Model):
+    """
+    Class for Physics model of a mug falling on a surface.
+    """
+
+    def __init__(self, params, parameter_filename):
+        """
+        Sets up the physics model class with model parameters.
+
+        Parameters:  
+            params : dict               Parameters for the model.
+            parameter_filename : str    Filename and path of the file.      
+        Returns:
+            None         
+        """
+        print("DSDSefgegregD") 
+        # Call Parent’s constructor to set parameters
+        super().__init__(params, parameter_filename)
+
+        # Set initial model name
+        self.model_name = "PhysicsMug"
+
+        # Set default model parameters
+        self.save_animation = False
+        print("DSDSD")
+        self.video_filename = "physics_mug.mp4"
+        self.duration = 5.0
+
+        # Set default camera parameters
+        self.cameraDistance = 0.5                # closer to the object (default ~1.5)
+        self.cameraYaw = 45                      # rotate horizontally
+        self.cameraPitch = -50                   # angle downward
+        self.cameraTargetPosition = [0, 0, 0]
+       
+    def run_model_simulation(self, discrete_paras):
+        """
+        Uses pybullet package to simulate a flaaing spinning mug onto a surface.
+        https://pybullet.org/wordpress/
+
+        Parameters:  
+            discrete_paras : npt.NDArray     Discreteisation parameters used to simulate model.           
+        Returns:
+            float   
+        """
+
+        # Set discretisation parameters
+        dt = discrete_paras[0]
+        substeps = int(np.round(1.0/discrete_paras[1]))
+        solver_iters = int(np.round(1.0/discrete_paras[2]))
+
+        mode = pybullet.GUI if self.save_animation else pybullet.DIRECT
+
+        # Set up physics simulator
+        physicsClient = pybullet.connect(mode)
+
+        # Zoomed-in camera settings
+        pybullet.resetDebugVisualizerCamera(
+            cameraDistance = self.cameraDistance,                # closer to the cube (default ~1.5)
+            cameraYaw = self.cameraYaw,                      # rotate horizontally
+            cameraPitch = self.cameraPitch,                   # angle downward
+            cameraTargetPosition = self.cameraTargetPosition   # look at where the cube will fall
+        )
+
+        # Add path for objects
+        pybullet.setAdditionalSearchPath(pybullet_data.getDataPath())
+
+        # Simulation parameters
+        pybullet.setPhysicsEngineParameter(
+            fixedTimeStep = dt,
+            numSubSteps = substeps,
+            numSolverIterations = solver_iters
+        )
+
+        # Set the ground plane
+        plane = pybullet.loadURDF("plane.urdf")
+
+        # Create a simple mug object
+        mug = pybullet.loadURDF( 
+            "objects/mug.urdf",     
+            basePosition = [0, 0, 2.0],        # start above ground
+            baseOrientation = [0, 0, 0, 1],
+            globalScaling = 1.0 
+        )
+
+        # Output info on what is being simulated
+        print(f"\tSimulating Physics Mug Model with dt = {dt}, {substeps} substeps and {solver_iters} solver iterations")
+
+        # Set gravity in world
+        pybullet.setGravity(0, 0, -9.81)
+
+        # Add initial spin to mug
+        pybullet.resetBaseVelocity(
+            mug,
+            angularVelocity = [3.0, -1.5, 5.0]  # spin around x, y, z
+        )
+
+        # Start recording if creating an mpg4 video
+        if self.save_animation:
+            # Hide GUI
+            pybullet.configureDebugVisualizer(pybullet.COV_ENABLE_GUI, 0)
+            # Start video recording
+            log_id = pybullet.startStateLogging(
+                pybullet.STATE_LOGGING_VIDEO_MP4,
+                self.video_filename
+            )
+            
+        # Initial time counter
+        sim_time = 0.0
+
+        while sim_time < self.duration:
+            # One step of simulation
+            pybullet.stepSimulation()
+
+            # Make real-time video look normal - but only if dt ~= 1/240 - needs updating otherwise
+            if self.save_animation:
+                time.sleep(dt)
+
+            sim_time += dt
+
+        if self.save_animation:
+            # Stop filming mug
+            pybullet.stopStateLogging(log_id)
+            print(f"Saved video to {self.video_filename}")
+
+        # Get final position and orientation of mug
+        pos, orn = pybullet.getBasePositionAndOrientation(mug)
+
+        # Get distance of mug from origin
+        dist = np.sqrt(pos[0]**2 + pos[1]**2 + pos[2]**2)
+        
+        # End simulation
+        pybullet.disconnect()
+
+        print(f"\tCalculated final value: {dist}")
+        return dist
+
+   
+    def get_cache_filename(self, discrete_paras : npt.NDArray):
+        """
+        Returns the model cache filename for the Physics Mug model based on the model parameters.
+
+        Parameters:  
+            discrete_paras : npt.NDArray   Discreteisation parameters
+        Returns:
+            str    
+        """
+      
+        # Create filename with all settings and parameters used
+        filename = f"pm_{self.duration}_"
+        filename += "_".join(str(i) for i in discrete_paras) + ".bin"
+
+        return filename
+    
+    def set_true_value(self):
+        """
+        Sets the "true_value" by running the model with small discretisation parameters
+        as given in self.final_tols
+        
+        Parameters:  
+            None
+        Returns:
+            None                
+        """
+
+        self.true_value = self.run_model(self.final_tols)
