@@ -28,13 +28,14 @@ class Model:
     Base model class with common methods used for all model classes.
     """
 
-    def __init__(self, params : dict, parameter_filename : str):
+    def __init__(self, params : dict, parameter_filename : str, skip_true_value_calc : bool = False):
         """
         Sets up the model class with model parameters.
 
         Parameters:  
             params : dict               Parameters for the model.
-            parameter_filename : str    Filename and path of the file.      
+            parameter_filename : str    Filename and path of the file.
+            skip_true_value_calc : bool Skip evaulation of the true value (if not doing SPRE)      
         Returns:
             None         
         """
@@ -44,6 +45,7 @@ class Model:
         self.evaluation = False
         self.model_name = "Model not set"
         self.use_model_cache = True
+        self.skip_true_value_calc = skip_true_value_calc
 
         # Set filenames to blank by default
         self.results_plot_filename = ""
@@ -624,12 +626,13 @@ class Model:
             plt.savefig(self.results_eval_plot_filename) 
             plt.show()
 
-def get_model(parameter_filename : str) -> Model:
+def get_model(parameter_filename : str, skip_true_value_calc : bool = False) -> Model:
     """
     Returns model object for the appropriate model as stated in the model parameter file.
 
     Parameters:  
-        parameter_filename : str    Filename and path of the file.  
+        parameter_filename : str     Filename and path of the file.  
+        skip_true_value_calc : bool  Skip evaulation of the true value (if not doing SPRE)
     Returns:
         Model
     """
@@ -649,7 +652,7 @@ def get_model(parameter_filename : str) -> Model:
     model_class_name = ''.join(word.capitalize() for word in parts)  + "Model"
 
     # Create model object
-    model = globals()[model_class_name](params, parameter_filename)
+    model = globals()[model_class_name](params, parameter_filename, skip_true_value_calc)
 
     return model
 
@@ -658,19 +661,20 @@ class SirModel(Model):
     Class for SIR ("Susceptible", "Infected", "Recovered") model
     """
 
-    def __init__(self, params : dict, parameter_filename : str):
+    def __init__(self, params : dict, parameter_filename : str, skip_true_value_calc : bool = False):
         """
         Sets up the SIR model class with model parameters.
 
         Parameters:  
             params : dict               Parameters for the model.
             parameter_filename : str    Filename and path of the file.      
+            skip_true_value_calc : bool Skip evaulation of the true value (if not doing SPRE)
         Returns:
             None         
         """
 
         # Call Parent’s constructor to set parameters
-        super().__init__(params, parameter_filename)
+        super().__init__(params, parameter_filename, skip_true_value_calc)
 
         # Set initial SIR model
         self.model_name = "SIR"
@@ -681,7 +685,8 @@ class SirModel(Model):
         self.solution_labels = ["Susceptible", "Infected", "Recovered"]
 
         # Set true value
-        self.set_true_value()
+        if not skip_true_value_calc:
+            self.set_true_value()
         
     def diff_model(self, t : float, y : tuple) -> tuple:
         """
@@ -771,19 +776,20 @@ class ChemEquilModel(Model):
     Class for Fast Chemical Equilibrium differential equation model.
     """
 
-    def __init__(self, params, parameter_filename):
+    def __init__(self, params, parameter_filename, skip_true_value_calc : bool = False):
         """
         Sets up the Chemical Equilibrium model class with model parameters.
 
         Parameters:  
             params : dict               Parameters for the model.
-            parameter_filename : str    Filename and path of the file.      
+            parameter_filename : str    Filename and path of the file.   
+            skip_true_value_calc : bool Skip evaulation of the true value (if not doing SPRE)   
         Returns:
             None         
         """
 
         # Call Parent’s constructor to set parameters
-        super().__init__(params, parameter_filename)
+        super().__init__(params, parameter_filename, skip_true_value_calc)
 
         # Set initial SIR model
         self.model_name = "ChemEquil"
@@ -793,7 +799,8 @@ class ChemEquilModel(Model):
         self.solution_labels = ["intermediate species", "product species"]
 
         # Set true value
-        self.set_true_value()
+        if not self.skip_true_value_calc:
+            self.set_true_value()
 
     def diff_model(self, t : float, y : tuple) -> tuple:
         """
@@ -857,25 +864,27 @@ class DiffusionModel(Model):
     Class for Diffusion model on a Cartesian grid.
     """
 
-    def __init__(self, params, parameter_filename):
+    def __init__(self, params, parameter_filename, skip_true_value_calc : bool = False):
         """
         Sets up the diffusion model class with model parameters.
 
         Parameters:  
             params : dict               Parameters for the model.
-            parameter_filename : str    Filename and path of the file.      
+            parameter_filename : str    Filename and path of the file.
+            skip_true_value_calc : bool Skip evaulation of the true value (if not doing SPRE)      
         Returns:
             None         
         """
          
         # Call Parent’s constructor to set parameters
-        super().__init__(params, parameter_filename)
+        super().__init__(params, parameter_filename, skip_true_value_calc)
 
         # Set initial Diffussion model
         self.model_name = "Diffusion"
 
         # Set true value
-        self.set_true_value()
+        if not self.skip_true_value_calc:
+            self.set_true_value()
        
     def run_model_simulation(self, discrete_paras):
         """
@@ -1052,19 +1061,20 @@ class PhysicsMugModel(Model):
     Class for Physics model of a mug falling on a surface.
     """
 
-    def __init__(self, params, parameter_filename):
+    def __init__(self, params, parameter_filename, skip_true_value_calc : bool = False):
         """
         Sets up the physics model class with model parameters.
 
         Parameters:  
             params : dict               Parameters for the model.
-            parameter_filename : str    Filename and path of the file.      
+            parameter_filename : str    Filename and path of the file. 
+            skip_true_value_calc : bool Skip evaulation of the true value (if not doing SPRE)     
         Returns:
             None         
         """
      
         # Call Parent’s constructor to set parameters
-        super().__init__(params, parameter_filename)
+        super().__init__(params, parameter_filename, skip_true_value_calc)
 
         # Set initial model name
         self.model_name = "PhysicsMug"
@@ -1076,7 +1086,7 @@ class PhysicsMugModel(Model):
         else:
             self.save_animation = False
         
-        self.duration = 5.0
+        self.total_time = 5.0
 
         # Set default camera parameters
         self.camera_distance = 0.5                # closer to the object (default ~1.5)
@@ -1091,7 +1101,7 @@ class PhysicsMugModel(Model):
         self.global_scaling = 1.0 
         
         # Set true value
-        if not self.save_animation:
+        if not self.save_animation and not self.skip_true_value_calc:
             self.set_true_value()
        
     def setup_model_world(self, dt : float, substeps : int, solver_iters : int, mp4_mode : bool = False) -> object:
@@ -1171,7 +1181,7 @@ class PhysicsMugModel(Model):
         sim_time = 0.0
 
         # Run the simulation
-        while sim_time < self.duration:
+        while sim_time < self.total_time:
             # One step of simulation
             pybullet.stepSimulation()
             sim_time += dt
@@ -1244,7 +1254,7 @@ class PhysicsMugModel(Model):
         # Initial time counter
         sim_time = 0.0
 
-        while sim_time < self.duration:
+        while sim_time < self.total_time:
             # One step of simulation
             pybullet.stepSimulation()
 
@@ -1272,7 +1282,7 @@ class PhysicsMugModel(Model):
         """
       
         # Create filename with all settings and parameters used
-        filename = f"pm_{self.duration}_"
+        filename = f"pm_{self.total_time}_"
         filename += "_".join(str(i) for i in discrete_paras) + ".bin"
 
         return filename
