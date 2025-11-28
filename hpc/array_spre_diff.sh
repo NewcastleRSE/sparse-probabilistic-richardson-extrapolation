@@ -1,10 +1,9 @@
 #!/bin/bash
-#SBATCH --partition=default_free
+#SBATCH --partition=long_free
 #SBATCH --account=comet_spread
 #SBATCH --mem=5GB
 #SBATCH --cpus-per-task=1
-#SBATCH --time=48:00:00
-#SBATCH --array=3,5,6                       # Run tasks 
+#SBATCH --array=13                       # Run tasks 
 #SBATCH --output=data/diffusion/results/output_diffusion_array39_%a.log
 
 

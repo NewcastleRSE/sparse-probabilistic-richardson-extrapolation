@@ -1,3 +1,7 @@
-Wed 26 Nov 16:47:43 GMT 2025
+Thu 27 Nov 11:25:15 GMT 2025
 Running on compute031 model simulation for job 13 scenario 39
-slurmstepd: error: *** JOB 1143196 ON compute031 CANCELLED AT 2025-11-26T22:48:04 DUE TO TIME LIMIT ***
+Running model "Diffusion" with parameters [4.93750000e-08 2.89916992e-04 7.62939453e-04]
+	Simulating Diffusion Model with dt = 4.9375000000000004e-08, 6899 x partitions and 2621 y partitions
+	Calculated final value: 79.58025377985338
+Thu 27 Nov 18:38:09 GMT 2025
+Total seconds: 25974
