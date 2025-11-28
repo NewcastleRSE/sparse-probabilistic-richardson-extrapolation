@@ -62,6 +62,7 @@ def run_simulation(
     # Start recording
     if save_animation:
         p.configureDebugVisualizer(p.COV_ENABLE_GUI, 0)
+        #p.setRealTimeSimulation(1)
         log_id = p.startStateLogging(
             p.STATE_LOGGING_VIDEO_MP4,
             video_filename
@@ -97,10 +98,10 @@ def run_simulation(
 if __name__ == "__main__":
     t, h = run_simulation(
         duration=5.0,
-        dt=1/240,
-        substeps=2, #2,
+        dt=0.001, #1/240,
+        substeps=1, #2,
         solver_iters=100, #100,
-        save_animation=False,#True,           # record the animation
+        save_animation=True,           # record the animation
         video_filename="drop_spin.mp4"
     )
 

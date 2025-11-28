@@ -45,17 +45,19 @@ class Model:
         self.model_name = "Model not set"
         self.use_model_cache = True
 
-        # Set filenames
+        # Set filenames to blank by default
         self.results_plot_filename = ""
+        self.results_filename = ""
+        self.results_plot_filename = ""
+        self.final_model_plot_filename = ""
+        self.final_mp4_filename = ""
+        self.results_fx_filename = ""
 
         # Set parmaters
         self.set_parameters(params)
 
         # Update paths for result files and plots
         self.update_paths(parameter_filename)
-
-        # Set true value
-        self.set_true_value()
 
         # Model labels
         self.xlabel = 'time'
@@ -677,6 +679,9 @@ class SirModel(Model):
         self.ylabel = 'population'
         self.title = 'SIR Model'
         self.solution_labels = ["Susceptible", "Infected", "Recovered"]
+
+        # Set true value
+        self.set_true_value()
         
     def diff_model(self, t : float, y : tuple) -> tuple:
         """
@@ -787,6 +792,9 @@ class ChemEquilModel(Model):
         self.title = 'Fast Chemical Equilibrium with Time-Varying Forcing'
         self.solution_labels = ["intermediate species", "product species"]
 
+        # Set true value
+        self.set_true_value()
+
     def diff_model(self, t : float, y : tuple) -> tuple:
         """
         Chemical equilibrium model. Returns current gradients of x and y
@@ -865,6 +873,9 @@ class DiffusionModel(Model):
 
         # Set initial Diffussion model
         self.model_name = "Diffusion"
+
+        # Set true value
+        self.set_true_value()
        
     def run_model_simulation(self, discrete_paras):
         """
@@ -1051,7 +1062,7 @@ class PhysicsMugModel(Model):
         Returns:
             None         
         """
-        print("DSDSefgegregD") 
+     
         # Call Parent’s constructor to set parameters
         super().__init__(params, parameter_filename)
 
@@ -1059,45 +1070,48 @@ class PhysicsMugModel(Model):
         self.model_name = "PhysicsMug"
 
         # Set default model parameters
-        self.save_animation = False
-        print("DSDSD")
-        self.video_filename = "physics_mug.mp4"
+        if self.final_mp4_filename is not None and self.final_mp4_filename != "":
+            self.save_animation = True
+            self.do_final_model_plot = True
+        else:
+            self.save_animation = False
+        
         self.duration = 5.0
 
         # Set default camera parameters
-        self.cameraDistance = 0.5                # closer to the object (default ~1.5)
-        self.cameraYaw = 45                      # rotate horizontally
-        self.cameraPitch = -50                   # angle downward
-        self.cameraTargetPosition = [0, 0, 0]
+        self.camera_distance = 0.5                # closer to the object (default ~1.5)
+        self.camera_yaw = 45                      # rotate horizontally
+        self.camera_pitch = -50                   # angle downward
+        self.camera_target_position = [0, 0, 0]
+
+        # Mug settings
+        self.mug_angular_velocity = [3.0, -1.5, 5.0] 
+        self.base_position = [0, 0, 2.0]        # start above ground
+        self.base_orientation = [0, 0, 0, 1]
+        self.global_scaling = 1.0 
+        
+        # Set true value
+        self.set_true_value()
        
-    def run_model_simulation(self, discrete_paras):
+    def setup_model_world(self, dt : float, substeps : int, solver_iters : int, mp4_mode : bool = False) -> object:
         """
-        Uses pybullet package to simulate a flaaing spinning mug onto a surface.
-        https://pybullet.org/wordpress/
+        Sets up world in pybullet to simulate model
 
         Parameters:  
-            discrete_paras : npt.NDArray     Discreteisation parameters used to simulate model.           
+            dt : float            Time step taken at each iteration in simulation
+            substeps : int        Subdivide the physics simulation step further by 'numSubSteps'.
+                                  This will trade performance over accuracy.
+            solver_iters : int    The maximum number of constraint solver iterations. If the
+                                  solverResidualThreshold (default, 1e-7) is reached, the solver may terminate before the numSolverIterations.  
+            mp4_mode : bool       Use mode for creating mp4     
         Returns:
-            float   
+            object   
         """
 
-        # Set discretisation parameters
-        dt = discrete_paras[0]
-        substeps = int(np.round(1.0/discrete_paras[1]))
-        solver_iters = int(np.round(1.0/discrete_paras[2]))
-
-        mode = pybullet.GUI if self.save_animation else pybullet.DIRECT
+        mode = pybullet.GUI if mp4_mode else pybullet.DIRECT
 
         # Set up physics simulator
         physicsClient = pybullet.connect(mode)
-
-        # Zoomed-in camera settings
-        pybullet.resetDebugVisualizerCamera(
-            cameraDistance = self.cameraDistance,                # closer to the cube (default ~1.5)
-            cameraYaw = self.cameraYaw,                      # rotate horizontally
-            cameraPitch = self.cameraPitch,                   # angle downward
-            cameraTargetPosition = self.cameraTargetPosition   # look at where the cube will fall
-        )
 
         # Add path for objects
         pybullet.setAdditionalSearchPath(pybullet_data.getDataPath())
@@ -1115,13 +1129,10 @@ class PhysicsMugModel(Model):
         # Create a simple mug object
         mug = pybullet.loadURDF( 
             "objects/mug.urdf",     
-            basePosition = [0, 0, 2.0],        # start above ground
-            baseOrientation = [0, 0, 0, 1],
-            globalScaling = 1.0 
+            basePosition = self.base_position,        # start above ground
+            baseOrientation = self.base_orientation,
+            globalScaling = self.global_scaling
         )
-
-        # Output info on what is being simulated
-        print(f"\tSimulating Physics Mug Model with dt = {dt}, {substeps} substeps and {solver_iters} solver iterations")
 
         # Set gravity in world
         pybullet.setGravity(0, 0, -9.81)
@@ -1129,36 +1140,40 @@ class PhysicsMugModel(Model):
         # Add initial spin to mug
         pybullet.resetBaseVelocity(
             mug,
-            angularVelocity = [3.0, -1.5, 5.0]  # spin around x, y, z
+            angularVelocity = self.mug_angular_velocity  # spin around x, y, z
         )
 
-        # Start recording if creating an mpg4 video
-        if self.save_animation:
-            # Hide GUI
-            pybullet.configureDebugVisualizer(pybullet.COV_ENABLE_GUI, 0)
-            # Start video recording
-            log_id = pybullet.startStateLogging(
-                pybullet.STATE_LOGGING_VIDEO_MP4,
-                self.video_filename
-            )
-            
+        return mug
+
+    def run_model_simulation(self, discrete_paras):
+        """
+        Uses pybullet package to simulate a falling spinning mug onto a surface.
+        https://pybullet.org/wordpress/
+
+        Parameters:  
+            discrete_paras : npt.NDArray     Discreteisation parameters used to simulate model.           
+        Returns:
+            float   
+        """
+
+        # Set discretisation parameters
+        dt = discrete_paras[0]
+        substeps = int(np.round(1.0/discrete_paras[1]))
+        solver_iters = int(np.round(1.0/discrete_paras[2]))
+
+        mug = self.setup_model_world(dt, substeps, solver_iters)
+      
+        # Output info on what is being simulated
+        print(f"\tSimulating Physics Mug Model with dt = {dt}, {substeps} substeps and {solver_iters} solver iterations")
+ 
         # Initial time counter
         sim_time = 0.0
 
+        # Run the simulation
         while sim_time < self.duration:
             # One step of simulation
             pybullet.stepSimulation()
-
-            # Make real-time video look normal - but only if dt ~= 1/240 - needs updating otherwise
-            if self.save_animation:
-                time.sleep(dt)
-
             sim_time += dt
-
-        if self.save_animation:
-            # Stop filming mug
-            pybullet.stopStateLogging(log_id)
-            print(f"Saved video to {self.video_filename}")
 
         # Get final position and orientation of mug
         pos, orn = pybullet.getBasePositionAndOrientation(mug)
@@ -1169,10 +1184,82 @@ class PhysicsMugModel(Model):
         # End simulation
         pybullet.disconnect()
 
+        # Do video if req'd
+        if self.save_animation:
+            self.record_mp4()
+
         print(f"\tCalculated final value: {dist}")
         return dist
 
+    def plot_final_model(self):
+        """
+        Plots the final simulated model which is in this case is a mp4 video if req'd.
+
+        Parameters:  
+            None
+        Returns:
+            None                
+        """
    
+        if self.save_animation:
+            self.record_mp4()
+
+    def record_mp4(self):
+        """
+        Create mp4 video of the model of a falling spinning mug onto a surface.
+       
+        Parameters:  
+            None         
+        Returns:
+            None
+        """
+
+        # Set discretisation parameters
+        dt = self.final_tols[0]
+        substeps = int(np.round(1.0/self.final_tols[1]))
+        solver_iters = int(np.round(1.0/self.final_tols[2]))
+
+        # Output info on what is being simulated
+        print(f"\tSimulating Physics Mug Model for mp4 with dt = {dt}, {substeps} substeps and {solver_iters} solver iterations")
+
+        self.setup_model_world(dt, substeps, solver_iters, True)
+
+        # Zoomed-in camera settings
+        pybullet.resetDebugVisualizerCamera(
+            cameraDistance = self.camera_distance,                # closer to the cube (default ~1.5)
+            cameraYaw = self.camera_yaw,                      # rotate horizontally
+            cameraPitch = self.camera_pitch,                   # angle downward
+            cameraTargetPosition = self.camera_target_position   # look at where the cube will fall
+        )
+ 
+        # Hide GUI
+        pybullet.configureDebugVisualizer(pybullet.COV_ENABLE_GUI, 0)
+        # Start video recording
+        log_id = pybullet.startStateLogging(
+            pybullet.STATE_LOGGING_VIDEO_MP4,
+            self.final_mp4_filename
+        )
+            
+        # Initial time counter
+        sim_time = 0.0
+
+        while sim_time < self.duration:
+            # One step of simulation
+            pybullet.stepSimulation()
+
+            # Make real-time video look normal - but only if dt ~= 1/240 - needs updating otherwise  
+            time.sleep(dt * 1.2) # fudge facor
+
+            sim_time += dt
+  
+        # Stop filming mug
+        pybullet.stopStateLogging(log_id)
+        print(f"Saved video to {self.final_mp4_filename}")
+
+        # End simulation
+        pybullet.disconnect()
+
+    
     def get_cache_filename(self, discrete_paras : npt.NDArray):
         """
         Returns the model cache filename for the Physics Mug model based on the model parameters.

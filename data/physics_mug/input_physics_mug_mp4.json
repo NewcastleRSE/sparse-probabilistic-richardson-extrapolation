@@ -1,0 +1,16 @@
+{
+  "model_name": "physics_mug",
+  "duration": 5.0,
+    
+  "X": [
+   [0.00416666666, 1, 0.01], [0.01, 0.5, 0.03], [0.008, 0.2, 0.04]
+],
+
+"h_values":  [1],
+
+  "final_tols": [0.00416666666, 10, 0.001],
+  "evaluation": false,
+  "final_mp4_filename": "physics_mug.mp4",
+  "extrapolation_name": "SPRE",
+  "extrapolation_kernel": "white"
+}
