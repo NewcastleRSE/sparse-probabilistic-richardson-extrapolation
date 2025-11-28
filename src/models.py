@@ -1091,7 +1091,8 @@ class PhysicsMugModel(Model):
         self.global_scaling = 1.0 
         
         # Set true value
-        self.set_true_value()
+        if not self.save_animation:
+            self.set_true_value()
        
     def setup_model_world(self, dt : float, substeps : int, solver_iters : int, mp4_mode : bool = False) -> object:
         """
@@ -1155,7 +1156,7 @@ class PhysicsMugModel(Model):
         Returns:
             float   
         """
-
+   
         # Set discretisation parameters
         dt = discrete_paras[0]
         substeps = int(np.round(1.0/discrete_paras[1]))
