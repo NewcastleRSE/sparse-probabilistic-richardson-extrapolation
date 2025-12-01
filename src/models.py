@@ -1259,7 +1259,7 @@ class PhysicsMugModel(Model):
             pybullet.stepSimulation()
 
             # Make real-time video look normal - but only if dt ~= 1/240 - needs updating otherwise  
-            time.sleep(dt * 1.2) # fudge facor
+            time.sleep(dt * 0.00001) # fudge facor
 
             sim_time += dt
   
