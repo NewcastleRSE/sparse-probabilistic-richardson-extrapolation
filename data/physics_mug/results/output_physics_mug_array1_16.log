@@ -1,8 +1,8 @@
-Fri 28 Nov 16:51:27 GMT 2025
+Mon  1 Dec 12:57:44 GMT 2025
 Running on hmem009 model simulation for job 16 scenario 1
 pybullet build time: Nov 28 2025 15:19:22
-Running model "PhysicsMug" with parameters [8.93359375e-05 3.29734375e-03 1.39843750e-05]
-	Simulating Physics Mug Model with dt = 8.93359375e-05, 303 substeps and 71508 solver iterations
-	Calculated final value: 0.393743135265066
-Fri 28 Nov 16:52:58 GMT 2025
-Total seconds: 94
+Running model "PhysicsMug" with parameters [1.11669922e-05 4.12167969e-04 1.74804687e-06]
+	Simulating Physics Mug Model with dt = 1.11669921875e-05, 2426 substeps and 572067 solver iterations
+	Calculated final value: 0.3823649546375105
+Mon  1 Dec 14:33:46 GMT 2025
+Total seconds: 5764
