@@ -528,6 +528,8 @@ class Model:
         plt.errorbar(self.df_all_extrapolation_results[h_col], self.df_all_extrapolation_results["mu"], yerr=errors, fmt='o-', capsize=5, ecolor='black', markersize=6)
         plt.xlabel("h")
         plt.ylabel("mu")
+        plt.xscale('log')
+        #plt.yscale('log')
         plt.title("Extrapolation Results")
         plt.grid(True)
 
