@@ -1,3 +1,4 @@
 Mon  1 Dec 12:57:44 GMT 2025
 Running on hmem009 model simulation for job 11 scenario 1
 pybullet build time: Nov 28 2025 15:19:22
+slurmstepd: error: *** JOB 1143320 ON hmem009 CANCELLED AT 2025-12-02T12:57:44 DUE TO TIME LIMIT ***
