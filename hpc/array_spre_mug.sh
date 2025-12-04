@@ -6,7 +6,7 @@
 #SBATCH --account=comet_spread
 #SBATCH --mem=5GB
 #SBATCH --cpus-per-task=1
-#SBATCH --array=1-24                       # Run tasks 
+#SBATCH --array=25-60                       # Run tasks 
 #SBATCH --output=data/physics_mug/results/output_physics_mug_array1_%a.log
 
 
