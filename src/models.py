@@ -1080,6 +1080,7 @@ class PhysicsMugModel(Model):
 
         # Set initial model name
         self.model_name = "PhysicsMug"
+        self.description = "Physics Mug Model"
 
         # Set default model parameters
         if self.final_mp4_filename is not None and self.final_mp4_filename != "":
@@ -1097,6 +1098,7 @@ class PhysicsMugModel(Model):
         self.camera_target_position = [0, 0, 0]
 
         # Mug settings
+        self.object = "objects/mug.urdf"
         self.mug_angular_velocity = [3.0, -1.5, 5.0] 
         self.base_position = [0, 0, 2.0]        # start above ground
         self.base_orientation = [0, 0, 0, 1]
@@ -1141,7 +1143,7 @@ class PhysicsMugModel(Model):
 
         # Create a simple mug object
         mug = pybullet.loadURDF( 
-            "objects/mug.urdf",     
+            self.object,     
             basePosition = self.base_position,        # start above ground
             baseOrientation = self.base_orientation,
             globalScaling = self.global_scaling
@@ -1177,7 +1179,7 @@ class PhysicsMugModel(Model):
         mug = self.setup_model_world(dt, substeps, solver_iters)
       
         # Output info on what is being simulated
-        print(f"\tSimulating Physics Mug Model with dt = {dt}, {substeps} substeps and {solver_iters} solver iterations")
+        print(f"\tSimulating {self.description} with dt = {dt}, {substeps} substeps and {solver_iters} solver iterations")
  
         # Initial time counter
         sim_time = 0.0
@@ -1233,7 +1235,7 @@ class PhysicsMugModel(Model):
         solver_iters = int(np.round(1.0/self.final_tols[2]))
 
         # Output info on what is being simulated
-        print(f"\tSimulating Physics Mug Model for mp4 with dt = {dt}, {substeps} substeps and {solver_iters} solver iterations")
+        print(f"\tSimulating {self.description} for mp4 with dt = {dt}, {substeps} substeps and {solver_iters} solver iterations")
 
         self.setup_model_world(dt, substeps, solver_iters, True)
 
@@ -1261,7 +1263,7 @@ class PhysicsMugModel(Model):
             pybullet.stepSimulation()
 
             # Make real-time video look normal - but only if dt ~= 1/240 - needs updating otherwise  
-            time.sleep(dt * 0.00001) # fudge facor
+            time.sleep(dt * 0.00001) # fudge factor
 
             sim_time += dt
   
@@ -1301,3 +1303,54 @@ class PhysicsMugModel(Model):
         """
 
         self.true_value = self.run_model(self.final_tols)
+
+class PhysicsDuckModel(PhysicsMugModel):
+    """
+    Class for Physics model of a rubber duck falling a tiny bit and coming to rest on a surface.
+    """
+
+    def __init__(self, params, parameter_filename, skip_true_value_calc : bool = False):
+        """
+        Sets up the physics model class with model parameters.
+
+        Parameters:  
+            params : dict               Parameters for the model.
+            parameter_filename : str    Filename and path of the file. 
+            skip_true_value_calc : bool Skip evaulation of the true value (if not doing SPRE)     
+        Returns:
+            None         
+        """
+    
+        # Call Parent’s constructor to set parameters
+        super().__init__(params, parameter_filename, skip_true_value_calc = True)
+
+        # Set initial model name
+        self.model_name = "PhysicsDuck"
+        self.description = "Physics Rubber Duck Model"
+
+        # Set default model parameters
+        if self.final_mp4_filename is not None and self.final_mp4_filename != "":
+            self.save_animation = True
+            self.do_final_model_plot = True
+        else:
+            self.save_animation = False
+        
+        self.total_time = 5.0
+
+        # Set default camera parameters
+        self.camera_distance = 0.5                # closer to the object (default ~1.5)
+        self.camera_yaw = 45                      # rotate horizontally
+        self.camera_pitch = -50                   # angle downward
+        self.camera_target_position = [0, 0, 0]
+
+        # Mug settings
+        #self.object = "duck_vhacd.urdf"
+        self.mug_angular_velocity = [3.0, -1.5, 5.0] 
+        self.base_position = [0, 0, 0.05]        # start above ground
+        self.base_orientation = [0, 0, 0, 1]
+        self.global_scaling = 1.0 
+        
+        # Set true value
+        if not self.save_animation and not self.skip_true_value_calc:
+            self.set_true_value()
+    

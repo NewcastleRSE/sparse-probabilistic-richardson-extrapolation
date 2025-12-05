@@ -107,7 +107,7 @@ if __name__ == "__main__":
 
     print("Final distance from origin:", h[-1])
 
-    if 0:
+    if 1:
         import pybullet_data
         import os
 
