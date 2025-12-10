@@ -35,7 +35,8 @@ class Model:
         Parameters:  
             params : dict               Parameters for the model.
             parameter_filename : str    Filename and path of the file.
-            skip_true_value_calc : bool Skip evaulation of the true value (if not doing SPRE)      
+            skip_true_value_calc : bool Skip evaulation of the true value (if not doing SPRE)
+                                        Used in sub classes of Model    
         Returns:
             None         
         """
@@ -45,7 +46,6 @@ class Model:
         self.evaluation = False
         self.model_name = "Model not set"
         self.use_model_cache = True
-        self.skip_true_value_calc = skip_true_value_calc
 
         # Set filenames to blank by default
         self.results_plot_filename = ""
@@ -66,8 +66,6 @@ class Model:
         self.ylabel = 'y'
         self.title = 'Model'
 
-        
-        
     def __str__(self) -> str:
         """
         Returns string to describe model.
@@ -676,7 +674,7 @@ class SirModel(Model):
         """
 
         # Call Parent’s constructor to set parameters
-        super().__init__(params, parameter_filename, skip_true_value_calc)
+        super().__init__(params, parameter_filename)
 
         # Set initial SIR model
         self.model_name = "SIR"
@@ -791,7 +789,7 @@ class ChemEquilModel(Model):
         """
 
         # Call Parent’s constructor to set parameters
-        super().__init__(params, parameter_filename, skip_true_value_calc)
+        super().__init__(params, parameter_filename)
 
         # Set initial SIR model
         self.model_name = "ChemEquil"
@@ -801,7 +799,7 @@ class ChemEquilModel(Model):
         self.solution_labels = ["intermediate species", "product species"]
 
         # Set true value
-        if not self.skip_true_value_calc:
+        if not skip_true_value_calc:
             self.set_true_value()
 
     def diff_model(self, t : float, y : tuple) -> tuple:
@@ -879,13 +877,13 @@ class DiffusionModel(Model):
         """
          
         # Call Parent’s constructor to set parameters
-        super().__init__(params, parameter_filename, skip_true_value_calc)
+        super().__init__(params, parameter_filename)
 
         # Set initial Diffussion model
         self.model_name = "Diffusion"
 
         # Set true value
-        if not self.skip_true_value_calc:
+        if not skip_true_value_calc:
             self.set_true_value()
        
     def run_model_simulation(self, discrete_paras):
@@ -1076,7 +1074,7 @@ class PhysicsMugModel(Model):
         """
      
         # Call Parent’s constructor to set parameters
-        super().__init__(params, parameter_filename, skip_true_value_calc)
+        super().__init__(params, parameter_filename)
 
         # Set initial model name
         self.model_name = "PhysicsMug"
@@ -1105,7 +1103,7 @@ class PhysicsMugModel(Model):
         self.global_scaling = 1.0 
         
         # Set true value
-        if not self.save_animation and not self.skip_true_value_calc:
+        if not self.save_animation and not skip_true_value_calc:
             self.set_true_value()
        
     def setup_model_world(self, dt : float, substeps : int, solver_iters : int, mp4_mode : bool = False) -> object:
@@ -1351,6 +1349,6 @@ class PhysicsDuckModel(PhysicsMugModel):
         self.global_scaling = 1.0 
         
         # Set true value
-        if not self.save_animation and not self.skip_true_value_calc:
+        if not self.save_animation and not skip_true_value_calc:
             self.set_true_value()
     
