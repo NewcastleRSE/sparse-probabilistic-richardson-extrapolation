@@ -1319,19 +1319,12 @@ class PhysicsDuckModel(PhysicsMugModel):
             None         
         """
      
-        # Set initial model name
-        self.model_name = "PhysicsDuck"
-        self.description = "Physics Rubber Duck Model"
-
-        # Set default model parameters
-        if self.final_mp4_filename is not None and self.final_mp4_filename != "":
-            self.save_animation = True
-            self.do_final_model_plot = True
-        else:
-            self.save_animation = False
-        
+        # Model parameters that can be updated in scenario file
         self.total_time = 5.0
       
+        # Call Parent’s constructor to set parameters
+        super().__init__(params, parameter_filename, skip_true_value_calc = True)
+
         # Set default camera parameters
         self.camera_distance = 0.5                # closer to the object (default ~1.5)
         self.camera_yaw = 45                      # rotate horizontally
@@ -1344,10 +1337,18 @@ class PhysicsDuckModel(PhysicsMugModel):
         self.base_position = [0, 0, 0.05]        # start above ground
         self.base_orientation = [0, 0, 0, 1]
         self.global_scaling = 1.0 
-        
-        # Call Parent’s constructor to set parameters
-        super().__init__(params, parameter_filename, skip_true_value_calc = True)
+       
+        # Set initial model name
+        self.model_name = "PhysicsDuck"
+        self.description = "Physics Rubber Duck Model"
 
+         # Set default model parameters
+        if self.final_mp4_filename is not None and self.final_mp4_filename != "":
+            self.save_animation = True
+            self.do_final_model_plot = True
+        else:
+            self.save_animation = False
+       
         # Set true value
         if not self.save_animation and not skip_true_value_calc:
             self.set_true_value()
