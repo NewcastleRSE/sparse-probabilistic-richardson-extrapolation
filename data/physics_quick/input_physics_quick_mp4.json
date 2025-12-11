@@ -1,5 +1,5 @@
 {
-  "model_name": "physics_duck",
+  "model_name": "physics_quick",
   "total_time": 1.0,
     
   "X": [
@@ -9,6 +9,6 @@
 "h_values":  [1],
 
   "final_tols": [0.00416666666, 1, 0.01],
-  "final_mp4_filename": "physics_duck0.mp4"
+  "final_mp4_filename": "physics_quick.mp4"
 
 }

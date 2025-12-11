@@ -1,6 +1,6 @@
 {
   "model_name": "physics_duck",
-  "duration": 1.0,
+  "total_time": 1.0,
     
   "X": [
    [1e-5, 1e-5, 1e-4]
