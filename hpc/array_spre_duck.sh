@@ -2,11 +2,11 @@
 #
 # Submit with: sbatch hpc/array_spre_duck <scenario_number>
 #
-#SBATCH --partition=default_free
+#SBATCH --partition=long_free
 #SBATCH --account=comet_spread
 #SBATCH --mem=5GB
 #SBATCH --cpus-per-task=1
-#SBATCH --array=1-24,61-105                       # Run tasks 
+#SBATCH --array=1-104                       # Run tasks 
 #SBATCH --output=data/physics_duck/results/output_physics_duck_array1_%a.log
 
 

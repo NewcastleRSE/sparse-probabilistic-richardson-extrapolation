@@ -1,8 +1,8 @@
-Mon  8 Dec 09:47:54 GMT 2025
-Running on compute032 model simulation for job 20 scenario 1
+Thu 11 Dec 14:20:20 GMT 2025
+Running on compute030 model simulation for job 20 scenario 1
 pybullet build time: Nov 28 2025 15:19:22
 Running model "PhysicsDuck" with parameters [3.25976562e-05 9.19658203e-04 1.55761719e-05]
 	Simulating Physics Rubber Duck Model with dt = 3.259765625e-05, 1087 substeps and 64201 solver iterations
-	Calculated final value: 0.017633877525479975
-Mon  8 Dec 10:06:09 GMT 2025
-Total seconds: 1098
+	Calculated final value: 0.01599505116934769
+Thu 11 Dec 14:23:32 GMT 2025
+Total seconds: 193
