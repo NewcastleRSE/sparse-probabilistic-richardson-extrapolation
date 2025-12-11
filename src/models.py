@@ -1155,7 +1155,7 @@ class PhysicsMugModel(Model):
             mug,
             angularVelocity = self.mug_angular_velocity  # spin around x, y, z
         )
-
+       
         return mug
 
     def run_model_simulation(self, discrete_paras):
@@ -1261,7 +1261,7 @@ class PhysicsMugModel(Model):
             pybullet.stepSimulation()
 
             # Make real-time video look normal - but only if dt ~= 1/240 - needs updating otherwise  
-            time.sleep(dt * 0.00001) # fudge factor
+            time.sleep(dt * 1) # fudge factor
 
             sim_time += dt
   
@@ -1334,7 +1334,7 @@ class PhysicsDuckModel(PhysicsMugModel):
         # Mug settings
         #self.object = "duck_vhacd.urdf"
         self.mug_angular_velocity = [3.0, -1.5, 5.0] 
-        self.base_position = [0, 0, 0.05]        # start above ground
+        self.base_position = [0, 0, 1.0]        # start above ground
         self.base_orientation = [0, 0, 0, 1]
         self.global_scaling = 1.0 
        
@@ -1378,16 +1378,17 @@ class PhysicsQuickModel(PhysicsMugModel):
 
         # Parameters set unchangable for this model below
         # Set default camera parameters
-        self.camera_distance = 0.5                # closer to the object (default ~1.5)
+        self.camera_distance = 0.2                # closer to the object (default ~1.5)
         self.camera_yaw = 45                      # rotate horizontally
         self.camera_pitch = -50                   # angle downward
         self.camera_target_position = [0, 0, 0]
 
         # Object settings
-        self.object = "block.urdf"
-        self.mug_angular_velocity = [3.0, -1.5, 5.0] 
+        #self.object = "domino/domino.urdf"
+        self.object = "lego/lego.urdf"
+        self.mug_angular_velocity = [0.0, 0.0, 0.0] 
         self.base_position = [0, 0, 1.0]        # start above ground
-        self.base_orientation = [0, 0, 0, 1]
+        self.base_orientation = [0.2, -0.1, 0.05, 1]
         self.global_scaling = 1.0 
         
         # Set initial model name
