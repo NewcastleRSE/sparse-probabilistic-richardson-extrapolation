@@ -13,15 +13,15 @@
     [0.02287, 0.84412, 0.00358]
 ],
 
-"h_values":  [ 0.001953125, 0.00390625, 0.0078125, 0.015625, 0.03125, 0.0625, 0.125, 0.25, 0.5, 1],
+"h_values":  [ 0.001953125, 0.00390625, 0.0078125],
 
-  "final_tols": [0.00416666666, 1, 0.01],
+  "final_tols": [5e-5, 5e-5, 5e-4],
   "evaluation": true,
  
-  "results_filename": "output_physics_quick_1.dat",
-  "results_eval_filename": "output_physics_quick_abs_errors_eval_1.dat",
-  "results_eval_plot_filename": "output_physics_quick_abs_errors_eval_1.png",
-  "results_plot_filename": "output_physics_quick_eval_1.png",
+  "results_filename": "output_physics_quick_1_edit.dat",
+  "results_eval_filename": "output_physics_quick_abs_errors_eval_1_edit.dat",
+  "results_eval_plot_filename": "output_physics_quick_abs_errors_eval_1_edit.png",
+  "results_plot_filename": "output_physics_quick_eval_1_edit.png",
   "extrapolation_name": "SPRE",
   "extrapolation_kernel": "white"
 }
