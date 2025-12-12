@@ -1083,6 +1083,7 @@ class PhysicsMugModel(Model):
 
         # Mug settings
         self.object = "objects/mug.urdf"
+        self.mug_linear_velocity = [0, 0, 0]
         self.mug_angular_velocity = [3.0, -1.5, 5.0] 
         self.base_position = [0, 0, 2.0]        # start above ground
         self.base_orientation = [0, 0, 0, 1]
@@ -1153,7 +1154,8 @@ class PhysicsMugModel(Model):
         # Add initial spin to mug
         pybullet.resetBaseVelocity(
             mug,
-            angularVelocity = self.mug_angular_velocity  # spin around x, y, z
+            angularVelocity = self.mug_angular_velocity,  # spin around x, y, z
+            linearVelocity = self.mug_linear_velocity
         )
        
         return mug
@@ -1405,4 +1407,56 @@ class PhysicsQuickModel(PhysicsMugModel):
         # Set true value
         if not self.save_animation and not skip_true_value_calc:
             self.set_true_value()
-    
+
+class PhysicsSlickModel(PhysicsMugModel):
+    """
+    Class for Physics model of some object in a slick scenerio.
+    """
+
+    def __init__(self, params, parameter_filename, skip_true_value_calc : bool = False):
+        """
+        Sets up the physics model class with model parameters.
+
+        Parameters:  
+            params : dict               Parameters for the model.
+            parameter_filename : str    Filename and path of the file. 
+            skip_true_value_calc : bool Skip evaulation of the true value (if not doing SPRE)     
+        Returns:
+            None         
+        """
+     
+        self.total_time = 2.0
+      
+        # Call Parent’s constructor to set parameters
+        super().__init__(params, parameter_filename, skip_true_value_calc = True)
+
+        # Parameters set unchangable for this model below
+        # Set default camera parameters
+        self.camera_distance = 2.0                # closer to the object (default ~1.5)
+        self.camera_yaw = 45                      # rotate horizontally
+        self.camera_pitch = -50                   # angle downward
+        self.camera_target_position = [0, 0, 0]
+
+        # Object settings
+        #self.object = "domino/domino.urdf"
+        self.object = "soccerball.urdf"
+        self.mug_linear_velocity = [-1.0, 0.0, 0]
+        self.mug_angular_velocity = [-1.0, 0.0, 0.0] 
+        self.base_position = [0, 0, 0.55]        # start above ground
+        self.base_orientation = [0.2, -0.1, 0.05, 1]
+        self.global_scaling = 1.0 
+        
+        # Set initial model name
+        self.model_name = "PhysicsSlick"
+        self.description = "Physics Slick Model"
+
+         # Set default model parameters
+        if self.final_mp4_filename is not None and self.final_mp4_filename != "":
+            self.save_animation = True
+            self.do_final_model_plot = True
+        else:
+            self.save_animation = False
+
+        # Set true value
+        if not self.save_animation and not skip_true_value_calc:
+            self.set_true_value()   
