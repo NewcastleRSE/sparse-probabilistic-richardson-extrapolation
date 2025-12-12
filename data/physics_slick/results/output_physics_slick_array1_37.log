@@ -1,3 +1,8 @@
 Fri 12 Dec 17:21:09 GMT 2025
 Running on compute030 model simulation for job 37 scenario 1
 pybullet build time: Nov 28 2025 15:19:22
+Running model "PhysicsSlick" with parameters [4.67089844e-05 3.78173828e-05 3.66210937e-06]
+	Simulating Physics Slick Model with dt = 4.6708984375e-05, 26443 substeps and 273067 solver iterations
+	Calculated final value: 0.7907072029512734
+Fri 12 Dec 18:15:41 GMT 2025
+Total seconds: 3296
