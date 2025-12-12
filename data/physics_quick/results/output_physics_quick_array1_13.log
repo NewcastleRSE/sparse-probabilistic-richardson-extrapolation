@@ -1,3 +1,8 @@
 Thu 11 Dec 15:57:27 GMT 2025
 Running on compute030 model simulation for job 13 scenario 1
 pybullet build time: Nov 28 2025 15:19:22
+Running model "PhysicsQuick" with parameters [4.67089844e-05 3.78173828e-05 3.66210937e-06]
+	Simulating Physics Quick Model with dt = 4.6708984375e-05, 26443 substeps and 273067 solver iterations
+	Calculated final value: 0.12298500073651655
+Thu 11 Dec 16:14:46 GMT 2025
+Total seconds: 1041
