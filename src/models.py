@@ -248,6 +248,10 @@ class Model:
         Returns:
             float   
         """
+   
+        # If using offset model f_z(x) = f(z+x)
+        if self.use_offset_model:
+            discrete_paras = discrete_paras + self.final_tols
 
         # Whether to finally simulate the model or not.
         perform_model_simulation = True
@@ -342,6 +346,10 @@ class Model:
             "plot" : False
         }
 
+        offset_name = ""
+        if self.use_offset_model:
+            offset_name = f"using offset {self.final_tols} "
+
         # Loop thro' different scalar values for multiplying set of tolerences
         for i, h in enumerate(self.h_values):
             # Results, Y is model output
@@ -353,8 +361,8 @@ class Model:
 
             # Get results
             for x in X:     
-                discrete_parameters = np.array(h) * np.array(x)   
-                print(f"Running model \"{self.model_name}\" with parameters {discrete_parameters}")                                    
+                discrete_parameters = np.array(h) * np.array(x)
+                print(f"Running model \"{self.model_name}\" {offset_name}with parameters {discrete_parameters}")                                    
                 y = self.run_model(discrete_parameters)
                 Y = np.append(Y, y)
 
@@ -614,7 +622,7 @@ class Model:
 
             plt.close('all') 
             plt.figure()
-            plt.plot(x_vals, df_abs["abs_err_best_estimate"], marker='o', linestyle='solid', linewidth=2, markersize=12, label="best estimate")
+            plt.plot(x_vals, df_abs["abs_err_best_estimate"], marker='o', linestyle='solid', linewidth=2, markersize=12, label="one estimate")
             plt.plot(x_vals, df_abs["abs_err_spre_estimate"], marker='o', linestyle='solid', linewidth=2, markersize=12, label="SPRE estimate")
             plt.xscale('log')
             plt.yscale('log')
@@ -1075,6 +1083,9 @@ class PhysicsMugModel(Model):
      
         self.total_time = 5.0
 
+        # Use model f_z(x) = f(z+x)
+        self.use_offset_model = False
+
         # Set default camera parameters
         self.camera_distance = 0.5                # closer to the object (default ~1.5)
         self.camera_yaw = 45                      # rotate horizontally
@@ -1092,7 +1103,7 @@ class PhysicsMugModel(Model):
         # Call Parent’s constructor to set parameters
         super().__init__(params, parameter_filename)
 
-          # Set initial model name
+        # Set initial model name
         self.model_name = "PhysicsMug"
         self.description = "Physics Mug Model"
 
@@ -1287,6 +1298,9 @@ class PhysicsMugModel(Model):
       
         # Create filename with all settings and parameters used
         filename = f"pm_{self.total_time}_"
+        if self.use_offset_model:
+            filename += "_".join(str(i) for i in self.final_tols) + "_"
+
         filename += "_".join(str(i) for i in discrete_paras) + ".bin"
 
         return filename
@@ -1302,7 +1316,14 @@ class PhysicsMugModel(Model):
             None                
         """
 
+        # Use regular model if evaluation the offset model, f_z(x) = f(z+x). So evaluate f_z(0) = f(z)
+        use_offset_model = self.use_offset_model
+        self.use_offset_model = False
+
         self.true_value = self.run_model(self.final_tols)
+
+        # Set back as before
+        self.use_offset_model = use_offset_model
 
 class PhysicsDuckModel(PhysicsMugModel):
     """
