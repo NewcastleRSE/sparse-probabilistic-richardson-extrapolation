@@ -396,7 +396,7 @@ class Model:
             # Create table of absoluate errors
             if self.evaluation:
                 # Create row of results for absolute error table
-                # h, true_value, best_estimate, spre_estimate, abs_err_best_estimate, abs_err_spre_estimate
+                # h, true_value, first_estimate, spre_estimate, abs_err_first_estimate, abs_err_spre_estimate
                 if isinstance(h, (list, tuple)):
                     table_row = h.copy()
                 else:
@@ -602,7 +602,7 @@ class Model:
         else:
             abs_header = [f"h{i+1}" for i in range(len(self.h_values[0]))]
             
-        abs_header += ["true_value", "best_estimate", "spre_estimate", "abs_err_best_estimate", "abs_err_spre_estimate"]
+        abs_header += ["true_value", "first_estimate", "spre_estimate", "abs_err_first_estimate", "abs_err_spre_estimate"]
         df_abs = pd.DataFrame(self.abs_error_table, columns=abs_header)
 
         # Get x coordinate values to plot against
@@ -624,7 +624,7 @@ class Model:
 
             plt.close('all') 
             plt.figure()
-            plt.plot(x_vals, df_abs["abs_err_best_estimate"], marker='o', linestyle='solid', linewidth=2, markersize=12, label="one estimate")
+            plt.plot(x_vals, df_abs["abs_err_first_estimate"], marker='o', linestyle='solid', linewidth=2, markersize=12, label="first estimate")
             plt.plot(x_vals, df_abs["abs_err_spre_estimate"], marker='o', linestyle='solid', linewidth=2, markersize=12, label="SPRE estimate")
             plt.xscale('log')
             plt.yscale('log')
@@ -1486,7 +1486,7 @@ class PhysicsSlickModel(PhysicsMugModel):
         if not self.save_animation and not skip_true_value_calc:
             self.set_true_value()   
 
-class MujocoModel(Model):
+class MujocoPhysicsModel(Model):
     """
     Class for Physics model using the MuJoCo (Multi-Joint dynamics with Contact) python library.
     https://mujoco.readthedocs.io/
@@ -1535,12 +1535,13 @@ class MujocoModel(Model):
         if not self.save_animation and not skip_true_value_calc:
             self.set_true_value()
      
-    def setup_model_world(self, discrete_paras) -> object:
+    def setup_model_world(self, dt : float, substeps : int) -> object:
         """
         Sets up world in MuJoCo to simulate model.
 
         Parameters:  
-            discrete_paras : npt.NDArray     Discretisation parameters used to simulate model.       
+            dt : float          Timestap
+            substeps : int      Number of substeps      
         Returns:
             None  
         """
@@ -1548,12 +1549,14 @@ class MujocoModel(Model):
         # Set camera zoom
         camera_pos = self.camera_position * self.camera_distance_scale
 
-        # Read MJCF from file
-        with open(self.model_file, "r") as f:
+        # Read MJCF from file, XML file with the model setup
+        # Set the directory of the file
+        model_file = str(Path(self.results_filename).parent.parent / self.model_file)
+        with open(model_file, "r") as f:            
             mjcf_str = f.read()
 
-        # Insert timestep & impratio into MJCF
-        mjcf = mjcf_str.format(timestep=discrete_paras[0], impratio=discrete_paras[1], camera_pos_x=camera_pos[0], camera_pos_y=camera_pos[1], camera_pos_z=camera_pos[2])
+        # Insert timestep, impratio and camera position into MJCF
+        mjcf = mjcf_str.format(timestep=dt, impratio=substeps, camera_pos_x=camera_pos[0], camera_pos_y=camera_pos[1], camera_pos_z=camera_pos[2])
 
         # Load model and data
         self.model = mujoco.MjModel.from_xml_string(mjcf)
@@ -1562,8 +1565,6 @@ class MujocoModel(Model):
         # Give the sphere an initial velocity for angled impact
         # qvel layout for a free joint: [vx, vy, vz, wx, wy, wz]
         self.data.qvel[:3] = np.array([0.1, 0.1, 0.0]) 
-
-       
 
     def run_model_simulation(self, discrete_paras):
         """
@@ -1584,7 +1585,7 @@ class MujocoModel(Model):
         print(f"\tSimulating {self.description} with dt = {dt} and {substeps} substeps iterations")
  
         # Setup model world
-        self.setup_model_world()
+        self.setup_model_world(dt, substeps)
 
         # Renderer
         renderer = mujoco.Renderer(self.model, width=640, height=480)
