@@ -1508,6 +1508,7 @@ class MujocoPhysicsModel(Model):
 
         # Use model f_z(x) = f(z+x)
         self.use_offset_model = False
+        self.substeps_max = None
 
         # Set default camera parameters
         self.camera_position = np.array([2, -2, 1.5])
@@ -1579,7 +1580,11 @@ class MujocoPhysicsModel(Model):
    
         # Set discretisation parameters
         dt = discrete_paras[0]
-        substeps = int(np.round(1.0/discrete_paras[1]))
+        # Set substeps
+        if self.substeps_max is not None:
+            substeps = int(self.substeps_max * (1.0 - discrete_paras[1]))
+        else:
+            substeps = int(np.round(1.0/discrete_paras[1]))
        
         # Output info on what is being simulated
         print(f"\tSimulating {self.description} with dt = {dt} and {substeps} substeps iterations")
@@ -1634,8 +1639,13 @@ class MujocoPhysicsModel(Model):
             str    
         """
       
+        if self.substeps_max is not None:
+            substeps_max_str = f"{self.substeps_max}_"
+        else:
+            substeps_max_str = ""
+
         # Create filename with all settings and parameters used
-        filename = f"mp_{self.total_time}_{self.model_file[:-4]}_"
+        filename = f"mp_{self.total_time}_{self.model_file[:-4]}_" + substeps_max_str
         if self.use_offset_model:
             filename += "_".join(str(i) for i in self.final_tols) + "_"
 

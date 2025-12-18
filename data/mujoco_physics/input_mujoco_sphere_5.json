@@ -42,11 +42,11 @@
   "evaluation": true,
   "use_offset_model": true,
 
-  "results_filename": "output_mujoco_sphere_3.dat",
-  "results_eval_filename": "output_mujoco_sphere_abs_errors_eval_3.dat",
-  "results_eval_plot_filename": "output_mujoco_sphere_abs_errors_eval_3.png",
-  "results_plot_filename": "output_mujoco_sphere_eval_3.png",
-  "results_fx_filename": "output_mujoco_sphere_fx_eval_3.dat",
+  "results_filename": "output_mujoco_sphere_5.dat",
+  "results_eval_filename": "output_mujoco_sphere_abs_errors_eval_5.dat",
+  "results_eval_plot_filename": "output_mujoco_sphere_abs_errors_eval_5.png",
+  "results_plot_filename": "output_mujoco_sphere_eval_5.png",
+  "results_fx_filename": "output_mujoco_sphere_fx_eval_5.dat",
   "final_mp4_filenamed": "",
   
   "extrapolation_name": "SPRE",

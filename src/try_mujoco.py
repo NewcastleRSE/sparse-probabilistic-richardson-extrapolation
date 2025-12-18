@@ -67,11 +67,11 @@ MJCF_TEMPLATE = """
 """
 
 def simulate_falling_object_with_video(
-    sim_time=3.0,
+    sim_time=4.0,
     video_path="falling_object.mp4",
     fps=60,
-    timestep=0.001,
-    sub_iterations=10
+    timestep=0.000001,
+    sub_iterations=0
 ):
     """
     Simulate a sphere falling onto a plane and save video.
@@ -116,10 +116,17 @@ def simulate_falling_object_with_video(
     renderer = mujoco.Renderer(model, width=640, height=480)
     frames = []
 
-    steps = int(sim_time / model.opt.timestep)
+    #steps = int(sim_time / model.opt.timestep)
     frame_interval = int(1.0 / (fps * model.opt.timestep))
 
-    for step in range(steps):
+    VEL_THRESH = 1e-15
+    STEPS_REQUIRED = 3
+    step = 0
+    body_id = model.body("sphere").id
+    stationary_steps = 0
+
+    #for step in range(steps):
+    while True:
         mujoco.mj_step(model, data)
 
         if step % frame_interval == 0:
@@ -127,11 +134,36 @@ def simulate_falling_object_with_video(
             frame = renderer.render()
             frames.append(frame)
 
+        step += 1
         # Optional early stop if sphere has settled
-        vel = np.linalg.norm(data.qvel[:3])
-        ang_vel = np.linalg.norm(data.qvel[3:])
-        if vel < 1e-3 and ang_vel < 1e-3:
+        #vel = np.linalg.norm(data.qvel[:3])
+        #ang_vel = np.linalg.norm(data.qvel[3:])
+        #if vel < 1e-3 and ang_vel < 1e-3:
+        #    break
+
+        # cvel = [angular(3), linear(3)]
+        #cvel = data.cvel[body_id]
+
+        #lin_vel_norm = np.linalg.norm(cvel[3:])
+        #ang_vel_norm = np.linalg.norm(cvel[:3])
+
+        #print(f"{step}: {lin_vel_norm}, {ang_vel_norm}")
+        #if lin_vel_norm < VEL_THRESH and ang_vel_norm < VEL_THRESH:
+
+        cvel = data.cvel[body_id]
+
+        if all(cvel) < VEL_THRESH:
+            stationary_steps += 1
+        else:
+            stationary_steps = 0
+
+        if stationary_steps >= STEPS_REQUIRED:
+            print("Object stationary — stopping simulation")
             break
+
+        #v = data.qvel[adr:adr+6]
+
+        #if (v @ v) < VEL2_THRESH:
 
     # Save video
     imageio.mimsave(video_path, frames, fps=fps)
