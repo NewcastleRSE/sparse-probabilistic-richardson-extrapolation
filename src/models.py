@@ -483,6 +483,11 @@ class Model:
                     print(f"Running model \"{self.model_name}\" with parameters {discrete_parameters}")                                    
                     self.run_model(discrete_parameters)
 
+        # Do plot of model simulation, e.g. solved differential equations  
+        if self.do_final_model_plot:
+            _ = self.plot_final_model()
+     
+       
     def choose_h_column(self, df: pd.DataFrame) -> str:
         """
         Return 'h' if present in the DataFrame.
@@ -1536,7 +1541,7 @@ class MujocoPhysicsModel(Model):
         if not self.save_animation and not skip_true_value_calc:
             self.set_true_value()
      
-    def setup_model_world(self, dt : float, substeps : int) -> object:
+    def setup_model_world(self, dt : float, substeps : int):
         """
         Sets up world in MuJoCo to simulate model.
 
@@ -1552,7 +1557,7 @@ class MujocoPhysicsModel(Model):
 
         # Read MJCF from file, XML file with the model setup
         # Set the directory of the file
-        model_file = str(Path(self.results_filename).parent.parent / self.model_file)
+        model_file = str(Path(self.cache_dir).parent.parent / self.model_file)
         with open(model_file, "r") as f:            
             mjcf_str = f.read()
 
@@ -1646,6 +1651,224 @@ class MujocoPhysicsModel(Model):
 
         # Create filename with all settings and parameters used
         filename = f"mp_{self.total_time}_{self.model_file[:-4]}_" + substeps_max_str
+        if self.use_offset_model:
+            filename += "_".join(str(i) for i in self.final_tols) + "_"
+
+        filename += "_".join(str(i) for i in discrete_paras) + ".bin"
+
+        return filename
+    
+    def set_true_value(self):
+        """
+        Sets the "true_value" by running the model with small discretisation parameters
+        as given in self.final_tols
+        
+        Parameters:  
+            None
+        Returns:
+            None                
+        """
+
+        # Use regular model if evaluation the offset model, f_z(x) = f(z+x). So evaluate f_z(0) = f(z)
+        use_offset_model = self.use_offset_model
+        self.use_offset_model = False
+
+        self.true_value = self.run_model(self.final_tols)
+
+        # Set back as before
+        self.use_offset_model = use_offset_model
+
+class MujocoModel(Model):
+    """
+    Class for Physics model using the MuJoCo (Multi-Joint dynamics with Contact) python library.
+    https://mujoco.readthedocs.io/
+    """
+
+    def __init__(self, params, parameter_filename, skip_true_value_calc : bool = False):
+        """
+        Sets up the physics model class with model parameters.
+
+        Parameters:  
+            params : dict               Parameters for the model.
+            parameter_filename : str    Filename and path of the file. 
+            skip_true_value_calc : bool Skip evaulation of the true value (if not doing SPRE)     
+        Returns:
+            None         
+        """
+     
+        self.total_time = 600.0
+        # Went have objects stopped moving
+        self.velocity_thresh = 1e-15
+        self.steps_required_to_stop = 30
+
+        # Use model f_z(x) = f(z+x)
+        self.use_offset_model = False
+      
+        # Set default camera parameters
+        self.camera_position = np.array([2, -2, 1.5])
+        # Smaller is closer to the object
+        self.camera_distance_scale = 0.5                
+        self.fps = 60
+
+        # Set initial model description       
+        self.description = "MuJoCo Physics Model"
+
+        # Call Parent’s constructor to set parameters - and overwrite any above here but not below
+        super().__init__(params, parameter_filename)
+
+        # Set initial model name    
+        self.model_name = "Mujoco"
+
+        # Set default model parameters
+        if self.final_mp4_filename is not None and self.final_mp4_filename != "":
+            self.save_animation = True
+            self.do_final_model_plot = True
+        else:
+            self.save_animation = False
+       
+        # Set true value
+        if not self.save_animation and not skip_true_value_calc:
+            self.set_true_value()
+     
+    def setup_model_world(self, dt : float, tolerance : float):
+        """
+        Sets up world in MuJoCo to simulate model.
+
+        Parameters:  
+            dt : float          Timestap
+            tolerance : float   Tolerance of solver
+        Returns:
+            None  
+        """
+
+        # Set camera zoom
+        camera_pos = self.camera_position * self.camera_distance_scale
+
+        # Read MJCF from file, XML file with the model setup
+        # Set the directory of the file
+        model_file = str(Path(self.cache_dir).parent / self.model_file)
+      
+        with open(model_file, "r") as f:            
+            mjcf_str = f.read()
+
+        # Insert timestep, impratio and camera position into MJCF
+        mjcf = mjcf_str.format(timestep=dt, tolerance=tolerance, camera_pos_x=camera_pos[0], camera_pos_y=camera_pos[1], camera_pos_z=camera_pos[2])
+
+        # Load model and data
+        self.model = mujoco.MjModel.from_xml_string(mjcf)
+        self.data = mujoco.MjData(self.model)
+
+        # Set initial velocities for objects
+        for body_id in range(self.model.nbody):
+
+            # How many joints does this body have?
+            njnt = self.model.body_jntnum[body_id]
+            if njnt == 0:
+                continue  # static body (e.g. floor)
+
+            # First joint index for this body
+            jntid = self.model.body_jntadr[body_id]
+
+            # DOF start index in qvel
+            dofadr = self.model.jnt_dofadr[jntid]
+
+            # Read velocities from XML user field
+            user_vals = self.model.body_user[body_id]
+
+            if user_vals is not None and len(user_vals) >= 6:
+                self.data.qvel[dofadr:dofadr+6] = np.array(user_vals[:6])
+
+    def run_model_simulation(self, discrete_paras):
+        """
+        Uses MuJoCo (Multi-Joint dynamics with Contact) Python library to simulate scenario as given in XML setup file.
+        https://mujoco.readthedocs.io/
+
+        Parameters:  
+            discrete_paras : npt.NDArray     Discretisation parameters used to simulate model.           
+        Returns:
+            float   
+        """
+   
+        # Set discretisation parameters
+        dt = discrete_paras[0]
+        tolerance = discrete_paras[1]
+
+        # Output info on what is being simulated
+        print(f"\tSimulating {self.description} with dt = {dt} and tolerance = {tolerance}")
+ 
+        # Setup model world
+        self.setup_model_world(dt, tolerance)
+
+        # Renderer
+        renderer = mujoco.Renderer(self.model, width=640, height=480)
+        self.frames = []
+
+        # Total time is used as an upper limit all objects should come to rest well before this
+        steps = int(self.total_time / self.model.opt.timestep)
+        frame_interval = int(1.0 / (self.fps * self.model.opt.timestep))
+        if self.save_animation and frame_interval == 0:
+            frame_interval = 1
+            print("Warning: frame interval too small, set a smaller time step!")
+
+        # Get all body IDs, only include bodies with joints (movable bodies)
+        body_ids = [i for i in range(self.model.nbody) if self.model.body_jntadr[i] != -1]
+        stop_steps = 1
+
+        for step in range(steps):
+            mujoco.mj_step(self.model, self.data)
+
+            if self.save_animation and step % frame_interval == 0:
+                renderer.update_scene(self.data, camera="angled_view")
+                frame = renderer.render()
+                self.frames.append(frame)
+
+            # Check if everything has stopped
+            stop_sim = True
+            for body_id in body_ids:
+                stop_sim = stop_sim and all(np.abs(self.data.cvel[body_id]) < self.velocity_thresh)
+
+            # Stop if stationary for a number of steps
+            if stop_sim:
+                stop_steps += 1
+                if stop_steps >= self.steps_required_to_stop:
+                    break
+
+        # Final position & distance
+        total_distance = 0.0
+        for body_id in body_ids:          
+            pos = self.data.xpos[body_id]  # world position of body
+            distance = np.linalg.norm(pos)
+            total_distance += distance
+
+        print(f"\tCalculated final value: {total_distance}")
+        return total_distance
+
+    def plot_final_model(self):
+        """
+        Plots the final simulated model which is in this case is a mp4 video if req'd.
+
+        Parameters:  
+            None
+        Returns:
+            None                
+        """
+        
+        if self.save_animation:            
+            imageio.mimsave(self.final_mp4_filename, self.frames, fps=self.fps)
+
+    def get_cache_filename(self, discrete_paras : npt.NDArray):
+        """
+        Returns the model cache filename for the Physics Mug model based on the model parameters.
+
+        Parameters:  
+            discrete_paras : npt.NDArray   Discretisation parameters
+        Returns:
+            str    
+        """
+      
+        # Create filename with all settings and parameters used
+        filename = f"mp_{self.total_time}_{self.model_file[:-4]}_"
+
         if self.use_offset_model:
             filename += "_".join(str(i) for i in self.final_tols) + "_"
 

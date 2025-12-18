@@ -1,0 +1,15 @@
+{
+  "model_name": "mujoco",
+  "model_file": "two_spheres.xml",
+  "description": "Two Spheres Colliding Model",
+  "total_time": 600.0,
+
+  "X": [
+    [0.001, 0.001]
+],
+
+"h_values": [1],
+
+  "final_tols": [0.001, 0.001],
+  "final_mp4_filename": "two_spheres.mp4"
+}

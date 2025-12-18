@@ -1,5 +1,5 @@
 <mujoco model="sphere">
-    <option gravity="0 0 -9.81" timestep="{timestep}" integrator="RK4" impratio="{impratio}"/>
+    <option gravity="0 0 -9.81" timestep="{timestep}" integrator="RK4" tolerance="{tolerance}"/>
 
     <visual>
         <quality shadowsize="2048"/>

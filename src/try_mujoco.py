@@ -4,7 +4,7 @@ import imageio
 
 MJCF_TEMPLATE = """
 <mujoco model="falling_object">
-    <option gravity="0 0 -9.81" timestep="{timestep}" integrator="RK4" impratio="{impratio}"/>
+    <option gravity="0 0 -9.81" timestep="{timestep}" integrator="RK4" tolerance="{tolerance}"/>
 
     <visual>
         <quality shadowsize="2048"/>
@@ -70,8 +70,8 @@ def simulate_falling_object_with_video(
     sim_time=4.0,
     video_path="falling_object.mp4",
     fps=60,
-    timestep=0.000001,
-    sub_iterations=0
+    timestep=0.01,
+    tolerance=0.1
 ):
     """
     Simulate a sphere falling onto a plane and save video.
@@ -86,8 +86,8 @@ def simulate_falling_object_with_video(
         Frames per second in video.
     timestep : float
         Simulation timestep (seconds).
-    sub_iterations : int
-        Number of solver sub-iterations per timestep (contact solver accuracy).
+    tolerence : float
+        Solver tolerence.
 
     Returns
     -------
@@ -102,7 +102,7 @@ def simulate_falling_object_with_video(
     camera_pos = np.array([2, -2, 1.5]) * zoom
 
     # Insert timestep & impratio into MJCF
-    mjcf = MJCF_TEMPLATE.format(timestep=timestep, impratio=sub_iterations, camera_pos_x=camera_pos[0], camera_pos_y=camera_pos[1], camera_pos_z=camera_pos[2])
+    mjcf = MJCF_TEMPLATE.format(timestep=timestep, tolerance=tolerance, camera_pos_x=camera_pos[0], camera_pos_y=camera_pos[1], camera_pos_z=camera_pos[2])
 
     # Load model and data
     model = mujoco.MjModel.from_xml_string(mjcf)
