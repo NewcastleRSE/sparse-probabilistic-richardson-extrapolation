@@ -1799,16 +1799,18 @@ class MujocoModel(Model):
         # Setup model world
         self.setup_model_world(dt, tolerance)
 
-        # Renderer
-        renderer = mujoco.Renderer(self.model, width=640, height=480)
-        self.frames = []
-
         # Total time is used as an upper limit all objects should come to rest well before this
         steps = int(self.total_time / self.model.opt.timestep)
-        frame_interval = int(1.0 / (self.fps * self.model.opt.timestep))
-        if self.save_animation and frame_interval == 0:
-            frame_interval = 1
-            print("Warning: frame interval too small, set a smaller time step!")
+
+        # Set up if creating a video
+        if self.save_animation:
+            # Renderer
+            renderer = mujoco.Renderer(self.model, width=640, height=480)
+            self.frames = []
+            frame_interval = int(1.0 / (self.fps * self.model.opt.timestep))
+            if frame_interval == 0:
+                frame_interval = 1
+                print("Warning: frame interval too small, set a smaller time step!")
 
         # Get all body IDs, only include bodies with joints (movable bodies)
         body_ids = [i for i in range(self.model.nbody) if self.model.body_jntadr[i] != -1]
@@ -1817,6 +1819,7 @@ class MujocoModel(Model):
         for step in range(steps):
             mujoco.mj_step(self.model, self.data)
 
+            # Save frames for video if creating one
             if self.save_animation and step % frame_interval == 0:
                 renderer.update_scene(self.data, camera="angled_view")
                 frame = renderer.render()
