@@ -1,5 +1,5 @@
 ##############################################################################
-# Differential equation models
+# Simulation Models
 #
 # Richard Howey, July 2025 - April 2026
 ##############################################################################
@@ -18,6 +18,8 @@ import matplotlib.pyplot as plt
 from pde import CartesianGrid, DiffusionPDE, ScalarField, PlotTracker
 import pybullet
 import pybullet_data
+import mujoco
+import imageio
 import time
 
 # Application modules
@@ -213,7 +215,7 @@ class Model:
         Returns the model cache filename based on the model parameters.
 
         Parameters:  
-            discrete_paras : npt.NDArray   Discreteisation parameters
+            discrete_paras : npt.NDArray   Discretisation parameters
         Returns:
             str    
         """
@@ -225,7 +227,7 @@ class Model:
         Updates the model cache of final outcome values.
 
         Parameters:  
-            discrete_paras : npt.NDArray     Discreteisation parameters used to simulate model.
+            discrete_paras : npt.NDArray     Discretisation parameters used to simulate model.
             y : float                        Final calculated value.
         Returns:
             None   
@@ -244,10 +246,14 @@ class Model:
         Either runs the model or looks up previously simulated value in the cache.
        
         Parameters:  
-            discrete_paras : npt.NDArray     Discreteisation parameters used to simulate model.           
+            discrete_paras : npt.NDArray     Discretisation parameters used to simulate model.           
         Returns:
             float   
         """
+   
+        # If using offset model f_z(x) = f(z+x)
+        if self.use_offset_model:
+            discrete_paras = discrete_paras + self.final_tols
 
         # Whether to finally simulate the model or not.
         perform_model_simulation = True
@@ -283,7 +289,7 @@ class Model:
         The final outcome of the model is returned.
        
         Parameters:  
-            discrete_paras : npt.NDArray     Discreteisation parameters used to simulate model.           
+            discrete_paras : npt.NDArray     Discretisation parameters used to simulate model.           
         Returns:
             float   
         """
@@ -342,6 +348,10 @@ class Model:
             "plot" : False
         }
 
+        offset_name = ""
+        if self.use_offset_model:
+            offset_name = f"using offset {self.final_tols} "
+
         # Loop thro' different scalar values for multiplying set of tolerences
         for i, h in enumerate(self.h_values):
             # Results, Y is model output
@@ -353,8 +363,8 @@ class Model:
 
             # Get results
             for x in X:     
-                discrete_parameters = np.array(h) * np.array(x)   
-                print(f"Running model \"{self.model_name}\" with parameters {discrete_parameters}")                                    
+                discrete_parameters = np.array(h) * np.array(x)
+                print(f"Running model \"{self.model_name}\" {offset_name}with parameters {discrete_parameters}")                                    
                 y = self.run_model(discrete_parameters)
                 Y = np.append(Y, y)
 
@@ -386,7 +396,7 @@ class Model:
             # Create table of absoluate errors
             if self.evaluation:
                 # Create row of results for absolute error table
-                # h, true_value, best_estimate, spre_estimate, abs_err_best_estimate, abs_err_spre_estimate
+                # h, true_value, first_estimate, spre_estimate, abs_err_first_estimate, abs_err_spre_estimate
                 if isinstance(h, (list, tuple)):
                     table_row = h.copy()
                 else:
@@ -473,6 +483,11 @@ class Model:
                     print(f"Running model \"{self.model_name}\" with parameters {discrete_parameters}")                                    
                     self.run_model(discrete_parameters)
 
+        # Do plot of model simulation, e.g. solved differential equations  
+        if self.do_final_model_plot:
+            _ = self.plot_final_model()
+     
+       
     def choose_h_column(self, df: pd.DataFrame) -> str:
         """
         Return 'h' if present in the DataFrame.
@@ -592,7 +607,7 @@ class Model:
         else:
             abs_header = [f"h{i+1}" for i in range(len(self.h_values[0]))]
             
-        abs_header += ["true_value", "best_estimate", "spre_estimate", "abs_err_best_estimate", "abs_err_spre_estimate"]
+        abs_header += ["true_value", "first_estimate", "spre_estimate", "abs_err_first_estimate", "abs_err_spre_estimate"]
         df_abs = pd.DataFrame(self.abs_error_table, columns=abs_header)
 
         # Get x coordinate values to plot against
@@ -614,7 +629,7 @@ class Model:
 
             plt.close('all') 
             plt.figure()
-            plt.plot(x_vals, df_abs["abs_err_best_estimate"], marker='o', linestyle='solid', linewidth=2, markersize=12, label="best estimate")
+            plt.plot(x_vals, df_abs["abs_err_first_estimate"], marker='o', linestyle='solid', linewidth=2, markersize=12, label="first estimate")
             plt.plot(x_vals, df_abs["abs_err_spre_estimate"], marker='o', linestyle='solid', linewidth=2, markersize=12, label="SPRE estimate")
             plt.xscale('log')
             plt.yscale('log')
@@ -893,7 +908,7 @@ class DiffusionModel(Model):
         Converts x and y discretisation parameters to the number of x and y divisions on the grid.
 
         Parameters:  
-            discrete_paras : npt.NDArray     Discreteisation parameters used to simulate model.           
+            discrete_paras : npt.NDArray     Discretisation parameters used to simulate model.           
         Returns:
             float   
         """
@@ -992,7 +1007,7 @@ class DiffusionModel(Model):
         Returns the model cache filename for the diffusion based on the model parameters.
 
         Parameters:  
-            discrete_paras : npt.NDArray   Discreteisation parameters
+            discrete_paras : npt.NDArray   Discretisation parameters
         Returns:
             str    
         """
@@ -1075,11 +1090,16 @@ class PhysicsMugModel(Model):
      
         self.total_time = 5.0
 
+        # Use model f_z(x) = f(z+x)
+        self.use_offset_model = False
+
         # Set default camera parameters
         self.camera_distance = 0.5                # closer to the object (default ~1.5)
         self.camera_yaw = 45                      # rotate horizontally
         self.camera_pitch = -50                   # angle downward
         self.camera_target_position = [0, 0, 0]
+        # Scalar factor to delay mp4 at each step
+        self.mp4_delay = 1
 
         # Mug settings
         self.object = "objects/mug.urdf"
@@ -1092,7 +1112,7 @@ class PhysicsMugModel(Model):
         # Call Parent’s constructor to set parameters
         super().__init__(params, parameter_filename)
 
-          # Set initial model name
+        # Set initial model name
         self.model_name = "PhysicsMug"
         self.description = "Physics Mug Model"
 
@@ -1166,7 +1186,7 @@ class PhysicsMugModel(Model):
         https://pybullet.org/wordpress/
 
         Parameters:  
-            discrete_paras : npt.NDArray     Discreteisation parameters used to simulate model.           
+            discrete_paras : npt.NDArray     Discretisation parameters used to simulate model.           
         Returns:
             float   
         """
@@ -1195,7 +1215,7 @@ class PhysicsMugModel(Model):
 
         # Get distance of mug from origin
         dist = np.sqrt(pos[0]**2 + pos[1]**2 + pos[2]**2)
-        
+       
         # End simulation
         pybullet.disconnect()
 
@@ -1263,7 +1283,7 @@ class PhysicsMugModel(Model):
             pybullet.stepSimulation()
 
             # Make real-time video look normal - but only if dt ~= 1/240 - needs updating otherwise  
-            time.sleep(dt * 1) # fudge factor
+            time.sleep(dt * self.mp4_delay) # fudge factor
 
             sim_time += dt
   
@@ -1280,13 +1300,16 @@ class PhysicsMugModel(Model):
         Returns the model cache filename for the Physics Mug model based on the model parameters.
 
         Parameters:  
-            discrete_paras : npt.NDArray   Discreteisation parameters
+            discrete_paras : npt.NDArray   Discretisation parameters
         Returns:
             str    
         """
       
         # Create filename with all settings and parameters used
         filename = f"pm_{self.total_time}_"
+        if self.use_offset_model:
+            filename += "_".join(str(i) for i in self.final_tols) + "_"
+
         filename += "_".join(str(i) for i in discrete_paras) + ".bin"
 
         return filename
@@ -1302,7 +1325,14 @@ class PhysicsMugModel(Model):
             None                
         """
 
+        # Use regular model if evaluation the offset model, f_z(x) = f(z+x). So evaluate f_z(0) = f(z)
+        use_offset_model = self.use_offset_model
+        self.use_offset_model = False
+
         self.true_value = self.run_model(self.final_tols)
+
+        # Set back as before
+        self.use_offset_model = use_offset_model
 
 class PhysicsDuckModel(PhysicsMugModel):
     """
@@ -1460,3 +1490,408 @@ class PhysicsSlickModel(PhysicsMugModel):
         # Set true value
         if not self.save_animation and not skip_true_value_calc:
             self.set_true_value()   
+
+class MujocoPhysicsModel(Model):
+    """
+    Class for Physics model using the MuJoCo (Multi-Joint dynamics with Contact) python library.
+    https://mujoco.readthedocs.io/
+    """
+
+    def __init__(self, params, parameter_filename, skip_true_value_calc : bool = False):
+        """
+        Sets up the physics model class with model parameters.
+
+        Parameters:  
+            params : dict               Parameters for the model.
+            parameter_filename : str    Filename and path of the file. 
+            skip_true_value_calc : bool Skip evaulation of the true value (if not doing SPRE)     
+        Returns:
+            None         
+        """
+     
+        self.total_time = 5.0
+
+        # Use model f_z(x) = f(z+x)
+        self.use_offset_model = False
+        self.substeps_max = None
+
+        # Set default camera parameters
+        self.camera_position = np.array([2, -2, 1.5])
+        # Smaller is closer to the object
+        self.camera_distance_scale = 0.5                
+        self.fps = 60
+
+        # Set initial model description       
+        self.description = "MuJoCo Physics Model"
+
+        # Call Parent’s constructor to set parameters - and overwrite any above here but not below
+        super().__init__(params, parameter_filename)
+
+        # Set initial model name    
+        self.model_name = "MujocoPhysics"
+
+        # Set default model parameters
+        if self.final_mp4_filename is not None and self.final_mp4_filename != "":
+            self.save_animation = True
+            self.do_final_model_plot = True
+        else:
+            self.save_animation = False
+       
+        # Set true value
+        if not self.save_animation and not skip_true_value_calc:
+            self.set_true_value()
+     
+    def setup_model_world(self, dt : float, substeps : int):
+        """
+        Sets up world in MuJoCo to simulate model.
+
+        Parameters:  
+            dt : float          Timestap
+            substeps : int      Number of substeps      
+        Returns:
+            None  
+        """
+
+        # Set camera zoom
+        camera_pos = self.camera_position * self.camera_distance_scale
+
+        # Read MJCF from file, XML file with the model setup
+        # Set the directory of the file
+        model_file = str(Path(self.cache_dir).parent.parent / self.model_file)
+        with open(model_file, "r") as f:            
+            mjcf_str = f.read()
+
+        # Insert timestep, impratio and camera position into MJCF
+        mjcf = mjcf_str.format(timestep=dt, impratio=substeps, camera_pos_x=camera_pos[0], camera_pos_y=camera_pos[1], camera_pos_z=camera_pos[2])
+
+        # Load model and data
+        self.model = mujoco.MjModel.from_xml_string(mjcf)
+        self.data = mujoco.MjData(self.model)
+
+        # Give the sphere an initial velocity for angled impact
+        # qvel layout for a free joint: [vx, vy, vz, wx, wy, wz]
+        self.data.qvel[:3] = np.array([0.1, 0.1, 0.0]) 
+
+    def run_model_simulation(self, discrete_paras):
+        """
+        Uses MuJoCo (Multi-Joint dynamics with Contact) Python library to simulate scenario as given in XML setup file.
+        https://mujoco.readthedocs.io/
+
+        Parameters:  
+            discrete_paras : npt.NDArray     Discretisation parameters used to simulate model.           
+        Returns:
+            float   
+        """
+   
+        # Set discretisation parameters
+        dt = discrete_paras[0]
+        # Set substeps
+        if self.substeps_max is not None:
+            substeps = int(self.substeps_max * (1.0 - discrete_paras[1]))
+        else:
+            substeps = int(np.round(1.0/discrete_paras[1]))
+       
+        # Output info on what is being simulated
+        print(f"\tSimulating {self.description} with dt = {dt} and {substeps} substeps iterations")
+ 
+        # Setup model world
+        self.setup_model_world(dt, substeps)
+
+        # Renderer
+        renderer = mujoco.Renderer(self.model, width=640, height=480)
+        self.frames = []
+
+        # Truncates the number of steps, so try and make scenario come to rest to avoid edge effects.
+        steps = int(self.total_time / self.model.opt.timestep)
+        frame_interval = int(1.0 / (self.fps * self.model.opt.timestep))
+
+        for step in range(steps):
+            mujoco.mj_step(self.model, self.data)
+
+            if self.save_animation and self.step % frame_interval == 0:
+                renderer.update_scene(self.data, camera="angled_view")
+                frame = renderer.render()
+                self.frames.append(frame)
+
+        # Final position & distance
+        body_id = self.model.body("sphere").id
+        final_position = self.data.xpos[body_id].copy()
+        distance = np.linalg.norm(final_position)
+
+        print(f"\tCalculated final value: {distance}")
+        return distance
+
+    def plot_final_model(self):
+        """
+        Plots the final simulated model which is in this case is a mp4 video if req'd.
+
+        Parameters:  
+            None
+        Returns:
+            None                
+        """
+   
+        if self.save_animation:
+            imageio.mimsave(self.final_mp4_filename, self.frames, fps=self.fps)
+
+    def get_cache_filename(self, discrete_paras : npt.NDArray):
+        """
+        Returns the model cache filename for the Physics Mug model based on the model parameters.
+
+        Parameters:  
+            discrete_paras : npt.NDArray   Discretisation parameters
+        Returns:
+            str    
+        """
+      
+        if self.substeps_max is not None:
+            substeps_max_str = f"{self.substeps_max}_"
+        else:
+            substeps_max_str = ""
+
+        # Create filename with all settings and parameters used
+        filename = f"mp_{self.total_time}_{self.model_file[:-4]}_" + substeps_max_str
+        if self.use_offset_model:
+            filename += "_".join(str(i) for i in self.final_tols) + "_"
+
+        filename += "_".join(str(i) for i in discrete_paras) + ".bin"
+
+        return filename
+    
+    def set_true_value(self):
+        """
+        Sets the "true_value" by running the model with small discretisation parameters
+        as given in self.final_tols
+        
+        Parameters:  
+            None
+        Returns:
+            None                
+        """
+
+        # Use regular model if evaluation the offset model, f_z(x) = f(z+x). So evaluate f_z(0) = f(z)
+        use_offset_model = self.use_offset_model
+        self.use_offset_model = False
+
+        self.true_value = self.run_model(self.final_tols)
+
+        # Set back as before
+        self.use_offset_model = use_offset_model
+
+class MujocoModel(Model):
+    """
+    Class for Physics model using the MuJoCo (Multi-Joint dynamics with Contact) python library.
+    https://mujoco.readthedocs.io/
+    """
+
+    def __init__(self, params, parameter_filename, skip_true_value_calc : bool = False):
+        """
+        Sets up the physics model class with model parameters.
+
+        Parameters:  
+            params : dict               Parameters for the model.
+            parameter_filename : str    Filename and path of the file. 
+            skip_true_value_calc : bool Skip evaulation of the true value (if not doing SPRE)     
+        Returns:
+            None         
+        """
+     
+        self.total_time = 600.0
+        # Went have objects stopped moving
+        self.velocity_thresh = 1e-15
+        self.steps_required_to_stop = 30
+
+        # Use model f_z(x) = f(z+x)
+        self.use_offset_model = False
+      
+        # Set default camera parameters
+        self.camera_position = np.array([2, -2, 1.5])
+        # Smaller is closer to the object
+        self.camera_distance_scale = 0.5                
+        self.fps = 60
+
+        # Set initial model description       
+        self.description = "MuJoCo Physics Model"
+
+        # Call Parent’s constructor to set parameters - and overwrite any above here but not below
+        super().__init__(params, parameter_filename)
+
+        # Set initial model name    
+        self.model_name = "Mujoco"
+
+        # Set default model parameters
+        if self.final_mp4_filename is not None and self.final_mp4_filename != "":
+            self.save_animation = True
+            self.do_final_model_plot = True
+        else:
+            self.save_animation = False
+       
+        # Set true value
+        if not self.save_animation and not skip_true_value_calc:
+            self.set_true_value()
+     
+    def setup_model_world(self, dt : float, tolerance : float):
+        """
+        Sets up world in MuJoCo to simulate model.
+
+        Parameters:  
+            dt : float          Timestap
+            tolerance : float   Tolerance of solver
+        Returns:
+            None  
+        """
+
+        # Set camera zoom
+        camera_pos = self.camera_position * self.camera_distance_scale
+
+        # Read MJCF from file, XML file with the model setup
+        # Set the directory of the file
+        model_file = str(Path(self.cache_dir).parent / self.model_file)
+      
+        with open(model_file, "r") as f:            
+            mjcf_str = f.read()
+
+        # Insert timestep, impratio and camera position into MJCF
+        mjcf = mjcf_str.format(timestep=dt, tolerance=tolerance, camera_pos_x=camera_pos[0], camera_pos_y=camera_pos[1], camera_pos_z=camera_pos[2])
+
+        # Load model and data
+        self.model = mujoco.MjModel.from_xml_string(mjcf)
+        self.data = mujoco.MjData(self.model)
+
+        # Set initial velocities for objects
+        for body_id in range(self.model.nbody):
+
+            # How many joints does this body have?
+            njnt = self.model.body_jntnum[body_id]
+            if njnt == 0:
+                continue  # static body (e.g. floor)
+
+            # First joint index for this body
+            jntid = self.model.body_jntadr[body_id]
+
+            # DOF start index in qvel
+            dofadr = self.model.jnt_dofadr[jntid]
+
+            # Read velocities from XML user field
+            user_vals = self.model.body_user[body_id]
+
+            if user_vals is not None and len(user_vals) >= 6:
+                self.data.qvel[dofadr:dofadr+6] = np.array(user_vals[:6])
+
+    def run_model_simulation(self, discrete_paras):
+        """
+        Uses MuJoCo (Multi-Joint dynamics with Contact) Python library to simulate scenario as given in XML setup file.
+        https://mujoco.readthedocs.io/
+
+        Parameters:  
+            discrete_paras : npt.NDArray     Discretisation parameters used to simulate model.           
+        Returns:
+            float   
+        """
+   
+        # Set discretisation parameters
+        dt = discrete_paras[0]
+        tolerance = discrete_paras[1]
+
+        # Output info on what is being simulated
+        print(f"\tSimulating {self.description} with dt = {dt} and tolerance = {tolerance}")
+ 
+        # Setup model world
+        self.setup_model_world(dt, tolerance)
+
+        # Renderer
+        renderer = mujoco.Renderer(self.model, width=640, height=480)
+        self.frames = []
+
+        # Total time is used as an upper limit all objects should come to rest well before this
+        steps = int(self.total_time / self.model.opt.timestep)
+        frame_interval = int(1.0 / (self.fps * self.model.opt.timestep))
+        if self.save_animation and frame_interval == 0:
+            frame_interval = 1
+            print("Warning: frame interval too small, set a smaller time step!")
+
+        # Get all body IDs, only include bodies with joints (movable bodies)
+        body_ids = [i for i in range(self.model.nbody) if self.model.body_jntadr[i] != -1]
+        stop_steps = 1
+
+        for step in range(steps):
+            mujoco.mj_step(self.model, self.data)
+
+            if self.save_animation and step % frame_interval == 0:
+                renderer.update_scene(self.data, camera="angled_view")
+                frame = renderer.render()
+                self.frames.append(frame)
+
+            # Check if everything has stopped
+            stop_sim = True
+            for body_id in body_ids:
+                stop_sim = stop_sim and all(np.abs(self.data.cvel[body_id]) < self.velocity_thresh)
+
+            # Stop if stationary for a number of steps
+            if stop_sim:
+                stop_steps += 1
+                if stop_steps >= self.steps_required_to_stop:
+                    break
+
+        # Final position & distance
+        total_distance = 0.0
+        for body_id in body_ids:          
+            pos = self.data.xpos[body_id]  # world position of body
+            distance = np.linalg.norm(pos)
+            total_distance += distance
+
+        print(f"\tCalculated final value: {total_distance}")
+        return total_distance
+
+    def plot_final_model(self):
+        """
+        Plots the final simulated model which is in this case is a mp4 video if req'd.
+
+        Parameters:  
+            None
+        Returns:
+            None                
+        """
+        
+        if self.save_animation:            
+            imageio.mimsave(self.final_mp4_filename, self.frames, fps=self.fps)
+
+    def get_cache_filename(self, discrete_paras : npt.NDArray):
+        """
+        Returns the model cache filename for the Physics Mug model based on the model parameters.
+
+        Parameters:  
+            discrete_paras : npt.NDArray   Discretisation parameters
+        Returns:
+            str    
+        """
+      
+        # Create filename with all settings and parameters used
+        filename = f"mp_{self.total_time}_{self.model_file[:-4]}_"
+
+        if self.use_offset_model:
+            filename += "_".join(str(i) for i in self.final_tols) + "_"
+
+        filename += "_".join(str(i) for i in discrete_paras) + ".bin"
+
+        return filename
+    
+    def set_true_value(self):
+        """
+        Sets the "true_value" by running the model with small discretisation parameters
+        as given in self.final_tols
+        
+        Parameters:  
+            None
+        Returns:
+            None                
+        """
+
+        # Use regular model if evaluation the offset model, f_z(x) = f(z+x). So evaluate f_z(0) = f(z)
+        use_offset_model = self.use_offset_model
+        self.use_offset_model = False
+
+        self.true_value = self.run_model(self.final_tols)
+
+        # Set back as before
+        self.use_offset_model = use_offset_model
