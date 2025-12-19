@@ -239,7 +239,7 @@ class Model:
 
         # Write the value to file in binary to store the precise number.
         with open(cache_filename, "wb") as f:
-            f.write(struct.pack('d', y))  # 'd' = double (64-bit float)
+            f.write(struct.pack('<d', y))   # explicit byte order, 'd' = double (64-bit float)
 
     def run_model(self, discrete_paras : npt.NDArray) -> float:
         """
@@ -268,10 +268,13 @@ class Model:
             # Look up the value in the cache if it exists
             if os.path.exists(cache_filename):
                 with open(cache_filename, "rb") as f:
-                    data = f.read(8)
-                    y_result = struct.unpack('d', data)[0]       
-                    perform_model_simulation = False
-                    print(f"\tUsing cached value: {y_result}")         
+                    data = f.read(8)                      
+                    if len(data) != 8:
+                        raise ValueError("Corrupted cache file! Recalculating...")
+                    else:
+                        y_result = struct.unpack('<d', data)[0]     
+                        perform_model_simulation = False
+                        print(f"\tUsing cached value: {y_result}")         
 
         # Value was not in cache or req'd to simulate again.     
         if perform_model_simulation:
