@@ -1094,6 +1094,10 @@ class PhysicsMugModel(Model):
      
         self.total_time = 5.0
 
+        # To decided when have objects stopped moving
+        self.velocity_thresh = 1e-3
+        self.steps_required_to_stop = 30
+
         # Use model f_z(x) = f(z+x)
         self.use_offset_model = False
 
@@ -1131,7 +1135,7 @@ class PhysicsMugModel(Model):
         if not self.save_animation and not skip_true_value_calc:
             self.set_true_value()
        
-    def setup_model_world(self, dt : float, substeps : int, solver_iters : int, mp4_mode : bool = False) -> object:
+    def setup_model_world(self, dt : float, substeps : int, solver_iters : int, mp4_mode : bool = False) -> int:
         """
         Sets up world in pybullet to simulate model
 
@@ -1143,7 +1147,7 @@ class PhysicsMugModel(Model):
                                   solverResidualThreshold (default, 1e-7) is reached, the solver may terminate before the numSolverIterations.  
             mp4_mode : bool       Use mode for creating mp4     
         Returns:
-            object   
+            int   
         """
 
         mode = pybullet.GUI if mp4_mode else pybullet.DIRECT
@@ -1164,8 +1168,8 @@ class PhysicsMugModel(Model):
         # Set the ground plane
         plane = pybullet.loadURDF("plane.urdf")
 
-        # Create a simple mug object
-        mug = pybullet.loadURDF( 
+        # Create a simple mug object or some other object
+        mug_id = pybullet.loadURDF( 
             self.object,     
             basePosition = self.base_position,        # start above ground
             baseOrientation = self.base_orientation,
@@ -1177,12 +1181,29 @@ class PhysicsMugModel(Model):
 
         # Add initial spin to mug
         pybullet.resetBaseVelocity(
-            mug,
+            mug_id,
             angularVelocity = self.mug_angular_velocity,  # spin around x, y, z
             linearVelocity = self.mug_linear_velocity
         )
        
-        return mug
+        return mug_id
+
+    def is_body_at_rest(self, body_id : object, do_it) -> bool:
+        """
+        Sets up world in pybullet to simulate model
+
+        Parameters:  
+            body_id : int              The object (mug) ID to check if stationary
+            threshold : float          Threshold to check if it is stationary
+        Returns:
+            object   
+        """
+
+        # Get linear and angular velocities
+        lin_vel, ang_vel = pybullet.getBaseVelocity(body_id)
+        if do_it:
+            print(lin_vel, ang_vel)
+        return all(np.abs(lin_vel) < self.velocity_thresh) and all(np.abs(ang_vel) < self.velocity_thresh)
 
     def run_model_simulation(self, discrete_paras):
         """
@@ -1205,14 +1226,26 @@ class PhysicsMugModel(Model):
         # Output info on what is being simulated
         print(f"\tSimulating {self.description} with dt = {dt}, {substeps} substeps and {solver_iters} solver iterations")
  
-        # Initial time counter
+        # Initial time counter and stationary counter
         sim_time = 0.0
+        stationary_count = 0
 
         # Run the simulation
         while sim_time < self.total_time:
             # One step of simulation
             pybullet.stepSimulation()
-            sim_time += dt
+            sim_time += dt   
+            #if sim_time > 550:         
+            #    print(sim_time) 
+            # Now stop if the mug (or object) is stationary
+            if self.is_body_at_rest(mug, False):
+                stationary_count += 1
+                if stationary_count >= self.steps_required_to_stop:                    
+                    break
+            else:
+                stationary_count = 0
+
+        print("Exit time:", sim_time)
 
         # Get final position and orientation of mug
         pos, orn = pybullet.getBasePositionAndOrientation(mug)
@@ -1701,7 +1734,7 @@ class MujocoModel(Model):
         """
      
         self.total_time = 600.0
-        # Went have objects stopped moving
+        # To decided when have objects stopped moving
         self.velocity_thresh = 1e-15
         self.steps_required_to_stop = 30
 
