@@ -239,7 +239,7 @@ class Model:
 
         # Write the value to file in binary to store the precise number.
         with open(cache_filename, "wb") as f:
-            f.write(struct.pack('<d', y))   # explicit byte order, 'd' = double (64-bit float) try ... float(y)
+            f.write(struct.pack('<d', float(y)))   # explicit byte order, 'd' = double (64-bit float)
 
     def run_model(self, discrete_paras : npt.NDArray) -> float:
         """
