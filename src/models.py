@@ -1747,7 +1747,7 @@ class MujocoModel(Model):
      
         self.total_time = 600.0
         # To decided when have objects stopped moving
-        self.velocity_thresh = 1e-15
+        self.velocity_thresh = 1e-10 #1e-15
         self.steps_required_to_stop = 30
 
         # Use model f_z(x) = f(z+x)
@@ -1885,7 +1885,9 @@ class MujocoModel(Model):
                 if stop_steps >= self.steps_required_to_stop:
                     break
 
-        print("Final time: ", steps*self.model.opt.timestep)
+        print("\tStop time: ", step*self.model.opt.timestep)
+        for body_id in body_ids:
+                print(np.abs(self.data.cvel[body_id]))
 
         # Final position & distance
         total_distance = 0.0
