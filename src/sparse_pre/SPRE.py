@@ -549,15 +549,14 @@ class SPRE:
         self.jit_grad = jit(grad(self.cv_loss))
         self.jit_perform_extrapolation = jit(self.perform_extrapolation)
 
-    def stepwise_selection(self) -> dict:
+    def stepwise_selection(self, use_fixed_basis : bool = False) -> dict:
         """
         Stepwise model selection for SPRE.
 
         Parameters:
-            X       : jnp.ndarray           Training inputs, (n_train, d)
-            Y       : jnp.ndarray           Training outputs, (n_train,)
-            k_name  : str                   Kernel name ("Gaussian", "GaussianARD", "Matern1/2", "Matern3/2", "white")
-
+            use_fixed_basis : bool      whether to use fixed default basis for SPRE,
+                                        e.g. for d=2 use A=[[0, 0], [1, 0], [0, 1]]
+       
         Returns:
             out     : dict, result of SPRE using optimal model
                     out.mu      = scalar, predictive mean for f(0)
@@ -589,7 +588,12 @@ class SPRE:
 
         # Try higher orders
         carry_on = True
-
+        
+        if use_fixed_basis:
+            # Fix basis to default basis and keep fixed.
+            A = jnp.vstack((A, jnp.eye(self.dimension, dtype=int)))
+            carry_on = False
+        
         order = 0
         fit = self.perform_extrapolation_optimization(A, do_jit)
         cv = fit['cv']
@@ -598,7 +602,7 @@ class SPRE:
         while carry_on: 
             m = A.shape[0] # Number of rows in base A
             order += 1 # Consider the addition of higher order interactions
-            A_extra = stepwise(A, order)  # All predictors of the nex order to consider
+            A_extra = stepwise(A, order)  # All predictors of the next order to consider
             n_extra = A_extra.shape[0]
             to_include = jnp.zeros(n_extra, dtype=bool)
 

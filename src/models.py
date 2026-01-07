@@ -48,6 +48,7 @@ class Model:
         self.evaluation = False
         self.model_name = "Model not set"
         self.use_model_cache = True
+        self.use_fixed_basis = False
 
         # Set filenames to blank by default
         self.results_plot_filename = ""
@@ -349,7 +350,8 @@ class Model:
         options = {
             "name": self.extrapolation_name,
             "k_name":  self.extrapolation_kernel, 
-            "plot" : False
+            "plot" : False,
+            "use_fixed_basis": self.use_fixed_basis
         }
 
         offset_name = ""

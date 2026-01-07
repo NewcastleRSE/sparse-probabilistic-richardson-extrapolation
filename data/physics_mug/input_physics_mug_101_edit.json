@@ -18,12 +18,13 @@
   "final_tols": [0.00416666666, 1, 0.01],
   "evaluation": true,
   "use_offset_model": true,
-  "use_model_cache": false,
+  "use_model_cache": true,
+  "use_fixed_basis": true,
 
   "results_filename": "output_physics_mug_101_edit.dat",
   "results_eval_filename": "output_physics_mug_abs_errors_eval_101_edit.dat",
   "results_eval_plot_filename": "output_physics_mug_abs_errors_eval_101_edit.png",
   "results_plot_filename": "output_physics_mug_eval_101_edit.png",
-  "extrapolation_name": "MRE",
+  "extrapolation_name": "SPRE",
   "extrapolation_kernel": "white"
 }

@@ -37,8 +37,8 @@ def MRE(A : jnp.ndarray, X : jnp.ndarray, Y : jnp.ndarray) -> jnp.ndarray:
     # Create default basis if not defined
     if A is None:
         _, d = X.shape
-        A = jnp.zeros((1,d))
-        A = jnp.vstack((A, jnp.eye(d)))
+        A = jnp.zeros((1,d), dtype=int)
+        A = jnp.vstack((A, jnp.eye(d, dtype=int)))
 
     m, d = A.shape
 

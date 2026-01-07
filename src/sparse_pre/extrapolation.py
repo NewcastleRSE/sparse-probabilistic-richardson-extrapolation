@@ -36,6 +36,7 @@ def extrapolation(X, Y, options = None):
                 - "k_name" : str, one of {"Gaussian", "GaussianARD", "Matern1/2", "Matern3/2", "white"} (default: "white")
                 - "plot"   : bool, whether to plot LOOCV results (default: True)
                 - "plot_filename" : filename to plot LOOCV results (default: True)
+                - "use_fixed_basis" : bool, whether to use fixed default basis, e.g. for d=2 use A=[[0, 0], [1, 0], [0, 1]]
        
     Returns:
         out : dict
@@ -53,6 +54,7 @@ def extrapolation(X, Y, options = None):
     k_name = options.get("k_name", "white")
     plot = options.get("plot", True)
     plot_filename = options.get("plot_filename", "")
+    use_fixed_basis = options.get("use_fixed_basis", False)
 
     # Set up SPRE object
     if name == "SPRE":
@@ -70,7 +72,7 @@ def extrapolation(X, Y, options = None):
         # Set data
         spre.set_normalised_data(X, Y)
         # Do fitting
-        out = spre.stepwise_selection()
+        out = spre.stepwise_selection(use_fixed_basis)
        
     elif name == "MRE":
         #raise NotImplementedError("MRE extrapolation is not implemented yet.")
