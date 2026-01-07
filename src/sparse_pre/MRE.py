@@ -17,7 +17,7 @@ config.update("jax_enable_x64", True)
 # Application modules
 from sparse_pre.helper_functions import x2fx
 
-def MRE(A, X, Y):
+def MRE(A : jnp.ndarray, X : jnp.ndarray, Y : jnp.ndarray) -> jnp.ndarray:
     """
     Multivariate Richardson Extrapolation.
 
@@ -33,6 +33,13 @@ def MRE(A, X, Y):
         float
            'mu', the predicted f(0)
     """
+    
+    # Create default basis if not defined
+    if A is None:
+        _, d = X.shape
+        A = jnp.zeros((1,d))
+        A = jnp.vstack((A, jnp.eye(d)))
+
     m, d = A.shape
 
     # Ensure Y is a flat 1D array
@@ -62,4 +69,13 @@ def MRE(A, X, Y):
     coeffs = jnp.linalg.lstsq(V, Yn, rcond=None)[0]
     mu = nY * eval @ coeffs
 
-    return mu
+    # Return the same format as SPRE although most values are not given
+    out = {
+                "mu": mu,
+                "var": None,  
+                "cv": None,         
+                "mu_cv": None,
+                "var_cv": None            
+            }
+    
+    return out

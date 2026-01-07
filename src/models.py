@@ -383,14 +383,18 @@ class Model:
                 options["plot_filename"] = new_filepath
             
             out = extrapolation(X*h, Y, options)
-            print(f"Predict f(0) = {out['mu'][0]} +/- {np.sqrt(out['var'][0][0])}\n")
-            
-            extrapolation_results.extend([out['mu'][0], out['var'][0][0]])
 
-            # Append results for each point
-            extrapolation_results.extend(out['mu_cv'])
-            extrapolation_results.extend(out['var_cv'])
-        
+            if self.extrapolation_name != "MRE":
+                print(f"Predict f(0) = {out['mu'][0]} +/- {np.sqrt(out['var'][0][0])}\n")
+                extrapolation_results.extend([out['mu'][0], out['var'][0][0]])
+                # Append results for each point
+                extrapolation_results.extend(out['mu_cv'])
+                extrapolation_results.extend(out['var_cv'])
+            else:
+                # No variances or cross validation to record for MRE
+                print(f"Predict f(0) = {out['mu'][0]}\n")
+                extrapolation_results.extend([out['mu'][0]])                      
+            
             # Create table of SPRE results
             if i == 0:
                 all_extrapolation_results = np.matrix(extrapolation_results)
@@ -431,8 +435,11 @@ class Model:
             else:
                 header = [f"h{i+1}" for i in range(len(h))]
 
-            header += ["mu", "var"] + [f"mu_cv{n}" for n in range(1, number_of_x + 1)] + [f"var_cv{n}" for n in range(1, number_of_x + 1)]
-  
+            if self.extrapolation_name != "MRE":
+                header += ["mu", "var"] + [f"mu_cv{n}" for n in range(1, number_of_x + 1)] + [f"var_cv{n}" for n in range(1, number_of_x + 1)]
+            else:
+                header += ["mu"]
+
             # Create DataFrame
             self.df_all_extrapolation_results = pd.DataFrame(all_extrapolation_results, columns=header)
 
@@ -534,15 +541,18 @@ class Model:
             None                
         """
 
-        # Calculate error bars (standard deviation = sqrt(var))
-        errors = np.sqrt(self.df_all_extrapolation_results["var"])
-
         h_col = self.choose_h_column(self.df_all_extrapolation_results)
 
         # Plot with error bars
         plt.close('all') 
         plt.figure()
-        plt.errorbar(self.df_all_extrapolation_results[h_col], self.df_all_extrapolation_results["mu"], yerr=errors, fmt='o-', capsize=5, ecolor='black', markersize=6)
+        # Calculate error bars (standard deviation = sqrt(var))
+        if "var" in self.df_all_extrapolation_results:            
+            errors = np.sqrt(self.df_all_extrapolation_results["var"])
+            plt.errorbar(self.df_all_extrapolation_results[h_col], self.df_all_extrapolation_results["mu"], yerr=errors, fmt='o-', capsize=5, ecolor='black', markersize=6)
+        else:
+            plt.plot(self.df_all_extrapolation_results[h_col], self.df_all_extrapolation_results["mu"], 'o-', markersize=6)
+
         plt.xlabel("h")
         plt.ylabel("mu")
         plt.xscale('log')
@@ -634,7 +644,7 @@ class Model:
             plt.close('all') 
             plt.figure()
             plt.plot(x_vals, df_abs["abs_err_first_estimate"], marker='o', linestyle='solid', linewidth=2, markersize=12, label="first estimate")
-            plt.plot(x_vals, df_abs["abs_err_spre_estimate"], marker='o', linestyle='solid', linewidth=2, markersize=12, label="SPRE estimate")
+            plt.plot(x_vals, df_abs["abs_err_spre_estimate"], marker='o', linestyle='solid', linewidth=2, markersize=12, label=f"{self.extrapolation_name} estimate")
             plt.xscale('log')
             plt.yscale('log')
             plt.xlabel(x_lab)

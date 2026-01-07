@@ -19,6 +19,7 @@ config.update("jax_enable_x64", True)
 
 # Application modules
 from sparse_pre.SPRE import SPRE
+import sparse_pre.MRE as MRE
 
 def extrapolation(X, Y, options = None):
     """
@@ -59,25 +60,30 @@ def extrapolation(X, Y, options = None):
     elif name == "GRE":
         spre = SPRE(k_name, X.shape[1], jnp.zeros((1, X.shape[1]), dtype=int))
     elif name == "MRE":
-        raise NotImplementedError("MRE extrapolation is not implemented yet.")
+        #raise NotImplementedError("MRE extrapolation is not implemented yet.")
+        pass
     else:
         raise ValueError(f"Unknown extrapolation method: {name}")
     
-    # Set data
-    spre.set_normalised_data(X, Y)
-
     # Select extrapolation method
     if name == "SPRE" or name == "GRE":
+        # Set data
+        spre.set_normalised_data(X, Y)
+        # Do fitting
         out = spre.stepwise_selection()
+       
     elif name == "MRE":
-        raise NotImplementedError("MRE extrapolation is not implemented yet.")
+        #raise NotImplementedError("MRE extrapolation is not implemented yet.")
+        # Use default basis
+        out = MRE.MRE(None, X, Y)
     else:
         raise ValueError(f"Unknown extrapolation method: {name}")
 
-    errors = jnp.sqrt(out["var_cv"])
- 
     # Plot LOOCV fit if applicable
     if (plot or plot_filename) and name != "MRE" and "mu_cv" in out and "var_cv" in out:
+        # Set errors
+        errors = jnp.sqrt(out["var_cv"])
+
         n_train = X.shape[0]
         plt.close('all') 
         plt.figure()

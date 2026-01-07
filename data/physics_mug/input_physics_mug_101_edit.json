@@ -24,6 +24,6 @@
   "results_eval_filename": "output_physics_mug_abs_errors_eval_101_edit.dat",
   "results_eval_plot_filename": "output_physics_mug_abs_errors_eval_101_edit.png",
   "results_plot_filename": "output_physics_mug_eval_101_edit.png",
-  "extrapolation_name": "SPRE",
+  "extrapolation_name": "MRE",
   "extrapolation_kernel": "white"
 }
