@@ -1095,7 +1095,7 @@ class PhysicsMugModel(Model):
         self.total_time = 5.0
 
         # To decided when have objects stopped moving
-        self.velocity_thresh = 1e-3
+        self.velocity_thresh = 1e-1
         self.steps_required_to_stop = 30
 
         # Use model f_z(x) = f(z+x)
@@ -1245,7 +1245,7 @@ class PhysicsMugModel(Model):
             else:
                 stationary_count = 0
 
-        print("Exit time:", sim_time)
+        print("\tEnd time:", sim_time)
 
         # Get final position and orientation of mug
         pos, orn = pybullet.getBasePositionAndOrientation(mug)
@@ -1872,6 +1872,8 @@ class MujocoModel(Model):
                 stop_steps += 1
                 if stop_steps >= self.steps_required_to_stop:
                     break
+
+        print("Final time: ", steps*self.model.opt.timestep)
 
         # Final position & distance
         total_distance = 0.0

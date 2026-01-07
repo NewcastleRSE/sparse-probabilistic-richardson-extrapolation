@@ -17,7 +17,7 @@
 
   "final_tols": [5e-5, 5e-5, 5e-4],
   "evaluation": true,
- 
+
   "results_filename": "output_physics_slick_1_edit.dat",
   "results_eval_filename": "output_physics_slick_abs_errors_eval_1_edit.dat",
   "results_eval_plot_filename": "output_physics_slick_abs_errors_eval_1_edit.png",

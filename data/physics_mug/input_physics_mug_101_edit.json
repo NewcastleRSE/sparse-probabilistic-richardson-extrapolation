@@ -13,12 +13,13 @@
     [0.02287, 0.84412, 0.00358]
 ],
 
-"h_values":  [0.125, 0.25, 0.5, 1],
+"h_values":  [0.015625, 0.03125, 0.0625],
 
   "final_tols": [0.00416666666, 1, 0.01],
   "evaluation": true,
   "use_offset_model": true,
- 
+  "use_model_cache": false,
+
   "results_filename": "output_physics_mug_101_edit.dat",
   "results_eval_filename": "output_physics_mug_abs_errors_eval_101_edit.dat",
   "results_eval_plot_filename": "output_physics_mug_abs_errors_eval_101_edit.png",
