@@ -32,7 +32,7 @@
   "final_tols": [1e-8, 1e-8],
   "evaluation": true,
   "use_offset_model": true,
-  "velocity_thresh": 1e-12,
+  "velocity_thresh": 1e-10,
 
   "results_filename": "output_two_spheres_2.dat",
   "results_eval_filename": "output_two_spheres_abs_errors_eval_2.dat",
