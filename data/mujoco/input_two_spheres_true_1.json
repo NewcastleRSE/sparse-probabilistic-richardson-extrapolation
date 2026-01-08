@@ -5,11 +5,12 @@
   "total_time": 600.0,
     
   "X": [
-   [1e-4, 1e-4]
+   [1e-8, 1e-8]
 ],
 
   "h_values":  [1],
   "final_tols": [0.001, 0.001],
+  "velocity_thresh": 1e-12,
  
   "extrapolation_name": "SPRE",
   "extrapolation_kernel": "white"
