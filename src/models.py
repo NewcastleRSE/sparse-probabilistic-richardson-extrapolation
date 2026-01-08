@@ -1747,7 +1747,7 @@ class MujocoModel(Model):
      
         self.total_time = 600.0
         # To decided when have objects stopped moving
-        self.velocity_thresh = 1e-10 #1e-15
+        self.velocity_thresh = 1e-15
         self.steps_required_to_stop = 30
 
         # Use model f_z(x) = f(z+x)
