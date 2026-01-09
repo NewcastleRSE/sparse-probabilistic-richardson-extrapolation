@@ -1,13 +1,13 @@
-Fri  9 Jan 15:56:15 GMT 2026
-Running on compute034 model simulation for job 35 scenario 1
+Fri  9 Jan 16:52:14 GMT 2026
+Running on compute034 model simulation for job 35 scenario 4
 pybullet build time: Nov 28 2025 15:19:22
-Running model "Mujoco" with parameters [0.00013308 0.00016602 0.00021284]
-	Simulating Two Spheres Colliding Model with dt = 0.0001340810546875, solver reference = 0.000167015625 and solver impedance = 0.000213841796875
-	Stop time:  21.932308520507814
-[9.58526676e-11 5.40282890e-11 3.01245302e-17 4.32239721e-12
- 7.66845132e-12 1.09167051e-15]
-[9.95721845e-11 8.56458578e-11 2.81371808e-17 6.85188119e-12
- 7.96602189e-12 2.56055589e-14]
-	Calculated final value: 0.8736249089154621
-Fri  9 Jan 15:56:22 GMT 2026
-Total seconds: 8
+Running model "Mujoco" with parameters [8.31756592e-06 1.03759766e-05 2.12841797e-04]
+	Simulating Two Spheres Colliding Model with dt = 9.317565917968751e-06, solver reference = 1.1375976562500001e-05 and solver impedance = 0.000213841796875
+	Stop time:  21.924586672485354
+[9.67917323e-11 5.42793729e-11 7.84638645e-18 4.34235933e-12
+ 7.74335552e-12 2.99751941e-13]
+[9.99705178e-11 8.56767043e-11 4.13119489e-18 6.85415134e-12
+ 7.99765892e-12 2.99751942e-13]
+	Calculated final value: 0.8723741657615371
+Fri  9 Jan 16:53:11 GMT 2026
+Total seconds: 58
