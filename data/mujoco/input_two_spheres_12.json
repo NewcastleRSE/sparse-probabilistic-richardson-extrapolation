@@ -1,0 +1,46 @@
+{
+  "model_name": "mujoco",
+  "model_file": "two_spheres.xml",
+  "description": "Two Spheres Colliding Model",
+  "total_time": 600.0,
+
+  "X": [
+   [0.0625, 0.8125],
+    [0.1875, 0.0625],
+    [0.3125, 0.4375],
+    [0.4375, 0.9375],
+    [0.5625, 0.3125],
+    [0.6875, 0.6875],
+    [0.8125, 0.1875],
+    [0.9375, 0.5625]
+],
+
+"h_values": [
+    [9.5367431640625e-07, 9.5367431640625e-07],
+    [1.9073486328125e-06, 9.5367431640625e-07],
+    [3.814697265625e-06, 9.5367431640625e-07],
+    [7.62939453125e-06, 9.5367431640625e-07],
+    [1.52587890625e-05, 9.5367431640625e-07],
+    [3.0517578125e-05, 9.5367431640625e-07],
+    [6.103515625e-05, 9.5367431640625e-07],
+    [0.0001220703125, 9.5367431640625e-07],
+    [0.000244140625, 9.5367431640625e-07],
+    [0.00048828125, 9.5367431640625e-07],
+    [0.0009765625, 9.5367431640625e-07]
+],
+
+  "final_tols": [1e-7, 1e-7],
+  "evaluation": true,
+  "use_offset_model": true,
+  "velocity_thresh": 1e-10,
+
+  "results_filename": "output_two_spheres_12.dat",
+  "results_eval_filename": "output_two_spheres_abs_errors_eval_12.dat",
+  "results_fx_filename": "output_two_spheres_fx_eval_12.dat",
+  "results_eval_plot_filename": "output_two_spheres_abs_errors_eval_12.png",
+  "results_plot_filename": "output_two_spheres_eval_12.png",
+  "final_mp4_filenamed": "",
+  
+  "extrapolation_name": "SPRE",
+  "extrapolation_kernel": "white"
+}
