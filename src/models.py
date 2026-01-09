@@ -1781,13 +1781,14 @@ class MujocoModel(Model):
         if not self.save_animation and not skip_true_value_calc:
             self.set_true_value()
      
-    def setup_model_world(self, dt : float, tolerance : float):
+    def setup_model_world(self, dt : float, solver_reference : float, solver_impedance : float):
         """
         Sets up world in MuJoCo to simulate model.
 
         Parameters:  
-            dt : float          Timestap
-            tolerance : float   Tolerance of solver
+            dt : float                 Timestap
+            solver_reference : float   Reference dynamics for correcting constraint errors
+            solver_impedance : float   Effective stiffness and softness of the constraint
         Returns:
             None  
         """
@@ -1803,7 +1804,7 @@ class MujocoModel(Model):
             mjcf_str = f.read()
 
         # Insert timestep, impratio and camera position into MJCF
-        mjcf = mjcf_str.format(timestep=dt, tolerance=tolerance, camera_pos_x=camera_pos[0], camera_pos_y=camera_pos[1], camera_pos_z=camera_pos[2])
+        mjcf = mjcf_str.format(timestep=dt, solver_reference=solver_reference, solver_impedance=solver_impedance, camera_pos_x=camera_pos[0], camera_pos_y=camera_pos[1], camera_pos_z=camera_pos[2])
 
         # Load model and data
         self.model = mujoco.MjModel.from_xml_string(mjcf)
@@ -1842,13 +1843,14 @@ class MujocoModel(Model):
    
         # Set discretisation parameters
         dt = discrete_paras[0]
-        tolerance = discrete_paras[1]
+        solver_reference = discrete_paras[1]
+        solver_impedance = discrete_paras[2]
 
         # Output info on what is being simulated
-        print(f"\tSimulating {self.description} with dt = {dt} and tolerance = {tolerance}")
+        print(f"\tSimulating {self.description} with dt = {dt}, solver reference = {solver_reference} and solver impedance = {solver_impedance}")
  
         # Setup model world
-        self.setup_model_world(dt, tolerance)
+        self.setup_model_world(dt, solver_reference, solver_impedance)
 
         # Total time is used as an upper limit all objects should come to rest well before this
         steps = int(self.total_time / self.model.opt.timestep)
@@ -1925,7 +1927,7 @@ class MujocoModel(Model):
         """
       
         # Create filename with all settings and parameters used
-        filename = f"mp_{self.total_time}_{self.model_file[:-4]}_"
+        filename = f"mp_{self.total_time}_{self.velocity_thresh}_{self.model_file[:-4]}_"
 
         if self.use_offset_model:
             filename += "_".join(str(i) for i in self.final_tols) + "_"
