@@ -12,6 +12,6 @@
 "velocity_thresh": 1e-10,
 
   "final_tols": [0.001, 0.001],
-  "final_mp4_filename": "two_spheres.mp4"
+  "final_mp4_filename": "two_spheresY.mp4"
   
 }

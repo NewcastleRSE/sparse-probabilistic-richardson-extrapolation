@@ -569,6 +569,7 @@ class Model:
 
             plt.axhline(y = self.true_value, color='red', linestyle='--', linewidth=1)
     
+        plt.tight_layout()
         plt.savefig(self.results_plot_filename) 
         plt.show()    
 
@@ -654,6 +655,7 @@ class Model:
             plt.title("Absolute Errors of f(0) Estimates")
             plt.grid(True)
             plt.legend()
+            plt.tight_layout()
             plt.savefig(self.results_eval_plot_filename) 
             plt.show()
 
