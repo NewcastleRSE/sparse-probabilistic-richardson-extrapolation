@@ -19,7 +19,7 @@ date
 echo "Running on $HOSTNAME SPRE analysis"
 
 # Run physics mug model for true value
-python src/simulate_model.py data/physics_mug/input_physics_mug_true.json 1
+python src/simulate_model.py data/physics_mug/input_physics_mug_true6.json 1
 
 #echo "Node memory state: `free`"
 date

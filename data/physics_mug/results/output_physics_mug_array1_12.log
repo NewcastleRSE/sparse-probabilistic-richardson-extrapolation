@@ -1,14 +1,9 @@
-Thu  4 Dec 10:14:32 GMT 2025
-Running on hmem009 model simulation for job 12 scenario 4
+Wed  7 Jan 10:35:12 GMT 2026
+Running on compute031 model simulation for job 12 scenario 101
 pybullet build time: Nov 28 2025 15:19:22
-pybullet build time: Nov 28 2025 15:19:22
-Running model "PhysicsMug" with parameters [0.00052156 0.02942906 0.00024922]
-	Simulating Physics Mug Model with dt = 0.0005215625, 34 substeps and 4013 solver iterations
-	Calculated final value: 0.38034168706082166
-Thu  4 Dec 10:14:36 GMT 2025
-Total seconds: 5
-Running model "PhysicsMug" with parameters [0.00052156 0.01471453 0.00049844]
-	Simulating Physics Mug Model with dt = 0.0005215625, 68 substeps and 2006 solver iterations
-	Calculated final value: 0.3792447902630494
-Thu  4 Dec 10:14:38 GMT 2025
-Total seconds: 7
+Running model "PhysicsMug" with parameters [1.62988281e-05 4.59829102e-04 7.78808594e-06]
+	Simulating Physics Mug Model with dt = 1.7298828125e-05, 2001 substeps and 102165 solver iterations
+	End time: 4.638109900387418
+	Calculated final value: 0.3988477903322572
+Wed  7 Jan 11:26:07 GMT 2026
+Total seconds: 3060

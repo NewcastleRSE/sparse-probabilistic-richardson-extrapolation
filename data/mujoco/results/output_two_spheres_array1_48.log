@@ -1,8 +1,13 @@
-Tue  6 Jan 12:40:18 GMT 2026
-Running on compute034 model simulation for job 48 scenario 1
+Fri  9 Jan 09:38:39 GMT 2026
+Running on compute034 model simulation for job 48 scenario 10
 pybullet build time: Nov 28 2025 15:19:22
 Running model "Mujoco" with parameters [2.86102295e-05 1.71661377e-05]
-	Simulating Two Spheres Colliding Model with dt = 0.0001286102294921875 and tolerance = 0.0001171661376953125
-	Calculated final value: 0.8283607434150007
-Tue  6 Jan 12:41:47 GMT 2026
-Total seconds: 91
+	Simulating Two Spheres Colliding Model with dt = 2.87102294921875e-05 and tolerance = 1.72661376953125e-05
+	Stop time:  21.959478390771483
+[7.28635851e-11 6.57468051e-11 6.52219757e-19 5.25877729e-12
+ 5.82801500e-12 9.17451391e-14]
+[7.56178730e-11 9.99093927e-11 4.57302823e-18 7.99128177e-12
+ 6.04831750e-12 9.21233728e-14]
+	Calculated final value: 0.8283908844877366
+Fri  9 Jan 09:39:01 GMT 2026
+Total seconds: 22
