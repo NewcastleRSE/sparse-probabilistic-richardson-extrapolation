@@ -1,4 +1,9 @@
-Fri 12 Dec 17:21:08 GMT 2025
-Running on compute030 model simulation for job 5 scenario 1
+Mon 12 Jan 09:15:50 GMT 2026
+Running on compute032 model simulation for job 5 scenario 106
 pybullet build time: Nov 28 2025 15:19:22
-slurmstepd: error: *** JOB 1145042 ON compute030 CANCELLED AT 2025-12-15T20:27:39 ***
+Running model "PhysicsSlick" with parameters [9.34179687e-05 7.56347656e-05 1.70898438e-05]
+	Simulating Physics Slick Model with dt = 0.00059341796875, 1737 substeps and 1934 solver iterations
+	End time: 1.538139374999922
+	Calculated final value: 0.7893053786051759
+Mon 12 Jan 09:16:06 GMT 2026
+Total seconds: 18
