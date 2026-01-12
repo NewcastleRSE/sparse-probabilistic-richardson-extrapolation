@@ -34,11 +34,11 @@
   "use_offset_model": true,
   "velocity_thresh": 1e-10,
 
-  "results_filename": "output_two_spheres_21.dat",
-  "results_eval_filename": "output_two_spheres_abs_errors_eval_21.dat",
-  "results_fx_filename": "output_two_spheres_fx_eval_21.dat",
-  "results_eval_plot_filename": "output_two_spheres_abs_errors_eval_21.png",
-  "results_plot_filename": "output_two_spheres_eval_21.png",
+  "results_filename": "output_two_spheres_23.dat",
+  "results_eval_filename": "output_two_spheres_abs_errors_eval_23.dat",
+  "results_fx_filename": "output_two_spheres_fx_eval_23.dat",
+  "results_eval_plot_filename": "output_two_spheres_abs_errors_eval_23.png",
+  "results_plot_filename": "output_two_spheres_eval_23.png",
   "final_mp4_filenamed": "",
   
   "extrapolation_name": "SPRE",
