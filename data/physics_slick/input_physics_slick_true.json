@@ -1,9 +1,9 @@
 {
   "model_name": "physics_slick",
-  "total_time": 600.0,
+  "total_time": 500.0,
     
   "X": [
-   [5e-4, 5e-4, 5e-4]
+   [5e-5, 5e-5, 5e-4]
 ],
 
 "h_values":  [1],
