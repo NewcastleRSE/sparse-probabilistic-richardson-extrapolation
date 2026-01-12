@@ -1,9 +1,9 @@
-Mon 12 Jan 09:14:41 GMT 2026
+Mon 12 Jan 10:19:19 GMT 2026
 Running on compute032 SPRE analysis
 pybullet build time: Nov 28 2025 15:19:22
-Running model "PhysicsSlick" with parameters [5.e-05 5.e-05 5.e-04]
-	Simulating Physics Slick Model with dt = 5e-05, 20000 substeps and 2000 solver iterations
-	End time: 1.524050000001004
-	Calculated final value: 0.7896376937818702
-Mon 12 Jan 09:40:02 GMT 2026
-Total seconds: 1521
+Running model "PhysicsSlick" with parameters [0.0005 0.0005 0.0005]
+	Simulating Physics Slick Model with dt = 0.0005, 2000 substeps and 2000 solver iterations
+	End time: 1.5409999999998858
+	Calculated final value: 0.7920624026353488
+Mon 12 Jan 10:19:38 GMT 2026
+Total seconds: 19
