@@ -10,3 +10,4 @@ pybullet==3.2.7
 imageio==2.37.2
 mujoco==3.4.0
 imageio-ffmpeg==0.6.0
+mesa==3.4.1
