@@ -11,7 +11,7 @@
 import sys
 
 # Application modules
-import models
+from models.models_utils import get_model
 
 # ----------------------------------------------------------
 # Read in parameters and options for running SPRE with various tolerences
@@ -20,7 +20,7 @@ import models
 parameter_filename = sys.argv[1]
 
 # Get model object
-model = models.get_model(parameter_filename)
+model = get_model(parameter_filename)
 
 # Run the analysis
 model.run_analysis()

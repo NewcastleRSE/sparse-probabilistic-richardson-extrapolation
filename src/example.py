@@ -2,7 +2,7 @@
 # Sparse Probabilistic Richardson Extrapolation (SPRE)
 # Example script to run SPRE using the extrapolation function.
 # Run using:
-#            python test.py
+#            python example.py
 #
 # Based on the methods and original MatLab code by Chris Oates.
 #

@@ -18,7 +18,7 @@
 import sys
 
 # Application modules
-import models
+from models.models_utils import get_model
 
 # ----------------------------------------------------------
 # Read in parameters and options for running SPRE with various tolerences
@@ -30,7 +30,7 @@ parameter_filename = sys.argv[1]
 sim_number = int(sys.argv[2])
 
 # Get model object
-model = models.get_model(parameter_filename, skip_true_value_calc = True)
+model = get_model(parameter_filename, skip_true_value_calc = True)
 
 # Simulate the model and add outcome to cache
 model.simulate_ith_analysis_setting(sim_number)
