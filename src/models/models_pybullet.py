@@ -289,26 +289,6 @@ class PhysicsMugModel(Model):
         filename += "_".join(str(i) for i in discrete_paras) + ".bin"
 
         return filename
-    
-    def set_true_value(self):
-        """
-        Sets the "true_value" by running the model with small discretisation parameters
-        as given in self.final_tols
-        
-        Parameters:  
-            None
-        Returns:
-            None                
-        """
-
-        # Use regular model if evaluation the offset model, f_z(x) = f(z+x). So evaluate f_z(0) = f(z)
-        use_offset_model = self.use_offset_model
-        self.use_offset_model = False
-
-        self.true_value = self.run_model(self.final_tols)
-
-        # Set back as before
-        self.use_offset_model = use_offset_model
 
 class PhysicsDuckModel(PhysicsMugModel):
     """

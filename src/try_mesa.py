@@ -5,15 +5,20 @@ from matplotlib.patches import Polygon
 from mesa import Agent, Model
 from mesa.space import ContinuousSpace
 
+
+import numpy as np
+from matplotlib.patches import Polygon
+
 # ---------------------------
 # Video recorder helper
 # ---------------------------
 class VideoRecorder:
-    def __init__(self, model, filename="simulation.mp4", fps=30, wrap_visualization=False):
+    def __init__(self, model, filename="simulation.mp4", fps=30, wrap_visualization=False, final_frame_png="final_frame.png"):
         self.model = model
         self.filename = filename
         self.fps = fps
         self.wrap_visualization = wrap_visualization
+        self.final_frame_png = final_frame_png
 
         self.fig, self.ax = plt.subplots()
         self.writer = FFMpegWriter(fps=fps)
@@ -22,6 +27,7 @@ class VideoRecorder:
     def setup(self):
         self.ax.set_xlim(0, self.model.space.width)
         self.ax.set_ylim(0, self.model.space.height)
+        self.ax.set_aspect("equal") 
         self.ax.set_title("Multi-Agent Simulation")
 
         # Create triangle for each agent
@@ -88,6 +94,10 @@ class VideoRecorder:
 
     def close(self):
         self.writer.finish()
+
+        if self.final_frame_png != "":    
+            plt.savefig(self.final_frame_png, dpi=300)
+       
         plt.close(self.fig)
 
 # ---------------------------
@@ -241,20 +251,26 @@ if __name__ == "__main__":
 
     # Set seed for reproducability
     np.random.seed(1)
-
+    dt=1e-4
+    sigma=0.04
+    delta=0.05
+    
     model = FlockingModel(
         n_agents=60,
-        dt=0.02, #0.02
-        epsilon=0.05, #0.05
-        tau=0.05, #0.05
-        delta=6e-6,
-        record_video=False,
+        dt=dt, #0.02
+        #epsilon=0.05, #0.05
+        #tau=0.05, #0.05
+        delta=delta,
+        sigma=sigma,
+        record_video=True,
         wrap_visualization=True,  # <- enable optional torus wrapping in video
         video_filename="flocking_triangles_wrapped.mp4",
         video_fps=30
     )
 
-    n_steps = 200
+    total_time = 5
+    n_steps = int(total_time/dt)
+
     for _ in range(n_steps):
         model.step()
 

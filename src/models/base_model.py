@@ -195,13 +195,23 @@ class Model:
         Sets the object variable "true_value" to the actual model outcome.
         For example, from an analytic solution if known. This can be used to evaluate model accuracy.
 
+        By default sets the "true_value" by running the model with small discretisation parameters
+        as given in self.final_tols
+
         Parameters:  
             None
         Returns:
             None                
         """
 
-        self.true_value = 0
+        # Use regular model if evaluation the offset model, f_z(x) = f(z+x). So evaluate f_z(0) = f(z)
+        use_offset_model = self.use_offset_model
+        self.use_offset_model = False
+
+        self.true_value = self.run_model(self.final_tols)
+
+        # Set back as before
+        self.use_offset_model = use_offset_model
 
     def get_cache_filename(self, discrete_paras : npt.NDArray) -> str:
         """

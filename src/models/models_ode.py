@@ -80,19 +80,6 @@ class SirModel(Model):
         R0 = 0
         return (S0, I0, R0)
 
-    def set_true_value(self):
-        """
-        Sets the "true_value" of the SIR model by running the model with small discretisation parameters
-        as given in self.final_tols
-        
-        Parameters:  
-            None
-        Returns:
-            None                
-        """
-
-        self.true_value = self.run_model(self.final_tols)
-
     def get_final_quantity(self, discrete_paras : npt.NDArray) -> float:
         """
         Returns the final evaluation of the SIR model, derived from the final state of the model.

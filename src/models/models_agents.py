@@ -1,68 +1,36 @@
+##############################################################################
+# Mulit-Agent Simulation Models using Mesa library
+# https://mesa.readthedocs.io
+# 
+# It’s not an acronym. "Mesa" is just the English word mesa, meaning a flat-topped hill or plateau.
+# A flat, stable platform to build agent-based models on.
+#
+# Richard Howey, July 2025 - April 2026
+##############################################################################
+
+# Python modules
 import numpy as np
+import numpy.typing as npt
 import matplotlib.pyplot as plt
 from matplotlib.animation import FFMpegWriter
 from matplotlib.patches import Polygon
-from mesa import Agent, Model
+from mesa import Agent
+from mesa import Model as MesaModel
 from mesa.space import ContinuousSpace
 
-
-import numpy as np
-from matplotlib.patches import Polygon
-
-def _draw_frame(self, ax, show_wrapped=False, triangle_size=0.15):
-    ax.clear()
-
-    ax.set_xlim(0, self.space.width)
-    ax.set_ylim(0, self.space.height)
-    ax.set_aspect("equal")                 # 🔹 1:1 aspect
-    ax.set_xlabel("x")
-    ax.set_ylabel("y")
-    ax.set_title(f"Flocking model (t = {self.time:.2f})")
-
-    def draw_agent(pos, vel, color):
-        speed = np.linalg.norm(vel)
-        if speed == 0:
-            direction = np.array([1.0, 0.0])
-        else:
-            direction = vel / speed
-
-        perp = np.array([-direction[1], direction[0]])
-
-        tip = pos + triangle_size * direction
-        left = pos - 0.6 * triangle_size * direction + 0.4 * triangle_size * perp
-        right = pos - 0.6 * triangle_size * direction - 0.4 * triangle_size * perp
-
-        tri = Polygon(
-            [tip, left, right],
-            closed=True,
-            facecolor=color,
-            edgecolor=None      # 🔹 no borders
-        )
-        ax.add_patch(tri)
-
-    for agent in self.agent_list:
-        draw_agent(agent.pos, agent.vel, agent.color)
-
-        if show_wrapped:
-            for dx in (-self.space.width, 0, self.space.width):
-                for dy in (-self.space.height, 0, self.space.height):
-                    if dx == 0 and dy == 0:
-                        continue
-                    draw_agent(
-                        agent.pos + np.array([dx, dy]),
-                        agent.vel,
-                        agent.color
-                    )
+# Application modules
+from models.base_model import Model
 
 # ---------------------------
 # Video recorder helper
 # ---------------------------
 class VideoRecorder:
-    def __init__(self, model, filename="simulation.mp4", fps=30, wrap_visualization=False):
+    def __init__(self, model, filename="simulation.mp4", fps=30, wrap_visualization=False, final_frame_png=""):
         self.model = model
         self.filename = filename
         self.fps = fps
         self.wrap_visualization = wrap_visualization
+        self.final_frame_png = final_frame_png
 
         self.fig, self.ax = plt.subplots()
         self.writer = FFMpegWriter(fps=fps)
@@ -72,6 +40,7 @@ class VideoRecorder:
         self.ax.set_xlim(0, self.model.space.width)
         self.ax.set_ylim(0, self.model.space.height)
         self.ax.set_title("Multi-Agent Simulation")
+        self.ax.set_aspect("equal") 
 
         # Create triangle for each agent
         for agent in self.model.agent_list:
@@ -137,6 +106,10 @@ class VideoRecorder:
 
     def close(self):
         self.writer.finish()
+        # Save final state if req'd
+        if self.final_frame_png != "":    
+            plt.savefig(self.final_frame_png, dpi=300)
+
         plt.close(self.fig)
 
 # ---------------------------
@@ -160,6 +133,10 @@ class ContinuousAgent(Agent):
         )
         self.last_sense_time = self.model.time
 
+    # --- Smooth cutoff functions ---
+    def smooth_step(self, x):
+        return 0.5 * (1.0 + np.tanh(x))
+        
     def compute_force(self):
         force = np.zeros(2)
 
@@ -182,15 +159,11 @@ class ContinuousAgent(Agent):
             sigma = self.model.sigma
             delta = self.model.delta  # NEW smoothing parameter
 
-            # --- Smooth cutoff functions ---
-            def smooth_step(x):
-                return 0.5 * (1.0 + np.tanh(x))
-
-            # Repulsion smoothly turns off near r_rep
-            repulsion_weight = smooth_step((r_rep - dist) / delta)
+            # Repulsion smoothly turns off near r_rep         
+            repulsion_weight = self.smooth_step((r_rep - dist) / delta)
 
             # Attraction smoothly turns off near r_int
-            attraction_weight = smooth_step((r_int - dist) / delta)
+            attraction_weight = self.smooth_step((r_int - dist) / delta)
 
             # Softened repulsion force
             if dist < r_rep + delta:
@@ -224,7 +197,7 @@ class ContinuousAgent(Agent):
 # ---------------------------
 # Flocking model
 # ---------------------------
-class FlockingModel(Model):
+class FlockingModel(MesaModel):
     def __init__(self, n_agents=30, width=10, height=10,
                  dt=0.05, tau=0.05, epsilon=0.05,
                  interaction_radius=2.0, repulsion_radius=0.5,
@@ -232,7 +205,8 @@ class FlockingModel(Model):
                 record_video=False,
                 video_filename="simulation.mp4",
                 video_fps=30,
-                wrap_visualization=False
+                wrap_visualization=False,
+                final_frame_png=""
                 ):
         super().__init__()
         self.dt = dt
@@ -241,7 +215,7 @@ class FlockingModel(Model):
         self.time = 0.0
         self.interaction_radius = interaction_radius
         self.repulsion_radius = repulsion_radius
-        self.sigma = sigma  # <--- new convergence parameter
+        self.sigma = sigma  
         self.delta = delta
         self.space = ContinuousSpace(width, height, torus=True)
 
@@ -261,7 +235,7 @@ class FlockingModel(Model):
         self.record_video = record_video
         self.video = None
         if self.record_video:
-            self.video = VideoRecorder(self, video_filename, video_fps, wrap_visualization)
+            self.video = VideoRecorder(self, video_filename, video_fps, wrap_visualization, final_frame_png)
             self.video.setup()
 
     def step(self):
@@ -282,103 +256,160 @@ class FlockingModel(Model):
 
     def total_distance_from_origin(self):
         return sum(agent.distance_from_origin() for agent in self.agent_list)
-
-    def plot_final_state(
-        self,
-        filename="final_state.png",
-        triangle_size=0.15,
-        show_wrapped=True,
-        dpi=200
-    ):
-        """
-        Save a PNG image of the final agent configuration.
-
-        Parameters
-        ----------
-        filename : str
-            Output PNG filename.
-        triangle_size : float
-            Size of agent triangles.
-        show_wrapped : bool
-            If True, draw wrapped copies across periodic boundaries.
-        dpi : int
-            Resolution of saved image.
-        """
-
-        fig, ax = plt.subplots(figsize=(6, 6))
-        ax.set_xlim(0, self.space.width)
-        ax.set_ylim(0, self.space.height)
-        ax.set_aspect("equal")
-        ax.set_xticks([])
-        ax.set_yticks([])
-
-        def draw_agent(pos, vel, color):
-            speed = np.linalg.norm(vel)
-            if speed == 0:
-                direction = np.array([1.0, 0.0])
-            else:
-                direction = vel / speed
-
-            # Triangle in local coordinates
-            perp = np.array([-direction[1], direction[0]])
-            tip = pos + triangle_size * direction
-            left = pos - 0.5 * triangle_size * direction + 0.4 * triangle_size * perp
-            right = pos - 0.5 * triangle_size * direction - 0.4 * triangle_size * perp
-
-            tri = Polygon([tip, left, right], closed=True,
-                        facecolor=color, edgecolor="black", linewidth=0.3)
-            ax.add_patch(tri)
-
-        for agent in self.agent_list:
-            draw_agent(agent.pos, agent.vel, agent.color)
-
-            if show_wrapped:
-                for dx in (-self.space.width, 0, self.space.width):
-                    for dy in (-self.space.height, 0, self.space.height):
-                        if dx == 0 and dy == 0:
-                            continue
-                        draw_agent(agent.pos + np.array([dx, dy]),
-                                agent.vel, agent.color)
-
-        plt.tight_layout()
-        plt.savefig(filename, dpi=dpi)
-        plt.close(fig)
-
-# ---------------------------
-# Example usage
-# ---------------------------
-if __name__ == "__main__":
-
-    # Set seed for reproducability
-    np.random.seed(1)
-
-    model = FlockingModel(
-        n_agents=60,
-        dt=0.02, #0.02
-        epsilon=0.05, #0.05
-        tau=0.05, #0.05
-        delta=0.05,
-        record_video=True,
-        wrap_visualization=True,  # <- enable optional torus wrapping in video
-        video_filename="flocking_triangles_wrapped.mp4",
-        video_fps=30
-    )
-
-    n_steps = 200 #200
-    for _ in range(n_steps):
-        model.step()
-
-    model.finalize()
-
-    # Final total distance
-    print("Final total distance from origin:", model.total_distance_from_origin())
-
-    model.plot_final_state()
-
-    # Manual data collection DataFrame
-    #import pandas as pd
-    #df = pd.DataFrame(model.distance_data, index=model.time_data)
-    #df.index.name = "time"
-    #print(df.head())
-
     
+
+class MultiAgentModel(Model):
+    """
+    Class for multi-agent modelling using the Mesa python library.
+    https://mesa.readthedocs.io
+
+    Inherits Model class for use with SPRE analysis.
+    """
+
+    def __init__(self, params, parameter_filename, skip_true_value_calc : bool = False):
+        """
+        Sets up the multi-agent model class with model parameters.
+
+        Parameters:  
+            params : dict               Parameters for the model.
+            parameter_filename : str    Filename and path of the file. 
+            skip_true_value_calc : bool Skip evaulation of the true value (if not doing SPRE)     
+        Returns:
+            None         
+        """
+     
+        # Default model parameters - can be overwritten in parameter file
+        self.total_time = 5
+        self.seed = 1
+        self.n_agents = 60
+        self.epsilon = 0.05
+        self.tau = 0.05
+
+        self.final_model_plot_filename = ""
+        self.final_mp4_filename = ""
+
+        # General parameters for SPRE analysis
+        ######################################
+
+        # Use model f_z(x) = f(z+x)
+        self.use_offset_model = False
+      
+        # Set model name    
+        self.model_name = "Multi-Agent Flocking"
+
+        # Set initial model description       
+        self.description = "Multi-Agent Flocking Model"
+
+        # Set model parameters from parameter file
+        ##########################################
+
+        # Call Parent’s constructor to set parameters - and overwrite any above here but not below
+        super().__init__(params, parameter_filename)
+
+        # Set default model parameters
+        if self.final_mp4_filename is not None and self.final_mp4_filename != "":
+            self.save_animation = True
+            self.do_final_model_plot = True
+        else:
+            self.save_animation = False
+       
+        # Do plot of final state
+        if self.final_model_plot_filename is not None and self.final_model_plot_filename != "":
+            self.do_final_model_plot = True
+
+        # Set true value
+        if not self.save_animation and not skip_true_value_calc:
+            self.set_true_value()
+    
+    def run_model_simulation(self, discrete_paras):
+        """
+        Simulates multi-agent model using the Mesa library:
+        https://mujoco.readthedocs.io/
+
+        Parameters:  
+            discrete_paras : npt.NDArray     Discretisation parameters used to simulate model.           
+        Returns:
+            float   
+        """
+   
+        # Set discretisation parameters
+        dt = discrete_paras[0]
+        sigma = discrete_paras[1]
+        delta = discrete_paras[2]
+
+        # sigma is a short-range regularisation length that prevents singular interaction forces at very small agent separations,
+        # with the model converging to the point-particle limit as `sigma → 0`.
+
+        # delta is a smoothing width that regularises the interaction cutoffs,
+        # ensuring forces transition smoothly at the interaction radii and converge to the sharp cutoff model as `delta → 0`.**
+
+        # Output info on what is being simulated
+        print(f"\tSimulating {self.description} with dt = {dt}, sigma = {sigma} and delta = {delta}")
+ 
+        # Set seed for reproducability, agent added randomly
+        np.random.seed(self.seed)
+
+        model = FlockingModel(
+            n_agents=self.n_agents,
+            dt=dt, 
+            epsilon=self.epsilon, 
+            tau=self.tau, 
+            sigma=sigma,
+            delta=delta,
+            record_video=self.save_animation,
+            wrap_visualization = True,
+            video_filename=self.final_mp4_filename,
+            video_fps=30,
+            final_frame_png=self.final_model_plot_filename
+        )
+
+        n_steps = int(np.floor(self.total_time/dt))
+
+        for _ in range(n_steps):
+            model.step()
+
+        model.finalize()
+  
+        # Final total distance
+        total_distance = model.total_distance_from_origin()
+        print("Final total distance from origin:", total_distance)
+        
+        return total_distance
+
+    def plot_final_model(self):
+        """
+        Plots the final simulated model which is in this case is a mp4 video if req'd.
+        Handled in model simulation.
+
+        Parameters:  
+            None
+        Returns:
+            None                
+        """
+            
+        if not self.save_animation and self.final_model_plot_filename != "":
+            print("A video must be produced to take the last frame as a picture.")
+        elif self.save_animation:            
+            print(f"Video output to: {self.final_mp4_filename}")
+            if self.final_model_plot_filename != "":
+                print(f"Final frame output to: {self.final_model_plot_filename}")
+
+    def get_cache_filename(self, discrete_paras : npt.NDArray):
+        """
+        Returns the model cache filename for the multi-agent model based on the model parameters.
+
+        Parameters:  
+            discrete_paras : npt.NDArray   Discretisation parameters
+        Returns:
+            str    
+        """
+      
+        # Create filename with all settings and parameters used
+        filename = f"ma_{self.total_time}_{self.seed}_{self.n_agents}_{self.epsilon}_{self.tau}_"
+
+        if self.use_offset_model:
+            filename += "_".join(str(i) for i in self.final_tols) + "_"
+
+        filename += "_".join(str(i) for i in discrete_paras) + ".bin"
+
+        return filename
