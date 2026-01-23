@@ -1,0 +1,8 @@
+Fri 23 Jan 17:46:19 GMT 2026
+Running on compute031 model simulation for job 15 scenario 4
+pybullet build time: Nov 28 2025 15:19:22
+Running model "multi_agent" with parameters [0.002735   0.00681    0.00022878]
+	Simulating Flocking of multiple agents Model with dt = 0.0027450000000000005, sigma = 0.00682 and delta = 0.0002387841796875
+Final total distance from origin: 490.9406937317398
+Fri 23 Jan 17:46:36 GMT 2026
+Total seconds: 18
