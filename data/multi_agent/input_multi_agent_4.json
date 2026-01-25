@@ -39,7 +39,7 @@
   "results_eval_filename": "output_multi_agent_abs_errors_eval_4.dat",
   "results_fx_filename": "output_multi_agent_fx_eval_4.dat",
   "results_eval_plot_filename": "output_multi_agent_abs_errors_eval_4.png",
-  "results_plot_filename": "",
+  "results_plot_filename": "output_multi_agent_4.png",
   "final_mp4_filename": "",
   
   "extrapolation_name": "SPRE",

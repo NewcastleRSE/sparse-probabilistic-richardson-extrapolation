@@ -124,6 +124,9 @@ class ContinuousAgent(Agent):
         self.last_sense_time = 0.0
         self.cached_neighbors = []
         self.color = np.random.rand(3,)
+        if unique_id == 0:
+            self.color = [0, 0, 0]
+
 
     def sense(self):
         self.cached_neighbors = self.model.space.get_neighbors(
@@ -257,6 +260,8 @@ class FlockingModel(MesaModel):
     def total_distance_from_origin(self):
         return sum(agent.distance_from_origin() for agent in self.agent_list)
     
+    def distance_from_origin(self, agent_num):
+        return self.agent_list[agent_num].distance_from_origin()
 
 class MultiAgentModel(Model):
     """
@@ -363,18 +368,26 @@ class MultiAgentModel(Model):
             final_frame_png=self.final_model_plot_filename
         )
 
-        n_steps = int(np.floor(self.total_time/dt))
+        n_steps = int(np.floor(self.total_time/dt)) + 1
 
-        for _ in range(n_steps):
+        for step in range(n_steps):
             model.step()
+            # Record last two value to interpolate to estimate value at exactly total time
+            if step == n_steps - 2:
+                distance_1 = model.distance_from_origin(0)
+            elif step == n_steps - 1:
+                distance_2 = model.distance_from_origin(0)
 
         model.finalize()
   
-        # Final total distance
-        total_distance = model.total_distance_from_origin()
-        print("Final total distance from origin:", total_distance)
+        # interpolate final result
+        frac = (self.total_time - (dt * n_steps))/self.total_time
+        distance = distance_1*(1 - frac) + distance_2*frac
+
+        # Final total distance        
+        print("Final distance from origin of agent 1:", distance)
         
-        return total_distance
+        return distance
 
     def plot_final_model(self):
         """
