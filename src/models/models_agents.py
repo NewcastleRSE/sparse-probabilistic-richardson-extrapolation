@@ -13,7 +13,7 @@ import numpy as np
 import numpy.typing as npt
 import matplotlib.pyplot as plt
 from matplotlib.animation import FFMpegWriter
-from matplotlib.patches import Polygon
+from matplotlib.patches import Polygon, Circle
 from mesa import Agent
 from mesa import Model as MesaModel
 from mesa.space import ContinuousSpace
@@ -48,7 +48,13 @@ class VideoRecorder:
             triangle = Polygon(self._triangle_coords(agent), color=color)
             self.ax.add_patch(triangle)
             self.agent_artists.append(triangle)
-
+            
+            # Add White Circle for agent 1
+            if agent.unique_id == 1:                
+                circle = Circle(agent.pos, radius=0.05, facecolor="white", edgecolor=None, zorder=triangle.get_zorder() + 1)
+                self.ax.add_patch(circle)
+                self.circle = circle
+        
         self.writer.setup(self.fig, self.filename)
 
     def _triangle_coords(self, agent, size=0.3):
@@ -68,6 +74,9 @@ class VideoRecorder:
         # Clear all previous coordinates
         for patch, agent in zip(self.agent_artists, self.model.agent_list):
             patch.set_xy(self._triangle_coords(agent))
+
+        # Update circle
+        #self.circle.set_xy(self.model.agent_list[0].pos)
 
         if self.wrap_visualization:
             extra_patches = []
@@ -95,6 +104,7 @@ class VideoRecorder:
                     triangle = Polygon(coords_shifted, color=agent.color)
                     self.ax.add_patch(triangle)
                     extra_patches.append(triangle)
+
             # Keep track so they can be removed in next frame
             self.extra_patches = extra_patches
 
