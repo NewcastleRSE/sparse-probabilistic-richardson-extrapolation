@@ -6,7 +6,7 @@
 #SBATCH --account=comet_spread
 #SBATCH --mem=5GB
 #SBATCH --cpus-per-task=1
-#SBATCH --array=1-96                       # Run tasks 
+#SBATCH --array=1-128                       # Run tasks 
 #SBATCH --output=data/multi_agent/results/output_multi_agent_array1_%a.log
 
 

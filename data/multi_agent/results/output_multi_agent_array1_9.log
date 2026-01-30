@@ -1,8 +1,7 @@
-Fri 23 Jan 17:46:18 GMT 2026
-Running on compute036 model simulation for job 9 scenario 4
+Fri 30 Jan 12:34:01 GMT 2026
+Running on compute030 model simulation for job 9 scenario 112
 pybullet build time: Nov 28 2025 15:19:22
-Running model "multi_agent" with parameters [0.002135   0.005155   0.00013894]
-	Simulating Flocking of multiple agents Model with dt = 0.002145, sigma = 0.0051649999999999995 and delta = 0.0001489404296875
-Final total distance from origin: 510.74568849751466
-Fri 23 Jan 17:46:38 GMT 2026
-Total seconds: 20
+/tmp/slurmd/job1179305/slurm_script: line 28: 934434 Killed                  python src/simulate_model.py data/multi_agent/input_multi_agent_$1.json $SLURM_ARRAY_TASK_ID
+Fri 30 Jan 14:28:37 GMT 2026
+Total seconds: 6877
+slurmstepd: error: Detected 1 oom_kill event in StepId=1179305.batch. Some of the step tasks have been OOM Killed.
