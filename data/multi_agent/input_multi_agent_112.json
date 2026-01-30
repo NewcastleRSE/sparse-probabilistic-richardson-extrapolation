@@ -4,8 +4,12 @@
   "total_time": 5,
   "seed": 1,
   "n_agents": 60,
-  "use_delta": false,
-  "delta": 1e-10,
+ 
+  "use_dt": true,
+  "use_repulsion_softening": true,
+  "use_transition_width": false,
+  "use_interaction_width": false,
+  "transition_width": 1e-10,
 
   "X": [
   [0.1031, 0.5691],
@@ -37,7 +41,7 @@
     [0.5, 1e-15]
 ],
    
-  "final_tols": [1e-6, 1e-16],
+  "final_tols": [0.02, 1e-16],
   "evaluation": true,
   "use_offset_model": true,
 

@@ -141,7 +141,7 @@ class ContinuousAgent(Agent):
     def sense(self):
         self.cached_neighbors = self.model.space.get_neighbors(
             self.pos,
-            self.model.interaction_radius + self.model.epsilon,
+            self.model.interaction_radius + self.model.neighbour_margin,
             include_center=False
         )
         self.last_sense_time = self.model.time
@@ -169,27 +169,30 @@ class ContinuousAgent(Agent):
 
             r_rep = self.model.repulsion_radius
             r_int = self.model.interaction_radius
-            sigma = self.model.sigma
-            delta = self.model.delta  # NEW smoothing parameter
+            repulsion_softening = self.model.repulsion_softening
+            
+            transition_width = self.model.transition_width  # smoothing parameter
 
-            # Repulsion smoothly turns off near r_rep         
-            repulsion_weight = self.smooth_step((r_rep - dist) / delta)
-
-            # Attraction smoothly turns off near r_int
-            attraction_weight = self.smooth_step((r_int - dist) / delta)
+      
 
             # Softened repulsion force
-            if dist < r_rep + delta:
+            if dist < r_rep + transition_width:
+                # Repulsion smoothly turns off near r_rep         
+                repulsion_weight = self.smooth_step((r_rep - dist) / transition_width)
+
                 force -= (
-                    repulsion_weight
+                      repulsion_weight
                     * direction
-                    * (r_rep - dist) / (dist + sigma)
+                    * (r_rep - dist) / (dist + repulsion_softening)
                 )
 
             # Smooth attraction force
-            if dist > r_rep - delta and dist < r_int + delta:
-                force += (
-                    attraction_weight
+            if dist > r_rep - transition_width and dist < r_int + transition_width:
+                # Attraction smoothly turns off near r_int
+                attraction_weight = self.smooth_step((r_int - dist) / transition_width)
+
+                force += (                  
+                      attraction_weight
                     * direction
                     * (dist - r_rep)
                 )
@@ -197,10 +200,10 @@ class ContinuousAgent(Agent):
         return force
 
     def step(self):
-        if self.model.time - self.last_sense_time >= self.model.tau:
+        if self.model.time - self.last_sense_time >= self.model.sense_interval:
             self.sense()
         force = self.compute_force()
-        self.vel += force * self.model.dt
+        self.vel += force * self.model.dt       
         self.pos += self.vel * self.model.dt
         self.model.space.move_agent(self, self.pos)
 
@@ -212,9 +215,9 @@ class ContinuousAgent(Agent):
 # ---------------------------
 class FlockingModel(MesaModel):
     def __init__(self, n_agents=30, width=10, height=10,
-                 dt=0.05, tau=0.05, epsilon=0.05,
+                 dt=0.05, sense_interval=0.05, neighbour_margin=0.05,
                  interaction_radius=2.0, repulsion_radius=0.5,
-                 sigma=0.01, delta=0.01,
+                 repulsion_softening=0.01, transition_width=0.01,              
                 record_video=False,
                 video_filename="simulation.mp4",
                 video_fps=30,
@@ -223,13 +226,13 @@ class FlockingModel(MesaModel):
                 ):
         super().__init__()
         self.dt = dt
-        self.tau = tau
-        self.epsilon = epsilon
+        self.sense_interval = sense_interval
+        self.neighbour_margin = neighbour_margin
         self.time = 0.0
         self.interaction_radius = interaction_radius
         self.repulsion_radius = repulsion_radius
-        self.sigma = sigma  
-        self.delta = delta
+        self.repulsion_softening = repulsion_softening  
+        self.transition_width = transition_width      
         self.space = ContinuousSpace(width, height, torus=True)
 
         self.agent_list = []
@@ -297,19 +300,20 @@ class MultiAgentModel(Model):
         self.total_time = 5
         self.seed = 1
         self.n_agents = 60
-        self.epsilon = 0.05
-        self.tau = 0.05
+        self.neighbour_margin = 0.05
+        self.sense_interval = 0.05
 
-        # Decide which of the 3 parameters to use
+        self.transition_width = 0.05
+
+        # Decide which of the parameters to use
         self.use_dt = True
-        self.use_sigma = True
-        self.use_delta = True
+        self.use_repulsion_softening = True
+        self.use_transition_width = True
 
         # Default fixed values for parameters if not being used
         self.dt = 0.02
-        self.sigma = 0.05
-        self.delta = 0.05
-
+        self.repulsion_softening = 0.05
+    
         self.final_model_plot_filename = ""
         self.final_mp4_filename = ""
 
@@ -365,27 +369,27 @@ class MultiAgentModel(Model):
         else:
             dt = self.dt
 
-        if self.use_sigma:
-            sigma = discrete_paras[i]
+        if self.use_repulsion_softening:
+            repulsion_softening = discrete_paras[i]
             i += 1
         else:
-            sigma = self.sigma
+            repulsion_softening = self.repulsion_softening
 
-        if self.use_delta:
-            delta = discrete_paras[i]
+        if self.use_transition_width:
+            transition_width = discrete_paras[i]
             i += 1
         else:
-            delta = self.delta
+            transition_width = self.transition_width
       
 
-        # sigma is a short-range regularisation length that prevents singular interaction forces at very small agent separations,
-        # with the model converging to the point-particle limit as `sigma → 0`.
+        # repulsion_softening is a short-range regularisation length that prevents singular interaction forces at very small agent separations,
+        # with the model converging to the point-particle limit as `repulsion_softening → 0`.
 
-        # delta is a smoothing width that regularises the interaction cutoffs,
-        # ensuring forces transition smoothly at the interaction radii and converge to the sharp cutoff model as `delta → 0`.**
+        # transition_width is a smoothing width that regularises the interaction cutoffs,
+        # ensuring forces transition smoothly at the interaction radii and converge to the sharp cutoff model as `transition_width → 0`.**
 
         # Output info on what is being simulated
-        print(f"\tSimulating {self.description} with dt = {dt}, sigma = {sigma} and delta = {delta}")
+        print(f"\tSimulating {self.description} with dt = {dt}, repulsion_softening = {repulsion_softening}, transition_width = {transition_width}")
  
         # Set seed for reproducability, agent added randomly
         np.random.seed(self.seed)
@@ -393,10 +397,10 @@ class MultiAgentModel(Model):
         model = FlockingModel(
             n_agents=self.n_agents,
             dt=dt, 
-            epsilon=self.epsilon, 
-            tau=self.tau, 
-            sigma=sigma,
-            delta=delta,
+            neighbour_margin=self.neighbour_margin, 
+            sense_interval=self.sense_interval, 
+            repulsion_softening=repulsion_softening,
+            transition_width=transition_width,
             record_video=self.save_animation,
             wrap_visualization = True,
             video_filename=self.final_mp4_filename,
@@ -454,10 +458,10 @@ class MultiAgentModel(Model):
         """
       
         # Create filename with all settings and parameters used
-        filename = f"ma_{self.total_time}_{self.seed}_{self.n_agents}_{self.epsilon}_{self.tau}_"
-        filename += f"{self.use_dt}_{self.use_sigma}_{self.use_delta}_"
-        filename += f"{self.dt}_{self.sigma}_{self.delta}_"
-
+        filename = f"ma_{self.total_time}_{self.seed}_{self.n_agents}_{self.neighbour_margin}_{self.sense_interval}_"
+        filename += f"{self.use_dt}_{self.use_repulsion_softening}_{self.use_transition_width}_"
+        filename += f"{self.dt}_{self.repulsion_softening}_{self.transition_width}_"
+     
         if self.use_offset_model:
             filename += "_".join(str(i) for i in self.final_tols) + "_"
 
