@@ -405,19 +405,24 @@ class Model:
             else:
                 all_extrapolation_results = np.vstack((all_extrapolation_results, extrapolation_results))
 
-            # Create table of absoluate errors
+            # Create table of absolute errors
             if self.evaluation:
-                # Create row of results for absolute error table
-                # h, true_value, first_estimate, spre_estimate, abs_err_first_estimate, abs_err_spre_estimate
-                if isinstance(h, (list, tuple)):
-                    table_row = h.copy()
+                # h may itself be a vector (e.g. dt, delta, ...)
+                if isinstance(h, (list, tuple, np.ndarray)):
+                    table_row = list(h)
                 else:
                     table_row = [h]
 
-                table_row.extend(np.array([self.true_value, Y[0], out['mu'][0], np.abs(self.true_value - Y[0]), np.abs(self.true_value - out['mu'][0])]))
+                # Append:                     
+                values = [np.asarray(self.true_value).reshape(1), Y, np.asarray(out['mu'][0]).reshape(1), np.abs(self.true_value - Y), np.asarray(np.abs(self.true_value - out['mu'][0])).reshape(1)]
+                # Flatten list of lists
+                values_to_add = np.array(np.concatenate(values).tolist())
+                table_row.extend(values_to_add)
+                
+                table_row = np.asarray(table_row, dtype=float)
 
                 if i == 0:
-                    self.abs_error_table = np.matrix(table_row)
+                    self.abs_error_table = table_row.reshape(1, -1)
                 else:
                     self.abs_error_table = np.vstack((self.abs_error_table, table_row))
 
@@ -616,47 +621,82 @@ class Model:
             None                
         """
 
-        # Create table of absolute errors (wrt to "true" value) with
-        # 1) First point in X (smallest discretisation parameters).
-        # 2) SPRE estimate using all time steps in set
+        # -------------------------------
+        # Build DataFrame of absolute errors
+        # -------------------------------
 
-        # Create DataFrame
+        # Header for h
         if not isinstance(self.h_values[0], (list, tuple)):
             abs_header = ["h"]
         else:
             abs_header = [f"h{i+1}" for i in range(len(self.h_values[0]))]
-            
-        abs_header += ["true_value", "first_estimate", "spre_estimate", "abs_err_first_estimate", "abs_err_spre_estimate"]
+
+        n_est = np.array(self.X).shape[0]  # number of estimates per run
+
+        # Full header
+        abs_header += (
+            ["true_value"]
+            + [f"estimate_{i+1}" for i in range(n_est)]
+            + ["spre_estimate"]
+            + [f"abs_err_estimate_{i+1}" for i in range(n_est)]
+            + ["abs_err_spre_estimate"]
+        )
+
+        # Create DataFrame
         df_abs = pd.DataFrame(self.abs_error_table, columns=abs_header)
 
-        # Get x coordinate values to plot against
+        # -------------------------------
+        # Choose x-axis values
+        # -------------------------------
+
         h_col = self.choose_h_column(df_abs)
         x_vals = df_abs[h_col]
         x_lab = "h"
-        if hasattr(self, "eval_plot_type"):
-            if self.eval_plot_type == 2:
-                x_vals = 2.0/df_abs[abs_header[2]]  
-                x_lab = "grid spacing"          
 
-        # Write results to file
+        if hasattr(self, "eval_plot_type") and self.eval_plot_type == 2:
+            x_vals = 2.0 / df_abs[abs_header[2]]
+            x_lab = "grid spacing"
+
+        # -------------------------------
+        # Save results to file
+        # -------------------------------
+
         if self.results_eval_filename:
-            # Write to file with tab separation
             df_abs.to_csv(self.results_eval_filename, sep="\t", index=False)
 
-        if self.do_results_eval_plot:
-            # Plot absolute errors of two estimates
+        # -------------------------------
+        # Plot absolute errors
+        # -------------------------------
 
-            plt.close('all') 
-            plt.figure()
-            plt.plot(x_vals, df_abs["abs_err_first_estimate"], marker='o', linestyle='solid', linewidth=2, markersize=12, label="first estimate")
-            plt.plot(x_vals, df_abs["abs_err_spre_estimate"], marker='o', linestyle='solid', linewidth=2, markersize=12, label=f"{self.extrapolation_name} estimate")
-            plt.xscale('log')
-            plt.yscale('log')
+        if self.do_results_eval_plot:
+
+            plt.close("all")
+            plt.figure(figsize=(7, 6))
+
+            # Raw estimates (faded)
+            for i in range(n_est):
+                plt.plot(
+                    x_vals,
+                    df_abs[f"abs_err_estimate_{i+1}"],
+                    marker="o",
+                    linewidth=2,
+                    markersize=8,
+                    alpha=0.4,
+                    label="raw estimates" if i == 0 else None
+                )
+
+            # SPRE estimates (highlighted)
+            plt.plot(x_vals, df_abs["abs_err_spre_estimate"], marker='o', linestyle='solid', linewidth=2, markersize=12, label=f"{self.extrapolation_name} estimate", color ="black")
+
+          
+            plt.xscale("log")
+            plt.yscale("log")
             plt.xlabel(x_lab)
             plt.ylabel("absolute error")
             plt.title("Absolute Errors of f(0) Estimates")
-            plt.grid(True)
+            plt.grid(True, which="both", linestyle="--", alpha=0.4)
             plt.legend()
             plt.tight_layout()
-            plt.savefig(self.results_eval_plot_filename) 
+            plt.savefig(self.results_eval_plot_filename)
             plt.show()
+

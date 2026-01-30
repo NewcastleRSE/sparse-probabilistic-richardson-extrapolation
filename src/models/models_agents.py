@@ -300,6 +300,16 @@ class MultiAgentModel(Model):
         self.epsilon = 0.05
         self.tau = 0.05
 
+        # Decide which of the 3 parameters to use
+        self.use_dt = True
+        self.use_sigma = True
+        self.use_delta = True
+
+        # Default fixed values for parameters if not being used
+        self.dt = 0.02
+        self.sigma = 0.05
+        self.delta = 0.05
+
         self.final_model_plot_filename = ""
         self.final_mp4_filename = ""
 
@@ -320,7 +330,7 @@ class MultiAgentModel(Model):
 
         # Call Parent’s constructor to set parameters - and overwrite any above here but not below
         super().__init__(params, parameter_filename)
-
+      
         # Set default model parameters
         if self.final_mp4_filename is not None and self.final_mp4_filename != "":
             self.save_animation = True
@@ -348,9 +358,25 @@ class MultiAgentModel(Model):
         """
    
         # Set discretisation parameters
-        dt = discrete_paras[0]
-        sigma = discrete_paras[1]
-        delta = discrete_paras[2]
+        i = 0
+        if self.use_dt:
+            dt = discrete_paras[i]
+            i += 1
+        else:
+            dt = self.dt
+
+        if self.use_sigma:
+            sigma = discrete_paras[i]
+            i += 1
+        else:
+            sigma = self.sigma
+
+        if self.use_delta:
+            delta = discrete_paras[i]
+            i += 1
+        else:
+            delta = self.delta
+      
 
         # sigma is a short-range regularisation length that prevents singular interaction forces at very small agent separations,
         # with the model converging to the point-particle limit as `sigma → 0`.
@@ -429,6 +455,8 @@ class MultiAgentModel(Model):
       
         # Create filename with all settings and parameters used
         filename = f"ma_{self.total_time}_{self.seed}_{self.n_agents}_{self.epsilon}_{self.tau}_"
+        filename += f"{self.use_dt}_{self.use_sigma}_{self.use_delta}_"
+        filename += f"{self.dt}_{self.sigma}_{self.delta}_"
 
         if self.use_offset_model:
             filename += "_".join(str(i) for i in self.final_tols) + "_"
