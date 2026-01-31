@@ -8,9 +8,9 @@
   "use_dt": true,
   "use_repulsion_softening": true,
   "use_transition_width": false,
-  "use_interaction_width": false,
   "transition_width": 0.05,
-  "interaction_width": 0,
+  "sense_interval": 0,
+  "neighbour_margin": 0,
 
   "X": [
   [0.1031, 0.5691],

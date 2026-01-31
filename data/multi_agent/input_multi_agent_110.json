@@ -6,6 +6,8 @@
   "n_agents": 60,
   "use_dt": false,
   "dt": 0.02,
+  "sense_interval": 0,
+  "neighbour_margin": 0,
 
   "X": [
   [0.1031, 0.5691],

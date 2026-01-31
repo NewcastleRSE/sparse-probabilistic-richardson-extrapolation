@@ -410,18 +410,19 @@ class MultiAgentModel(Model):
 
         n_steps = int(np.floor(self.total_time/dt)) + 1
 
-        for step in range(n_steps):
+        # Do steps 1 to n_steps
+        for step in range(1, n_steps + 1):
             model.step()
-            # Record last two value to interpolate to estimate value at exactly total time
-            if step == n_steps - 2:
+            # Record last two values to interpolate to estimate value at exactly total time
+            if step == n_steps - 1:
                 distance_1 = model.distance_from_origin(0)
-            elif step == n_steps - 1:
+            elif step == n_steps:
                 distance_2 = model.distance_from_origin(0)
 
         model.finalize()
   
         # interpolate final result
-        frac = (self.total_time - (dt * n_steps))/self.total_time
+        frac = (self.total_time - (dt * (n_steps - 1)))/dt
         distance = distance_1*(1 - frac) + distance_2*frac
 
         # Final total distance        
@@ -461,10 +462,14 @@ class MultiAgentModel(Model):
         filename = f"ma_{self.total_time}_{self.seed}_{self.n_agents}_{self.neighbour_margin}_{self.sense_interval}_"
         filename += f"{self.use_dt}_{self.use_repulsion_softening}_{self.use_transition_width}_"
         filename += f"{self.dt}_{self.repulsion_softening}_{self.transition_width}_"
-     
+
         if self.use_offset_model:
             filename += "_".join(str(i) for i in self.final_tols) + "_"
 
         filename += "_".join(str(i) for i in discrete_paras) + ".bin"
+
+        # Shorten if too long
+        if len(filename) > 99:
+            filename = filename.replace("True", "T").replace("False", "F").replace("e", "").replace("ma_", "m")
 
         return filename
