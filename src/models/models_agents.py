@@ -386,7 +386,7 @@ class MultiAgentModel(Model):
         # with the model converging to the point-particle limit as `repulsion_softening → 0`.
 
         # transition_width is a smoothing width that regularises the interaction cutoffs,
-        # ensuring forces transition smoothly at the interaction radii and converge to the sharp cutoff model as `transition_width → 0`.**
+        # ensuring forces transition smoothly at the interaction radii and converge to the sharp cutoff model as `transition_width → 0`.
 
         # Output info on what is being simulated
         print(f"\tSimulating {self.description} with dt = {dt}, repulsion_softening = {repulsion_softening}, transition_width = {transition_width}")
