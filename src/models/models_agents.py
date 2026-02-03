@@ -173,8 +173,6 @@ class ContinuousAgent(Agent):
             
             transition_width = self.model.transition_width  # smoothing parameter
 
-      
-
             # Softened repulsion force
             if dist < r_rep + transition_width:
                 # Repulsion smoothly turns off near r_rep         
@@ -199,11 +197,29 @@ class ContinuousAgent(Agent):
 
         return force
 
+    def local_mean_velocity(self):
+        """Return the mean velocity of cached neighbours."""
+        if not self.cached_neighbors:
+            return self.vel.copy()
+
+        v_sum = np.zeros(2)
+        for other in self.cached_neighbors:
+            v_sum += other.vel
+
+        return v_sum / len(self.cached_neighbors)
+
     def step(self):
         if self.model.time - self.last_sense_time >= self.model.sense_interval:
             self.sense()
+
         force = self.compute_force()
-        self.vel += force * self.model.dt       
+
+        # Alignment relaxation (chaos control)
+        if self.model.alignment_strength > 0.0:
+            v_mean = self.local_mean_velocity()
+            force += self.model.alignment_strength * (v_mean - self.vel)
+
+        self.vel += force * self.model.dt
         self.pos += self.vel * self.model.dt
         self.model.space.move_agent(self, self.pos)
 
@@ -216,6 +232,7 @@ class ContinuousAgent(Agent):
 class FlockingModel(MesaModel):
     def __init__(self, n_agents=30, width=10, height=10,
                  dt=0.05, sense_interval=0.05, neighbour_margin=0.05,
+                 alignment_strength=0,
                  interaction_radius=2.0, repulsion_radius=0.5,
                  repulsion_softening=0.01, transition_width=0.01,              
                 record_video=False,
@@ -228,6 +245,7 @@ class FlockingModel(MesaModel):
         self.dt = dt
         self.sense_interval = sense_interval
         self.neighbour_margin = neighbour_margin
+        self.alignment_strength = alignment_strength
         self.time = 0.0
         self.interaction_radius = interaction_radius
         self.repulsion_radius = repulsion_radius
@@ -300,6 +318,8 @@ class MultiAgentModel(Model):
         self.total_time = 5
         self.seed = 1
         self.n_agents = 60
+
+        self.alignment_strength = 0
         self.neighbour_margin = 0.05
         self.sense_interval = 0.05
 
@@ -389,7 +409,7 @@ class MultiAgentModel(Model):
         # ensuring forces transition smoothly at the interaction radii and converge to the sharp cutoff model as `transition_width → 0`.
 
         # Output info on what is being simulated
-        print(f"\tSimulating {self.description} with dt = {dt}, repulsion_softening = {repulsion_softening}, transition_width = {transition_width}")
+        print(f"\tSimulating {self.description} with dt = {dt}, repulsion_softening = {repulsion_softening}, transition_width = {transition_width}, alignment_strength = {self.alignment_strength}")
  
         # Set seed for reproducability, agent added randomly
         np.random.seed(self.seed)
@@ -399,6 +419,7 @@ class MultiAgentModel(Model):
             dt=dt, 
             neighbour_margin=self.neighbour_margin, 
             sense_interval=self.sense_interval, 
+            alignment_strength=self.alignment_strength,
             repulsion_softening=repulsion_softening,
             transition_width=transition_width,
             record_video=self.save_animation,
@@ -462,6 +483,9 @@ class MultiAgentModel(Model):
         filename = f"ma_{self.total_time}_{self.seed}_{self.n_agents}_{self.neighbour_margin}_{self.sense_interval}_"
         filename += f"{self.use_dt}_{self.use_repulsion_softening}_{self.use_transition_width}_"
         filename += f"{self.dt}_{self.repulsion_softening}_{self.transition_width}_"
+        
+        if self.alignment_strength > 0:
+            filename += f"{self.alignment_strength}_"
 
         if self.use_offset_model:
             filename += "_".join(str(i) for i in self.final_tols) + "_"
