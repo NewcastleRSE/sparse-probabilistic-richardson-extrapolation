@@ -549,7 +549,7 @@ class SPRE:
         self.jit_grad = jit(grad(self.cv_loss))
         self.jit_perform_extrapolation = jit(self.perform_extrapolation)
 
-    def stepwise_selection(self, use_fixed_basis : bool = False) -> dict:
+    def stepwise_selection(self, use_fixed_basis : bool = False, bases_filename : str = "", h : float = None) -> dict:
         """
         Stepwise model selection for SPRE.
 
@@ -635,6 +635,15 @@ class SPRE:
        
         # Final model with best kernel parameters and basis A
         out = self.perform_extrapolation(x_opt, A, return_mu_and_var = True)
+
+        # Record used basis
+        if bases_filename != "":
+            with open(bases_filename, "a") as f:
+                if h is not None:
+                    f.write(f"\nh = {h}, Basis Matrix:\n")
+                else:
+                    f.write("\nBasis Matrix:\n")
+                np.savetxt(f, A, fmt='%d')
 
         return out
     

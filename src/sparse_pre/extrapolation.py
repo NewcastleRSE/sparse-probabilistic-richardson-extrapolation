@@ -21,7 +21,7 @@ config.update("jax_enable_x64", True)
 from sparse_pre.SPRE import SPRE
 import sparse_pre.MRE as MRE
 
-def extrapolation(X, Y, options = None):
+def extrapolation(X, Y, options = None, h = None):
     """
     Extrapolation to estimate f(0) from input-output training data (X, Y).
 
@@ -37,7 +37,9 @@ def extrapolation(X, Y, options = None):
                 - "plot"   : bool, whether to plot LOOCV results (default: True)
                 - "plot_filename" : filename to plot LOOCV results (default: True)
                 - "use_fixed_basis" : bool, whether to use fixed default basis, e.g. for d=2 use A=[[0, 0], [1, 0], [0, 1]]
-       
+                - "bases_filename" : file to store bases in
+        h : float value of h to add to bases file
+
     Returns:
         out : dict
             A dictionary containing:
@@ -54,6 +56,7 @@ def extrapolation(X, Y, options = None):
     k_name = options.get("k_name", "white")
     plot = options.get("plot", True)
     plot_filename = options.get("plot_filename", "")
+    bases_filename = options.get("bases_filename", "")
     use_fixed_basis = options.get("use_fixed_basis", False)
 
     # Set up SPRE object
@@ -61,8 +64,7 @@ def extrapolation(X, Y, options = None):
         spre = SPRE(k_name, X.shape[1])
     elif name == "GRE":
         spre = SPRE(k_name, X.shape[1], jnp.zeros((1, X.shape[1]), dtype=int))
-    elif name == "MRE":
-        #raise NotImplementedError("MRE extrapolation is not implemented yet.")
+    elif name == "MRE":        
         pass
     else:
         raise ValueError(f"Unknown extrapolation method: {name}")
@@ -72,10 +74,9 @@ def extrapolation(X, Y, options = None):
         # Set data
         spre.set_normalised_data(X, Y)
         # Do fitting
-        out = spre.stepwise_selection(use_fixed_basis)
+        out = spre.stepwise_selection(use_fixed_basis, bases_filename, h)
        
-    elif name == "MRE":
-        #raise NotImplementedError("MRE extrapolation is not implemented yet.")
+    elif name == "MRE":        
         # Use default basis
         out = MRE.MRE(None, X, Y)
     else:

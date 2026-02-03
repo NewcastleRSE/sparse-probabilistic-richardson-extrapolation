@@ -49,6 +49,7 @@ class Model:
         self.final_model_plot_filename = ""
         self.final_mp4_filename = ""
         self.results_fx_filename = ""
+        self.results_bases_filename = ""
 
         # Model labels
         self.xlabel = 'time'
@@ -136,6 +137,9 @@ class Model:
 
         if "results_fx_filename" not in parameters.keys():
             self.results_fx_filename = None
+        
+        if "results_bases_filename" not in parameters.keys():
+            self.results_bases_filename = None
 
     # Files to save results
     def add_path(self, path : str, filename : str):
@@ -181,6 +185,7 @@ class Model:
         self.final_model_plot_filename = self.add_path(results_dir, self.final_model_plot_filename)
         self.final_mp4_filename = self.add_path(results_dir, self.final_mp4_filename)
         self.results_fx_filename = self.add_path(results_dir, self.results_fx_filename)
+        self.results_bases_filename = self.add_path(results_dir, self.results_bases_filename)
 
         self.do_results_plot = self.results_plot_filename != ""
         self.do_final_model_plot = self.final_model_plot_filename != ""
@@ -353,8 +358,14 @@ class Model:
             "name": self.extrapolation_name,
             "k_name":  self.extrapolation_kernel, 
             "plot" : False,
-            "use_fixed_basis": self.use_fixed_basis
+            "use_fixed_basis": self.use_fixed_basis,
+            "bases_filename": self.results_bases_filename
         }
+
+        # Remove bases file if it exists so that it can be appended to later
+        if self.results_bases_filename != "":
+            if os.path.exists(self.results_bases_filename):
+                os.remove(self.results_bases_filename)
 
         offset_name = ""
         if self.use_offset_model:
@@ -386,7 +397,7 @@ class Model:
                 new_filepath = filepath.parent / "loocv_plots" / filepath.name              
                 options["plot_filename"] = new_filepath
             
-            out = extrapolation(X*h, Y, options)
+            out = extrapolation(X*h, Y, options, h)
 
             if self.extrapolation_name != "MRE":
                 print(f"Predict f(0) = {out['mu'][0]} +/- {np.sqrt(out['var'][0][0])}\n")
