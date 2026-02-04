@@ -581,7 +581,7 @@ class SPRE:
 
         # Handle selection differently if doing GRE
         if self.kernel_base is not None:
-            return self._GRE_stepwise_selection(A)
+            return self._GRE_stepwise_selection(A, max_order)
         
         # Do "Just In Time" JIT compilation to speed up the fitting.
         # Required before running perform_extrapolation_optimization
@@ -603,7 +603,7 @@ class SPRE:
         cv = fit['cv']
         
         # Try expanding basis A for a better fit
-        while carry_on and (max_order == 0 or order <= max_order): 
+        while carry_on and (max_order == 0 or order < max_order):            
             m = A.shape[0] # Number of rows in base A
             order += 1 # Consider the addition of higher order interactions
             A_extra = stepwise(A, order)  # All predictors of the next order to consider
@@ -652,13 +652,14 @@ class SPRE:
 
         return out
     
-    def _GRE_stepwise_selection(self, A : jnp.ndarray) -> dict:
+    def _GRE_stepwise_selection(self, A : jnp.ndarray, max_order : int = 0) -> dict:
         """
         Stepwise model selection for GRE (Gauss-Richardson Extrapolation).
 
         Parameters:
             A : jnp.ndarray           binary matrix representing the sparse basis
-
+            max_order : int             maximum order number to fit. Zero sets no limit.
+                                        (to avoid never ending orders being used for problematic datasets)
         Returns:
             out : dict
                 Dictionary with predictive mean, variance, and fitted model details.
@@ -680,7 +681,7 @@ class SPRE:
         cv = fit["cv"]
 
         carry_on = True
-        while carry_on:
+        while carry_on and (max_order == 0 or order < max_order):
             order += 1
             B_extra = stepwise(B, order)  # Generate all predictors of the next order
             n_extra = B_extra.shape[0]

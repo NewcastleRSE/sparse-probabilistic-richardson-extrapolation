@@ -9,7 +9,7 @@
   "use_dt": true,
   "use_repulsion_softening": true,
   "use_transition_width": true,
-  "max_order" : 10, 
+  "max_order" : 2, 
 
   "X": [
     [0.06, 0.81, 0.34],
@@ -38,12 +38,12 @@
   "evaluation": true,
   "use_offset_model": true,
 
-  "results_filename": "output_multi_agent_122_GRE.dat",
-  "results_eval_filename": "output_multi_agent_abs_errors_eval_122_GRE.dat",
-  "results_fx_filename": "output_multi_agent_fx_eval_122_GRE.dat",
-  "results_bases_filename": "output_multi_agent_bases_122_GRE.dat",
-  "results_eval_plot_filename": "output_multi_agent_abs_errors_eval_122_GRE.png",
-  "results_plot_filename": "output_multi_agent_122_GRE.png",
+  "results_filename": "output_multi_agent_123_GRE.dat",
+  "results_eval_filename": "output_multi_agent_abs_errors_eval_123_GRE.dat",
+  "results_fx_filename": "output_multi_agent_fx_eval_123_GRE.dat",
+  "results_bases_filename": "output_multi_agent_bases_123_GRE.dat",
+  "results_eval_plot_filename": "output_multi_agent_abs_errors_eval_123_GRE.png",
+  "results_plot_filename": "output_multi_agent_123_GRE.png",
   "final_mp4_filename": "",
   "extrapolation_name": "GRE",
   "extrapolation_kernel": "white"
