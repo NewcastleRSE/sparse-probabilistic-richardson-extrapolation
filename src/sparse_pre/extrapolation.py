@@ -38,6 +38,7 @@ def extrapolation(X, Y, options = None, h = None):
                 - "plot_filename" : filename to plot LOOCV results (default: True)
                 - "use_fixed_basis" : bool, whether to use fixed default basis, e.g. for d=2 use A=[[0, 0], [1, 0], [0, 1]]
                 - "bases_filename" : file to store bases in
+                - "max_order": maximum order to do stepwise fitting
         h : float value of h to add to bases file
 
     Returns:
@@ -58,6 +59,7 @@ def extrapolation(X, Y, options = None, h = None):
     plot_filename = options.get("plot_filename", "")
     bases_filename = options.get("bases_filename", "")
     use_fixed_basis = options.get("use_fixed_basis", False)
+    max_order = options.get("max_order", 0)
 
     # Set up SPRE object
     if name == "SPRE":
@@ -74,7 +76,7 @@ def extrapolation(X, Y, options = None, h = None):
         # Set data
         spre.set_normalised_data(X, Y)
         # Do fitting
-        out = spre.stepwise_selection(use_fixed_basis, bases_filename, h)
+        out = spre.stepwise_selection(max_order, use_fixed_basis, bases_filename, h)
        
     elif name == "MRE":        
         # Use default basis

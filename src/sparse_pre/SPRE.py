@@ -549,14 +549,18 @@ class SPRE:
         self.jit_grad = jit(grad(self.cv_loss))
         self.jit_perform_extrapolation = jit(self.perform_extrapolation)
 
-    def stepwise_selection(self, use_fixed_basis : bool = False, bases_filename : str = "", h : float = None) -> dict:
+    def stepwise_selection(self, max_order : int = 0, use_fixed_basis : bool = False, bases_filename : str = "", h : float = None) -> dict:
         """
         Stepwise model selection for SPRE.
 
         Parameters:
+            max_order : int             maximum order number to fit. Zero sets no limit.
+                                        (to avoid never ending orders being used for problematic datasets)
             use_fixed_basis : bool      whether to use fixed default basis for SPRE,
                                         e.g. for d=2 use A=[[0, 0], [1, 0], [0, 1]]
-       
+            bases_filename : str        optional filename to record the bases in
+            h : float                   float for h value to record in bases file
+
         Returns:
             out     : dict, result of SPRE using optimal model
                     out.mu      = scalar, predictive mean for f(0)
@@ -599,7 +603,7 @@ class SPRE:
         cv = fit['cv']
         
         # Try expanding basis A for a better fit
-        while carry_on: 
+        while carry_on and (max_order == 0 or order <= max_order): 
             m = A.shape[0] # Number of rows in base A
             order += 1 # Consider the addition of higher order interactions
             A_extra = stepwise(A, order)  # All predictors of the next order to consider

@@ -41,6 +41,7 @@ class Model:
         self.model_name = "Model not set"
         self.use_model_cache = True
         self.use_fixed_basis = False
+        self.max_order = 20
 
         # Set filenames to blank by default
         self.results_plot_filename = ""
@@ -359,7 +360,8 @@ class Model:
             "k_name":  self.extrapolation_kernel, 
             "plot" : False,
             "use_fixed_basis": self.use_fixed_basis,
-            "bases_filename": self.results_bases_filename
+            "bases_filename": self.results_bases_filename,
+            "max_order": self.max_order
         }
 
         # Remove bases file if it exists so that it can be appended to later
