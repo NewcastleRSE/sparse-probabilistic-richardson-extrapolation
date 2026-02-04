@@ -15,6 +15,7 @@ from models.models_pde import *
 from models.models_pybullet import *
 from models.models_toy import *
 from models.models_agents import *
+from models.models_flock import *
 
 def get_model(parameter_filename : str, skip_true_value_calc : bool = False) -> Model:
     """
