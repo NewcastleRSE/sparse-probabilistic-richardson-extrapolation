@@ -48,9 +48,9 @@ class VideoRecorder:
             triangle = Polygon(self._triangle_coords(agent), color=color)
             self.ax.add_patch(triangle)
             self.agent_artists.append(triangle)
-            
+           
             # Add White Circle for agent 1
-            if agent.unique_id == 1:                
+            if agent.unique_id == 0:                
                 circle = Circle(agent.pos, radius=0.05, facecolor="white", edgecolor=None, zorder=triangle.get_zorder() + 1)
                 self.ax.add_patch(circle)
                 self.circle = circle
@@ -139,64 +139,63 @@ class ContinuousAgent(Agent):
 
 
     def sense(self):
-        self.cached_neighbors = self.model.space.get_neighbors(
-            self.pos,
-            self.model.interaction_radius,
-            include_center=False
-        )
+        self.cached_neighbors = [
+                a for a in self.model.agent_list if a is not self
+            ]
+
         self.last_sense_time = self.model.time
 
-    # --- Smooth cutoff functions ---
-    def smooth_step(self, x):
-        return 0.5 * (1.0 + np.tanh(x))
-     
-      def compute_force(self):
+    
+    def soft_cutoff(self, dist):
+        R = self.model.interaction_radius
+        w = self.model.cutoff_width   
+
+        if w == 0.0:
+            return 1.0 if dist < R else 0.0
+
+        return 0.5 * (1.0 - np.tanh((dist - R) / w))
+    
+    def compute_force(self):
         force = np.zeros(2)
 
         for other in self.cached_neighbors:
+
             dvec = other.pos - self.pos
 
             # Toroidal distance
-            for i, dim in enumerate([self.model.space.width, self.model.space.height]):
+            for i, dim in enumerate(
+                [self.model.space.width, self.model.space.height]
+            ):
                 if abs(dvec[i]) > dim / 2:
                     dvec[i] -= np.sign(dvec[i]) * dim
 
             dist = np.linalg.norm(dvec)
-            if dist < 1e-12:
-                continue
+
+            #if dist < 1e-16:
+            #    continue
 
             direction = dvec / dist
 
-            r_rep = self.model.repulsion_radius
-            r_int = self.model.interaction_radius
-            repulsion_softening = self.model.repulsion_softening
-            
-            transition_width = self.model.transition_width  # smoothing parameter
+            # Smooth neighbour weight
+            w = self.soft_cutoff(dist)
 
-            # Softened repulsion force
-            if dist < r_rep + transition_width:
-                # Repulsion smoothly turns off near r_rep         
-                repulsion_weight = self.smooth_step((r_rep - dist) / transition_width)
+            #if w < 1e-8:
+            #    continue
 
-                force -= (
-                      repulsion_weight
-                    * direction
-                    * (r_rep - dist) / (dist + repulsion_softening)
-                )
+            # Repulsion (always smooth)
+            rep = -(self.model.repulsion_radius - dist) / (dist + self.model.repulsion_softening)
+            rep = max(rep, 0.0)
 
-            # Smooth attraction force
-            if dist > r_rep - transition_width and dist < r_int + transition_width:
-                # Attraction smoothly turns off near r_int
-                attraction_weight = self.smooth_step((r_int - dist) / transition_width)
+            # Attraction (always smooth)
+            att = (dist - self.model.repulsion_radius)
+            att = max(att, 0.0)
 
-                force += (                  
-                      attraction_weight
-                    * direction
-                    * (dist - r_rep)
-                )
+            f = (rep + att) * direction
+
+            force += w * f
 
         return force
- 
+
     def step(self):
         
         self.sense()
@@ -215,7 +214,7 @@ class FlockingModel(MesaModel):
     def __init__(self, n_agents=30, width=10, height=10,
                  dt=0.05,
                  interaction_radius=2.0, repulsion_radius=0.5,
-                 repulsion_softening=0.01, transition_width=0.01,              
+                 repulsion_softening=0.01, cutoff_width=0.05,              
                 record_video=False,
                 video_filename="simulation.mp4",
                 video_fps=30,
@@ -228,7 +227,7 @@ class FlockingModel(MesaModel):
         self.interaction_radius = interaction_radius
         self.repulsion_radius = repulsion_radius
         self.repulsion_softening = repulsion_softening  
-        self.transition_width = transition_width      
+        self.cutoff_width = cutoff_width      
         self.space = ContinuousSpace(width, height, torus=True)
 
         self.agent_list = []
@@ -297,12 +296,12 @@ class FlockModel(Model):
         self.seed = 1
         self.n_agents = 60
       
-        self.transition_width = 0.05
+        self.cutoff_width = 0.05
 
         # Decide which of the parameters to use
         self.use_dt = True
         self.use_repulsion_softening = True
-        self.use_transition_width = True
+        self.use_cutoff_width = True
 
         # Default fixed values for parameters if not being used
         self.dt = 0.02
@@ -369,21 +368,21 @@ class FlockModel(Model):
         else:
             repulsion_softening = self.repulsion_softening
 
-        if self.use_transition_width:
-            transition_width = discrete_paras[i]
+        if self.use_cutoff_width:
+            cutoff_width = discrete_paras[i]
             i += 1
         else:
-            transition_width = self.transition_width
+            cutoff_width = self.cutoff_width
       
 
         # repulsion_softening is a short-range regularisation length that prevents singular interaction forces at very small agent separations,
         # with the model converging to the point-particle limit as `repulsion_softening → 0`.
 
-        # transition_width is a smoothing width that regularises the interaction cutoffs,
-        # ensuring forces transition smoothly at the interaction radii and converge to the sharp cutoff model as `transition_width → 0`.
+        # cutoff_width controls how gradually the interaction forces switch on and off near their cutoff distances,
+        # smoothing sharp transitions to improve numerical convergence.
 
         # Output info on what is being simulated
-        print(f"\tSimulating {self.description} with dt = {dt}, repulsion_softening = {repulsion_softening}, transition_width = {transition_width}")
+        print(f"\tSimulating {self.description} with dt = {dt}, repulsion_softening = {repulsion_softening}, cutoff_width = {cutoff_width}")
  
         # Set seed for reproducability, agent added randomly
         np.random.seed(self.seed)
@@ -392,7 +391,7 @@ class FlockModel(Model):
             n_agents=self.n_agents,
             dt=dt,          
             repulsion_softening=repulsion_softening,
-            transition_width=transition_width,
+            cutoff_width=cutoff_width,
             record_video=self.save_animation,
             wrap_visualization = True,
             video_filename=self.final_mp4_filename,
@@ -451,17 +450,22 @@ class FlockModel(Model):
         """
       
         # Create filename with all settings and parameters used
-        filename = f"ma_{self.total_time}_{self.seed}_{self.n_agents}_"
-        filename += f"{self.use_dt}_{self.use_repulsion_softening}_{self.use_transition_width}_"
-        filename += f"{self.dt}_{self.repulsion_softening}_{self.transition_width}_"
+        filename = f"f_{self.total_time}_{self.seed}_{self.n_agents}_"
+        filename += f"{self.use_dt}_{self.use_repulsion_softening}_{self.use_cutoff_width}_"
 
+        if self.use_dt:
+            filename += f"{self.dt}_"
+        if self.use_repulsion_softening:
+            filename += f"{self.repulsion_softening}_"
+        if self.cutoff_width:
+            filename += f"{self.cutoff_width}_"
+           
         if self.use_offset_model:
             filename += "_".join(str(i) for i in self.final_tols) + "_"
 
         filename += "_".join(str(i) for i in discrete_paras) + ".bin"
 
-        # Shorten if too long
-        if len(filename) > 99:
-            filename = filename.replace("True", "T").replace("False", "F").replace("e", "").replace("ma_", "m")
+        # Shorten name
+        filename = filename.replace("True", "T").replace("False", "F").replace("e", "")
 
         return filename

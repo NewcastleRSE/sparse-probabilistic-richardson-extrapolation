@@ -647,8 +647,7 @@ class SPRE:
                     f.write(f"\nh = {h}, Basis Matrix:\n")
                 else:
                     f.write("\nBasis Matrix:\n")
-                np.savetxt(f, A, fmt='%d')
-                f.flush()                
+                np.savetxt(f, A, fmt='%d')              
 
         return out
     

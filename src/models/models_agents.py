@@ -50,7 +50,7 @@ class VideoRecorder:
             self.agent_artists.append(triangle)
             
             # Add White Circle for agent 1
-            if agent.unique_id == 1:                
+            if agent.unique_id == 0:                
                 circle = Circle(agent.pos, radius=0.05, facecolor="white", edgecolor=None, zorder=triangle.get_zorder() + 1)
                 self.ax.add_patch(circle)
                 self.circle = circle
