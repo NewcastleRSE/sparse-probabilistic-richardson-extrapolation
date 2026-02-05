@@ -1,0 +1,220 @@
+Thu  5 Feb 12:20:21 GMT 2026
+Running on compute031 analysis for scenario 122_GRE
+pybullet build time: Nov 28 2025 15:19:22
+	Using cached value: 4.620412740208125
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [1.06581410e-16 1.43884904e-15 6.03961325e-16]
+	Using cached value: 4.620412740470048
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [3.19744231e-16 3.90798505e-16 1.36779477e-15]
+	Using cached value: 4.620412740582223
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [5.50670620e-16 9.94759830e-16 1.95399252e-16]
+	Using cached value: 4.620412741127432
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [7.81597009e-16 1.59872116e-16 1.15463195e-15]
+	Using cached value: 4.620412741433876
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [1.01252340e-15 1.29674049e-15 8.52651283e-16]
+	Using cached value: 4.620412741785563
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [1.22568622e-15 7.28306304e-16 1.63424829e-15]
+	Using cached value: 4.620412742095553
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [1.45661261e-15 1.68753900e-15 4.61852778e-16]
+	Using cached value: 4.620412742810865
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [1.66977543e-15 5.32907052e-16 1.04805054e-15]
+	Using cached value: 4.620412742944661
+Fitting interactions of order 1...
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:15<00:30, 15.03s/it]Stepwise progress:  67%|██████▋   | 2/3 [00:30<00:15, 15.24s/it]Stepwise progress: 100%|██████████| 3/3 [00:45<00:00, 15.28s/it]Stepwise progress: 100%|██████████| 3/3 [00:45<00:00, 15.25s/it]
+Fitting interactions of order 2...
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:16<00:33, 16.53s/it]Stepwise progress:  67%|██████▋   | 2/3 [00:31<00:15, 15.78s/it]Stepwise progress: 100%|██████████| 3/3 [00:46<00:00, 15.40s/it]Stepwise progress: 100%|██████████| 3/3 [00:46<00:00, 15.58s/it]
+Fitting interactions of order 3...
+Stepwise progress:   0%|          | 0/5 [00:00<?, ?it/s]Stepwise progress:  20%|██        | 1/5 [00:16<01:05, 16.50s/it]Stepwise progress:  40%|████      | 2/5 [00:32<00:48, 16.08s/it]Stepwise progress:  60%|██████    | 3/5 [00:46<00:30, 15.30s/it]Stepwise progress:  80%|████████  | 4/5 [01:02<00:15, 15.32s/it]Stepwise progress: 100%|██████████| 5/5 [01:18<00:00, 15.73s/it]Stepwise progress: 100%|██████████| 5/5 [01:18<00:00, 15.69s/it]
+Fitting interactions of order 4...
+Stepwise progress:   0%|          | 0/9 [00:00<?, ?it/s]Stepwise progress:  11%|█         | 1/9 [00:16<02:13, 16.72s/it]Stepwise progress:  22%|██▏       | 2/9 [00:32<01:54, 16.31s/it]Stepwise progress:  33%|███▎      | 3/9 [00:48<01:36, 16.04s/it]Stepwise progress:  44%|████▍     | 4/9 [01:05<01:21, 16.26s/it]Stepwise progress:  56%|█████▌    | 5/9 [01:21<01:05, 16.31s/it]Stepwise progress:  67%|██████▋   | 6/9 [01:37<00:48, 16.24s/it]Stepwise progress:  78%|███████▊  | 7/9 [01:53<00:32, 16.09s/it]Stepwise progress:  89%|████████▉ | 8/9 [02:07<00:15, 15.61s/it]Stepwise progress: 100%|██████████| 9/9 [02:24<00:00, 15.80s/it]Stepwise progress: 100%|██████████| 9/9 [02:24<00:00, 16.01s/it]
+Fitting interactions of order 5...
+Stepwise progress:   0%|          | 0/11 [00:00<?, ?it/s]Stepwise progress:   9%|▉         | 1/11 [00:16<02:48, 16.83s/it]Stepwise progress:  18%|█▊        | 2/11 [00:32<02:27, 16.39s/it]Stepwise progress:  27%|██▋       | 3/11 [00:48<02:09, 16.23s/it]Stepwise progress:  36%|███▋      | 4/11 [01:05<01:53, 16.16s/it]Stepwise progress:  45%|████▌     | 5/11 [01:21<01:38, 16.38s/it]Stepwise progress:  55%|█████▍    | 6/11 [01:38<01:21, 16.40s/it]Stepwise progress:  64%|██████▎   | 7/11 [01:54<01:05, 16.41s/it]Stepwise progress:  73%|███████▎  | 8/11 [02:10<00:48, 16.30s/it]Stepwise progress:  82%|████████▏ | 9/11 [02:25<00:31, 15.78s/it]Stepwise progress:  91%|█████████ | 10/11 [02:41<00:15, 15.76s/it]Stepwise progress: 100%|██████████| 11/11 [02:57<00:00, 15.93s/it]Stepwise progress: 100%|██████████| 11/11 [02:57<00:00, 16.13s/it]
+Predict f(0) = 4.620412740803786 +/- 3.0744535476544864e-10
+
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [2.13162821e-16 2.87769808e-15 1.20792265e-15]
+	Using cached value: 4.620412740700388
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [6.39488462e-16 7.81597009e-16 2.73558953e-15]
+	Using cached value: 4.62041274128838
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [1.10134124e-15 1.98951966e-15 3.90798505e-16]
+	Using cached value: 4.620412741977181
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [1.56319402e-15 3.19744231e-16 2.30926389e-15]
+	Using cached value: 4.620412742859263
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [2.02504680e-15 2.59348099e-15 1.70530257e-15]
+	Using cached value: 4.62041274366993
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [2.45137244e-15 1.45661261e-15 3.26849658e-15]
+	Using cached value: 4.620412744435982
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [2.91322522e-15 3.37507799e-15 9.23705556e-16]
+	Using cached value: 4.620412745292583
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [3.33955086e-15 1.06581410e-15 2.09610107e-15]
+	Using cached value: 4.620412745874695
+Fitting interactions of order 1...
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:15<00:30, 15.20s/it]Stepwise progress:  67%|██████▋   | 2/3 [00:29<00:14, 14.96s/it]Stepwise progress: 100%|██████████| 3/3 [00:45<00:00, 15.02s/it]Stepwise progress: 100%|██████████| 3/3 [00:45<00:00, 15.02s/it]
+Predict f(0) = 4.6204127432623014 +/- 1.994978948986837e-09
+
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [4.26325641e-16 5.75539616e-15 2.41584530e-15]
+	Using cached value: 4.620412741310339
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [1.27897692e-15 1.56319402e-15 5.47117907e-15]
+	Using cached value: 4.620412742290559
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [2.20268248e-15 3.97903932e-15 7.81597009e-16]
+	Using cached value: 4.620412744338379
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [3.12638804e-15 6.39488462e-16 4.61852778e-15]
+	Using cached value: 4.620412745456329
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [4.05009359e-15 5.18696197e-15 3.41060513e-15]
+	Using cached value: 4.620412747467822
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [4.90274488e-15 2.91322522e-15 6.53699317e-15]
+	Using cached value: 4.620412748615123
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [5.82645043e-15 6.75015599e-15 1.84741111e-15]
+	Using cached value: 4.620412750577959
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [6.67910172e-15 2.13162821e-15 4.19220214e-15]
+	Using cached value: 4.620412751837809
+Fitting interactions of order 1...
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:15<00:30, 15.24s/it]Stepwise progress:  67%|██████▋   | 2/3 [00:29<00:14, 14.88s/it]Stepwise progress: 100%|██████████| 3/3 [00:44<00:00, 14.93s/it]Stepwise progress: 100%|██████████| 3/3 [00:44<00:00, 14.95s/it]
+Predict f(0) = 4.62041274648679 +/- 4.02781284140349e-09
+
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [8.52651283e-16 1.15107923e-14 4.83169060e-15]
+	Using cached value: 4.620412742505367
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [2.55795385e-15 3.12638804e-15 1.09423581e-14]
+	Using cached value: 4.620412744807561
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [4.40536496e-15 7.95807864e-15 1.56319402e-15]
+	Using cached value: 4.620412748442615
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [6.25277607e-15 1.27897692e-15 9.23705556e-15]
+	Using cached value: 4.620412750941643
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [8.10018719e-15 1.03739239e-14 6.82121026e-15]
+	Using cached value: 4.620412754800726
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [9.80548975e-15 5.82645043e-15 1.30739863e-14]
+	Using cached value: 4.620412757431516
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [1.16529009e-14 1.35003120e-14 3.69482223e-15]
+	Using cached value: 4.620412761260228
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [1.33582034e-14 4.26325641e-15 8.38440428e-15]
+	Using cached value: 4.620412763356129
+Fitting interactions of order 1...
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:15<00:30, 15.32s/it]Stepwise progress:  67%|██████▋   | 2/3 [00:30<00:15, 15.02s/it]Stepwise progress: 100%|██████████| 3/3 [00:45<00:00, 15.14s/it]Stepwise progress: 100%|██████████| 3/3 [00:45<00:00, 15.14s/it]
+Predict f(0) = 4.620412752943223 +/- 8.023807024488966e-09
+
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [1.70530257e-15 2.30215846e-14 9.66338121e-15]
+	Using cached value: 4.620412745023282
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [5.11590770e-15 6.25277607e-15 2.18847163e-14]
+	Using cached value: 4.62041274931009
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [8.81072992e-15 1.59161573e-14 3.12638804e-15]
+	Using cached value: 4.620412756691549
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [1.25055521e-14 2.55795385e-15 1.84741111e-14]
+	Using cached value: 4.620412761692073
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [1.62003744e-14 2.07478479e-14 1.36424205e-14]
+	Using cached value: 4.620412769862351
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [1.96109795e-14 1.16529009e-14 2.61479727e-14]
+	Using cached value: 4.620412774619794
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [2.33058017e-14 2.70006240e-14 7.38964445e-15]
+	Using cached value: 4.6204127822487875
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [2.67164069e-14 8.52651283e-15 1.67688086e-14]
+	Using cached value: 4.620412786573517
+Fitting interactions of order 1...
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:15<00:30, 15.25s/it]Stepwise progress:  67%|██████▋   | 2/3 [00:31<00:15, 15.63s/it]Stepwise progress: 100%|██████████| 3/3 [00:46<00:00, 15.52s/it]Stepwise progress: 100%|██████████| 3/3 [00:46<00:00, 15.51s/it]
+Predict f(0) = 4.620412765752682 +/- 1.6034688347321867e-08
+
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [3.41060513e-15 4.60431693e-14 1.93267624e-14]
+	Using cached value: 4.620412749991968
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [1.02318154e-14 1.25055521e-14 4.37694325e-14]
+	Using cached value: 4.620412758771889
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [1.76214598e-14 3.18323146e-14 6.25277607e-15]
+	Using cached value: 4.620412773015648
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [2.50111043e-14 5.11590770e-15 3.69482223e-14]
+	Using cached value: 4.620412783445266
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [3.24007488e-14 4.14956958e-14 2.72848411e-14]
+	Using cached value: 4.62041278860568
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [3.92219590e-14 2.33058017e-14 5.22959454e-14]
+	Using cached value: 4.620412798644197
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [4.66116035e-14 5.40012479e-14 1.47792889e-14]
+	Using cached value: 4.620412814107857
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [5.34328137e-14 1.70530257e-14 3.35376171e-14]
+	Using cached value: 4.620412822280148
+Fitting interactions of order 1...
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:15<00:30, 15.06s/it]Stepwise progress:  67%|██████▋   | 2/3 [00:29<00:14, 14.98s/it]Stepwise progress: 100%|██████████| 3/3 [00:45<00:00, 15.11s/it]Stepwise progress: 100%|██████████| 3/3 [00:45<00:00, 15.08s/it]
+Predict f(0) = 4.620412786107831 +/- 2.6850377483053834e-08
+
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [6.82121026e-15 9.20863386e-14 3.86535248e-14]
+	Using cached value: 4.620412759891625
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [2.04636308e-14 2.50111043e-14 8.75388650e-14]
+	Using cached value: 4.6204127773134385
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [3.52429197e-14 6.36646291e-14 1.25055521e-14]
+	Using cached value: 4.620412795372678
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [5.00222086e-14 1.02318154e-14 7.38964445e-14]
+	Using cached value: 4.620412815950884
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [6.48014975e-14 8.29913915e-14 5.45696821e-14]
+	Using cached value: 4.620412850340764
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [7.84439180e-14 4.66116035e-14 1.04591891e-13]
+	Using cached value: 4.620412880625495
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [9.32232069e-14 1.08002496e-13 2.95585778e-14]
+	Using cached value: 4.620412913662989
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [1.06865627e-13 3.41060513e-14 6.70752343e-14]
+	Using cached value: 4.6204129303825
+Fitting interactions of order 1...
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:14<00:29, 14.81s/it]Stepwise progress:  67%|██████▋   | 2/3 [00:30<00:15, 15.15s/it]Stepwise progress: 100%|██████████| 3/3 [00:45<00:00, 15.04s/it]Stepwise progress: 100%|██████████| 3/3 [00:45<00:00, 15.03s/it]
+Fitting interactions of order 2...
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:15<00:31, 15.61s/it]Stepwise progress:  67%|██████▋   | 2/3 [00:31<00:15, 15.63s/it]Stepwise progress: 100%|██████████| 3/3 [00:46<00:00, 15.57s/it]Stepwise progress: 100%|██████████| 3/3 [00:46<00:00, 15.59s/it]
+Fitting interactions of order 3...
+Stepwise progress:   0%|          | 0/5 [00:00<?, ?it/s]Stepwise progress:  20%|██        | 1/5 [00:15<01:00, 15.19s/it]Stepwise progress:  40%|████      | 2/5 [00:30<00:45, 15.23s/it]Stepwise progress:  60%|██████    | 3/5 [00:46<00:30, 15.42s/it]Stepwise progress:  80%|████████  | 4/5 [01:01<00:15, 15.38s/it]Stepwise progress: 100%|██████████| 5/5 [01:16<00:00, 15.30s/it]Stepwise progress: 100%|██████████| 5/5 [01:16<00:00, 15.31s/it]
+Fitting interactions of order 4...
+Stepwise progress:   0%|          | 0/9 [00:00<?, ?it/s]Stepwise progress:  11%|█         | 1/9 [00:16<02:08, 16.05s/it]Stepwise progress:  22%|██▏       | 2/9 [00:31<01:51, 15.87s/it]Stepwise progress:  33%|███▎      | 3/9 [00:47<01:34, 15.70s/it]Stepwise progress:  44%|████▍     | 4/9 [01:03<01:19, 15.88s/it]Stepwise progress:  56%|█████▌    | 5/9 [01:18<01:02, 15.72s/it]Stepwise progress:  67%|██████▋   | 6/9 [01:35<00:47, 15.92s/it]Stepwise progress:  78%|███████▊  | 7/9 [01:50<00:31, 15.88s/it]Stepwise progress:  89%|████████▉ | 8/9 [02:06<00:15, 15.82s/it]Stepwise progress: 100%|██████████| 9/9 [02:21<00:00, 15.61s/it]Stepwise progress: 100%|██████████| 9/9 [02:21<00:00, 15.76s/it]
+Fitting interactions of order 5...
+Stepwise progress:   0%|          | 0/14 [00:00<?, ?it/s]Stepwise progress:   7%|▋         | 1/14 [00:16<03:28, 16.06s/it]Stepwise progress:  14%|█▍        | 2/14 [00:31<03:11, 15.97s/it]Stepwise progress:  21%|██▏       | 3/14 [00:48<02:58, 16.21s/it]Stepwise progress:  29%|██▊       | 4/14 [01:04<02:42, 16.25s/it]Stepwise progress:  36%|███▌      | 5/14 [01:20<02:24, 16.03s/it]Stepwise progress:  43%|████▎     | 6/14 [01:36<02:07, 15.89s/it]Stepwise progress:  50%|█████     | 7/14 [01:51<01:50, 15.73s/it]Stepwise progress:  57%|█████▋    | 8/14 [02:08<01:36, 16.03s/it]Stepwise progress:  64%|██████▍   | 9/14 [02:24<01:20, 16.15s/it]Stepwise progress:  71%|███████▏  | 10/14 [02:40<01:04, 16.15s/it]Stepwise progress:  79%|███████▊  | 11/14 [02:56<00:48, 16.08s/it]Stepwise progress:  86%|████████▌ | 12/14 [03:11<00:31, 15.69s/it]Stepwise progress:  93%|█████████▎| 13/14 [03:27<00:15, 15.78s/it]Stepwise progress: 100%|██████████| 14/14 [03:42<00:00, 15.71s/it]Stepwise progress: 100%|██████████| 14/14 [03:42<00:00, 15.92s/it]
+Fitting interactions of order 6...
+Stepwise progress:   0%|          | 0/15 [00:00<?, ?it/s]Stepwise progress:   7%|▋         | 1/15 [00:16<03:51, 16.56s/it]Stepwise progress:  13%|█▎        | 2/15 [00:33<03:35, 16.55s/it]Stepwise progress:  20%|██        | 3/15 [00:49<03:17, 16.49s/it]Stepwise progress:  27%|██▋       | 4/15 [01:05<03:00, 16.39s/it]Stepwise progress:  33%|███▎      | 5/15 [01:21<02:42, 16.21s/it]Stepwise progress:  40%|████      | 6/15 [01:37<02:24, 16.04s/it]Stepwise progress:  47%|████▋     | 7/15 [01:53<02:09, 16.14s/it]Stepwise progress:  53%|█████▎    | 8/15 [02:09<01:52, 16.02s/it]Stepwise progress:  60%|██████    | 9/15 [02:25<01:36, 16.15s/it]Stepwise progress:  67%|██████▋   | 10/15 [02:41<01:20, 16.11s/it]Stepwise progress:  73%|███████▎  | 11/15 [02:58<01:04, 16.20s/it]Stepwise progress:  80%|████████  | 12/15 [03:14<00:48, 16.04s/it]Stepwise progress:  87%|████████▋ | 13/15 [03:30<00:32, 16.20s/it]Stepwise progress:  93%|█████████▎| 14/15 [03:46<00:16, 16.21s/it]Stepwise progress: 100%|██████████| 15/15 [04:03<00:00, 16.35s/it]Stepwise progress: 100%|██████████| 15/15 [04:03<00:00, 16.23s/it]
+Fitting interactions of order 7...
+Stepwise progress:   0%|          | 0/12 [00:00<?, ?it/s]Stepwise progress:   8%|▊         | 1/12 [00:15<02:55, 15.93s/it]Stepwise progress:  17%|█▋        | 2/12 [00:31<02:39, 15.92s/it]Stepwise progress:  25%|██▌       | 3/12 [00:47<02:23, 15.93s/it]Stepwise progress:  33%|███▎      | 4/12 [01:03<02:06, 15.85s/it]Stepwise progress:  42%|████▏     | 5/12 [01:20<01:53, 16.19s/it]Stepwise progress:  50%|█████     | 6/12 [01:36<01:36, 16.16s/it]Stepwise progress:  58%|█████▊    | 7/12 [01:52<01:21, 16.24s/it]Stepwise progress:  67%|██████▋   | 8/12 [02:08<01:04, 16.16s/it]Stepwise progress:  75%|███████▌  | 9/12 [02:25<00:49, 16.35s/it]Stepwise progress:  83%|████████▎ | 10/12 [02:41<00:32, 16.28s/it]Stepwise progress:  92%|█████████▏| 11/12 [02:58<00:16, 16.30s/it]Stepwise progress: 100%|██████████| 12/12 [03:13<00:00, 16.04s/it]Stepwise progress: 100%|██████████| 12/12 [03:13<00:00, 16.12s/it]
+Fitting interactions of order 8...
+Stepwise progress:   0%|          | 0/7 [00:00<?, ?it/s]Stepwise progress:  14%|█▍        | 1/7 [00:17<01:43, 17.20s/it]Stepwise progress:  29%|██▊       | 2/7 [00:34<01:25, 17.01s/it]Stepwise progress:  43%|████▎     | 3/7 [00:50<01:07, 16.81s/it]Stepwise progress:  57%|█████▋    | 4/7 [01:06<00:49, 16.60s/it]Stepwise progress:  71%|███████▏  | 5/7 [01:23<00:32, 16.42s/it]Stepwise progress:  86%|████████▌ | 6/7 [01:40<00:16, 16.64s/it]Stepwise progress: 100%|██████████| 7/7 [01:57<00:00, 16.85s/it]Stepwise progress: 100%|██████████| 7/7 [01:57<00:00, 16.77s/it]
+Fitting interactions of order 9...
+Stepwise progress:   0%|          | 0/7 [00:00<?, ?it/s]Stepwise progress:  14%|█▍        | 1/7 [00:17<01:42, 17.05s/it]Stepwise progress:  29%|██▊       | 2/7 [00:33<01:23, 16.78s/it]Stepwise progress:  43%|████▎     | 3/7 [00:49<01:06, 16.53s/it]Stepwise progress:  57%|█████▋    | 4/7 [01:05<00:48, 16.33s/it]Stepwise progress:  71%|███████▏  | 5/7 [01:21<00:32, 16.19s/it]Stepwise progress:  86%|████████▌ | 6/7 [01:38<00:16, 16.38s/it]Stepwise progress: 100%|██████████| 7/7 [01:55<00:00, 16.57s/it]Stepwise progress: 100%|██████████| 7/7 [01:55<00:00, 16.50s/it]
+Fitting interactions of order 10...
+Stepwise progress:   0%|          | 0/7 [00:00<?, ?it/s]Stepwise progress:  14%|█▍        | 1/7 [00:16<01:37, 16.18s/it]Stepwise progress:  29%|██▊       | 2/7 [00:33<01:22, 16.56s/it]Stepwise progress:  43%|████▎     | 3/7 [00:50<01:07, 16.78s/it]Stepwise progress:  57%|█████▋    | 4/7 [01:06<00:50, 16.76s/it]Stepwise progress:  71%|███████▏  | 5/7 [01:23<00:33, 16.64s/it]Stepwise progress:  86%|████████▌ | 6/7 [01:39<00:16, 16.62s/it]Stepwise progress: 100%|██████████| 7/7 [01:56<00:00, 16.71s/it]Stepwise progress: 100%|██████████| 7/7 [01:56<00:00, 16.67s/it]
+Predict f(0) = 4.620412781072469 +/- 1.333912110135787e-08
+
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [1.36424205e-14 1.84172677e-13 7.73070497e-14]
+	Using cached value: 4.620412779436136
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [4.09272616e-14 5.00222086e-14 1.75077730e-13]
+	Using cached value: 4.620412803956756
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [7.04858394e-14 1.27329258e-13 2.50111043e-14]
+	Using cached value: 4.620412874168835
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [1.00044417e-13 2.04636308e-14 1.47792889e-13]
+	Using cached value: 4.620412917846618
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [1.29602995e-13 1.65982783e-13 1.09139364e-13]
+	Using cached value: 4.62041298018908
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [1.56887836e-13 9.32232069e-14 2.09183781e-13]
+	Using cached value: 4.620413020144118
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [1.86446414e-13 2.16004992e-13 5.91171556e-14]
+	Using cached value: 4.620413081154487
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [2.13731255e-13 6.82121026e-14 1.34150469e-13]
+	Using cached value: 4.620413119632913
+Fitting interactions of order 1...
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:15<00:31, 15.67s/it]Stepwise progress:  67%|██████▋   | 2/3 [00:31<00:15, 15.80s/it]Stepwise progress: 100%|██████████| 3/3 [00:47<00:00, 15.84s/it]Stepwise progress: 100%|██████████| 3/3 [00:47<00:00, 15.82s/it]
+Predict f(0) = 4.620412947066118 +/- 1.3232128539999766e-07
+
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [2.72848411e-14 3.68345354e-13 1.54614099e-13]
+	Using cached value: 4.620412808548391
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [8.18545232e-14 1.00044417e-13 3.50155460e-13]
+	Using cached value: 4.620412891064258
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [1.40971679e-13 2.54658516e-13 5.00222086e-14]
+	Using cached value: 4.620413007258181
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [2.00088834e-13 4.09272616e-14 2.95585778e-13]
+	Using cached value: 4.6204130891172746
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [2.59205990e-13 3.31965566e-13 2.18278728e-13]
+	Using cached value: 4.620413321296581
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [3.13775672e-13 1.86446414e-13 4.18367563e-13]
+	Using cached value: 4.620413404632395
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [3.72892828e-13 4.32009983e-13 1.18234311e-13]
+	Using cached value: 4.620387345793974
+Running model "multi_agent" using offset [0.02, 1e-16, 1e-16] with parameters [4.27462510e-13 1.36424205e-13 2.68300937e-13]
+	Using cached value: 4.620387400910262
+Fitting interactions of order 1...
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:15<00:31, 15.75s/it]Stepwise progress:  67%|██████▋   | 2/3 [00:31<00:15, 15.59s/it]Stepwise progress: 100%|██████████| 3/3 [00:47<00:00, 15.91s/it]Stepwise progress: 100%|██████████| 3/3 [00:47<00:00, 15.84s/it]
+Fitting interactions of order 2...
+Stepwise progress:   0%|          | 0/5 [00:00<?, ?it/s]Stepwise progress:  20%|██        | 1/5 [00:15<01:03, 15.88s/it]Stepwise progress:  40%|████      | 2/5 [00:31<00:46, 15.57s/it]Stepwise progress:  60%|██████    | 3/5 [00:46<00:30, 15.38s/it]Stepwise progress:  80%|████████  | 4/5 [01:02<00:15, 15.56s/it]Stepwise progress: 100%|██████████| 5/5 [01:17<00:00, 15.61s/it]Stepwise progress: 100%|██████████| 5/5 [01:17<00:00, 15.59s/it]
+Fitting interactions of order 3...
+Stepwise progress:   0%|          | 0/6 [00:00<?, ?it/s]Stepwise progress:  17%|█▋        | 1/6 [00:15<01:19, 15.90s/it]Stepwise progress:  33%|███▎      | 2/6 [00:32<01:04, 16.11s/it]Stepwise progress:  50%|█████     | 3/6 [00:48<00:48, 16.05s/it]Stepwise progress:  67%|██████▋   | 4/6 [01:04<00:32, 16.15s/it]Stepwise progress:  83%|████████▎ | 5/6 [01:20<00:16, 16.06s/it]Stepwise progress: 100%|██████████| 6/6 [01:36<00:00, 15.93s/it]Stepwise progress: 100%|██████████| 6/6 [01:36<00:00, 16.00s/it]
+Fitting interactions of order 4...
+Stepwise progress:   0%|          | 0/9 [00:00<?, ?it/s]Stepwise progress:  11%|█         | 1/9 [00:15<02:07, 16.00s/it]Stepwise progress:  22%|██▏       | 2/9 [00:31<01:50, 15.78s/it]Stepwise progress:  33%|███▎      | 3/9 [00:47<01:34, 15.76s/it]Stepwise progress:  44%|████▍     | 4/9 [01:02<01:18, 15.64s/it]Stepwise progress:  56%|█████▌    | 5/9 [01:18<01:02, 15.66s/it]Stepwise progress:  67%|██████▋   | 6/9 [01:34<00:47, 15.87s/it]Stepwise progress:  78%|███████▊  | 7/9 [01:50<00:31, 15.81s/it]Stepwise progress:  89%|████████▉ | 8/9 [02:06<00:15, 15.95s/it]Stepwise progress: 100%|██████████| 9/9 [02:22<00:00, 15.99s/it]Stepwise progress: 100%|██████████| 9/9 [02:22<00:00, 15.87s/it]
+Fitting interactions of order 5...
+Stepwise progress:   0%|          | 0/13 [00:00<?, ?it/s]Stepwise progress:   8%|▊         | 1/13 [00:16<03:18, 16.50s/it]Stepwise progress:  15%|█▌        | 2/13 [00:32<02:57, 16.14s/it]Stepwise progress:  23%|██▎       | 3/13 [00:48<02:39, 15.95s/it]Stepwise progress:  31%|███       | 4/13 [01:04<02:24, 16.09s/it]Stepwise progress:  38%|███▊      | 5/13 [01:20<02:08, 16.03s/it]Stepwise progress:  46%|████▌     | 6/13 [01:36<01:52, 16.03s/it]Stepwise progress:  54%|█████▍    | 7/13 [01:52<01:35, 15.99s/it]Stepwise progress:  62%|██████▏   | 8/13 [02:08<01:20, 16.18s/it]Stepwise progress:  69%|██████▉   | 9/13 [02:25<01:04, 16.19s/it]Stepwise progress:  77%|███████▋  | 10/13 [02:41<00:48, 16.16s/it]Stepwise progress:  85%|████████▍ | 11/13 [02:56<00:32, 16.01s/it]Stepwise progress:  92%|█████████▏| 12/13 [03:12<00:15, 15.88s/it]Stepwise progress: 100%|██████████| 13/13 [03:27<00:00, 15.71s/it]Stepwise progress: 100%|██████████| 13/13 [03:27<00:00, 15.98s/it]
+Fitting interactions of order 6...
+Stepwise progress:   0%|          | 0/17 [00:00<?, ?it/s]Stepwise progress:   6%|▌         | 1/17 [00:15<04:10, 15.66s/it]Stepwise progress:  12%|█▏        | 2/17 [00:30<03:51, 15.46s/it]Stepwise progress:  18%|█▊        | 3/17 [00:46<03:38, 15.63s/it]Stepwise progress:  24%|██▎       | 4/17 [01:02<03:22, 15.55s/it]Stepwise progress:  29%|██▉       | 5/17 [01:17<03:05, 15.43s/it]Stepwise progress:  35%|███▌      | 6/17 [01:33<02:52, 15.64s/it]Stepwise progress:  41%|████      | 7/17 [01:49<02:36, 15.70s/it]Stepwise progress:  47%|████▋     | 8/17 [02:05<02:21, 15.70s/it]Stepwise progress:  53%|█████▎    | 9/17 [02:20<02:05, 15.70s/it]Stepwise progress:  59%|█████▉    | 10/17 [02:35<01:48, 15.56s/it]Stepwise progress:  65%|██████▍   | 11/17 [02:51<01:33, 15.65s/it]Stepwise progress:  71%|███████   | 12/17 [03:06<01:17, 15.46s/it]Stepwise progress:  76%|███████▋  | 13/17 [03:22<01:01, 15.37s/it]Stepwise progress:  82%|████████▏ | 14/17 [03:37<00:46, 15.46s/it]Stepwise progress:  88%|████████▊ | 15/17 [03:53<00:31, 15.54s/it]Stepwise progress:  94%|█████████▍| 16/17 [04:09<00:15, 15.63s/it]Stepwise progress: 100%|██████████| 17/17 [04:24<00:00, 15.61s/it]Stepwise progress: 100%|██████████| 17/17 [04:24<00:00, 15.58s/it]
+Fitting interactions of order 7...
+Stepwise progress:   0%|          | 0/22 [00:00<?, ?it/s]

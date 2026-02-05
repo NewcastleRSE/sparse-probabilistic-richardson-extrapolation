@@ -6,7 +6,7 @@
 #SBATCH --account=comet_spread
 #SBATCH --mem=5GB
 #SBATCH --cpus-per-task=1
-#SBATCH --output=data/mujoco/results/output_multi_agent_anal.log
+#SBATCH --output=data/multi_agent/results/output_multi_agent_anal_%a%.log
 
 
 # Load modules
