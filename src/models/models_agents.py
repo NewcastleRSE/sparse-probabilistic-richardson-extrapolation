@@ -195,6 +195,9 @@ class ContinuousAgent(Agent):
                     * (dist - r_rep)
                 )
 
+            # Apply Force Smoothing 
+            force *= 1.0 / (1.0 + self.model.force_smoothing * dist * dist)
+        
         return force
 
     def local_mean_velocity(self):
@@ -234,7 +237,8 @@ class FlockingModel(MesaModel):
                  dt=0.05, sense_interval=0.05, neighbour_margin=0.05,
                  alignment_strength=0,
                  interaction_radius=2.0, repulsion_radius=0.5,
-                 repulsion_softening=0.01, transition_width=0.01,              
+                 repulsion_softening=0.01, transition_width=0.01,    
+                 force_smoothing=0,          
                 record_video=False,
                 video_filename="simulation.mp4",
                 video_fps=30,
@@ -246,6 +250,7 @@ class FlockingModel(MesaModel):
         self.sense_interval = sense_interval
         self.neighbour_margin = neighbour_margin
         self.alignment_strength = alignment_strength
+        self.force_smoothing = force_smoothing
         self.time = 0.0
         self.interaction_radius = interaction_radius
         self.repulsion_radius = repulsion_radius
@@ -329,10 +334,12 @@ class MultiAgentModel(Model):
         self.use_dt = True
         self.use_repulsion_softening = True
         self.use_transition_width = True
+        self.use_force_smoothing = False
 
         # Default fixed values for parameters if not being used
         self.dt = 0.02
         self.repulsion_softening = 0.05
+        self.force_smoothing = 0
     
         self.final_model_plot_filename = ""
         self.final_mp4_filename = ""
@@ -391,16 +398,24 @@ class MultiAgentModel(Model):
 
         if self.use_repulsion_softening:
             repulsion_softening = discrete_paras[i]
+            self.repulsion_softening = repulsion_softening
             i += 1
         else:
             repulsion_softening = self.repulsion_softening
 
         if self.use_transition_width:
             transition_width = discrete_paras[i]
+            self.transition_width = transition_width
             i += 1
         else:
             transition_width = self.transition_width
       
+        if self.use_force_smoothing:
+            force_smoothing = discrete_paras[i]
+            self.force_smoothing = force_smoothing
+            i += 1
+        else:
+            force_smoothing = self.force_smoothing
 
         # repulsion_softening is a short-range regularisation length that prevents singular interaction forces at very small agent separations,
         # with the model converging to the point-particle limit as `repulsion_softening → 0`.
@@ -408,8 +423,11 @@ class MultiAgentModel(Model):
         # transition_width is a smoothing width that regularises the interaction cutoffs,
         # ensuring forces transition smoothly at the interaction radii and converge to the sharp cutoff model as `transition_width → 0`.
 
+        # force_smoothing globally attenuates interactions with distance,
+        # providing a smooth scalar control parameter whose zero limit recovers the original model.
+
         # Output info on what is being simulated
-        print(f"\tSimulating {self.description} with dt = {dt}, repulsion_softening = {repulsion_softening}, transition_width = {transition_width}, alignment_strength = {self.alignment_strength}")
+        print(f"\tSimulating {self.description} with dt = {dt}, repulsion_softening = {repulsion_softening}, transition_width = {transition_width}, alignment_strength = {self.alignment_strength}, force_smoothing = {force_smoothing}")
  
         # Set seed for reproducability, agent added randomly
         np.random.seed(self.seed)
@@ -422,6 +440,7 @@ class MultiAgentModel(Model):
             alignment_strength=self.alignment_strength,
             repulsion_softening=repulsion_softening,
             transition_width=transition_width,
+            force_smoothing=force_smoothing,
             record_video=self.save_animation,
             wrap_visualization = True,
             video_filename=self.final_mp4_filename,
@@ -485,7 +504,10 @@ class MultiAgentModel(Model):
         filename += f"{self.dt}_{self.repulsion_softening}_{self.transition_width}_"
         
         if self.alignment_strength > 0:
-            filename += f"{self.alignment_strength}_"
+            filename += f"a{self.alignment_strength}_"
+
+        if self.force_smoothing > 0:
+            filename += f"f{self.force_smoothing}_"
 
         if self.use_offset_model:
             filename += "_".join(str(i) for i in self.final_tols) + "_"

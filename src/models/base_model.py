@@ -290,8 +290,10 @@ class Model:
         if perform_model_simulation:
             # Run the model
             y_result = self.run_model_simulation(discrete_paras)
+
             # Record result in the cache
-            self.update_model_cache(discrete_paras, y_result)
+            if self.use_model_cache:
+                self.update_model_cache(discrete_paras, y_result)
 
         return y_result
 

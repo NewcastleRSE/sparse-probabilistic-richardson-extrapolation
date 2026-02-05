@@ -150,7 +150,7 @@ class ContinuousAgent(Agent):
     def smooth_step(self, x):
         return 0.5 * (1.0 + np.tanh(x))
      
-    def compute_force(self):
+      def compute_force(self):
         force = np.zeros(2)
 
         for other in self.cached_neighbors:
@@ -167,45 +167,33 @@ class ContinuousAgent(Agent):
 
             direction = dvec / dist
 
-            # Parameters
             r_rep = self.model.repulsion_radius
             r_int = self.model.interaction_radius
             repulsion_softening = self.model.repulsion_softening
-            transition_width = self.model.transition_width
+            
+            transition_width = self.model.transition_width  # smoothing parameter
 
-            # ------------------------------------------------------------------
-            # Smooth switching functions (C^\infty)
-            # ------------------------------------------------------------------
+            # Softened repulsion force
+            if dist < r_rep + transition_width:
+                # Repulsion smoothly turns off near r_rep         
+                repulsion_weight = self.smooth_step((r_rep - dist) / transition_width)
 
-            # Repulsion smoothly active for dist < r_rep
-            repulsion_switch = 0.5 * (
-                1.0 - np.tanh((dist - r_rep) / transition_width)
-            )
+                force -= (
+                      repulsion_weight
+                    * direction
+                    * (r_rep - dist) / (dist + repulsion_softening)
+                )
 
-            # Attraction smoothly active for r_rep < dist < r_int
-            attraction_switch = (
-                0.5 * (1.0 + np.tanh((dist - r_rep) / transition_width))
-                * 0.5 * (1.0 - np.tanh((dist - r_int) / transition_width))
-            )
+            # Smooth attraction force
+            if dist > r_rep - transition_width and dist < r_int + transition_width:
+                # Attraction smoothly turns off near r_int
+                attraction_weight = self.smooth_step((r_int - dist) / transition_width)
 
-            # ------------------------------------------------------------------
-            # Smooth force laws (defined for all dist > 0)
-            # ------------------------------------------------------------------
-
-            # Repulsion magnitude (short-range, softened)
-            repulsion_mag = (r_rep - dist) / (dist + repulsion_softening)
-
-            # Attraction magnitude (longer-range)
-            attraction_mag = (dist - r_rep)
-
-            # ------------------------------------------------------------------
-            # Combine forces (no branching, fully smooth)
-            # ------------------------------------------------------------------
-
-            force += (
-                -repulsion_switch * repulsion_mag
-                + attraction_switch * attraction_mag
-            ) * direction
+                force += (                  
+                      attraction_weight
+                    * direction
+                    * (dist - r_rep)
+                )
 
         return force
  
