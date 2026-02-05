@@ -39,12 +39,12 @@
   "evaluation": true,
   "use_offset_model": true,
 
-  "results_filename": "output_flock_307.dat",
-  "results_eval_filename": "output_flock_abs_errors_eval_307.dat",
-  "results_fx_filename": "output_flock_fx_eval_307.dat",
-  "results_eval_plot_filename": "output_flock_abs_errors_eval_307.png",
-  "results_plot_filename": "output_flock_307.png",
-  "results_bases_filename": "output_flock_bases_307.dat",
+  "results_filename": "output_flock_307_GRE.dat",
+  "results_eval_filename": "output_flock_abs_errors_eval_307_GRE.dat",
+  "results_fx_filename": "output_flock_fx_eval_307_GRE.dat",
+  "results_eval_plot_filename": "output_flock_abs_errors_eval_307_GRE.png",
+  "results_plot_filename": "output_flock_307_GRE.png",
+  "results_bases_filename": "output_flock_bases_307_GRE.dat",
   "final_mp4_filename": "",
   
   "extrapolation_name": "GRE",
