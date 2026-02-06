@@ -38,7 +38,7 @@
   "final_tols": [0.02, 0.02],
   "evaluation": true,
   "use_offset_model": true,
-  "use_use_model_cache": false,
+  "use_model_cache": false,
 
   "results_filename": "output_flock_308.dat",
   "results_eval_filename": "output_flock_abs_errors_eval_308.dat",
