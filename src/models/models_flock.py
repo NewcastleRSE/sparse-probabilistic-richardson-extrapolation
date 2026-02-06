@@ -131,21 +131,12 @@ class ContinuousAgent(Agent):
         self.model = model
         self.pos = None
         self.vel = np.zeros(2)
-        self.last_sense_time = 0.0
         self.cached_neighbors = []
         self.color = np.random.rand(3,)
         if unique_id == 0:
             self.color = [0, 0, 0]
 
 
-    def sense(self):
-        self.cached_neighbors = [
-                a for a in self.model.agent_list if a is not self
-            ]
-
-        self.last_sense_time = self.model.time
-
-    
     def soft_cutoff(self, dist):
         R = self.model.interaction_radius
         w = self.model.cutoff_width   
@@ -158,7 +149,11 @@ class ContinuousAgent(Agent):
     def compute_force(self):
         force = np.zeros(2)
 
-        for other in self.cached_neighbors:
+        for other in self.model.agent_list:
+
+            # Do not interact with one self
+            if other is self:
+                continue
 
             dvec = other.pos - self.pos
 
@@ -170,17 +165,10 @@ class ContinuousAgent(Agent):
                     dvec[i] -= np.sign(dvec[i]) * dim
 
             dist = np.linalg.norm(dvec)
-
-            #if dist < 1e-16:
-            #    continue
-
             direction = dvec / dist
 
             # Smooth neighbour weight
             w = self.soft_cutoff(dist)
-
-            #if w < 1e-8:
-            #    continue
 
             # Repulsion (always smooth)
             rep = -(self.model.repulsion_radius - dist) / (dist + self.model.repulsion_softening)
@@ -198,7 +186,6 @@ class ContinuousAgent(Agent):
 
     def step(self):
         
-        self.sense()
         force = self.compute_force()
         self.vel += force * self.model.dt       
         self.pos += self.vel * self.model.dt
