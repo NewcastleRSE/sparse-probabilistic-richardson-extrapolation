@@ -22,7 +22,7 @@ class Model:
     Base model class with common methods used for all model classes.
     """
 
-    def __init__(self, params : dict, parameter_filename : str, skip_true_value_calc : bool = False):
+    def __init__(self, params : dict, parameter_filename : str, skip_true_value_calc : bool = False) -> None:
         """
         Sets up the model class with model parameters.
 
@@ -112,7 +112,7 @@ class Model:
 
         return 0
     
-    def set_parameters(self, parameters : dict):
+    def set_parameters(self, parameters : dict) -> None:
         """
         Set model parameters from a dictionary.
         Some unset parameters are then given default values.
@@ -143,7 +143,7 @@ class Model:
             self.results_bases_filename = None
 
     # Files to save results
-    def add_path(self, path : str, filename : str):
+    def add_path(self, path : str, filename : str) -> None:
         """
         Sets up a file with path to save results or a plot to.
         Returns an empty string if filename is not set.
@@ -160,7 +160,7 @@ class Model:
             new_filename = os.path.join(path, filename)
         return new_filename
         
-    def update_paths(self, parameter_filename : str):
+    def update_paths(self, parameter_filename : str) -> None:
         """
         Updates the paths of all filenames where a result/plot is stored.
 
@@ -196,7 +196,7 @@ class Model:
             self.results_eval_plot_filename = self.add_path(results_dir, self.results_eval_plot_filename)
             self.do_results_eval_plot = self.results_eval_plot_filename != ""
 
-    def set_true_value(self):
+    def set_true_value(self) -> None:
         """
         Sets the object variable "true_value" to the actual model outcome.
         For example, from an analytic solution if known. This can be used to evaluate model accuracy.
@@ -231,7 +231,7 @@ class Model:
 
         return self.model_name + "_".join(str(i) for i in discrete_paras) + ".bin"
 
-    def update_model_cache(self, discrete_paras : npt.NDArray, y : float):
+    def update_model_cache(self, discrete_paras : npt.NDArray, y : float) -> None:
         """
         Updates the model cache of final outcome values.
 
@@ -338,7 +338,7 @@ class Model:
 
         return self.get_final_quantity(discrete_paras)
      
-    def run_analysis(self):
+    def run_analysis(self) -> None:
         """
         Runs analysis of the model by running SPRE on every set of discretisation parameters in X
         scaled for by each value in h.
@@ -485,7 +485,7 @@ class Model:
         if self.do_final_model_plot:
             _ = self.plot_final_model()
 
-    def simulate_ith_analysis_setting(self, sim_number : int):
+    def simulate_ith_analysis_setting(self, sim_number : int) -> None:
         """
         Simulates model for the set up parameters for the ith 
         discretisation parameters given by X and h arrays. The simulation outcome will then
@@ -555,7 +555,7 @@ class Model:
 
         return best
 
-    def plot_SPRE_results(self):
+    def plot_SPRE_results(self) -> None:
         """
         Plots SPRE estimates with error bars of 1 standard deviation against different values of h.
 
@@ -595,7 +595,7 @@ class Model:
         plt.savefig(self.results_plot_filename) 
         plt.show()    
 
-    def plot_final_model(self):
+    def plot_final_model(self) -> None:
         """
         Plots final simulated model.
 
@@ -622,7 +622,7 @@ class Model:
             plt.savefig(self.final_model_plot_filename)  
         plt.show()
 
-    def plot_evaluation_results(self):
+    def plot_evaluation_results(self) -> None:
         """
         Plots absolute errors of SPRE estimate with the "true value" as a line plot on a log-log scale plot.
         First point in X is also plotted as a reference, often with the smallest values in X, called "best estimate",
