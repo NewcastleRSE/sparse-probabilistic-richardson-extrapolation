@@ -39,7 +39,7 @@ class Model:
         self.total_time = 120
         self.evaluation = False
         self.model_name = "Model not set"
-        self.use_model_cache = True
+        self.use_model_cache = False
         self.use_fixed_basis = False
         self.max_order = 20
 
