@@ -1,8 +1,8 @@
 ##############################################################################
-# Script to run SPRE analysis given a model parameter file.
+# Script to plot SPRE analyses results.
 #
 # From root directory, for example run
-# python ./src/run_model_analysis.py ./data/chem_equil/input_1.json
+# python ./src/plot_analysis_results.py
 #
 # Richard Howey, July 2025 - April 2026
 ##############################################################################
@@ -27,28 +27,34 @@ def choose_h_column(df):
         raise ValueError("No valid h column found (expected 'h' or 'h1').")
 
 
-def plot_multiple_spre(
+def plot_multiple_spre_abs(
     files,
     h_columns,
-    labels=None,
-    output_file="spre_comparison.png",
-    title="Absolute Errors of SPRE Estimates"
+    labels,
+    output_file,
+    title = "Absolute Errors of SPRE Estimates",
+    show_plot = True, 
+    plot_raw_estimates = False,  
+    *args,           # Positional arguments for plt.plot (like marker, linestyle)
+    **kwargs         # Keyword arguments for plt.plot (like color, alpha, linewidth)
 ):
     """
     Plot multiple SPRE absolute-error curves on one log-log plot.
 
-    Parameters
-    ----------
-    files : list[str or Path]
-        Paths to result files
-    h_columns : list[str]
-        Name of the h column for each file (e.g. ["h", "h1", "h2"])
-    labels : list[str], optional
-        Legend labels for each file
-    output_file : str
-        Output image filename
-    title : str
-        Plot title
+    Parameters:
+        files : list[str or Path]  Paths to result files   
+        h_columns : list[str]       Name of the h column for each file (e.g. ["h", "h1", "h2"]) 
+        labels : list[str]          Optional legend labels for each file 
+        output_file : str           Output image filename
+        title : str                 Plot title
+        show_plot : bool            Show the plot as well as writing file 
+        plot_raw_estimates : bool   Also plot the raw estimates on the plot   
+        *args : tuple               Positional args passed to plt.plot (optional)
+        **kwargs : dict             Keyword args passed to plt.plot (optional)
+
+    Returns:
+        None
+
     """
 
     if len(files) != len(h_columns):
@@ -77,12 +83,29 @@ def plot_multiple_spre(
 
         plt.plot(
             x_vals,
-            y_vals,
-            marker="o",
-            linewidth=2,
-            markersize=10,
-            label=label
+            y_vals,           
+            *args,
+            label=label,
+            **kwargs
         )
+
+    # Raw estimates (faded)
+    if plot_raw_estimates:
+        df = pd.read_csv(files[0], sep="\t")
+      
+        i = 0
+        while f"abs_err_estimate_{i+1}" in list(df):
+            plt.plot(
+                df[h_columns[0]],
+                df[f"abs_err_estimate_{i+1}"],
+                marker="o",
+                linewidth=2,
+                markersize=8,
+                alpha=0.4,
+                zorder = 0,
+                label="raw estimates" if i == 0 else None
+            )
+            i += 1
 
     plt.xscale("log")
     plt.yscale("log")
@@ -93,28 +116,39 @@ def plot_multiple_spre(
     plt.legend()
     plt.tight_layout()
     plt.savefig(output_file)
-    plt.show()
+    if show_plot:
+        plt.show()
 
 
 if __name__ == "__main__":
     # Example usage
     files = [
-        "data/multi_agent/results/output_multi_agent_122.dat",
-        "data/multi_agent/results/output_multi_agent_122_GRE.dat"
+        "data/flock/results/output_flock_abs_errors_eval_307.dat",
+        "data/flock/results/output_flock_abs_errors_eval_307_GRE.dat"
     ]
 
-    h_columns = [
-        "h",
-        "h"
+    h_columns = ["h", "h"]
+
+    labels = ["SPRE white", "GRE white"]
+    title ="Absolute Errors of SPRE Estimates"
+
+    plot_multiple_spre_abs(files, h_columns, labels, "data/plots/spre_122_comparison.png", plot_raw_estimates=True,      
+            marker="o",
+            linewidth=2,
+            markersize=10)
+
+    # 
+    files = [
+        "data/flock/results/output_flock_abs_errors_eval_321.dat",
+        "data/flock/results/output_flock_abs_errors_eval_320.dat"
     ]
 
-    labels = [
-        "SPRE white",
-        "GRE white"  
-    ]
+    h_columns = ["h", "h"]
 
-    plot_multiple_spre(
-        files,
-        labels,
-        output_file="data/multi_agent/results/spre_122_comparison.png"
-    )
+    labels = ["SPRE white, from 8 estimates", "SPRE white, from 16 estimates"]
+    title ="Absolute Errors of SPRE Estimates"
+
+    plot_multiple_spre_abs(files, h_columns, labels, "data/plots/spre_3_parameters_comparison.png", plot_raw_estimates=True,      
+            marker="o",
+            linewidth=2,
+            markersize=10)
