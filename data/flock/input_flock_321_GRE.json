@@ -39,7 +39,8 @@
   "evaluation": true,
   "use_offset_model": true,
   "use_model_cache": true,
-
+  "max_order" : 10,
+  
   "results_filename": "output_flock_321_GRE.dat",
   "results_eval_filename": "output_flock_abs_errors_eval_321_GRE.dat",
   "results_fx_filename": "output_flock_fx_eval_321_GRE.dat",
