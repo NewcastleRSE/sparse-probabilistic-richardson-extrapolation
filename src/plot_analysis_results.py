@@ -152,3 +152,24 @@ if __name__ == "__main__":
             marker="o",
             linewidth=2,
             markersize=10)
+    
+    # Compare different methods
+    files = [
+        "data/flock/results/output_flock_abs_errors_eval_321.dat",
+        "data/flock/results/output_flock_abs_errors_eval_321_Gaussian.dat",
+        "data/flock/results/output_flock_abs_errors_eval_321_GaussianARD.dat",
+        "data/flock/results/output_flock_abs_errors_eval_321_Matern12.dat",
+        "data/flock/results/output_flock_abs_errors_eval_321_Matern32.dat",
+        "data/flock/results/output_flock_abs_errors_eval_321_MRE.dat",
+        "data/flock/results/output_flock_abs_errors_eval_321_GRE.dat",
+    ]
+
+    h_columns = ["h"] * 7
+
+    labels = ["SPRE white", "SPRE Gaussian", "SPRE GaussianARD", "SPRE Matern1/2", "SPRE Matern3/2", "MRE", "GRE white"]
+    title ="Absolute Errors of Estimates"
+
+    plot_multiple_spre_abs(files, h_columns, labels, "data/plots/spre_3_parameters.png", plot_raw_estimates=True,      
+            marker="o",
+            linewidth=2,
+            markersize=10)
