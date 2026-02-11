@@ -135,7 +135,7 @@ class VideoRecorder:
 
         # Handle periodic wrapping visualisation
         if self.wrap_visualization:
-
+                                                            
             extra_patches = []
 
             W, H = self.model.space.width, self.model.space.height

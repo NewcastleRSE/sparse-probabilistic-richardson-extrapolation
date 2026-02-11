@@ -39,6 +39,8 @@ def plot_spre_results(
     title: str = "Extrapolation Results",
     y_logscale : bool = False,
     show_plot: bool = True,
+    x_lims : tuple = None,
+    y_lims : tuple = None,
     *args,
     **kwargs
 ) -> None:
@@ -65,7 +67,7 @@ def plot_spre_results(
     # Set true value from file if given
     if true_value_filename:
         df = pd.read_csv(true_value_filename, sep="\t")
-        true_value = df['true_value']
+        true_value = df['true_value'][0]
 
     plt.close("all")
     plt.figure(figsize=(7,6))
@@ -77,6 +79,12 @@ def plot_spre_results(
         # Check column exists
         if h_col not in df.columns:
             raise ValueError(f"Column '{h_col}' not found in {file}. Available columns: {list(df.columns)}")
+
+        if x_lims is not None:          
+            # Redefine data to within this limit
+            x_vals = df[h_col]
+            mask = (x_vals >= x_lims[0]) & (x_vals <= x_lims[1])
+            df = df[mask]   
 
         x_vals = df[h_col]
         y_vals = df["mu"]
@@ -92,20 +100,24 @@ def plot_spre_results(
                 capsize=5,
                 ecolor='black',
                 markersize=6,
+                label=label,                
                 *args,
                 **kwargs
             )
         else:
-            plt.plot(x_vals, y_vals, 'o-', markersize=6, *args, **kwargs)
+            plt.plot(x_vals, y_vals, 'o-', markersize=6, label=label, *args, **kwargs)
 
     plt.xscale("log")
     if y_logscale:
         plt.yscale("log")
     plt.xlabel("h")
-    plt.ylabel("mu")
+    plt.ylabel("estimate")
     plt.title(title)
     plt.legend()
     plt.grid(True, which="both", linestyle="--", alpha=0.4)
+
+    if y_lims is not None:
+        plt.ylim(y_lims)    
 
     # Optional horizontal line for true value
     if true_value is not None:
@@ -225,53 +237,66 @@ def plot_multiple_spre_abs(
 
 
 if __name__ == "__main__":
+
+    if False:
     # Example usage
-    files = [
-        "data/flock/results/output_flock_abs_errors_eval_307.dat",
-        "data/flock/results/output_flock_abs_errors_eval_307_GRE.dat"
-    ]
+        files = [
+            "data/flock/results/output_flock_abs_errors_eval_307.dat",
+            "data/flock/results/output_flock_abs_errors_eval_307_GRE.dat"
+        ]
 
-    h_columns = ["h", "h"]
+        h_columns = ["h", "h"]
 
-    labels = ["SPRE white", "GRE white"]
-    title ="Absolute Errors of SPRE Estimates"
+        labels = ["SPRE white", "GRE white"]
+        title ="Absolute Errors of SPRE Estimates"
 
-    plot_multiple_spre_abs(files, h_columns, labels, "data/plots/spre_122_comparison.png", plot_raw_estimates=True,      
-            marker="o",
-            linewidth=2,
-            markersize=10)
+        plot_multiple_spre_abs(files, h_columns, labels, "data/plots/spre_122_comparison.png", plot_raw_estimates=True,      
+                marker="o",
+                linewidth=2,
+                markersize=10)
 
-    # 
-    files = [
-        "data/flock/results/output_flock_abs_errors_eval_321.dat",
-        "data/flock/results/output_flock_abs_errors_eval_320.dat"
-    ]
+    if False:
+        # Compare using more points
+        files = [
+            "data/flock/results/output_flock_abs_errors_eval_321.dat",
+            "data/flock/results/output_flock_abs_errors_eval_320.dat"
+        ]
 
-    h_columns = ["h", "h"]
+        h_columns = ["h", "h"]
 
-    labels = ["SPRE white, from 8 estimates", "SPRE white, from 16 estimates"]
-    title ="Absolute Errors of SPRE Estimates"
+        labels = ["SPRE white, from 8 estimates", "SPRE white, from 16 estimates"]
+        title ="Absolute Errors of SPRE Estimates"
 
-    plot_multiple_spre_abs(files, h_columns, labels, "data/plots/spre_3_parameters_comparison.png", plot_raw_estimates=True,      
-            marker="o",
-            linewidth=2,
-            markersize=10)
+        plot_multiple_spre_abs(files, h_columns, labels, "data/plots/spre_3_parameters_comparison.png", plot_raw_estimates=True,      
+                marker="o",
+                linewidth=2,
+                markersize=10)
     
     # Plot error bar plot
-    for seed in [5]:
+    for seed in [1]:
         seed_str = str(seed)
         if seed == 1:
             seed_str = ""
 
-        files = [f"data/flock/results/output{seed_str}_flock_abs_errors_eval_321.dat"]
-        true_val_file = f"data/flock/results/output{seed_str}_flock_321.dat"
-        h_columns = ["h"]
-        labels = ["SPRE White"]
+        labels = ["SPRE White", "SPRE Gaussian",  "SPRE Matern1/2", "SPRE Matern3/2", "MRE"]
+        methods = ["", "_Gaussian", "_Matern12", "_Matern32", "_MRE"]
 
-        plot_spre_results(files=files,h_columns=h_columns,labels=labels,output_file=f"data/plots/spre_3_parameters_error_bars_seed{seed}.png")
+        for method, label in zip(methods, labels):
+            files = [f"data/flock/results/output{seed_str}_flock_321{method}.dat"]
+            true_val_file = f"data/flock/results/output{seed_str}_flock_abs_errors_eval_321{method}.dat"
+            h_columns = ["h"]           
+
+            plot_spre_results(files=files,
+                            true_value_filename=true_val_file,
+                            h_columns=h_columns,
+                            labels=[label],
+                            #y_logscale=True,
+                            title=None,
+                            output_file=f"data/plots/spre_3_parameters_error_bars_seed{seed}_{method}.png",
+                            x_lims=(1e-16, 1e-8))
 
     # Compare different methods
-    for seed in [5]:
+    for seed in []:#[1, 3, 5]:
         seed_str = str(seed)
         if seed == 1:
             seed_str = ""
@@ -283,12 +308,12 @@ if __name__ == "__main__":
             f"data/flock/results/output{seed_str}_flock_abs_errors_eval_321_Matern12.dat",
             f"data/flock/results/output{seed_str}_flock_abs_errors_eval_321_Matern32.dat",
             f"data/flock/results/output{seed_str}_flock_abs_errors_eval_321_MRE.dat",
-            "data/flock/results/output_flock_abs_errors_eval_321_GRE.dat",
+            #f"data/flock/results/output{seed_str}_flock_abs_errors_eval_321_GRE.dat",
         ]
 
-        h_columns = ["h"] * 6
+        h_columns = ["h"] * len(files)
 
-        labels = ["SPRE White", "SPRE Gaussian", "SPRE Matern1/2", "SPRE Matern3/2", "MRE", "GRE White"] # "SPRE GaussianARD",
+        labels = ["SPRE White", "SPRE Gaussian",  "SPRE Matern1/2", "SPRE Matern3/2", "MRE"]#, "GRE White"] # "SPRE GaussianARD",
         title ="Absolute Errors of Estimates"
         markers = itertools.cycle(('o', 's', 'v', '^', '+', 'x', '*'))
         plot_multiple_spre_abs(files, h_columns, labels, f"data/plots/spre_3_parameters_seed{seed}.png", plot_raw_estimates=True,      
