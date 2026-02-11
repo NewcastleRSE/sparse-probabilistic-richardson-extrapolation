@@ -1,17 +1,17 @@
 {
   "model_name": "flock",
   "description": "Flocking of multiple agents Model",
-  "total_time": 5,
-  "seed": 1,
+  "total_time": 3,
+  "seed": 3,
   "n_agents": 60,
     
   "X": [
-   [0.02, 0.02, 0.02]
+   [0.01, 0.0, 0.0]
 ],
 
 "h_values":  [1],
 
-  "final_mp4_filename": "flock.mp4",
-  "final_model_plot_filename": "flock.png"
+  "final_mp4_filename": "flock3.mp4",
+  "final_model_plot_filename": "flock3.png"
 
 }

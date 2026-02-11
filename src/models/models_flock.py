@@ -65,6 +65,8 @@ class VideoRecorder:
         self.ax.set_ylim(0, self.model.space.height)
         self.ax.set_title("Flock Simulation")
         self.ax.set_aspect("equal")
+        plt.xlabel(r"$\it{x}$")
+        plt.ylabel(r"$\it{y}$")
 
         # Create triangle patch for each agent
         for agent in self.model.agent_list:
@@ -127,6 +129,9 @@ class VideoRecorder:
         # Update main agent triangles
         for patch, agent in zip(self.agent_artists, self.model.agent_list):
             patch.set_xy(self._triangle_coords(agent))
+
+        # Update white circle of first agent                           
+        self.circle.center = self.model.agent_list[0].pos
 
         # Handle periodic wrapping visualisation
         if self.wrap_visualization:
