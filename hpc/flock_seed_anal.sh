@@ -7,7 +7,7 @@
 #SBATCH --mem=5GB
 #SBATCH --cpus-per-task=1
 #SBATCH --output=data/flock/results/output_flock_anal_%a%.log
-#SBATCH --time=02:00:00
+#SBATCH --time=03:00:00
 
 # Load modules
 
