@@ -48,12 +48,6 @@ class VideoRecorder:
             triangle = Polygon(self._triangle_coords(agent), color=color)
             self.ax.add_patch(triangle)
             self.agent_artists.append(triangle)
-            
-            # Add White Circle for agent 1
-            if agent.unique_id == 0:                
-                circle = Circle(agent.pos, radius=0.05, facecolor="white", edgecolor=None, zorder=triangle.get_zorder() + 1)
-                self.ax.add_patch(circle)
-                self.circle = circle
         
         self.writer.setup(self.fig, self.filename)
 
@@ -71,12 +65,10 @@ class VideoRecorder:
         return [tip, base1, base2]
 
     def capture_frame(self):
+        
         # Clear all previous coordinates
         for patch, agent in zip(self.agent_artists, self.model.agent_list):
             patch.set_xy(self._triangle_coords(agent))
-
-        # Update circle
-        #self.circle.set_xy(self.model.agent_list[0].pos)
 
         if self.wrap_visualization:
             extra_patches = []
@@ -105,14 +97,20 @@ class VideoRecorder:
                     self.ax.add_patch(triangle)
                     extra_patches.append(triangle)
 
+           
+
             # Keep track so they can be removed in next frame
             self.extra_patches = extra_patches
+
+        
 
         self.writer.grab_frame()
         # Remove extra patches to avoid accumulating
         if self.wrap_visualization:
             for p in self.extra_patches:
                 p.remove()
+
+                   
 
     def close(self):
         self.writer.finish()
