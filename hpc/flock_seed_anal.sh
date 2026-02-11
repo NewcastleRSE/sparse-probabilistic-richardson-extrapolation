@@ -6,8 +6,7 @@
 #SBATCH --account=comet_spread
 #SBATCH --mem=5GB
 #SBATCH --cpus-per-task=1
-#SBATCH --output=data/flock/results/output_flock_anal_%a%.log
-#SBATCH --time=03:00:00
+#SBATCH --output=data/flock/results/output_flock_anal_%a.log
 
 # Load modules
 
