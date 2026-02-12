@@ -35,7 +35,7 @@
   ],
 
   
-  "final_tols": [0.01, 0.0, 0.0],
+  "final_tols": [0.01, 1e-15, 0.0],
   "evaluation": true,
   "use_offset_model": true,
   "use_model_cache": true,
