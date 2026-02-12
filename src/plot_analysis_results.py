@@ -273,7 +273,7 @@ if __name__ == "__main__":
                 markersize=10)
     
     # Plot error bar plot
-    for seed in [1]:
+    for seed in []:
         seed_str = str(seed)
         if seed == 1:
             seed_str = ""
@@ -292,11 +292,11 @@ if __name__ == "__main__":
                             labels=[label],
                             #y_logscale=True,
                             title=None,
-                            output_file=f"data/plots/spre_3_parameters_error_bars_seed{seed}_{method}.png",
+                            output_file=f"data/plots/spre_3_parameters_error_bars_seed{seed}{method}.png",
                             x_lims=(1e-16, 1e-8))
 
     # Compare different methods
-    for seed in []:#[1, 3, 5]:
+    for seed in [1, 2, 3, 5]:
         seed_str = str(seed)
         if seed == 1:
             seed_str = ""
@@ -313,7 +313,7 @@ if __name__ == "__main__":
 
         h_columns = ["h"] * len(files)
 
-        labels = ["SPRE White", "SPRE Gaussian",  "SPRE Matern1/2", "SPRE Matern3/2", "MRE"]#, "GRE White"] # "SPRE GaussianARD",
+        labels = ["SPRE White", "SPRE Gaussian",  "SPRE Matern1/2", "SPRE Matern3/2", "MRE"]#, "GRE White"] # , "SPRE GaussianARD",
         title ="Absolute Errors of Estimates"
         markers = itertools.cycle(('o', 's', 'v', '^', '+', 'x', '*'))
         plot_multiple_spre_abs(files, h_columns, labels, f"data/plots/spre_3_parameters_seed{seed}.png", plot_raw_estimates=True,      
