@@ -273,7 +273,7 @@ if __name__ == "__main__":
                 markersize=10)
     
     # Plot error bar plot
-    for seed in []:
+    for seed in [1]:
         seed_str = str(seed)
         if seed == 1:
             seed_str = ""
@@ -296,7 +296,7 @@ if __name__ == "__main__":
                             x_lims=(1e-16, 1e-8))
 
     # Compare different methods
-    for seed in [1, 2, 3, 5]:
+    for seed in [1]:
         seed_str = str(seed)
         if seed == 1:
             seed_str = ""
@@ -308,15 +308,15 @@ if __name__ == "__main__":
             f"data/flock/results/output{seed_str}_flock_abs_errors_eval_321_Matern12.dat",
             f"data/flock/results/output{seed_str}_flock_abs_errors_eval_321_Matern32.dat",
             f"data/flock/results/output{seed_str}_flock_abs_errors_eval_321_MRE.dat",
-            #f"data/flock/results/output{seed_str}_flock_abs_errors_eval_321_GRE.dat",
+            f"data/flock/results/output{seed_str}_flock_abs_errors_eval_321_GRE.dat",
         ]
 
         h_columns = ["h"] * len(files)
 
-        labels = ["SPRE White", "SPRE Gaussian",  "SPRE Matern1/2", "SPRE Matern3/2", "MRE"]#, "GRE White"] # , "SPRE GaussianARD",
-        title ="Absolute Errors of Estimates"
+        labels = ["SPRE White", "SPRE Gaussian",  "SPRE Matern1/2", "SPRE Matern3/2", "MRE", "GRE White"] # , "SPRE GaussianARD",
+        title = None #"Absolute Errors of Estimates"
         markers = itertools.cycle(('o', 's', 'v', '^', '+', 'x', '*'))
-        plot_multiple_spre_abs(files, h_columns, labels, f"data/plots/spre_3_parameters_seed{seed}.png", plot_raw_estimates=True,      
+        plot_multiple_spre_abs(files, h_columns, labels, f"data/plots/spre_3_parameters_seed{seed}.png", plot_raw_estimates=True, title=title,     
                 marker=markers,
                 linewidth=2,
                 markersize=10)
