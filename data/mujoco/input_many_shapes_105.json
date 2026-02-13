@@ -68,7 +68,7 @@
   ],
 
 
-  "final_tols": [0.01, 1e-6, 1e-6],
+  "final_tols": [0.001, 1e-6, 1e-6],
   "evaluation": true,
   "use_offset_model": true,
   "use_fixed_time": true,
