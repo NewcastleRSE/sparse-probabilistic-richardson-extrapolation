@@ -206,6 +206,7 @@ class MujocoModel(Model):
 
         # Use model f_z(x) = f(z+x)
         self.use_offset_model = False
+        self.use_fixed_time = False
       
         # Set default camera parameters
         self.camera_position = np.array([2, -2, 1.5])
@@ -283,6 +284,128 @@ class MujocoModel(Model):
                 self.data.qvel[dofadr:dofadr+6] = np.array(user_vals[:6])
 
     def run_model_simulation(self, discrete_paras):
+        """
+        Uses MuJoCo (Multi-Joint dynamics with Contact) Python library to simulate scenario as given in XML setup file.
+        https://mujoco.readthedocs.io/
+
+        Parameters:  
+            discrete_paras : npt.NDArray     Discretisation parameters used to simulate model.           
+        Returns:
+            float   
+        """
+   
+        if self.use_fixed_time:
+            return self.run_model_simulation_fixed_time(discrete_paras)
+        else:
+            return self.run_model_simulation_resting(discrete_paras)
+
+    def run_model_simulation_fixed_time(self, discrete_paras):
+        """
+        Uses MuJoCo (Multi-Joint dynamics with Contact) Python library to simulate scenario as given in XML setup file.
+        https://mujoco.readthedocs.io/
+
+        Parameters:  
+            discrete_paras : npt.NDArray     Discretisation parameters used to simulate model.           
+        Returns:
+            float   
+        """
+   
+        # Set discretisation parameters
+        dt = discrete_paras[0]
+        solver_reference = discrete_paras[1]
+        solver_impedance = discrete_paras[2]
+
+        # Output info on what is being simulated
+        print(f"\tSimulating {self.description} with dt = {dt}, solver reference = {solver_reference} and solver impedance = {solver_impedance}")
+ 
+        # Setup model world
+        self.setup_model_world(dt, solver_reference, solver_impedance)
+
+        # Total time is used as an upper limit all objects should come to rest well before this
+        steps = int(self.total_time / self.model.opt.timestep)
+
+        # Set up if creating a video
+        if self.save_animation:
+            # Renderer
+            renderer = mujoco.Renderer(self.model, width=640, height=480)
+            self.frames = []
+            frame_interval = int(1.0 / (self.fps * self.model.opt.timestep))
+            if frame_interval == 0:
+                frame_interval = 1
+                print("Warning: frame interval too small, set a smaller time step!")
+
+        # Get all body IDs, only include bodies with joints (movable bodies)
+        body_ids = [i for i in range(self.model.nbody) if self.model.body_jntadr[i] != -1]
+      
+        for step in range(steps):
+            mujoco.mj_step(self.model, self.data)
+
+            # Save frames for video if creating one
+            if self.save_animation and step % frame_interval == 0:
+                renderer.update_scene(self.data, camera="angled_view")
+                frame = renderer.render()
+                self.frames.append(frame)
+
+        n_steps = int(np.floor(self.total_time / dt)) + 1
+
+        # Run simulation
+        for step in range(1, n_steps + 1):
+            mujoco.mj_step(self.model, self.data)
+
+            # Save frames for video if creating one
+            if self.save_animation and step % frame_interval == 0:
+                renderer.update_scene(self.data, camera="angled_view")
+                frame = renderer.render()
+                self.frames.append(frame)
+
+            # Record last two steps to interpolate distance at exact final time
+            if step == n_steps - 1:
+                distance_1 = self.distance_from_origin(body_ids[0])
+            elif step == n_steps:
+                distance_2 = self.distance_from_origin(body_ids[0])
+
+        # Linear interpolation to total_time
+        frac = (self.total_time - (dt * (n_steps - 1))) / dt
+        distance = distance_1 * (1 - frac) + distance_2 * frac
+        
+        print(f"\tCalculated final value: {distance}")
+        return distance
+    
+
+    def distance_from_origin(self, body_id: int) -> float:
+        """
+        Compute distance of a specified body from the origin.
+
+        Parameters:
+            body_id : int      Body index
+
+        Returns:
+            float              Distance from (0, 0)
+        """
+       
+        pos = self.data.xpos[body_id]  # world position of body
+        distance = np.linalg.norm(pos)
+       
+        return distance
+    
+    def total_distance_from_origin(self, body_ids: list[int]):
+        """
+        Compute total distance of specified bodys from the origin.
+
+        Parameters:
+            body_id : int      Body index
+
+        Returns:
+            float              Total distances from (0, 0)
+        """
+
+        total_distance = 0.0
+        for body_id in body_ids:         
+            total_distance += self.distance_from_origin(body_id)
+
+        return total_distance
+
+    def run_model_simulation_resting(self, discrete_paras):
         """
         Uses MuJoCo (Multi-Joint dynamics with Contact) Python library to simulate scenario as given in XML setup file.
         https://mujoco.readthedocs.io/
