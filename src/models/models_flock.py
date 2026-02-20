@@ -42,12 +42,13 @@ class VideoRecorder:
     """
 
     def __init__(
-        self, model, filename: str = "simulation.mp4", fps: int = 30,
+        self, model, filename: str = "simulation.mp4",
+        fps: int = 30,
         wrap_visualization: bool = False,
         initial_frame_png: str = "",
         final_frame_png: str = "",
         trail_length: int = 8,
-        trail_spacing: float = 0.2,
+        trail_spacing: float = 0.2
     ) -> None:
         """
         Initialise the video recorder.
@@ -102,7 +103,7 @@ class VideoRecorder:
         self.ax.set_aspect("equal")
         plt.xlabel(r"$x$")
         plt.ylabel(r"$y$")
-
+      
         # Create triangle patch for each agent
         for agent in self.model.agent_list:
             color = agent.color
@@ -305,18 +306,30 @@ class VideoRecorder:
         Save the initial frame.
         """
 
+        # Set title
+        self.ax.set_title(r"Flock Simulation, $t=0$")
+
         # Save final frame if requested
         if self.initial_frame_png != "":
             plt.savefig(self.initial_frame_png, dpi=300)
             print(f"Initial frame output to {self.initial_frame_png}")
+
+        # Set title back for video
+        self.ax.set_title("Flock Simulation")
     
-    def close(self) -> None:
+    def close(self, total_time : float) -> None:
         """
         Finalise video writing and optionally save the last frame.
+
+        Parameters:
+            total_time : float   Time to write in title of simulation plt
         """
 
         # Finish writing video
         self.writer.finish()
+
+        # Set title
+        self.ax.set_title(fr"Flock Simulation, $t={total_time}$")
 
         # Save final frame if requested
         if self.final_frame_png != "":
@@ -577,13 +590,16 @@ class FlockingModel(MesaModel):
         # Advance time in case we need it       
         self.sim_time += self.dt
 
-    def finalize(self) -> None:
+    def finalize(self, total_time : float) -> None:
         """
         Finalise model execution and close video writer if needed.
+
+        Parameters:
+            total_time : float    Time to write for title of simulation plot
         """
 
         if self.record_video:
-            self.video.close()
+            self.video.close(total_time)
 
     def total_distance_from_origin(self) -> float:
         """
@@ -746,7 +762,7 @@ class FlockModel(Model):
                 distance_2 = model.distance_from_origin(0)
 
         # Finalize model (close video if any)
-        model.finalize()
+        model.finalize(self.total_time)
 
         # Linear interpolation to total_time
         frac = (self.total_time - (dt * (n_steps - 1))) / dt

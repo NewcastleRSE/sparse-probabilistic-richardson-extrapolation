@@ -12,7 +12,7 @@
 "h_values":  [1],
 
   "final_mp4_filename": "flock1.mp4",
-  "final_model_plot_filename": "flock1.png",
+  "final_model_plot_filename": "flock1_5_seconds_no_trail.png",
   "initial_model_plot_filename": "flock1_start.png",
   "trail_length": 0
 }
