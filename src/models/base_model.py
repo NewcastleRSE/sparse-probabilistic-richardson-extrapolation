@@ -47,6 +47,7 @@ class Model:
         self.results_plot_filename = ""
         self.results_filename = ""
         self.results_plot_filename = ""
+        self.initial_model_plot_filename = ""
         self.final_model_plot_filename = ""
         self.final_mp4_filename = ""
         self.results_fx_filename = ""
@@ -130,6 +131,9 @@ class Model:
         if "evaluation" not in parameters.keys():
             self.evaluation = False
 
+        if "initial_model_plot_filename" not in parameters.keys():
+            self.initial_model_plot_filename = None
+
         if "final_model_plot_filename" not in parameters.keys():
             self.final_model_plot_filename = None
         
@@ -183,6 +187,7 @@ class Model:
 
         self.results_filename = self.add_path(results_dir, self.results_filename)
         self.results_plot_filename = self.add_path(results_dir, self.results_plot_filename)
+        self.initial_model_plot_filename = self.add_path(results_dir, self.initial_model_plot_filename)
         self.final_model_plot_filename = self.add_path(results_dir, self.final_model_plot_filename)
         self.final_mp4_filename = self.add_path(results_dir, self.final_mp4_filename)
         self.results_fx_filename = self.add_path(results_dir, self.results_fx_filename)

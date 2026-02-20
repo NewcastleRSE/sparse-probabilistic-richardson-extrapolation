@@ -15,6 +15,17 @@ import itertools
 import collections.abc
 from pathlib import Path
 
+# Use LaTeX fonts
+import matplotlib as mpl
+
+mpl.rcParams.update({
+    "text.usetex": True,
+    "font.family": "serif",
+    "font.serif": ["Computer Modern Roman"],
+    "axes.labelsize": 14,
+    "font.size": 14,
+    "legend.fontsize": 12,
+})
 
 def choose_h_column(df):
     """
@@ -110,7 +121,7 @@ def plot_spre_results(
     plt.xscale("log")
     if y_logscale:
         plt.yscale("log")
-    plt.xlabel("h")
+    plt.xlabel(r"$h$")
     plt.ylabel("estimate")
     plt.title(title)
     plt.legend()

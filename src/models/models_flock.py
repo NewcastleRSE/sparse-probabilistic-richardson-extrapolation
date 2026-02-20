@@ -14,12 +14,25 @@ import numpy.typing as npt
 import matplotlib.pyplot as plt
 from matplotlib.animation import FFMpegWriter
 from matplotlib.patches import Polygon, Circle
+from matplotlib.lines import Line2D
 from mesa import Agent
 from mesa import Model as MesaModel
 from mesa.space import ContinuousSpace
 
 # Application modules
 from models.base_model import Model
+
+# Use LaTeX fonts
+import matplotlib as mpl
+
+mpl.rcParams.update({
+    "text.usetex": True,
+    "font.family": "serif",
+    "font.serif": ["Computer Modern Roman"],
+    "axes.labelsize": 14,
+    "font.size": 14,
+    "legend.fontsize": 12,
+})
 
 # Video recorder helper class
 class VideoRecorder:
@@ -31,25 +44,47 @@ class VideoRecorder:
     def __init__(
         self, model, filename: str = "simulation.mp4", fps: int = 30,
         wrap_visualization: bool = False,
-        final_frame_png: str = ""
+        initial_frame_png: str = "",
+        final_frame_png: str = "",
+        trail_length: int = 8,
+        trail_spacing: float = 0.2,
     ) -> None:
         """
         Initialise the video recorder.
 
         Parameters:
-            model                  Simulation model instance
-            filename : str         Output video filename
-            fps : int              Frames per second
+            model                   Simulation model instance
+            filename : str          Output video filename
+            fps : int               Frames per second
             wrap_visualization : bool
-                                   Whether to visualise periodic boundary wrapping
-            final_frame_png : str  Optional filename for saving final frame as PNG
+                                    Whether to visualise periodic boundary wrapping
+            initial_frame_png : str Optional filename for saving initial frame as PNG
+            final_frame_png : str   Optional filename for saving final frame as PNG
+            trail_length : int      Trail length of agents, set to 0 for no trails
+            trail_spacing : float   Minimum physical distance between trail points
         """
 
         self.model = model
         self.filename = filename
         self.fps = fps
         self.wrap_visualization = wrap_visualization
+        self.initial_frame_png = initial_frame_png
         self.final_frame_png = final_frame_png
+
+        # Trails
+        self.show_trails = (trail_length > 0)
+        self.trail_length = trail_length
+
+        # Per-agent position history for trails
+        self.position_history = {agent.unique_id: [] for agent in model.agent_list}
+
+        # Per-agent trail line artists
+        self.trail_artists = {agent.unique_id: [] for agent in model.agent_list}
+
+        self.trail_spacing = trail_spacing
+        self.distance_since_last_sample = {
+            agent.unique_id: 0.0 for agent in model.agent_list
+        }
 
         self.fig, self.ax = plt.subplots()
         self.writer = FFMpegWriter(fps=fps)
@@ -65,8 +100,8 @@ class VideoRecorder:
         self.ax.set_ylim(0, self.model.space.height)
         self.ax.set_title("Flock Simulation")
         self.ax.set_aspect("equal")
-        plt.xlabel(r"$\it{x}$")
-        plt.ylabel(r"$\it{y}$")
+        plt.xlabel(r"$x$")
+        plt.ylabel(r"$y$")
 
         # Create triangle patch for each agent
         for agent in self.model.agent_list:
@@ -172,6 +207,91 @@ class VideoRecorder:
             # Store extra patches for cleanup after frame capture
             self.extra_patches = extra_patches
 
+        # -------------------
+        # Update agent trails
+        # -------------------
+        if self.show_trails:
+            for agent in self.model.agent_list:
+                # Draw wrapped short dashed segments
+                uid = agent.unique_id
+
+                history = self.position_history[uid]
+
+                # Update history
+                if len(history) == 0:
+                    history.append(agent.pos.copy())
+                else:
+                    last_pos = history[-1]
+
+                    dx = agent.pos[0] - last_pos[0]
+                    dy = agent.pos[1] - last_pos[1]
+
+                    # Minimum image correction
+                    W = self.model.space.width
+                    H = self.model.space.height
+
+                    if dx > W / 2:
+                        dx -= W
+                    elif dx < -W / 2:
+                        dx += W
+
+                    if dy > H / 2:
+                        dy -= H
+                    elif dy < -H / 2:
+                        dy += H
+
+                    distance = np.sqrt(dx**2 + dy**2)
+
+                    if distance >= self.trail_spacing:
+                        history.append(agent.pos.copy())
+
+                        if len(history) > self.trail_length:
+                            history.pop(0)
+
+                # Remove old trail segments
+                for line in self.trail_artists[uid]:
+                    line.remove()
+                self.trail_artists[uid].clear()
+
+                W = self.model.space.width
+                H = self.model.space.height
+
+                for i in range(1, len(history)):
+
+                    p0 = history[i - 1]
+                    p1 = history[i]
+
+                    dx = p1[0] - p0[0]
+                    dy = p1[1] - p0[1]
+
+                    # Minimum image convention (periodic wrapping)
+                    if dx > W / 2:
+                        dx -= W
+                    elif dx < -W / 2:
+                        dx += W
+
+                    if dy > H / 2:
+                        dy -= H
+                    elif dy < -H / 2:
+                        dy += H
+
+                    # Draw wrapped segment
+                    x_vals = [p0[0], p0[0] + dx]
+                    y_vals = [p0[1], p0[1] + dy]
+
+                    line = Line2D(
+                        x_vals,
+                        y_vals,
+                        color=agent.color,
+                        linestyle="--",
+                        linewidth=1.0,
+                        alpha=0.5,
+                        zorder=0,
+                    )
+
+                    self.ax.add_line(line)
+                    self.trail_artists[uid].append(line)
+                                
         # Write frame to video
         self.writer.grab_frame()
 
@@ -180,7 +300,16 @@ class VideoRecorder:
             for p in self.extra_patches:
                 p.remove()
 
+    def save_initial_frame(self) -> None:
+        """
+        Save the initial frame.
+        """
 
+        # Save final frame if requested
+        if self.initial_frame_png != "":
+            plt.savefig(self.initial_frame_png, dpi=300)
+            print(f"Initial frame output to {self.initial_frame_png}")
+    
     def close(self) -> None:
         """
         Finalise video writing and optionally save the last frame.
@@ -345,8 +474,8 @@ class FlockingModel(MesaModel):
         self,
         n_agents: int = 30,
         width: float = 10,
-        height: float = 10,
-        dt: float = 0.05,
+        height: float = 10,  
+        dt: float = 0.02,    
         interaction_radius: float = 2.0,
         repulsion_radius: float = 0.5,
         repulsion_softening: float = 0.01,
@@ -355,7 +484,9 @@ class FlockingModel(MesaModel):
         video_filename: str = "simulation.mp4",
         video_fps: int = 30,
         wrap_visualization: bool = False,
-        final_frame_png: str = ""
+        initial_frame_png: str = "",
+        final_frame_png: str = "",
+        trail_length : int = 0
     ) -> None:
         """
         Initialise the flocking model.
@@ -374,14 +505,16 @@ class FlockingModel(MesaModel):
             video_filename : str       Output video filename
             video_fps : int            Video frames per second
             wrap_visualization : bool  Show periodic boundary wrapping
+            initial_frame_png : str    Optional initial frame output filename
             final_frame_png : str      Optional final frame output filename
+            trail_length : int         Number of trails to show after agent
         """
 
         super().__init__()
 
-        # Time-stepping parameters
+        # Time-stepping parameters. self.time is used by Mesa parent class, so use self.sim_time instead.
         self.dt = dt
-        self.time = 0.0
+        self.sim_time = 0.0
 
         # Interaction parameters
         self.interaction_radius = interaction_radius
@@ -418,27 +551,31 @@ class FlockingModel(MesaModel):
                 video_filename,
                 video_fps,
                 wrap_visualization,
-                final_frame_png
+                initial_frame_png,
+                final_frame_png,
+                trail_length
             )
             self.video.setup()
 
 
     def step(self) -> None:
         """
-        Advance the model by one time step.
+        Advance the model by one time step.        
         """
-
+      
         # Update all agents
         for agent in self.agent_list:
             agent.step()
 
-        # Advance simulation clock
-        self.time += self.dt
-
         # Capture video frame if enabled
         if self.record_video:
             self.video.capture_frame()
+            # Save initial frame if filename set to do so
+            if self.sim_time == 0:
+                self.video.save_initial_frame()
 
+        # Advance time in case we need it       
+        self.sim_time += self.dt
 
     def finalize(self) -> None:
         """
@@ -447,7 +584,6 @@ class FlockingModel(MesaModel):
 
         if self.record_video:
             self.video.close()
-
 
     def total_distance_from_origin(self) -> float:
         """
@@ -511,8 +647,10 @@ class FlockModel(Model):
         self.cutoff_width = 0.05
 
         # Filenames for plotting / video output
+        self.initial_model_plot_filename = ""
         self.final_model_plot_filename = ""
         self.final_mp4_filename = ""
+        self.trail_length = 0
 
         # SPRE general parameters
         self.use_offset_model = False  # Whether to simulate f(z+x) for SPRE, so to use model f_z(x) = f(z+x)
@@ -589,13 +727,16 @@ class FlockModel(Model):
             wrap_visualization=True,
             video_filename=self.final_mp4_filename,
             video_fps=30,
-            final_frame_png=self.final_model_plot_filename
+            initial_frame_png=self.initial_model_plot_filename,
+            final_frame_png=self.final_model_plot_filename,
+            trail_length=self.trail_length
         )
 
         n_steps = int(np.floor(self.total_time / dt)) + 1
 
         # Run simulation
         for step in range(1, n_steps + 1):
+            
             model.step()
 
             # Record last two steps to interpolate distance at exact final time
