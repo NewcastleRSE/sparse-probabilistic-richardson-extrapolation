@@ -22,17 +22,8 @@ from mesa.space import ContinuousSpace
 # Application modules
 from models.base_model import Model
 
-# Use LaTeX fonts
+# To set LaTeX fonts later
 import matplotlib as mpl
-
-mpl.rcParams.update({
-    "text.usetex": True,
-    "font.family": "serif",
-    "font.serif": ["Computer Modern Roman"],
-    "axes.labelsize": 14,
-    "font.size": 14,
-    "legend.fontsize": 12,
-})
 
 # Video recorder helper class
 class VideoRecorder:
@@ -301,6 +292,20 @@ class VideoRecorder:
             for p in self.extra_patches:
                 p.remove()
 
+    def set_latex_fonts(self) -> None:
+        """
+        Set LaTeX fonts for use with plots.
+        """
+
+        mpl.rcParams.update({
+            "text.usetex": True,
+            "font.family": "serif",
+            "font.serif": ["Computer Modern Roman"],
+            "axes.labelsize": 14,
+            "font.size": 14,
+            "legend.fontsize": 12,
+        })
+        
     def save_initial_frame(self) -> None:
         """
         Save the initial frame.
@@ -311,6 +316,7 @@ class VideoRecorder:
 
         # Save final frame if requested
         if self.initial_frame_png != "":
+            self.set_latex_fonts()
             plt.savefig(self.initial_frame_png, dpi=300)
             print(f"Initial frame output to {self.initial_frame_png}")
 
@@ -333,6 +339,7 @@ class VideoRecorder:
 
         # Save final frame if requested
         if self.final_frame_png != "":
+            self.set_latex_fonts()
             plt.savefig(self.final_frame_png, dpi=300)
 
         # Close matplotlib figure

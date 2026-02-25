@@ -17,6 +17,10 @@ import matplotlib.pyplot as plt
 # Application modules
 from sparse_pre.extrapolation import extrapolation
 
+# For default fonts
+import matplotlib as mpl
+mpl.rcdefaults()
+
 class Model:
     """
     Base model class with common methods used for all model classes.

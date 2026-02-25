@@ -214,6 +214,16 @@ class MujocoModel(Model):
         self.camera_distance_scale = 0.5                
         self.fps = 60
 
+        # Default values for parameters if not set
+        self.dt = 0.01
+        self.solver_reference = 1e-6
+        self.solver_impedance = 1e-6 
+        
+        # Whether to use these discrete parameters
+        self.use_dt = True
+        self.use_solver_reference = True
+        self.use_solver_impedance = True
+     
         # Set initial model description       
         self.description = "MuJoCo Physics Model"
 
@@ -239,7 +249,7 @@ class MujocoModel(Model):
         Sets up world in MuJoCo to simulate model.
 
         Parameters:  
-            dt : float                 Timestap
+            dt : float                 Timestep          
             solver_reference : float   Reference dynamics for correcting constraint errors
             solver_impedance : float   Effective stiffness and softness of the constraint
         Returns:
@@ -283,7 +293,7 @@ class MujocoModel(Model):
             if user_vals is not None and len(user_vals) >= 6:
                 self.data.qvel[dofadr:dofadr+6] = np.array(user_vals[:6])
 
-    def run_model_simulation(self, discrete_paras):
+    def run_model_simulation(self, discrete_paras : npt.NDArray) -> float:
         """
         Uses MuJoCo (Multi-Joint dynamics with Contact) Python library to simulate scenario as given in XML setup file.
         https://mujoco.readthedocs.io/
@@ -299,6 +309,27 @@ class MujocoModel(Model):
         else:
             return self.run_model_simulation_resting(discrete_paras)
 
+    def get_discrete_parameter_value(self, discrete_paras : npt.NDArray, i : int, default_value : float, use_this_parameter : bool) -> tuple:
+        """
+        Set discrete parameter.
+
+        Parameters:  
+            discrete_paras : npt.NDArray     Discretisation parameters used to simulate model.  
+            i : int                          Index of discrete parameter to use
+            default_value : float            Default value if not using parameter value
+            use_this_parameter : bool        Whether to use this discrete parameter         
+        Returns:
+            float   
+        """
+         
+        if use_this_parameter:
+            val = discrete_paras[i]
+            i += 1
+        else:
+            val = default_value
+
+        return val, i
+
     def run_model_simulation_fixed_time(self, discrete_paras):
         """
         Uses MuJoCo (Multi-Joint dynamics with Contact) Python library to simulate scenario as given in XML setup file.
@@ -311,10 +342,13 @@ class MujocoModel(Model):
         """
    
         # Set discretisation parameters
-        dt = discrete_paras[0]
-        solver_reference = discrete_paras[1]
-        solver_impedance = discrete_paras[2]
-
+        # Assign parameter values from SPRE input
+        i = 0
+        dt, i = self.get_discrete_parameter_value(discrete_paras, i, self.dt, self.use_dt)
+        solver_reference, i = self.get_discrete_parameter_value(discrete_paras, i, self.solver_reference, self.use_solver_reference)
+        solver_impedance, i = self.get_discrete_parameter_value(discrete_paras, i, self.solver_impedance, self.use_solver_impedance)
+     
+       
         # Output info on what is being simulated
         print(f"\tSimulating {self.description} with dt = {dt}, solver reference = {solver_reference} and solver impedance = {solver_impedance}")
  
@@ -502,7 +536,10 @@ class MujocoModel(Model):
         """
       
         # Create filename with all settings and parameters used
-        filename = f"mp_{self.total_time}_{self.velocity_thresh}_{self.model_file[:-4]}_"
+        filename = f"mp_{self.total_time}_{self.model_file[:-4]}_"
+        
+        if not self.use_fixed_time:
+            filename += f"{self.velocity_thresh}_"
 
         if self.use_offset_model:
             filename += "_".join(str(i) for i in self.final_tols) + "_"

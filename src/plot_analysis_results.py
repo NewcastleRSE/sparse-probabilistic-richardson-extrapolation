@@ -42,6 +42,7 @@ def choose_h_column(df):
     else:
         raise ValueError("No valid h column found (expected 'h' or 'h1').")
 
+
 def plot_spre_results(  
     files: list[str],
     h_columns: list[str] = ["h"],
@@ -49,89 +50,145 @@ def plot_spre_results(
     true_value_filename: str = "",
     true_value: float = None,
     title: str = "Extrapolation Results",
-    y_logscale : bool = False,
-    x_lims : tuple = None,
-    y_lims : tuple = None,
+    y_logscale: bool = False,
+    x_lims: tuple = None,
+    y_lims: tuple = None,
+    zoom_first_n: int = 7,
     *args,
     **kwargs
 ) -> None:
-    """
-    Plot SPRE estimates (mu) vs discretization parameter h from one or more files,
-    with optional error bars if the file contains a 'var' column.
 
-    Parameters:
-        files : list[str]        Paths to SPRE result files (tab-separated)
-        h_columns : str          Name of the column containing h values (default "h")
-        labels : list[str]       Optional legend labels for each file
-        output_file : str        Filename for saving the plot
-        true_value_filename: str Filename containing true value
-        true_value : float       Optional horizontal line for the "true" value
-        title : str              Plot title
-        *args : tuple            Positional arguments passed to plt.plot (marker, linestyle, etc.)
-        **kwargs : dict          Keyword arguments passed to plt.plot (color, alpha, linewidth, etc.)
+    # Use current active axes
+    ax = plt.gca()
 
-    Returns:
-        None
-    """
-
-    # Set true value from file if given
+    # Optional true value from file
     if true_value_filename:
-        df = pd.read_csv(true_value_filename, sep="\t")
-        true_value = df['true_value'][0]
+        df_true = pd.read_csv(true_value_filename, sep="\t")
+        true_value = df_true["true_value"][0]
+
+    inset_data = []
 
     for file, h_col, label in zip(files, h_columns, labels):
-        # Read tab-separated SPRE results
+
         df = pd.read_csv(file, sep="\t")
 
-        # Check column exists
         if h_col not in df.columns:
-            raise ValueError(f"Column '{h_col}' not found in {file}. Available columns: {list(df.columns)}")
+            raise ValueError(
+                f"Column '{h_col}' not found in {file}. "
+                f"Available columns: {list(df.columns)}"
+            )
 
-        if x_lims is not None:          
-            # Redefine data to within this limit
-            x_vals = df[h_col]
-            mask = (x_vals >= x_lims[0]) & (x_vals <= x_lims[1])
-            df = df[mask]   
+        if x_lims is not None:
+            mask = (df[h_col] >= x_lims[0]) & (df[h_col] <= x_lims[1])
+            df = df[mask]
 
-        x_vals = df[h_col]
-        y_vals = df["mu"]
+        x_vals = df[h_col].values
+        y_vals = df["mu"].values
 
-        # Plot with optional error bars if 'var' exists
+        # Main plot
         if "var" in df.columns:
-            y_err = 2 * np.sqrt(df["var"]) # 2 std devs
-            plt.errorbar(
+            y_err = 2 * np.sqrt(df["var"].values)
+            ax.errorbar(
                 x_vals,
                 y_vals,
                 yerr=y_err,
-                fmt='o-',
+                fmt="o-",
                 capsize=5,
-                ecolor='black',
+                ecolor="black",
                 markersize=6,
-                label=label,                
+                label=label,
                 *args,
                 **kwargs
             )
         else:
-            plt.plot(x_vals, y_vals, 'o-', markersize=6, label=label, *args, **kwargs)
+            ax.plot(
+                x_vals,
+                y_vals,
+                "o-",
+                markersize=6,
+                label=label,
+                *args,
+                **kwargs
+            )
 
-    plt.xscale("log")
+        # Store first N smallest h values for inset
+        sort_idx = np.argsort(x_vals)
+
+        y_errs = (np.nan,)*zoom_first_n
+        if "var" in df.columns:
+            y_errs = (2 * np.sqrt(df["var"].values))[sort_idx][:zoom_first_n]
+      
+        inset_data.append((
+            x_vals[sort_idx][:zoom_first_n],
+            y_vals[sort_idx][:zoom_first_n],   
+            y_errs,         
+        ))
+ 
+    # Formatting main axes
+    ax.set_xscale("log")
     if y_logscale:
-        plt.yscale("log")
-    plt.xlabel(r"$h$")
-    plt.ylabel("estimate")
-    plt.title(title)
-    #plt.legend()
-    plt.grid(True, which="both", linestyle="--", alpha=0.4)
+        ax.set_yscale("log")
+
+    ax.set_xlabel(r"$h$")
+    ax.set_ylabel("estimate")
+    ax.set_title(title, pad=20)
+    ax.grid(True, which="both", linestyle="--", alpha=0.4)
 
     if y_lims is not None:
-        plt.ylim(y_lims)    
+        ax.set_ylim(y_lims)
 
-    # Optional horizontal line for true value
     if true_value is not None:
-        plt.axhline(y=true_value, color='red', linestyle='--', linewidth=1)
-        print(f"\nTrue value calculated as f(0) = {true_value}\n")
+        ax.axhline(y=true_value, color="red", linestyle="--", linewidth=1)
 
-  
+   
+    # Inset on the SAME axes
+    axins = inset_axes(
+        ax,
+        width="45%",       # slightly smaller
+        height="50%",
+        loc="lower left",
+        borderpad=3      # leave margin from parent axes edge
+    )
+
+    for x_zoom, y_zoom, y_err in inset_data:
+
+        if np.all(np.isfinite(y_err)):
+            axins.errorbar(
+                x_zoom,
+                y_zoom,
+                yerr=y_err,
+                fmt="o-",
+                capsize=4,
+                ecolor="black",
+                markersize=5,
+                *args,
+                **kwargs
+            )
+        else:
+            axins.plot(
+                x_zoom,
+                y_zoom,
+                "o-",
+                markersize=5,
+                *args,
+                **kwargs
+            )
+
+    axins.set_xscale("log")
+    if y_logscale:
+        axins.set_yscale("log")
+
+    if true_value is not None:
+        axins.axhline(y=true_value, color="red", linestyle="--", linewidth=1)
+
+    # Add internal padding so ticks/points aren't on the frame
+    axins.margins(x=0.08, y=0.10)
+
+    axins.grid(True, linestyle="--", alpha=0.3)
+
+    # Smaller tick labels for clarity
+    axins.tick_params(labelsize=8)
+
 
 def plot_multiple_spre_abs(
     files,
