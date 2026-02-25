@@ -37,7 +37,7 @@
   "evaluation": true,
   "use_offset_model": true,
   "use_fixed_time": true,
-  "use_model_cache": false,
+  "use_model_cache": true,
 
   "results_filename": "output_many_shapes_202.dat",
   "results_eval_filename": "output_many_shapes_abs_errors_eval_202.dat",
