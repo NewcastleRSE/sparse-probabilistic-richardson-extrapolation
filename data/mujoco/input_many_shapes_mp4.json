@@ -1,17 +1,16 @@
 {
   "model_name": "mujoco",
-  "model_file": "many_shapes.xml",
+  "model_file": "many_shapes2.xml",
   "description": "Many Shapes Colliding Model",
   "total_time": 6.0,
 
   "X": [
-    [0.01, 0.01, 0.01]
+    [2e-4, 0.02, 0.001]
 ],
 
 "h_values": [1],
 "use_fixed_time": true,
 
-  "final_tols": [0.01, 1e-6, 1e-6],
   "final_mp4_filename": "many_shapes.mp4",
   "camera_distance_scale": 0.4
 }
