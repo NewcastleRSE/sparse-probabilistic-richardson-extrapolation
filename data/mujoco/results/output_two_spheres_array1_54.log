@@ -1,13 +1,13 @@
-Wed 21 Jan 14:56:27 GMT 2026
-Running on compute034 model simulation for job 54 scenario 30
+Thu 26 Feb 12:59:55 GMT 2026
+Running on compute036 model simulation for job 54 scenario 300
 pybullet build time: Nov 28 2025 15:19:22
-Running model "Mujoco" with parameters [0.00063369 0.000874   0.0007455 ]
-	Simulating Two Spheres Colliding Model with dt = 0.0006346914062500001, solver reference = 0.001874 and solver impedance = 0.0017455
-	Stop time:  21.946359445312503
-[9.45836728e-11 5.19531469e-11 2.37195159e-18 4.15614198e-12
- 7.56649225e-12 7.44948414e-15]
-[9.79770215e-11 8.38525908e-11 1.02111919e-17 6.70803166e-12
- 7.83795519e-12 7.44880572e-15]
-	Calculated final value: 0.8666688313316129
-Wed 21 Jan 14:56:31 GMT 2026
-Total seconds: 4
+Traceback (most recent call last):
+  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/src/simulate_model.py", line 33, in <module>
+    model = get_model(parameter_filename, skip_true_value_calc = True)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/src/models/models_utils.py", line 32, in get_model
+    with open(parameter_filename) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'data/mujoco/input_two_spheres_300.json'
+Thu 26 Feb 13:00:04 GMT 2026
+Total seconds: 11

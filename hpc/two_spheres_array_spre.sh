@@ -6,7 +6,7 @@
 #SBATCH --account=comet_spread
 #SBATCH --mem=5GB
 #SBATCH --cpus-per-task=1
-#SBATCH --array=1-88                       # Run tasks 
+#SBATCH --array=1-98                       # Run tasks 
 #SBATCH --output=data/mujoco/results/output_two_spheres_array1_%a.log
 
 
