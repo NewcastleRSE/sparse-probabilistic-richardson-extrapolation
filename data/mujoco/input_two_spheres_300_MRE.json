@@ -39,7 +39,7 @@
   "use_fixed_time": true,
   "use_model_cache": true,
 
-  "results_filename": "output_two_spheres_30_MRE.dat",
+  "results_filename": "output_two_spheres_300_MRE.dat",
   "results_eval_filename": "output_two_spheres_abs_errors_eval_300_MRE.dat",
   "results_fx_filename": "output_two_spheres_fx_eval_300_MRE.dat",
   "results_eval_plot_filename": "output_two_spheres_abs_errors_eval_300_MRE.png",

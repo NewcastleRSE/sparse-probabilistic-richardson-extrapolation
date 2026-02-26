@@ -49,5 +49,5 @@
   "final_mp4_filenamed": "",
   
   "extrapolation_name": "SPRE",
-  "extrapolation_kernel": "Matern32"
+  "extrapolation_kernel": "Matern3/2"
 }
