@@ -53,6 +53,7 @@ def plot_spre_results(
     y_logscale: bool = False,
     x_lims: tuple = None,
     y_lims: tuple = None,
+    pos_inset = "lower left",
     zoom_first_n: int = 7,
     *args,
     **kwargs
@@ -140,54 +141,54 @@ def plot_spre_results(
     if true_value is not None:
         ax.axhline(y=true_value, color="red", linestyle="--", linewidth=1)
 
-   
-    # Inset on the SAME axes
-    axins = inset_axes(
-        ax,
-        width="45%",       # slightly smaller
-        height="50%",
-        loc="lower left",
-        borderpad=3      # leave margin from parent axes edge
-    )
+    if pos_inset is not None:
+        # Inset on the SAME axes
+        axins = inset_axes(
+            ax,
+            width="45%",       # slightly smaller
+            height="50%",
+            loc=pos_inset,
+            borderpad=3      # leave margin from parent axes edge
+        )
 
-    for x_zoom, y_zoom, y_err in inset_data:
+        for x_zoom, y_zoom, y_err in inset_data:
 
-        if np.all(np.isfinite(y_err)):
-            axins.errorbar(
-                x_zoom,
-                y_zoom,
-                yerr=y_err,
-                fmt="o-",
-                capsize=4,
-                ecolor="black",
-                markersize=5,
-                *args,
-                **kwargs
-            )
-        else:
-            axins.plot(
-                x_zoom,
-                y_zoom,
-                "o-",
-                markersize=5,
-                *args,
-                **kwargs
-            )
+            if np.all(np.isfinite(y_err)):
+                axins.errorbar(
+                    x_zoom,
+                    y_zoom,
+                    yerr=y_err,
+                    fmt="o-",
+                    capsize=4,
+                    ecolor="black",
+                    markersize=5,
+                    *args,
+                    **kwargs
+                )
+            else:
+                axins.plot(
+                    x_zoom,
+                    y_zoom,
+                    "o-",
+                    markersize=5,
+                    *args,
+                    **kwargs
+                )
 
-    axins.set_xscale("log")
-    if y_logscale:
-        axins.set_yscale("log")
+        axins.set_xscale("log")
+        if y_logscale:
+            axins.set_yscale("log")
 
-    if true_value is not None:
-        axins.axhline(y=true_value, color="red", linestyle="--", linewidth=1)
+        if true_value is not None:
+            axins.axhline(y=true_value, color="red", linestyle="--", linewidth=1)
 
-    # Add internal padding so ticks/points aren't on the frame
-    axins.margins(x=0.08, y=0.10)
+        # Add internal padding so ticks/points aren't on the frame
+        axins.margins(x=0.08, y=0.10)
 
-    axins.grid(True, linestyle="--", alpha=0.3)
+        axins.grid(True, linestyle="--", alpha=0.3)
 
-    # Smaller tick labels for clarity
-    axins.tick_params(labelsize=8)
+        # Smaller tick labels for clarity
+        axins.tick_params(labelsize=8)
 
 
 def plot_multiple_spre_abs(
@@ -199,6 +200,8 @@ def plot_multiple_spre_abs(
     show_plot = True, 
     plot_raw_estimates = False,  
     marker=None,
+    x_lims: tuple = None,
+    y_lims: tuple = None,
     *args,           # Positional arguments for plt.plot (like marker, linestyle)
     **kwargs         # Keyword arguments for plt.plot (like color, alpha, linewidth)
 ):
@@ -253,6 +256,10 @@ def plot_multiple_spre_abs(
         else:
             m = marker  # fixed value
 
+        if x_lims is not None:
+            mask = (df[h_col] >= x_lims[0]) & (df[h_col] <= x_lims[1])
+            df = df[mask]
+
         x_vals = df[h_col]
         y_vals = df["abs_err_spre_estimate"]
 
@@ -269,6 +276,10 @@ def plot_multiple_spre_abs(
     if plot_raw_estimates:
         df = pd.read_csv(files[0], sep="\t")
       
+        if x_lims is not None:
+            mask = (df[h_col] >= x_lims[0]) & (df[h_col] <= x_lims[1])
+            df = df[mask]
+
         i = 0
         while f"abs_err_estimate_{i+1}" in list(df):
             plt.plot(
@@ -289,6 +300,13 @@ def plot_multiple_spre_abs(
     plt.ylabel("absolute error")
     plt.title(title)
     plt.grid(True, which="both", linestyle="--", alpha=0.4)
+    
+    # Get current active axis
+    ax = plt.gca()
+
+    if y_lims is not None:
+        ax.set_ylim(y_lims)
+
     plt.legend()
     plt.tight_layout()
     plt.savefig(output_file)
@@ -343,9 +361,8 @@ if __name__ == "__main__":
 
     print(f"Three flock simulation plots saved to {output_file}")
   
-
-    # Plot error bar plot
-   
+    ###################################
+    # Plot error bar plot 
     for seed in [1]:
         plt.close("all")
   
@@ -381,7 +398,8 @@ if __name__ == "__main__":
         if show_plot:
             plt.show()
 
-    # Compare different methods
+    ###################################
+    # Compare different methods for flock scenario 321
     for seed in [1]:
         seed_str = str(seed)
         if seed == 1:
@@ -406,3 +424,83 @@ if __name__ == "__main__":
                 linewidth=2,
                 markersize=10,
                 show_plot=show_plot)
+        
+    ###################################
+    # Compare different methods for Two Spheres scenario 300
+    files = [
+        f"data/mujoco/results/output_two_spheres_abs_errors_eval_300.dat",
+        f"data/mujoco/results/output_two_spheres_abs_errors_eval_300_Gaussian.dat",            
+        f"data/mujoco/results/output_two_spheres_abs_errors_eval_300_Matern12.dat",
+        f"data/mujoco/results/output_two_spheres_abs_errors_eval_300_Matern32.dat",
+        f"data/mujoco/results/output_two_spheres_abs_errors_eval_300_MRE.dat",
+       # f"data/mujoco/results/output_two_spheres_abs_errors_eval_300_GRE.dat",
+    ]
+
+    h_columns = ["h"] * len(files)
+
+    labels = ["SPRE White", "SPRE Gaussian", r"SPRE Mat\'{e}rn-$\frac{1}{2}$", r"SPRE Mat\'{e}rn-$\frac{3}{2}$", "MRE"]#, "GRE White"]
+    title = None #"Absolute Errors of Estimates"
+    markers = itertools.cycle(('o', 's', 'v', '^', '+', 'x', '*'))
+    plot_multiple_spre_abs(files, h_columns, labels, f"data/plots/spre_two_spheres_abs_errors.png", plot_raw_estimates=True, title=title,     
+            marker=markers,
+            linewidth=2,
+            markersize=10,
+            show_plot=show_plot,
+            x_lims=(1e-16, 1e-8))
+    
+    ###################################
+    # Compare different methods for Many Shapes scenario 203
+    files = [
+        f"data/mujoco/results/output_many_shapes_abs_errors_eval_203.dat",
+        f"data/mujoco/results/output_many_shapes_abs_errors_eval_203_Gaussian.dat",            
+        f"data/mujoco/results/output_many_shapes_abs_errors_eval_203_Matern12.dat",
+        f"data/mujoco/results/output_many_shapes_abs_errors_eval_203_Matern32.dat",
+        f"data/mujoco/results/output_many_shapes_abs_errors_eval_203_MRE.dat",
+        #f"data/mujoco/results/output_many_shapes_abs_errors_eval_203_GRE.dat",
+    ]
+
+    h_columns = ["h"] * len(files)
+
+    labels = ["SPRE White", "SPRE Gaussian", r"SPRE Mat\'{e}rn-$\frac{1}{2}$", r"SPRE Mat\'{e}rn-$\frac{3}{2}$", "MRE"]#, "GRE White"]
+    title = None #"Absolute Errors of Estimates"
+    markers = itertools.cycle(('o', 's', 'v', '^', '+', 'x', '*'))
+    plot_multiple_spre_abs(files, h_columns, labels, f"data/plots/spre_many_shapes_abs_errors.png", plot_raw_estimates=True, title=title,     
+            marker=markers,
+            linewidth=2,
+            markersize=10,
+            show_plot=show_plot,
+            x_lims=(1e-16, 1e-8))
+    
+    ###################################
+    # Plot error bar plot
+    for model, scenario, pos_inset in zip(["two_spheres", "many_shapes"], [300, 203], ["upper left", "upper left"]):
+        plt.close("all")
+
+        # Create a subplot
+        fig, axes = plt.subplots(2, 2, figsize=(12, 8))
+
+        labels = ["SPRE White", "SPRE Gaussian",  r"SPRE Mat\'{e}rn-$\frac{1}{2}$", r"SPRE Mat\'{e}rn-$\frac{3}{2}$", "MRE"]
+        methods = ["", "_Gaussian", "_Matern12", "_Matern32", "_MRE"]
+
+        for plot_num, method, label in zip(range(1, 5), methods, labels):
+            files = [f"data/mujoco/results/output_{model}_{scenario}{method}.dat"]
+            true_val_file = f"data/mujoco/results/output_{model}_abs_errors_eval_{scenario}{method}.dat"
+            h_columns = ["h"]           
+
+            plt.subplot(2, 2, plot_num)
+
+            plot_spre_results(files=files,
+                            true_value_filename=true_val_file,
+                            h_columns=h_columns,
+                            #labels=[label],
+                            #y_logscale=True,
+                            title=label,                            
+                            x_lims=(1e-16, 1e-11),
+                            pos_inset=pos_inset)
+
+        plt.tight_layout()
+        output_file=f"data/plots/spre_{model}_error_bars.png"
+        plt.savefig(output_file)
+
+        if show_plot:
+            plt.show()
