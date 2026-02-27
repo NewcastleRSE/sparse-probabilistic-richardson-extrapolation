@@ -24,13 +24,13 @@
   "evaluation": true,
   "use_offset_model": true,
  
-  "results_filename": "output_diffusion_37.dat",
-  "results_eval_filename": "output_diffusion_abs_errors_eval_37.dat",
-  "results_eval_plot_filename": "output_diffusion_abs_errors_eval_37.png",
-  "results_plot_filename": "output_diffusion_37.png",
+  "results_filename": "output_diffusion_100.dat",
+  "results_eval_filename": "output_diffusion_abs_errors_eval_100.dat",
+  "results_eval_plot_filename": "output_diffusion_abs_errors_eval_100.png",
+  "results_plot_filename": "output_diffusion_100.png",
   "final_model_plot_filename": "",
   "final_mp4_filename": "",
-  "results_fx_filename": "output_diffusion_fx_eval_37.dat",
+  "results_fx_filename": "output_diffusion_fx_eval_100.dat",
   "extrapolation_name": "SPRE",
   "extrapolation_kernel": "white"
 }
