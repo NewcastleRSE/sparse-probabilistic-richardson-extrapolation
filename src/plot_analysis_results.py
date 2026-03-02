@@ -433,12 +433,12 @@ if __name__ == "__main__":
         f"data/mujoco/results/output_two_spheres_abs_errors_eval_300_Matern12.dat",
         f"data/mujoco/results/output_two_spheres_abs_errors_eval_300_Matern32.dat",
         f"data/mujoco/results/output_two_spheres_abs_errors_eval_300_MRE.dat",
-       # f"data/mujoco/results/output_two_spheres_abs_errors_eval_300_GRE.dat",
+        f"data/mujoco/results/output_two_spheres_abs_errors_eval_300_GRE.dat",
     ]
 
     h_columns = ["h"] * len(files)
 
-    labels = ["SPRE White", "SPRE Gaussian", r"SPRE Mat\'{e}rn-$\frac{1}{2}$", r"SPRE Mat\'{e}rn-$\frac{3}{2}$", "MRE"]#, "GRE White"]
+    labels = ["SPRE White", "SPRE Gaussian", r"SPRE Mat\'{e}rn-$\frac{1}{2}$", r"SPRE Mat\'{e}rn-$\frac{3}{2}$", "MRE", "GRE White"]
     title = None #"Absolute Errors of Estimates"
     markers = itertools.cycle(('o', 's', 'v', '^', '+', 'x', '*'))
     plot_multiple_spre_abs(files, h_columns, labels, f"data/plots/spre_two_spheres_abs_errors.png", plot_raw_estimates=True, title=title,     
@@ -456,12 +456,12 @@ if __name__ == "__main__":
         f"data/mujoco/results/output_many_shapes_abs_errors_eval_203_Matern12.dat",
         f"data/mujoco/results/output_many_shapes_abs_errors_eval_203_Matern32.dat",
         f"data/mujoco/results/output_many_shapes_abs_errors_eval_203_MRE.dat",
-        #f"data/mujoco/results/output_many_shapes_abs_errors_eval_203_GRE.dat",
+        f"data/mujoco/results/output_many_shapes_abs_errors_eval_203_GRE.dat",
     ]
 
     h_columns = ["h"] * len(files)
 
-    labels = ["SPRE White", "SPRE Gaussian", r"SPRE Mat\'{e}rn-$\frac{1}{2}$", r"SPRE Mat\'{e}rn-$\frac{3}{2}$", "MRE"]#, "GRE White"]
+    labels = ["SPRE White", "SPRE Gaussian", r"SPRE Mat\'{e}rn-$\frac{1}{2}$", r"SPRE Mat\'{e}rn-$\frac{3}{2}$", "MRE", "GRE White"]
     title = None #"Absolute Errors of Estimates"
     markers = itertools.cycle(('o', 's', 'v', '^', '+', 'x', '*'))
     plot_multiple_spre_abs(files, h_columns, labels, f"data/plots/spre_many_shapes_abs_errors.png", plot_raw_estimates=True, title=title,     
