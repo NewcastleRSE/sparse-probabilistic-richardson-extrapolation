@@ -165,33 +165,30 @@ class PhysicsMugModel(Model):
         # Output info on what is being simulated
         print(f"\tSimulating {self.description} with dt = {dt}, {substeps} substeps and {solver_iters} solver iterations")
  
-        # Initial time counter and stationary counter
-        sim_time = 0.0
-        stationary_count = 0
+        # Number of steps required for simulation
+        n_steps = int(np.floor(self.total_time / dt)) + 1
 
-        # Run the simulation
-        while sim_time < self.total_time:
+        # Run simulation
+        for step in range(1, n_steps + 1):
             # One step of simulation
             pybullet.stepSimulation()
-            sim_time += dt   
-            #if sim_time > 550:         
-            #    print(sim_time) 
-            # Now stop if the mug (or object) is stationary
-            if self.is_body_at_rest(mug, False):
-                stationary_count += 1
-                if stationary_count >= self.steps_required_to_stop:                    
-                    break
-            else:
-                stationary_count = 0
 
-        print("\tEnd time:", sim_time)
+            # Record last two steps to interpolate distance at exact final time
+            if step == n_steps - 1:
+                # Get final position and orientation of mug
+                pos, orn = pybullet.getBasePositionAndOrientation(mug)
+                # Get distance of mug from origin
+                distance_1 = np.sqrt(pos[0]**2 + pos[1]**2 + pos[2]**2)
+            elif step == n_steps:
+                # Get final position and orientation of mug
+                pos, orn = pybullet.getBasePositionAndOrientation(mug)
+                # Get distance of mug from origin
+                distance_2 = np.sqrt(pos[0]**2 + pos[1]**2 + pos[2]**2)
 
-        # Get final position and orientation of mug
-        pos, orn = pybullet.getBasePositionAndOrientation(mug)
+        # Linear interpolation to total_time
+        frac = (self.total_time - (dt * (n_steps - 1))) / dt
+        distance = distance_1 * (1 - frac) + distance_2 * frac
 
-        # Get distance of mug from origin
-        dist = np.sqrt(pos[0]**2 + pos[1]**2 + pos[2]**2)
-       
         # End simulation
         pybullet.disconnect()
 
@@ -199,8 +196,8 @@ class PhysicsMugModel(Model):
         if self.save_animation:
             self.record_mp4()
 
-        print(f"\tCalculated final value: {dist}")
-        return dist
+        print(f"\tCalculated final value: {distance}")
+        return distance
 
     def plot_final_model(self):
         """
