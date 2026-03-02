@@ -1,0 +1,8 @@
+Mon  2 Mar 15:43:54 GMT 2026
+Running on compute032 model simulation for job 2 scenario 200
+pybullet build time: Nov 28 2025 15:19:22
+Running model "Diffusion" with parameters [3.32178729e-16 5.54223334e-16 1.66444636e-15]
+	Simulating Diffusion Model with dt = 0.00010000000000033218, 36 x partitions and 36 y partitions
+	Calculated final value: 0.018021918384003827
+Mon  2 Mar 15:44:10 GMT 2026
+Total seconds: 16
