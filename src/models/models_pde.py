@@ -29,6 +29,9 @@ class DiffusionModel(Model):
             None         
         """
          
+        # End position to evaluate diffusion model
+        self.end_pos = [0, 0]
+
         # Call Parent’s constructor to set parameters
         super().__init__(params, parameter_filename)
 
@@ -52,8 +55,8 @@ class DiffusionModel(Model):
         """
 
         dt = discrete_paras[0]
-        num_x_partitions = int(np.round(abs(self.x_range[1] - self.x_range[0])/discrete_paras[1]))
-        num_y_partitions = int(np.round(abs(self.y_range[1] - self.y_range[0])/discrete_paras[2]))
+        num_x_partitions = int(np.round(abs(self.x_range[1] - self.x_range[0])/np.sqrt(discrete_paras[1])))
+        num_y_partitions = int(np.round(abs(self.y_range[1] - self.y_range[0])/np.sqrt(discrete_paras[2])))
         
         # Output info on what is being simulated
         print(f"\tSimulating Diffusion Model with dt = {dt}, {num_x_partitions} x partitions and {num_y_partitions} y partitions")
@@ -153,13 +156,14 @@ class DiffusionModel(Model):
         # Create filename with all settings and parameters used
         filename = f"d_{self.diffusivity}_{self.x_range[0]}_{self.x_range[1]}_{self.y_range[0]}_{self.y_range[1]}_{self.total_time}"
         filename += f"_{self.start_pos[0]}_{self.start_pos[1]}_{self.start_amount}_"
+        filename += f"_{self.end_pos[0]}_{self.end_pos[1]}_{self.start_amount}_"
         filename += "_".join(str(i) for i in discrete_paras) + ".bin"
 
         return filename
     
-    def set_true_value(self):
+    #def set_true_value(self):
         """
-        Sets the "true_value" of the Chem Equil model using analytic solution.
+        Sets the "true_value" of the diffusion model using analytic solution.
         
         Parameters:  
             None
@@ -168,7 +172,7 @@ class DiffusionModel(Model):
         """
 
         # Get value at (0, 0) using analytic solution.
-        self.true_value = self.diffusion_solution_2d(0, 0, self.total_time) 
+    #    self.true_value = self.diffusion_solution_2d(0, 0, self.total_time) 
 
     def get_final_quantity(self, discrete_paras : npt.NDArray) -> float:
         """
@@ -181,7 +185,8 @@ class DiffusionModel(Model):
         """
 
         # Return value at (0,0) from simulated model.      
-        return self.result.interpolate([0, 0])  
+        #return self.result.interpolate([0, 0])
+        return self.result.interpolate(self.end_pos)    
     
     def diffusion_solution_2d(self, x : float, y : float, t : float) -> float:
         """
