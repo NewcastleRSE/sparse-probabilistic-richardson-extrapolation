@@ -55,8 +55,8 @@ class DiffusionModel(Model):
         """
 
         dt = discrete_paras[0]
-        num_x_partitions = int(np.round(abs(self.x_range[1] - self.x_range[0])/np.sqrt(discrete_paras[1])))
-        num_y_partitions = int(np.round(abs(self.y_range[1] - self.y_range[0])/np.sqrt(discrete_paras[2])))
+        num_x_partitions = int(np.round(abs(self.x_range[1] - self.x_range[0])/discrete_paras[1]))
+        num_y_partitions = int(np.round(abs(self.y_range[1] - self.y_range[0])/discrete_paras[2]))
         
         # Output info on what is being simulated
         print(f"\tSimulating Diffusion Model with dt = {dt}, {num_x_partitions} x partitions and {num_y_partitions} y partitions")
