@@ -2,7 +2,7 @@
 #
 # Submit with: sbatch hpc/ball_array_spre <scenario_number>
 #
-#SBATCH --partition=default_free
+#SBATCH --partition=long_free
 #SBATCH --account=comet_spread
 #SBATCH --mem=5GB
 #SBATCH --cpus-per-task=1
