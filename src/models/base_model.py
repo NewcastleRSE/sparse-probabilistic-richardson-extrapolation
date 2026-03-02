@@ -498,16 +498,13 @@ class Model:
         """
         Simulates model for the set up parameters for the ith 
         discretisation parameters given by X and h arrays. The simulation outcome will then
-        be added to the cache which can be used in subsequent analyses.
+        be added to the cache which can be used in subsequent analyses - if the cache is set for use.
    
         Parameters:  
             sim_number : int
         Returns:
             None                
         """
-
-        # Ensure the cache is not used 
-        self.use_model_cache = False
 
         # Values to try
         X = np.array(self.X)
