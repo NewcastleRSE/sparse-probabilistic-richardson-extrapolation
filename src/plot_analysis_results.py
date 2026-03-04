@@ -17,6 +17,7 @@ import collections.abc
 from pathlib import Path
 from PIL import Image
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
+from matplotlib.gridspec import GridSpec
 
 # Use LaTeX fonts
 import matplotlib as mpl
@@ -365,7 +366,7 @@ def plot_three_images_together(files, output_file, show_plot = True, crop = (0.1
     print(f"Three plots saved to {output_file}")
   
    
-def plot_basis_file(filename, output_file, title = "", show_plot = False, *args, **kwargs):  
+def plot_basis_file(filename, output_file, title = "", show_bar = True, show_plot = False, *args, **kwargs):  
     """
     Reads the file and plots a scatter plot of basis elements
 
@@ -463,7 +464,24 @@ def plot_basis_file(filename, output_file, title = "", show_plot = False, *args,
     # -----------------------
     # Plot
     # -----------------------
-    plt.figure(figsize=(14, 8))
+    if show_bar:
+        fig = plt.figure(figsize=(14, 9))
+        gs = GridSpec(2, 1, height_ratios=[6, 1], hspace=0.02)
+
+        # Top: scatter
+        ax = fig.add_subplot(gs[0])
+
+        # Bottom: bar (shares x)
+        ax_bar = fig.add_subplot(gs[1], sharex=ax)
+
+        # Hide x tick labels on scatter
+        ax.tick_params(axis='x', which='both', bottom=False, labelbottom=False)
+
+        # Add space at bottom
+        fig.subplots_adjust(bottom=0.25)
+
+    else:
+        fig, ax = plt.subplots(figsize=(14, 8))
 
     # Create list of colours
     cmap = plt.get_cmap("tab20")
@@ -471,19 +489,34 @@ def plot_basis_file(filename, output_file, title = "", show_plot = False, *args,
 
     # Faint horizontal guide lines
     for y in range(num_rows):
-        plt.axhline(y=y, color='gray', linestyle="--", alpha=0.4, linewidth=0.8)
+        ax.axhline(y=y, color='gray', linestyle="--", alpha=0.4, linewidth=0.8)
 
     # Single fast scatter call
-    plt.scatter(x_indices, y_indices, s=60, facecolor=colors, edgecolor='dimgray', zorder=2, *args, **kwargs)
+    ax.scatter(x_indices, y_indices, s=60, facecolor=colors, edgecolor='dimgray', zorder=2, *args, **kwargs)
 
-    plt.xticks(range(num_cols), formatted_h, rotation=90)
-    plt.yticks(range(num_rows), row_labels)
+    ax.set_xticks(range(num_cols))
+    ax.set_xticklabels(formatted_h, rotation=90)
+    ax.set_yticks(range(num_rows), row_labels)
 
-    plt.xlabel(r"$h$")
-    plt.ylabel("Basis elements")
-    plt.title(title)
+    ax.set_xlabel(r"$h$")
+    ax.set_ylabel("Basis elements")
+    ax.set_title(title)
 
-    plt.gca().invert_yaxis()
+    ax.invert_yaxis()
+
+    # -----------------------
+    # Optional bar plot
+    # -----------------------
+    if show_bar:
+        # Count basis size per h
+        basis_counts = matrix.sum(axis=0)
+        ax_bar.bar(range(num_cols), basis_counts, width=0.6)
+        ax_bar.set_ylabel("Count")
+        #ax_bar.tick_params(axis='x', which='both', bottom=False, labelbottom=False)
+        ax_bar.set_xticks(range(num_cols))
+        ax_bar.set_xticklabels(formatted_h, rotation=90)
+        ax_bar.set_xlim(-0.5, num_cols - 0.5)
+
     plt.tight_layout()
 
     plt.savefig(output_file)
@@ -519,6 +552,29 @@ if __name__ == "__main__":
     output_file = "data/plots/flock_sim_3_timepoints_all_trails.png"
 
     plot_three_images_together(files, output_file, show_plot)
+
+    # Plot two spheres plot
+    crops = (0, 0, 1, 1) # Left, Top, Right, Bottom
+    files = [
+            "data/mujoco/results/two_spheres_time0.png",
+            "data/mujoco/results/two_spheres_time0.3.png",
+            "data/mujoco/results/two_spheres_time5.png"
+        ]
+    
+    output_file = "data/plots/flock_sim_3_timepoints_two_spheres.png"
+
+    plot_three_images_together(files, output_file, show_plot, crops)
+
+    # Plot five shapes plot
+    files = [
+            "data/mujoco/results/many_shapes_time0.png",
+            "data/mujoco/results/many_shapes_time0.3.png",
+            "data/mujoco/results/many_shapes_time5.png"
+        ]
+    
+    output_file = "data/plots/flock_sim_3_timepoints_many_shapes.png"
+
+    plot_three_images_together(files, output_file, show_plot, crops)
 
     ###################################
     # Plot error bar plot 
@@ -666,18 +722,19 @@ if __name__ == "__main__":
 
     ###############################################
     # Plot bases plots
-    plot_basis_file("data/mujoco/results/output_two_spheres_bases_300.dat", "data/plots/spre_two_spheres_bases_plot_white.png", "Two Spheres, Basis Elements for SPRE White", show_plot)
-    plot_basis_file("data/mujoco/results/output_two_spheres_bases_300_Gaussian.dat", "data/plots/spre_two_spheres_bases_plot_gaussian.png", "Two Spheres, Basis Elements for SPRE Gaussian", show_plot)
-    plot_basis_file("data/mujoco/results/output_two_spheres_bases_300_Matern12.dat", "data/plots/spre_two_spheres_bases_plot_matern12.png", r"Two Spheres, Basis Elements for SPRE Mat\'{e}rn-$\frac{1}{2}$", show_plot)
-    plot_basis_file("data/mujoco/results/output_two_spheres_bases_300_Matern32.dat", "data/plots/spre_two_spheres_bases_plot_matern32.png", r"Two Spheres, Basis Elements for SPRE Mat\'{e}rn-$\frac{3}{2}$", show_plot)
+    show_bar = True
+    plot_basis_file("data/mujoco/results/output_two_spheres_bases_300.dat", "data/plots/spre_two_spheres_bases_plot_white.png", "Two Spheres, Basis Elements for SPRE White", show_bar, show_plot)
+    plot_basis_file("data/mujoco/results/output_two_spheres_bases_300_Gaussian.dat", "data/plots/spre_two_spheres_bases_plot_gaussian.png", "Two Spheres, Basis Elements for SPRE Gaussian", show_bar, show_plot)
+    plot_basis_file("data/mujoco/results/output_two_spheres_bases_300_Matern12.dat", "data/plots/spre_two_spheres_bases_plot_matern12.png", r"Two Spheres, Basis Elements for SPRE Mat\'{e}rn-$\frac{1}{2}$", show_bar, show_plot)
+    plot_basis_file("data/mujoco/results/output_two_spheres_bases_300_Matern32.dat", "data/plots/spre_two_spheres_bases_plot_matern32.png", r"Two Spheres, Basis Elements for SPRE Mat\'{e}rn-$\frac{3}{2}$", show_bar, show_plot)
 
-    plot_basis_file("data/mujoco/results/output_many_shapes_bases_203.dat", "data/plots/spre_many_shapes_bases_plot_white.png", "Five Shapes, Basis Elements for SPRE White", show_plot)
-    plot_basis_file("data/mujoco/results/output_many_shapes_bases_203_Gaussian.dat", "data/plots/spre_many_shapes_bases_plot_gaussian.png", "Five Shapes, Basis Elements for SPRE Gaussian", show_plot)
-    plot_basis_file("data/mujoco/results/output_many_shapes_bases_203_Matern12.dat", "data/plots/spre_many_shapes_bases_plot_matern12.png", r"Five Shapes, Basis Elements for SPRE Mat\'{e}rn-$\frac{1}{2}$", show_plot)
-    plot_basis_file("data/mujoco/results/output_many_shapes_bases_203_Matern32.dat", "data/plots/spre_many_shapes_bases_plot_matern32.png", r"Five Shapes, Basis Elements for SPRE Mat\'{e}rn-$\frac{3}{2}$", show_plot)
+    plot_basis_file("data/mujoco/results/output_many_shapes_bases_203.dat", "data/plots/spre_many_shapes_bases_plot_white.png", "Five Shapes, Basis Elements for SPRE White", show_bar, show_plot)
+    plot_basis_file("data/mujoco/results/output_many_shapes_bases_203_Gaussian.dat", "data/plots/spre_many_shapes_bases_plot_gaussian.png", "Five Shapes, Basis Elements for SPRE Gaussian", show_bar, show_plot)
+    plot_basis_file("data/mujoco/results/output_many_shapes_bases_203_Matern12.dat", "data/plots/spre_many_shapes_bases_plot_matern12.png", r"Five Shapes, Basis Elements for SPRE Mat\'{e}rn-$\frac{1}{2}$", show_bar, show_plot)
+    plot_basis_file("data/mujoco/results/output_many_shapes_bases_203_Matern32.dat", "data/plots/spre_many_shapes_bases_plot_matern32.png", r"Five Shapes, Basis Elements for SPRE Mat\'{e}rn-$\frac{3}{2}$", show_bar, show_plot)
 
-    plot_basis_file("data/flock/results/output_flock_bases_321.dat", "data/plots/spre_flock_bases_plot_white.png", "Flock, Basis Elements for SPRE White", show_plot)
-    plot_basis_file("data/flock/results/output_flock_bases_321_Gaussian.dat", "data/plots/spre_flock_bases_plot_gaussian.png", "Flock, Basis Elements for SPRE Gaussian", show_plot)
-    plot_basis_file("data/flock/results/output_flock_bases_321_Matern12.dat", "data/plots/spre_flock_bases_plot_matern12.png", r"Flock, Basis Elements for SPRE Mat\'{e}rn-$\frac{1}{2}$", show_plot)
-    plot_basis_file("data/flock/results/output_flock_bases_321_Matern32.dat", "data/plots/spre_flock_bases_plot_matern32.png", r"Flock, Basis Elements for SPRE Mat\'{e}rn-$\frac{3}{2}$", show_plot)
+    plot_basis_file("data/flock/results/output_flock_bases_321.dat", "data/plots/spre_flock_bases_plot_white.png", "Flock, Basis Elements for SPRE White", show_bar, show_plot)
+    plot_basis_file("data/flock/results/output_flock_bases_321_Gaussian.dat", "data/plots/spre_flock_bases_plot_gaussian.png", "Flock, Basis Elements for SPRE Gaussian", show_bar, show_plot)
+    plot_basis_file("data/flock/results/output_flock_bases_321_Matern12.dat", "data/plots/spre_flock_bases_plot_matern12.png", r"Flock, Basis Elements for SPRE Mat\'{e}rn-$\frac{1}{2}$", show_bar, show_plot)
+    plot_basis_file("data/flock/results/output_flock_bases_321_Matern32.dat", "data/plots/spre_flock_bases_plot_matern32.png", r"Flock, Basis Elements for SPRE Mat\'{e}rn-$\frac{3}{2}$", show_bar, show_plot)
 
