@@ -1,0 +1,7 @@
+Wed 26 Nov 11:28:12 GMT 2025
+Running on hmem009 model simulation for job 35 scenario 38
+Running model "Diffusion" with parameters [4.88281250e-07 1.67846680e-03 1.31225586e-03]
+	Simulating Diffusion Model with dt = 4.8828125e-07, 1192 x partitions and 1524 y partitions
+	Calculated final value: 79.5510186020672
+Wed 26 Nov 11:33:19 GMT 2025
+Total seconds: 310

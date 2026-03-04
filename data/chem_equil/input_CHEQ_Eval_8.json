@@ -1,0 +1,16 @@
+{
+  "model_name": "chem_equil",
+  "total_time": 100,
+  "evaluation": true,
+  "X": [[2], [4], [8]],
+  "h_values": [1e-8, 1e-7, 1e-6, 1e-5, 1e-4, 1e-3],
+  "final_tols": [1e-8],
+  "results_filename": "output_CHEQ_eval_8.dat",
+  "results_eval_filename": "output_CHEQ_abs_errors_eval_8.dat",
+  "results_eval_plot_filename": "output_CHEQ_abs_errors_eval_8.png",
+  "results_plot_filename": "output_CHEQ_eval_8.png",
+  "final_model_plot_filename": "output_CHEQ_plot_eval_8.png",
+  "results_fx_filename": "output_CHEQ_fx_eval_8.dat",
+  "extrapolation_name": "GRE",
+  "extrapolation_kernel": "Gaussian"
+}

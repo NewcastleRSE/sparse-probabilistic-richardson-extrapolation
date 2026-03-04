@@ -1,0 +1,9 @@
+Wed 26 Nov 11:28:12 GMT 2025
+Running on hmem009 model simulation for job 29 scenario 38
+Running model "Diffusion" with parameters [7.71484375e-07 5.79833984e-04 7.62939453e-04]
+	Simulating Diffusion Model with dt = 7.71484375e-07, 3449 x partitions and 2621 y partitions
+	Calculated final value: 79.56991760872445
+Wed 26 Nov 11:49:57 GMT 2025
+Total seconds: 1308
+slurmstepd: error: slurm_get_node_energy: Socket timed out on send/recv operation
+slurmstepd: error: _get_joules_task: can't get info from slurmd

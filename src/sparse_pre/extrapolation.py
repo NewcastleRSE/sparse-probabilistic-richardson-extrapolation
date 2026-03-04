@@ -1,0 +1,108 @@
+##############################################################################
+# Sparse Probabilistic Richardson Extrapolation (SPRE)
+# Function to perform SPRE, Multivariate Richardson Extrapolation (MRE) or
+# Gauss-Richardson Extrapolation (GRE) with plotting option.
+# 
+# Based on the methods and original MatLab code by Chris Oates.
+#
+# Richard Howey, July 2025 - April 2026
+##############################################################################
+
+# Python modules
+import jax.numpy as jnp
+from jax import grad, debug
+import matplotlib.pyplot as plt
+
+# Ensure 64-bit accuracy is used
+from jax import config
+config.update("jax_enable_x64", True)
+
+# Application modules
+from sparse_pre.SPRE import SPRE
+import sparse_pre.MRE as MRE
+
+def extrapolation(X, Y, options = None, h = None):
+    """
+    Extrapolation to estimate f(0) from input-output training data (X, Y).
+
+    Parameters:
+        X : np.ndarray of shape (n_train, d)
+            Training input vectors.
+        Y : np.ndarray of shape (n_train,)
+            Training scalar outputs.
+        options : dict, optional
+            Extrapolation options with keys:
+                - "name"   : str, one of {"MRE", "GRE", "SPRE"} (default: "SPRE")
+                - "k_name" : str, one of {"Gaussian", "GaussianARD", "Matern1/2", "Matern3/2", "white"} (default: "white")
+                - "plot"   : bool, whether to plot LOOCV results (default: True)
+                - "plot_filename" : filename to plot LOOCV results (default: True)
+                - "use_fixed_basis" : bool, whether to use fixed default basis, e.g. for d=2 use A=[[0, 0], [1, 0], [0, 1]]
+                - "bases_filename" : file to store bases in
+                - "max_order": maximum order to do stepwise fitting
+        h : float value of h to add to bases file
+
+    Returns:
+        out : dict
+            A dictionary containing:
+                - "mu"     : predictive mean for f(0)
+                - "var"    : predictive variance (if available)
+                - "mu_cv"  : LOOCV means (optional)
+                - "var_cv" : LOOCV variances (optional)
+    """
+
+    # Default options
+    if options is None:
+        options = {}
+    name = options.get("name", "SPRE")
+    k_name = options.get("k_name", "white")
+    plot = options.get("plot", True)
+    plot_filename = options.get("plot_filename", "")
+    bases_filename = options.get("bases_filename", "")
+    use_fixed_basis = options.get("use_fixed_basis", False)
+    max_order = options.get("max_order", 0)
+
+    # Set up SPRE object
+    if name == "SPRE":
+        spre = SPRE(k_name, X.shape[1])
+    elif name == "GRE":
+        spre = SPRE(k_name, X.shape[1], jnp.zeros((1, X.shape[1]), dtype=int))
+    elif name == "MRE":        
+        pass
+    else:
+        raise ValueError(f"Unknown extrapolation method: {name}")
+    
+    # Select extrapolation method
+    if name == "SPRE" or name == "GRE":
+        # Set data
+        spre.set_normalised_data(X, Y)
+        # Do fitting
+        out = spre.stepwise_selection(max_order, use_fixed_basis, bases_filename, h)
+       
+    elif name == "MRE":        
+        # Use default basis
+        out = MRE.MRE(None, X, Y)
+    else:
+        raise ValueError(f"Unknown extrapolation method: {name}")
+
+    # Plot LOOCV fit if applicable
+    if (plot or plot_filename) and name != "MRE" and "mu_cv" in out and "var_cv" in out:
+        # Set errors
+        errors = jnp.sqrt(out["var_cv"])
+
+        n_train = X.shape[0]
+        plt.close('all') 
+        plt.figure()
+        plt.errorbar(jnp.arange(1, n_train + 1), out["mu_cv"].flatten(), yerr = errors, fmt='bo', label='predicted')
+        plt.scatter(jnp.arange(1, n_train + 1), Y, color='k', marker='x', label='actual')
+        plt.xticks(jnp.arange(1, n_train + 1))
+        plt.xlabel(r'$i$')
+        plt.ylabel(r'$f(\mathbf{x}_i)$')
+        plt.title(f"Leave-one-out cross validation ({name})")
+        plt.legend()
+        # Write file and/or show plot
+        if plot_filename:
+            plt.savefig(plot_filename) 
+        if plot:
+            plt.show()
+
+    return out

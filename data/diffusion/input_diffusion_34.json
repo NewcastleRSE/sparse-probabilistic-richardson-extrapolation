@@ -1,0 +1,35 @@
+{
+  "model_name": "diffusion",
+  "diffusivity": 0.1,
+  "x_range": [-1, 1],
+  "y_range": [-1, 1],
+  "total_time": 0.01,
+  "start_pos": [0, 0], 
+  "start_amount": 1,
+  
+  "X": [[1e-4, 0.0625, 0.0625],  [1e-4, 0.0625, 0.25],
+  
+  [1e-4, 0.25, 0.0625],  [1e-4, 0.25, 0.25],
+
+  
+
+  [1e-5, 0.0625, 0.0625],  [1e-5, 0.0625, 0.25],
+ 
+  [1e-5, 0.25, 0.0625],  [1e-5, 0.25, 0.25]
+],
+
+  "h_values": [0.015625, 0.03125, 0.0625, 0.125, 0.25, 0.5, 1],
+
+  "final_tols": [1e-4, 0.125, 0.125],
+  "evaluation": true,
+ 
+  "results_filename": "output_diffusion_34.dat",
+  "results_eval_filename": "output_diffusion_abs_errors_eval_34.dat",
+  "results_eval_plot_filename": "output_diffusion_abs_errors_eval_34.png",
+  "results_plot_filename": "",
+  "final_model_plot_filename": "",
+  "final_mp4_filename": "",
+  "results_fx_filename": "output_diffusion_fx_eval_34.dat",
+  "extrapolation_name": "SPRE",
+  "extrapolation_kernel": "white"
+}

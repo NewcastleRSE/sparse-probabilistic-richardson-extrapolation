@@ -1,0 +1,30 @@
+{
+  "model_name": "cubic",
+
+  "X": [
+   [0.496754931174044,   0.497206596177630],
+   [0.505905830209828,   0.250445950564624],
+   [0.248103866756791,   0.499015692767620],
+   [0.247225967403746,   0.251466106554168],
+   [0.495772243799961,   0.165246855050629],
+   [0.165712225222570,   0.504001603549009]
+],
+
+"h_values": [    
+   0.003906250000000,   0.007812500000000,   0.015625000000000,   0.031250000000000,   0.062500000000000,
+   0.125000000000000,   0.250000000000000,   0.500000000000000,   1.000000000000000
+],
+
+  "evaluation": true,
+  "use_fixed_basis": true,
+
+  "results_filename": "output_cubic_1_fixed.dat",
+  "results_eval_filename": "output_cubic_1_fixed.dat",
+  "results_fx_filename": "output_cubic_1_fixed.dat",
+  "results_eval_plot_filename": "output_cubic_1_fixed.png",
+  "results_plot_filename": "output_cubic_1_fixed.png",
+  "final_mp4_filenamed": "",
+  
+  "extrapolation_name": "SPRE",
+  "extrapolation_kernel": "white"
+}

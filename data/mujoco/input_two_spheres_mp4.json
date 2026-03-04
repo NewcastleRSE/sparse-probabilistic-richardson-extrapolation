@@ -1,0 +1,16 @@
+{
+  "model_name": "mujoco",
+  "model_file": "two_spheres4.xml",
+  "description": "Two Spheres Colliding Model",
+  "total_time": 5.0,
+
+  "X": [
+   [1e-5, 0.02, 0.001]
+],
+
+"h_values": [1],
+"use_fixed_time": true,
+
+"final_mp4_filename": "two_spheres4.mp4",
+"camera_distance_scale": 0.4  
+}

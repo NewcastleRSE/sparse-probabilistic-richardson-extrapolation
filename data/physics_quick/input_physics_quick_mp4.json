@@ -1,0 +1,15 @@
+{
+  "model_name": "physics_quick",
+  "total_time": 1.0,
+    
+  "X": [
+   [0.00416666666, 0.01, 0.01]
+],
+
+"h_values":  [1],
+
+  "final_tols": [0.00416666666, 0.01, 0.01],
+  "final_mp4_filename": "physics_quick.mp4",
+  "mp4_delay": 1.5
+
+}

@@ -1,0 +1,818 @@
+Thu 12 Feb 12:02:10 GMT 2026
+Running on hmem010 analysis for scenario 321_GaussianARD
+pybullet build time: Nov 28 2025 15:19:22
+	Simulating Flocking of multiple agents Model with dt = 0.01, repulsion_softening = 1e-15, cutoff_width = 0.0
+Final distance from origin of first agent: 11.351534884504058
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.10134124e-16 1.44240175e-15 7.76267939e-16]
+	Simulating Flocking of multiple agents Model with dt = 0.01000000000000011, repulsion_softening = 2.4424017535930036e-15, cutoff_width = 7.762679388179095e-16
+Final distance from origin of first agent: 11.351534884503925
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [3.32178729e-16 5.54223334e-16 1.66444636e-15]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000000332, repulsion_softening = 1.5542233338928783e-15, cutoff_width = 1.6644463585180348e-15
+Final distance from origin of first agent: 11.35153488450367
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [5.54223334e-16 1.66444636e-15 3.32178729e-16]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000000554, repulsion_softening = 2.664446358518035e-15, cutoff_width = 3.3217872896784684e-16
+Final distance from origin of first agent: 11.351534884503423
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [7.76267939e-16 1.10134124e-16 1.22035715e-15]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000000776, repulsion_softening = 1.1101341240428157e-15, cutoff_width = 1.2203571486679722e-15
+Final distance from origin of first agent: 11.35153488450316
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [9.98312544e-16 1.22035715e-15 1.10134124e-16]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000000998, repulsion_softening = 2.2203571486679722e-15, cutoff_width = 1.1013412404281553e-16
+Final distance from origin of first agent: 11.351534884502914
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.22035715e-15 3.32178729e-16 9.98312544e-16]
+	Simulating Flocking of multiple agents Model with dt = 0.01000000000000122, repulsion_softening = 1.332178728967847e-15, cutoff_width = 9.983125437429409e-16
+Final distance from origin of first agent: 11.35153488450266
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.44240175e-15 9.98312544e-16 5.54223334e-16]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000001442, repulsion_softening = 1.998312543742941e-15, cutoff_width = 5.542233338928781e-16
+Final distance from origin of first agent: 11.351534884502406
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.66444636e-15 7.76267939e-16 1.44240175e-15]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000001664, repulsion_softening = 1.7762679388179096e-15, cutoff_width = 1.4424017535930035e-15
+Final distance from origin of first agent: 11.351534884502156
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:24<00:48, 24.50s/it]Stepwise progress: 100%|██████████| 3/3 [00:24<00:00,  8.20s/it]
+Predict f(0) = 11.351534884503241 +/- 3.797964156368162e-13
+
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [2.20268248e-16 2.88480351e-15 1.55253588e-15]
+	Simulating Flocking of multiple agents Model with dt = 0.01000000000000022, repulsion_softening = 3.884803507186007e-15, cutoff_width = 1.552535877635819e-15
+Final distance from origin of first agent: 11.351534884503813
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [6.64357458e-16 1.10844667e-15 3.32889272e-15]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000000665, repulsion_softening = 2.108446667785756e-15, cutoff_width = 3.3288927170360696e-15
+Final distance from origin of first agent: 11.351534884503307
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.10844667e-15 3.32889272e-15 6.64357458e-16]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000001109, repulsion_softening = 4.328892717036069e-15, cutoff_width = 6.643574579356937e-16
+Final distance from origin of first agent: 11.351534884502799
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.55253588e-15 2.20268248e-16 2.44071430e-15]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000001553, repulsion_softening = 1.2202682480856311e-15, cutoff_width = 2.4407142973359443e-15
+Final distance from origin of first agent: 11.35153488450228
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.99662509e-15 2.44071430e-15 2.20268248e-16]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000001997, repulsion_softening = 3.4407142973359444e-15, cutoff_width = 2.2026824808563106e-16
+Final distance from origin of first agent: 11.351534884501774
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [2.44071430e-15 6.64357458e-16 1.99662509e-15]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000002441, repulsion_softening = 1.6643574579356937e-15, cutoff_width = 1.9966250874858817e-15
+Final distance from origin of first agent: 11.351534884501275
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [2.88480351e-15 1.99662509e-15 1.10844667e-15]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000002885, repulsion_softening = 2.9966250874858818e-15, cutoff_width = 1.1084466677857563e-15
+Final distance from origin of first agent: 11.351534884500753
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [3.32889272e-15 1.55253588e-15 2.88480351e-15]
+	Simulating Flocking of multiple agents Model with dt = 0.01000000000000333, repulsion_softening = 2.5525358776358188e-15, cutoff_width = 2.884803507186007e-15
+Final distance from origin of first agent: 11.351534884500248
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:23<00:46, 23.41s/it]Stepwise progress: 100%|██████████| 3/3 [00:23<00:00,  7.83s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/6 [00:00<?, ?it/s]Stepwise progress:  17%|█▋        | 1/6 [00:22<01:54, 22.86s/it]/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/.venv/lib/python3.12/site-packages/scipy/optimize/_trustregion.py:54: RuntimeWarning: overflow encountered in dot
+  return self.fun + np.dot(self.jac, p) + 0.5 * np.dot(p, self.hessp(p))
+Stepwise progress:  83%|████████▎ | 5/6 [00:23<00:03,  3.44s/it]Stepwise progress: 100%|██████████| 6/6 [00:23<00:00,  3.85s/it]
+Predict f(0) = 11.351534884503717 +/- 9.133131665201524e-13
+
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [4.40536496e-16 5.76960701e-15 3.10507176e-15]
+	Simulating Flocking of multiple agents Model with dt = 0.01000000000000044, repulsion_softening = 6.769607014372014e-15, cutoff_width = 3.105071755271638e-15
+Final distance from origin of first agent: 11.351534884503566
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.32871492e-15 2.21689334e-15 6.65778543e-15]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000001329, repulsion_softening = 3.2168933355715127e-15, cutoff_width = 6.657785434072139e-15
+Final distance from origin of first agent: 11.35153488450253
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [2.21689334e-15 6.65778543e-15 1.32871492e-15]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000002217, repulsion_softening = 7.65778543407214e-15, cutoff_width = 1.3287149158713873e-15
+Final distance from origin of first agent: 11.35153488450153
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [3.10507176e-15 4.40536496e-16 4.88142859e-15]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000003105, repulsion_softening = 1.4405364961712622e-15, cutoff_width = 4.881428594671889e-15
+Final distance from origin of first agent: 11.351534884500504
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [3.99325017e-15 4.88142859e-15 4.40536496e-16]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000003994, repulsion_softening = 5.881428594671889e-15, cutoff_width = 4.405364961712621e-16
+Final distance from origin of first agent: 11.351534884499491
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [4.88142859e-15 1.32871492e-15 3.99325017e-15]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000004882, repulsion_softening = 2.3287149158713874e-15, cutoff_width = 3.9932501749717634e-15
+Final distance from origin of first agent: 11.351534884498466
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [5.76960701e-15 3.99325017e-15 2.21689334e-15]
+	Simulating Flocking of multiple agents Model with dt = 0.01000000000000577, repulsion_softening = 4.993250174971764e-15, cutoff_width = 2.2168933355715126e-15
+Final distance from origin of first agent: 11.351534884497456
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [6.65778543e-15 3.10507176e-15 5.76960701e-15]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000006658, repulsion_softening = 4.105071755271638e-15, cutoff_width = 5.769607014372014e-15
+Final distance from origin of first agent: 11.351534884496445
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:24<00:49, 24.83s/it]Stepwise progress: 100%|██████████| 3/3 [00:24<00:00,  8.30s/it]
+Predict f(0) = 11.35153488450305 +/- 1.414212531665891e-12
+
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [8.81072992e-16 1.15392140e-14 6.21014351e-15]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000000881, repulsion_softening = 1.2539214028744028e-14, cutoff_width = 6.210143510543276e-15
+Final distance from origin of first agent: 11.351534884503073
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [2.65742983e-15 4.43378667e-15 1.33155709e-14]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000002658, repulsion_softening = 5.433786671143025e-15, cutoff_width = 1.3315570868144278e-14
+Final distance from origin of first agent: 11.351534884501032
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [4.43378667e-15 1.33155709e-14 2.65742983e-15]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000004434, repulsion_softening = 1.4315570868144277e-14, cutoff_width = 2.6574298317427747e-15
+Final distance from origin of first agent: 11.351534884498994
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [6.21014351e-15 8.81072992e-16 9.76285719e-15]
+	Simulating Flocking of multiple agents Model with dt = 0.01000000000000621, repulsion_softening = 1.8810729923425243e-15, cutoff_width = 9.762857189343777e-15
+Final distance from origin of first agent: 11.351534884496957
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [7.98650035e-15 9.76285719e-15 8.81072992e-16]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000007987, repulsion_softening = 1.0762857189343778e-14, cutoff_width = 8.810729923425242e-16
+Final distance from origin of first agent: 11.351534884494933
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [9.76285719e-15 2.65742983e-15 7.98650035e-15]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000009763, repulsion_softening = 3.657429831742774e-15, cutoff_width = 7.986500349943527e-15
+Final distance from origin of first agent: 11.351534884492883
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.15392140e-14 7.98650035e-15 4.43378667e-15]
+	Simulating Flocking of multiple agents Model with dt = 0.01000000000001154, repulsion_softening = 8.986500349943527e-15, cutoff_width = 4.433786671143025e-15
+Final distance from origin of first agent: 11.351534884490869
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.33155709e-14 6.21014351e-15 1.15392140e-14]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000013316, repulsion_softening = 7.210143510543275e-15, cutoff_width = 1.1539214028744028e-14
+Final distance from origin of first agent: 11.351534884488823
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:24<00:49, 24.94s/it]Stepwise progress:  67%|██████▋   | 2/3 [00:25<00:10, 10.56s/it]Stepwise progress: 100%|██████████| 3/3 [00:25<00:00,  8.49s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:25<00:50, 25.47s/it]Stepwise progress: 100%|██████████| 3/3 [00:26<00:00,  6.81s/it]Stepwise progress: 100%|██████████| 3/3 [00:26<00:00,  8.68s/it]
+Predict f(0) = 11.351534884502367 +/- 1.8744953011976758e-12
+
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.76214598e-15 2.30784281e-14 1.24202870e-14]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000001763, repulsion_softening = 2.4078428057488054e-14, cutoff_width = 1.2420287021086551e-14
+Final distance from origin of first agent: 11.351534884502096
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [5.31485966e-15 8.86757334e-15 2.66311417e-14]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000005315, repulsion_softening = 9.86757334228605e-15, cutoff_width = 2.6631141736288557e-14
+Final distance from origin of first agent: 11.351534884497996
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [8.86757334e-15 2.66311417e-14 5.31485966e-15]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000008868, repulsion_softening = 2.7631141736288555e-14, cutoff_width = 5.314859663485549e-15
+Final distance from origin of first agent: 11.351534884493976
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.24202870e-14 1.76214598e-15 1.95257144e-14]
+	Simulating Flocking of multiple agents Model with dt = 0.01000000000001242, repulsion_softening = 2.7621459846850485e-15, cutoff_width = 1.9525714378687555e-14
+Final distance from origin of first agent: 11.351534884489837
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.59730007e-14 1.95257144e-14 1.76214598e-15]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000015974, repulsion_softening = 2.0525714378687554e-14, cutoff_width = 1.7621459846850484e-15
+Final distance from origin of first agent: 11.351534884485813
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.95257144e-14 5.31485966e-15 1.59730007e-14]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000019526, repulsion_softening = 6.31485966348555e-15, cutoff_width = 1.5973000699887054e-14
+Final distance from origin of first agent: 11.351534884481728
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [2.30784281e-14 1.59730007e-14 8.86757334e-15]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000023079, repulsion_softening = 1.6973000699887053e-14, cutoff_width = 8.86757334228605e-15
+Final distance from origin of first agent: 11.351534884477669
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [2.66311417e-14 1.24202870e-14 2.30784281e-14]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000026632, repulsion_softening = 1.3420287021086552e-14, cutoff_width = 2.3078428057488056e-14
+Final distance from origin of first agent: 11.351534884473608
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:25<00:50, 25.26s/it]Stepwise progress:  67%|██████▋   | 2/3 [00:25<00:10, 10.69s/it]Stepwise progress: 100%|██████████| 3/3 [00:25<00:00,  8.60s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:25<00:50, 25.47s/it]Stepwise progress: 100%|██████████| 3/3 [00:25<00:00,  6.64s/it]Stepwise progress: 100%|██████████| 3/3 [00:25<00:00,  8.52s/it]
+Fitting interactions of order 3:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:23<00:46, 23.13s/it]Stepwise progress: 100%|██████████| 3/3 [00:23<00:00,  6.04s/it]Stepwise progress: 100%|██████████| 3/3 [00:23<00:00,  7.75s/it]
+Predict f(0) = 11.351534884503941 +/- 1.1340641213892804e-12
+
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [3.52429197e-15 4.61568561e-14 2.48405740e-14]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000003525, repulsion_softening = 4.7156856114976113e-14, cutoff_width = 2.4840574042173102e-14
+Final distance from origin of first agent: 11.351534884500134
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.06297193e-14 1.77351467e-14 5.32622835e-14]
+	Simulating Flocking of multiple agents Model with dt = 0.01000000000001063, repulsion_softening = 1.87351466845721e-14, cutoff_width = 5.326228347257711e-14
+Final distance from origin of first agent: 11.351534884491926
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.77351467e-14 5.32622835e-14 1.06297193e-14]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000017736, repulsion_softening = 5.4262283472577115e-14, cutoff_width = 1.0629719326971099e-14
+Final distance from origin of first agent: 11.351534884483888
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [2.48405740e-14 3.52429197e-15 3.90514288e-14]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000024841, repulsion_softening = 4.524291969370097e-15, cutoff_width = 3.905142875737511e-14
+Final distance from origin of first agent: 11.35153488447563
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [3.19460014e-14 3.90514288e-14 3.52429197e-15]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000031947, repulsion_softening = 4.005142875737511e-14, cutoff_width = 3.524291969370097e-15
+Final distance from origin of first agent: 11.351534884467572
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [3.90514288e-14 1.06297193e-14 3.19460014e-14]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000039052, repulsion_softening = 1.16297193269711e-14, cutoff_width = 3.194600139977411e-14
+Final distance from origin of first agent: 11.351534884459374
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [4.61568561e-14 3.19460014e-14 1.77351467e-14]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000046158, repulsion_softening = 3.294600139977411e-14, cutoff_width = 1.77351466845721e-14
+Final distance from origin of first agent: 11.351534884451299
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [5.32622835e-14 2.48405740e-14 4.61568561e-14]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000053263, repulsion_softening = 2.58405740421731e-14, cutoff_width = 4.615685611497611e-14
+Final distance from origin of first agent: 11.35153488444315
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:23<00:46, 23.28s/it]Stepwise progress: 100%|██████████| 3/3 [00:23<00:00,  7.79s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:25<00:51, 25.79s/it]Stepwise progress: 100%|██████████| 3/3 [00:25<00:00,  6.73s/it]Stepwise progress: 100%|██████████| 3/3 [00:25<00:00,  8.64s/it]
+Fitting interactions of order 3:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:22<00:45, 22.71s/it]Stepwise progress: 100%|██████████| 3/3 [00:22<00:00,  5.93s/it]Stepwise progress: 100%|██████████| 3/3 [00:22<00:00,  7.61s/it]
+Fitting interactions of order 4:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:21<00:43, 21.92s/it]Stepwise progress:  67%|██████▋   | 2/3 [00:22<00:09,  9.32s/it]Stepwise progress: 100%|██████████| 3/3 [00:22<00:00,  7.49s/it]
+Predict f(0) = 11.351534884505089 +/- 1.302370439854497e-12
+
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [7.04858394e-15 9.23137122e-14 4.96811481e-14]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000007048, repulsion_softening = 9.331371222995222e-14, cutoff_width = 4.9681148084346205e-14
+Final distance from origin of first agent: 11.351534884496226
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [2.12594387e-14 3.54702934e-14 1.06524567e-13]
+	Simulating Flocking of multiple agents Model with dt = 0.01000000000002126, repulsion_softening = 3.6470293369144203e-14, cutoff_width = 1.0652456694515423e-13
+Final distance from origin of first agent: 11.351534884479804
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [3.54702934e-14 1.06524567e-13 2.12594387e-14]
+	Simulating Flocking of multiple agents Model with dt = 0.01000000000003547, repulsion_softening = 1.0752456694515422e-13, cutoff_width = 2.1259438653942198e-14
+Final distance from origin of first agent: 11.351534884463728
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [4.96811481e-14 7.04858394e-15 7.81028575e-14]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000049681, repulsion_softening = 8.048583938740194e-15, cutoff_width = 7.810285751475022e-14
+Final distance from origin of first agent: 11.351534884447195
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [6.38920028e-14 7.81028575e-14 7.04858394e-15]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000063892, repulsion_softening = 7.910285751475021e-14, cutoff_width = 7.048583938740194e-15
+Final distance from origin of first agent: 11.351534884431118
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [7.81028575e-14 2.12594387e-14 6.38920028e-14]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000078103, repulsion_softening = 2.2259438653942196e-14, cutoff_width = 6.389200279954821e-14
+Final distance from origin of first agent: 11.351534884414706
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [9.23137122e-14 6.38920028e-14 3.54702934e-14]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000092314, repulsion_softening = 6.489200279954821e-14, cutoff_width = 3.54702933691442e-14
+Final distance from origin of first agent: 11.351534884398552
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.06524567e-13 4.96811481e-14 9.23137122e-14]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000106524, repulsion_softening = 5.068114808434621e-14, cutoff_width = 9.231371222995222e-14
+Final distance from origin of first agent: 11.35153488438225
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:23<00:47, 23.96s/it]Stepwise progress: 100%|██████████| 3/3 [00:24<00:00,  6.25s/it]Stepwise progress: 100%|██████████| 3/3 [00:24<00:00,  8.02s/it]
+Predict f(0) = 11.351534884495111 +/- 4.121033940588819e-12
+
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.40971679e-14 1.84627424e-13 9.93622962e-14]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000014097, repulsion_softening = 1.8562742445990444e-13, cutoff_width = 9.936229616869241e-14
+Final distance from origin of first agent: 11.351534884488395
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [4.25188773e-14 7.09405867e-14 2.13049134e-13]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000042518, repulsion_softening = 7.19405867382884e-14, cutoff_width = 2.1304913389030845e-13
+Final distance from origin of first agent: 11.351534884455562
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [7.09405867e-14 2.13049134e-13 4.25188773e-14]
+	Simulating Flocking of multiple agents Model with dt = 0.01000000000007094, repulsion_softening = 2.1404913389030845e-13, cutoff_width = 4.2518877307884395e-14
+Final distance from origin of first agent: 11.351534884423392
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [9.93622962e-14 1.40971679e-14 1.56205715e-13]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000099362, repulsion_softening = 1.5097167877480386e-14, cutoff_width = 1.5620571502950044e-13
+Final distance from origin of first agent: 11.351534884390368
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.27784006e-13 1.56205715e-13 1.40971679e-14]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000127783, repulsion_softening = 1.5720571502950043e-13, cutoff_width = 1.4097167877480388e-14
+Final distance from origin of first agent: 11.351534884358191
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.56205715e-13 4.25188773e-14 1.27784006e-13]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000156205, repulsion_softening = 4.35188773078844e-14, cutoff_width = 1.2778400559909643e-13
+Final distance from origin of first agent: 11.351534884325366
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.84627424e-13 1.27784006e-13 7.09405867e-14]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000184627, repulsion_softening = 1.2878400559909643e-13, cutoff_width = 7.09405867382884e-14
+Final distance from origin of first agent: 11.351534884293052
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [2.13049134e-13 9.93622962e-14 1.84627424e-13]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000213049, repulsion_softening = 1.003622961686924e-13, cutoff_width = 1.8462742445990444e-13
+Final distance from origin of first agent: 11.351534884260436
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:24<00:48, 24.44s/it]Stepwise progress: 100%|██████████| 3/3 [00:24<00:00,  6.53s/it]Stepwise progress: 100%|██████████| 3/3 [00:24<00:00,  8.32s/it]
+Predict f(0) = 11.35153488449459 +/- 4.711272259755985e-12
+
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [2.81943358e-14 3.69254849e-13 1.98724592e-13]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000028195, repulsion_softening = 3.702548489198089e-13, cutoff_width = 1.9872459233738482e-13
+Final distance from origin of first agent: 11.35153488447272
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [8.50377546e-14 1.41881173e-13 4.26098268e-13]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000085038, repulsion_softening = 1.428811734765768e-13, cutoff_width = 4.260982677806169e-13
+Final distance from origin of first agent: 11.351534884407082
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.41881173e-13 4.26098268e-13 8.50377546e-14]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000141882, repulsion_softening = 4.270982677806169e-13, cutoff_width = 8.503775461576879e-14
+Final distance from origin of first agent: 11.35153488434274
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.98724592e-13 2.81943358e-14 3.12411430e-13]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000198725, repulsion_softening = 2.919433575496078e-14, cutoff_width = 3.124114300590009e-13
+Final distance from origin of first agent: 11.351534884276651
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [2.55568011e-13 3.12411430e-13 2.81943358e-14]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000255568, repulsion_softening = 3.1341143005900087e-13, cutoff_width = 2.8194335754960775e-14
+Final distance from origin of first agent: 11.351534884212326
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [3.12411430e-13 8.50377546e-14 2.55568011e-13]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000312412, repulsion_softening = 8.603775461576879e-14, cutoff_width = 2.5556801119819286e-13
+Final distance from origin of first agent: 11.351534884146666
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [3.69254849e-13 2.55568011e-13 1.41881173e-13]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000369255, repulsion_softening = 2.5656801119819286e-13, cutoff_width = 1.418811734765768e-13
+Final distance from origin of first agent: 11.351534884082028
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [4.26098268e-13 1.98724592e-13 3.69254849e-13]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000426099, repulsion_softening = 1.9972459233738482e-13, cutoff_width = 3.692548489198089e-13
+Final distance from origin of first agent: 11.351534884016827
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:24<00:49, 24.84s/it]Stepwise progress: 100%|██████████| 3/3 [00:25<00:00,  6.64s/it]Stepwise progress: 100%|██████████| 3/3 [00:25<00:00,  8.46s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:25<00:50, 25.02s/it]Stepwise progress: 100%|██████████| 3/3 [00:25<00:00,  8.37s/it]
+Predict f(0) = 11.351534884479413 +/- 9.887629199676697e-12
+
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [5.63886715e-14 7.38509698e-13 3.97449185e-13]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000056389, repulsion_softening = 7.395096978396178e-13, cutoff_width = 3.9744918467476964e-13
+Final distance from origin of first agent: 11.351534884441401
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.70075509e-13 2.83762347e-13 8.52196536e-13]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000170076, repulsion_softening = 2.847623469531536e-13, cutoff_width = 8.521965355612338e-13
+Final distance from origin of first agent: 11.351534884310107
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [2.83762347e-13 8.52196536e-13 1.70075509e-13]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000283763, repulsion_softening = 8.531965355612338e-13, cutoff_width = 1.7007550923153758e-13
+Final distance from origin of first agent: 11.351534884181431
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [3.97449185e-13 5.63886715e-14 6.24822860e-13]
+	Simulating Flocking of multiple agents Model with dt = 0.01000000000039745, repulsion_softening = 5.738867150992155e-14, cutoff_width = 6.248228601180017e-13
+Final distance from origin of first agent: 11.351534884049252
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [5.11136022e-13 6.24822860e-13 5.63886715e-14]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000511136, repulsion_softening = 6.258228601180017e-13, cutoff_width = 5.638867150992155e-14
+Final distance from origin of first agent: 11.35153488392058
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [6.24822860e-13 1.70075509e-13 5.11136022e-13]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000624823, repulsion_softening = 1.7107550923153758e-13, cutoff_width = 5.111360223963857e-13
+Final distance from origin of first agent: 11.351534883789276
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [7.38509698e-13 5.11136022e-13 2.83762347e-13]
+	Simulating Flocking of multiple agents Model with dt = 0.01000000000073851, repulsion_softening = 5.121360223963857e-13, cutoff_width = 2.837623469531536e-13
+Final distance from origin of first agent: 11.351534883660028
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [8.52196536e-13 3.97449185e-13 7.38509698e-13]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000852197, repulsion_softening = 3.9844918467476964e-13, cutoff_width = 7.385096978396178e-13
+Final distance from origin of first agent: 11.351534883529599
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:24<00:49, 24.97s/it]Stepwise progress: 100%|██████████| 3/3 [00:25<00:00,  6.51s/it]Stepwise progress: 100%|██████████| 3/3 [00:25<00:00,  8.36s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/5 [00:00<?, ?it/s]Stepwise progress:  20%|██        | 1/5 [00:23<01:33, 23.26s/it]Stepwise progress:  60%|██████    | 3/5 [00:23<00:12,  6.24s/it]Stepwise progress: 100%|██████████| 5/5 [00:23<00:00,  3.06s/it]Stepwise progress: 100%|██████████| 5/5 [00:23<00:00,  4.79s/it]
+Predict f(0) = 11.351534884513248 +/- 2.0010618721220497e-11
+
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.12777343e-13 1.47701940e-12 7.94898369e-13]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000112778, repulsion_softening = 1.4780193956792357e-12, cutoff_width = 7.948983693495393e-13
+Final distance from origin of first agent: 11.351534884378761
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [3.40151018e-13 5.67524694e-13 1.70439307e-12]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000340152, repulsion_softening = 5.685246939063072e-13, cutoff_width = 1.7043930711224676e-12
+Final distance from origin of first agent: 11.351534884116159
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [5.67524694e-13 1.70439307e-12 3.40151018e-13]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000567525, repulsion_softening = 1.7053930711224677e-12, cutoff_width = 3.4015101846307516e-13
+Final distance from origin of first agent: 11.351534883858806
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [7.94898369e-13 1.12777343e-13 1.24964572e-12]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000794899, repulsion_softening = 1.137773430198431e-13, cutoff_width = 1.2496457202360035e-12
+Final distance from origin of first agent: 11.351534883594454
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.02227204e-12 1.24964572e-12 1.12777343e-13]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000001022273, repulsion_softening = 1.2506457202360036e-12, cutoff_width = 1.127773430198431e-13
+Final distance from origin of first agent: 11.351534883337113
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.24964572e-12 3.40151018e-13 1.02227204e-12]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000001249646, repulsion_softening = 3.4115101846307516e-13, cutoff_width = 1.0222720447927714e-12
+Final distance from origin of first agent: 11.3515348830745
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.47701940e-12 1.02227204e-12 5.67524694e-13]
+	Simulating Flocking of multiple agents Model with dt = 0.01000000000147702, repulsion_softening = 1.0232720447927715e-12, cutoff_width = 5.675246939063072e-13
+Final distance from origin of first agent: 11.351534882815987
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.70439307e-12 7.94898369e-13 1.47701940e-12]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000001704394, repulsion_softening = 7.958983693495393e-13, cutoff_width = 1.4770193956792356e-12
+Final distance from origin of first agent: 11.351534882555129
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:26<00:52, 26.11s/it]Stepwise progress: 100%|██████████| 3/3 [00:26<00:00,  8.73s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/6 [00:00<?, ?it/s]Stepwise progress:  17%|█▋        | 1/6 [00:25<02:05, 25.19s/it]Stepwise progress:  67%|██████▋   | 4/6 [00:25<00:09,  4.81s/it]Stepwise progress: 100%|██████████| 6/6 [00:25<00:00,  4.24s/it]
+Predict f(0) = 11.351534884515466 +/- 3.9792861118211234e-11
+
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [2.25554686e-13 2.95403879e-12 1.58979674e-12]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000225554, repulsion_softening = 2.9550387913584712e-12, cutoff_width = 1.5897967386990786e-12
+Final distance from origin of first agent: 11.351534884253464
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [6.80302037e-13 1.13504939e-12 3.40878614e-12]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000000680302, repulsion_softening = 1.1360493878126145e-12, cutoff_width = 3.4087861422449352e-12
+Final distance from origin of first agent: 11.35153488372826
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.13504939e-12 3.40878614e-12 6.80302037e-13]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000001135049, repulsion_softening = 3.4097861422449353e-12, cutoff_width = 6.803020369261503e-13
+Final distance from origin of first agent: 11.351534883213567
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.58979674e-12 2.25554686e-13 2.49929144e-12]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000001589796, repulsion_softening = 2.265546860396862e-13, cutoff_width = 2.499291440472007e-12
+Final distance from origin of first agent: 11.35153488268486
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [2.04454409e-12 2.49929144e-12 2.25554686e-13]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000002044544, repulsion_softening = 2.500291440472007e-12, cutoff_width = 2.255546860396862e-13
+Final distance from origin of first agent: 11.351534882170156
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [2.49929144e-12 6.80302037e-13 2.04454409e-12]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000002499291, repulsion_softening = 6.813020369261503e-13, cutoff_width = 2.044544089585543e-12
+Final distance from origin of first agent: 11.351534881644955
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [2.95403879e-12 2.04454409e-12 1.13504939e-12]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000002954038, repulsion_softening = 2.045544089585543e-12, cutoff_width = 1.1350493878126144e-12
+Final distance from origin of first agent: 11.35153488112793
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [3.40878614e-12 1.58979674e-12 2.95403879e-12]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000003408786, repulsion_softening = 1.5907967386990787e-12, cutoff_width = 2.954038791358471e-12
+Final distance from origin of first agent: 11.351534880606232
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:26<00:52, 26.02s/it]Stepwise progress: 100%|██████████| 3/3 [00:26<00:00,  6.79s/it]Stepwise progress: 100%|██████████| 3/3 [00:26<00:00,  8.71s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:26<00:52, 26.28s/it]Stepwise progress:  67%|██████▋   | 2/3 [00:26<00:11, 11.17s/it]Stepwise progress: 100%|██████████| 3/3 [00:26<00:00,  8.97s/it]
+Predict f(0) = 11.35153488442843 +/- 3.485772024088736e-11
+
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [4.51109372e-13 5.90807758e-12 3.17959348e-12]
+	Simulating Flocking of multiple agents Model with dt = 0.01000000000045111, repulsion_softening = 5.909077582716942e-12, cutoff_width = 3.179593477398157e-12
+Final distance from origin of first agent: 11.351534884002865
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.36060407e-12 2.27009878e-12 6.81757228e-12]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000001360605, repulsion_softening = 2.271098775625229e-12, cutoff_width = 6.8175722844898705e-12
+Final distance from origin of first agent: 11.35153488295245
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [2.27009878e-12 6.81757228e-12 1.36060407e-12]
+	Simulating Flocking of multiple agents Model with dt = 0.0100000000022701, repulsion_softening = 6.81857228448987e-12, cutoff_width = 1.3606040738523006e-12
+Final distance from origin of first agent: 11.351534881923074
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [3.17959348e-12 4.51109372e-13 4.99858288e-12]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000003179594, repulsion_softening = 4.521093720793724e-13, cutoff_width = 4.998582880944014e-12
+Final distance from origin of first agent: 11.35153488086565
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [4.08908818e-12 4.99858288e-12 4.51109372e-13]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000004089089, repulsion_softening = 4.999582880944014e-12, cutoff_width = 4.511093720793724e-13
+Final distance from origin of first agent: 11.351534879836269
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [4.99858288e-12 1.36060407e-12 4.08908818e-12]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000004998583, repulsion_softening = 1.3616040738523007e-12, cutoff_width = 4.089088179171086e-12
+Final distance from origin of first agent: 11.351534878785847
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [5.90807758e-12 4.08908818e-12 2.27009878e-12]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000005908078, repulsion_softening = 4.0900881791710855e-12, cutoff_width = 2.270098775625229e-12
+Final distance from origin of first agent: 11.351534877751797
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [6.81757228e-12 3.17959348e-12 5.90807758e-12]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000006817573, repulsion_softening = 3.1805934773981572e-12, cutoff_width = 5.908077582716942e-12
+Final distance from origin of first agent: 11.351534876708397
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:26<00:53, 26.75s/it]Stepwise progress: 100%|██████████| 3/3 [00:26<00:00,  6.98s/it]Stepwise progress: 100%|██████████| 3/3 [00:26<00:00,  8.95s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/5 [00:00<?, ?it/s]Stepwise progress:  20%|██        | 1/5 [00:24<01:39, 24.92s/it]Stepwise progress:  60%|██████    | 3/5 [00:25<00:13,  6.50s/it]Stepwise progress: 100%|██████████| 5/5 [00:25<00:00,  3.19s/it]Stepwise progress: 100%|██████████| 5/5 [00:25<00:00,  5.03s/it]
+Predict f(0) = 11.351534884500548 +/- 4.4591603862787803e-11
+
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [9.02218744e-13 1.18161552e-11 6.35918695e-12]
+	Simulating Flocking of multiple agents Model with dt = 0.01000000000090222, repulsion_softening = 1.1817155165433885e-11, cutoff_width = 6.359186954796314e-12
+Final distance from origin of first agent: 11.351534883501685
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [2.72120815e-12 4.54019755e-12 1.36351446e-11]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000002721209, repulsion_softening = 4.5411975512504575e-12, cutoff_width = 1.3635144568979741e-11
+Final distance from origin of first agent: 11.351534881400848
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [4.54019755e-12 1.36351446e-11 2.72120815e-12]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000004540198, repulsion_softening = 1.3636144568979741e-11, cutoff_width = 2.7212081477046013e-12
+Final distance from origin of first agent: 11.351534879342088
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [6.35918695e-12 9.02218744e-13 9.99716576e-12]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000006359188, repulsion_softening = 9.032187441587448e-13, cutoff_width = 9.997165761888028e-12
+Final distance from origin of first agent: 11.351534877227236
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [8.17817636e-12 9.99716576e-12 9.02218744e-13]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000008178177, repulsion_softening = 9.998165761888028e-12, cutoff_width = 9.022187441587448e-13
+Final distance from origin of first agent: 11.351534875168475
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [9.99716576e-12 2.72120815e-12 8.17817636e-12]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000009997166, repulsion_softening = 2.7222081477046014e-12, cutoff_width = 8.178176358342172e-12
+Final distance from origin of first agent: 11.35153487306766
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.18161552e-11 8.17817636e-12 4.54019755e-12]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000011816156, repulsion_softening = 8.179176358342172e-12, cutoff_width = 4.540197551250458e-12
+Final distance from origin of first agent: 11.351534870999554
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.36351446e-11 6.35918695e-12 1.18161552e-11]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000013635145, repulsion_softening = 6.360186954796314e-12, cutoff_width = 1.1816155165433884e-11
+Final distance from origin of first agent: 11.351534868912749
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:25<00:51, 25.90s/it]Stepwise progress:  67%|██████▋   | 2/3 [00:26<00:10, 10.98s/it]Stepwise progress: 100%|██████████| 3/3 [00:26<00:00,  6.20s/it]Stepwise progress: 100%|██████████| 3/3 [00:26<00:00,  8.98s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/5 [00:00<?, ?it/s]Stepwise progress:  20%|██        | 1/5 [00:25<01:40, 25.25s/it]Stepwise progress:  40%|████      | 2/5 [00:25<00:32, 10.71s/it]Stepwise progress:  60%|██████    | 3/5 [00:26<00:12,  6.06s/it]Stepwise progress: 100%|██████████| 5/5 [00:26<00:00,  2.67s/it]Stepwise progress: 100%|██████████| 5/5 [00:26<00:00,  5.29s/it]
+Fitting interactions of order 3:
+Stepwise progress:   0%|          | 0/6 [00:00<?, ?it/s]Stepwise progress:  17%|█▋        | 1/6 [00:24<02:04, 24.92s/it]Stepwise progress:  50%|█████     | 3/6 [00:25<00:19,  6.50s/it]Stepwise progress:  83%|████████▎ | 5/6 [00:25<00:03,  3.19s/it]Stepwise progress: 100%|██████████| 6/6 [00:25<00:00,  4.20s/it]
+Predict f(0) = 11.351534884514038 +/- 3.4034542785038527e-12
+
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.80443749e-12 2.36323103e-11 1.27183739e-11]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000001804437, repulsion_softening = 2.3633310330867768e-11, cutoff_width = 1.2718373909592628e-11
+Final distance from origin of first agent: 11.351534882499305
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [5.44241630e-12 9.08039510e-12 2.72702891e-11]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000005442416, repulsion_softening = 9.081395102500916e-12, cutoff_width = 2.7270289137959482e-11
+Final distance from origin of first agent: 11.351534878297652
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [9.08039510e-12 2.72702891e-11 5.44241630e-12]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000009080395, repulsion_softening = 2.727128913795948e-11, cutoff_width = 5.4424162954092026e-12
+Final distance from origin of first agent: 11.35153487418014
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.27183739e-11 1.80443749e-12 1.99943315e-11]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000012718373, repulsion_softening = 1.8054374883174897e-12, cutoff_width = 1.9994331523776056e-11
+Final distance from origin of first agent: 11.35153486995043
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.63563527e-11 1.99943315e-11 1.80443749e-12]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000016356352, repulsion_softening = 1.9995331523776055e-11, cutoff_width = 1.8044374883174896e-12
+Final distance from origin of first agent: 11.351534865832916
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.99943315e-11 5.44241630e-12 1.63563527e-11]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000019994331, repulsion_softening = 5.443416295409202e-12, cutoff_width = 1.6356352716684343e-11
+Final distance from origin of first agent: 11.35153486163126
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [2.36323103e-11 1.63563527e-11 9.08039510e-12]
+	Simulating Flocking of multiple agents Model with dt = 0.01000000002363231, repulsion_softening = 1.6357352716684342e-11, cutoff_width = 9.080395102500916e-12
+Final distance from origin of first agent: 11.351534857495045
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [2.72702891e-11 1.27183739e-11 2.36323103e-11]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000027270289, repulsion_softening = 1.2719373909592629e-11, cutoff_width = 2.363231033086777e-11
+Final distance from origin of first agent: 11.351534853321434
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:24<00:49, 24.97s/it]Stepwise progress: 100%|██████████| 3/3 [00:25<00:00,  8.36s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/6 [00:00<?, ?it/s]Stepwise progress:  17%|█▋        | 1/6 [00:24<02:00, 24.12s/it]Stepwise progress:  33%|███▎      | 2/6 [00:24<00:40, 10.24s/it]Stepwise progress:  67%|██████▋   | 4/6 [00:24<00:07,  3.85s/it]Stepwise progress: 100%|██████████| 6/6 [00:24<00:00,  2.06s/it]Stepwise progress: 100%|██████████| 6/6 [00:24<00:00,  4.14s/it]
+Predict f(0) = 11.351534884553336 +/- 7.094204532379471e-11
+
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [3.60887498e-12 4.72646207e-11 2.54367478e-11]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000003608876, repulsion_softening = 4.726562066173554e-11, cutoff_width = 2.5436747819185257e-11
+Final distance from origin of first agent: 11.351534880494569
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.08848326e-11 1.81607902e-11 5.45405783e-11]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000010884833, repulsion_softening = 1.816179020500183e-11, cutoff_width = 5.4540578275918964e-11
+Final distance from origin of first agent: 11.351534872091255
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.81607902e-11 5.45405783e-11 1.08848326e-11]
+	Simulating Flocking of multiple agents Model with dt = 0.01000000001816079, repulsion_softening = 5.4541578275918966e-11, cutoff_width = 1.0884832590818405e-11
+Final distance from origin of first agent: 11.351534863856212
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [2.54367478e-11 3.60887498e-12 3.99886630e-11]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000025436748, repulsion_softening = 3.6098749766349793e-12, cutoff_width = 3.998866304755211e-11
+Final distance from origin of first agent: 11.351534855396809
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [3.27127054e-11 3.99886630e-11 3.60887498e-12]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000032712706, repulsion_softening = 3.9989663047552114e-11, cutoff_width = 3.6088749766349792e-12
+Final distance from origin of first agent: 11.351534847161787
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [3.99886630e-11 1.08848326e-11 3.27127054e-11]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000039988664, repulsion_softening = 1.0885832590818406e-11, cutoff_width = 3.2712705433368686e-11
+Final distance from origin of first agent: 11.351534838758454
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [4.72646207e-11 3.27127054e-11 1.81607902e-11]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000047264621, repulsion_softening = 3.271370543336869e-11, cutoff_width = 1.816079020500183e-11
+Final distance from origin of first agent: 11.351534830486038
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [5.45405783e-11 2.54367478e-11 4.72646207e-11]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000054540579, repulsion_softening = 2.5437747819185256e-11, cutoff_width = 4.726462066173554e-11
+Final distance from origin of first agent: 11.351534822138824
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:26<00:52, 26.08s/it]Stepwise progress: 100%|██████████| 3/3 [00:26<00:00,  6.80s/it]Stepwise progress: 100%|██████████| 3/3 [00:26<00:00,  8.73s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/5 [00:00<?, ?it/s]Stepwise progress:  20%|██        | 1/5 [00:24<01:37, 24.44s/it]Stepwise progress:  60%|██████    | 3/5 [00:24<00:12,  6.38s/it]Stepwise progress: 100%|██████████| 5/5 [00:24<00:00,  3.13s/it]Stepwise progress: 100%|██████████| 5/5 [00:24<00:00,  4.93s/it]
+Predict f(0) = 11.35153488452477 +/- 1.4474798262613608e-11
+
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [7.21774995e-12 9.45292413e-11 5.08734956e-11]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000007217751, repulsion_softening = 9.453024132347107e-11, cutoff_width = 5.0873495638370514e-11
+Final distance from origin of first agent: 11.35153487648508
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [2.17696652e-11 3.63215804e-11 1.09081157e-10]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000021769666, repulsion_softening = 3.6322580410003664e-11, cutoff_width = 1.0908115655183793e-10
+Final distance from origin of first agent: 11.351534859678454
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [3.63215804e-11 1.09081157e-10 2.17696652e-11]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000036321581, repulsion_softening = 1.0908215655183792e-10, cutoff_width = 2.176966518163681e-11
+Final distance from origin of first agent: 11.351534843208379
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [5.08734956e-11 7.21774995e-12 7.99773261e-11]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000050873497, repulsion_softening = 7.218749953269958e-12, cutoff_width = 7.997732609510422e-11
+Final distance from origin of first agent: 11.35153482628957
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [6.54254109e-11 7.99773261e-11 7.21774995e-12]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000065425412, repulsion_softening = 7.997832609510422e-11, cutoff_width = 7.2177499532699584e-12
+Final distance from origin of first agent: 11.35153480981951
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [7.99773261e-11 2.17696652e-11 6.54254109e-11]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000079977327, repulsion_softening = 2.177066518163681e-11, cutoff_width = 6.542541086673737e-11
+Final distance from origin of first agent: 11.351534793012885
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [9.45292413e-11 6.54254109e-11 3.63215804e-11]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000094529242, repulsion_softening = 6.542641086673737e-11, cutoff_width = 3.632158041000366e-11
+Final distance from origin of first agent: 11.35153477646802
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.09081157e-10 5.08734956e-11 9.45292413e-11]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000109081158, repulsion_softening = 5.0874495638370516e-11, cutoff_width = 9.452924132347108e-11
+Final distance from origin of first agent: 11.35153475977358
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:26<00:53, 26.57s/it]Stepwise progress: 100%|██████████| 3/3 [00:26<00:00,  6.93s/it]Stepwise progress: 100%|██████████| 3/3 [00:26<00:00,  8.90s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/5 [00:00<?, ?it/s]Stepwise progress:  20%|██        | 1/5 [00:25<01:40, 25.22s/it]Stepwise progress:  60%|██████    | 3/5 [00:25<00:13,  6.59s/it]Stepwise progress: 100%|██████████| 5/5 [00:25<00:00,  3.35s/it]Stepwise progress: 100%|██████████| 5/5 [00:25<00:00,  5.18s/it]
+Predict f(0) = 11.351534884495647 +/- 8.549542345532878e-11
+
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.44354999e-11 1.89058483e-10 1.01746991e-10]
+	Simulating Flocking of multiple agents Model with dt = 0.0100000000144355, repulsion_softening = 1.8905948264694216e-10, cutoff_width = 1.0174699127674103e-10
+Final distance from origin of first agent: 11.351534868466112
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [4.35393304e-11 7.26431608e-11 2.18162313e-10]
+	Simulating Flocking of multiple agents Model with dt = 0.01000000004353933, repulsion_softening = 7.264416082000732e-11, cutoff_width = 2.1816231310367586e-10
+Final distance from origin of first agent: 11.351534834852853
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [7.26431608e-11 2.18162313e-10 4.35393304e-11]
+	Simulating Flocking of multiple agents Model with dt = 0.01000000007264316, repulsion_softening = 2.1816331310367586e-10, cutoff_width = 4.353933036327362e-11
+Final distance from origin of first agent: 11.351534801912731
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.01746991e-10 1.44354999e-11 1.59954652e-10]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000101746991, repulsion_softening = 1.4436499906539917e-11, cutoff_width = 1.5995465219020845e-10
+Final distance from origin of first agent: 11.351534768075089
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.30850822e-10 1.59954652e-10 1.44354999e-11]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000130850822, repulsion_softening = 1.5995565219020846e-10, cutoff_width = 1.4435499906539917e-11
+Final distance from origin of first agent: 11.351534735134972
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.59954652e-10 4.35393304e-11 1.30850822e-10]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000159954652, repulsion_softening = 4.354033036327362e-11, cutoff_width = 1.3085082173347474e-10
+Final distance from origin of first agent: 11.351534701521723
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.89058483e-10 1.30850822e-10 7.26431608e-11]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000189058483, repulsion_softening = 1.3085182173347475e-10, cutoff_width = 7.264316082000732e-11
+Final distance from origin of first agent: 11.351534668432025
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [2.18162313e-10 1.01746991e-10 1.89058483e-10]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000218162313, repulsion_softening = 1.0174799127674102e-10, cutoff_width = 1.8905848264694215e-10
+Final distance from origin of first agent: 11.351534635043167
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:25<00:51, 25.84s/it]Stepwise progress: 100%|██████████| 3/3 [00:25<00:00,  8.64s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:25<00:51, 25.64s/it]Stepwise progress: 100%|██████████| 3/3 [00:26<00:00,  6.86s/it]Stepwise progress: 100%|██████████| 3/3 [00:26<00:00,  8.73s/it]
+Predict f(0) = 11.351534884486156 +/- 5.724809211500373e-11
+
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [2.88709998e-11 3.78116965e-10 2.03493983e-10]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000028871, repulsion_softening = 3.781179652938843e-10, cutoff_width = 2.0349398255348206e-10
+Final distance from origin of first agent: 11.35153485242817
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [8.70786607e-11 1.45286322e-10 4.36324626e-10]
+	Simulating Flocking of multiple agents Model with dt = 0.01000000008707866, repulsion_softening = 1.4528732164001466e-10, cutoff_width = 4.363246262073517e-10
+Final distance from origin of first agent: 11.35153478520166
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.45286322e-10 4.36324626e-10 8.70786607e-11]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000145286321, repulsion_softening = 4.363256262073517e-10, cutoff_width = 8.707866072654724e-11
+Final distance from origin of first agent: 11.351534719321405
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [2.03493983e-10 2.88709998e-11 3.19909304e-10]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000203493982, repulsion_softening = 2.8871999813079833e-11, cutoff_width = 3.199093043804169e-10
+Final distance from origin of first agent: 11.35153465164617
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [2.61701643e-10 3.19909304e-10 2.88709998e-11]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000261701643, repulsion_softening = 3.199103043804169e-10, cutoff_width = 2.8870999813079834e-11
+Final distance from origin of first agent: 11.35153458576596
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [3.19909304e-10 8.70786607e-11 2.61701643e-10]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000319909304, repulsion_softening = 8.707966072654724e-11, cutoff_width = 2.617016434669495e-10
+Final distance from origin of first agent: 11.351534518539513
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [3.78116965e-10 2.61701643e-10 1.45286322e-10]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000378116965, repulsion_softening = 2.617026434669495e-10, cutoff_width = 1.4528632164001465e-10
+Final distance from origin of first agent: 11.351534452360154
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [4.36324626e-10 2.03493983e-10 3.78116965e-10]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000436324626, repulsion_softening = 2.0349498255348206e-10, cutoff_width = 3.781169652938843e-10
+Final distance from origin of first agent: 11.351534385582468
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:24<00:49, 24.81s/it]Stepwise progress: 100%|██████████| 3/3 [00:24<00:00,  8.30s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:25<00:50, 25.15s/it]Stepwise progress:  67%|██████▋   | 2/3 [00:25<00:10, 10.65s/it]Stepwise progress: 100%|██████████| 3/3 [00:26<00:00,  6.02s/it]Stepwise progress: 100%|██████████| 3/3 [00:26<00:00,  8.72s/it]
+Predict f(0) = 11.351534884507274 +/- 1.1208634541432559e-10
+
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [5.77419996e-11 7.56233931e-10 4.06987965e-10]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000057742, repulsion_softening = 7.562349305877686e-10, cutoff_width = 4.069879651069641e-10
+Final distance from origin of first agent: 11.351534820352287
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.74157321e-10 2.90572643e-10 8.72649252e-10]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000174157322, repulsion_softening = 2.905736432800293e-10, cutoff_width = 8.726492524147034e-10
+Final distance from origin of first agent: 11.351534685899285
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [2.90572643e-10 8.72649252e-10 1.74157321e-10]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000290572644, repulsion_softening = 8.726502524147034e-10, cutoff_width = 1.7415732145309448e-10
+Final distance from origin of first agent: 11.351534554138874
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [4.06987965e-10 5.77419996e-11 6.39818609e-10]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000406987966, repulsion_softening = 5.774299962615967e-11, cutoff_width = 6.398186087608338e-10
+Final distance from origin of first agent: 11.351534418788477
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [5.23403287e-10 6.39818609e-10 5.77419996e-11]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000523403288, repulsion_softening = 6.398196087608338e-10, cutoff_width = 5.774199962615967e-11
+Final distance from origin of first agent: 11.351534287028162
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [6.39818609e-10 1.74157321e-10 5.23403287e-10]
+	Simulating Flocking of multiple agents Model with dt = 0.01000000063981861, repulsion_softening = 1.741583214530945e-10, cutoff_width = 5.23403286933899e-10
+Final distance from origin of first agent: 11.351534152575391
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [7.56233931e-10 5.23403287e-10 2.90572643e-10]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000756233932, repulsion_softening = 5.23404286933899e-10, cutoff_width = 2.905726432800293e-10
+Final distance from origin of first agent: 11.351534020216855
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [8.72649252e-10 4.06987965e-10 7.56233931e-10]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000872649253, repulsion_softening = 4.069889651069641e-10, cutoff_width = 7.562339305877686e-10
+Final distance from origin of first agent: 11.351533886661691
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:25<00:50, 25.04s/it]Stepwise progress: 100%|██████████| 3/3 [00:25<00:00,  6.53s/it]Stepwise progress: 100%|██████████| 3/3 [00:25<00:00,  8.38s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:25<00:51, 25.58s/it]Stepwise progress: 100%|██████████| 3/3 [00:25<00:00,  6.67s/it]Stepwise progress: 100%|██████████| 3/3 [00:25<00:00,  8.56s/it]
+Predict f(0) = 11.351534884502664 +/- 2.2555344033801633e-10
+
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.15483999e-10 1.51246786e-09 8.13975930e-10]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000115484, repulsion_softening = 1.5124688611755371e-09, cutoff_width = 8.139759302139282e-10
+Final distance from origin of first agent: 11.351534756200559
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [3.48314643e-10 5.81145287e-10 1.74529850e-09]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000348314643, repulsion_softening = 5.811462865600586e-10, cutoff_width = 1.7452985048294068e-09
+Final distance from origin of first agent: 11.351534487294657
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [5.81145287e-10 1.74529850e-09 3.48314643e-10]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000581145287, repulsion_softening = 1.7452995048294067e-09, cutoff_width = 3.4831464290618896e-10
+Final distance from origin of first agent: 11.351534223774038
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [8.13975930e-10 1.15483999e-10 1.27963722e-09]
+	Simulating Flocking of multiple agents Model with dt = 0.01000000081397593, repulsion_softening = 1.1548499925231933e-10, cutoff_width = 1.2796372175216676e-09
+Final distance from origin of first agent: 11.351533953073591
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.04680657e-09 1.27963722e-09 1.15483999e-10]
+	Simulating Flocking of multiple agents Model with dt = 0.010000001046806574, repulsion_softening = 1.2796382175216675e-09, cutoff_width = 1.1548399925231934e-10
+Final distance from origin of first agent: 11.351533689553412
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.27963722e-09 3.48314643e-10 1.04680657e-09]
+	Simulating Flocking of multiple agents Model with dt = 0.010000001279637218, repulsion_softening = 3.4831564290618897e-10, cutoff_width = 1.046806573867798e-09
+Final distance from origin of first agent: 11.351533420648453
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.51246786e-09 1.04680657e-09 5.81145287e-10]
+	Simulating Flocking of multiple agents Model with dt = 0.010000001512467861, repulsion_softening = 1.0468075738677979e-09, cutoff_width = 5.811452865600586e-10
+Final distance from origin of first agent: 11.351533155932055
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.74529850e-09 8.13975930e-10 1.51246786e-09]
+	Simulating Flocking of multiple agents Model with dt = 0.010000001745298505, repulsion_softening = 8.139769302139282e-10, cutoff_width = 1.5124678611755372e-09
+Final distance from origin of first agent: 11.351532888822549
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:23<00:47, 23.91s/it]Stepwise progress:  67%|██████▋   | 2/3 [00:24<00:09,  9.91s/it]Stepwise progress: 100%|██████████| 3/3 [00:24<00:00,  8.03s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/5 [00:00<?, ?it/s]Stepwise progress:  20%|██        | 1/5 [00:23<01:33, 23.43s/it]Stepwise progress:  40%|████      | 2/5 [00:23<00:29,  9.95s/it]Stepwise progress:  80%|████████  | 4/5 [00:24<00:03,  3.74s/it]Stepwise progress: 100%|██████████| 5/5 [00:24<00:00,  4.91s/it]
+Predict f(0) = 11.351534884481579 +/- 4.449763433242334e-10
+
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [2.30967999e-10 3.02493572e-09 1.62795186e-09]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000230967998, repulsion_softening = 3.0249367223510743e-09, cutoff_width = 1.6279518604278564e-09
+Final distance from origin of first agent: 11.351534627897111
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [6.96629286e-10 1.16229057e-09 3.49059701e-09]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000696629286, repulsion_softening = 1.162291573120117e-09, cutoff_width = 3.4905970096588137e-09
+Final distance from origin of first agent: 11.351534090085782
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.16229057e-09 3.49059701e-09 6.96629286e-10]
+	Simulating Flocking of multiple agents Model with dt = 0.010000001162290573, repulsion_softening = 3.4905980096588136e-09, cutoff_width = 6.966292858123779e-10
+Final distance from origin of first agent: 11.351533563045441
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.62795186e-09 2.30967999e-10 2.55927444e-09]
+	Simulating Flocking of multiple agents Model with dt = 0.01000000162795186, repulsion_softening = 2.3096899850463868e-10, cutoff_width = 2.559274435043335e-09
+Final distance from origin of first agent: 11.351533021645917
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [2.09361315e-09 2.55927444e-09 2.30967999e-10]
+	Simulating Flocking of multiple agents Model with dt = 0.010000002093613148, repulsion_softening = 2.559275435043335e-09, cutoff_width = 2.3096799850463867e-10
+Final distance from origin of first agent: 11.351532494607385
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [2.55927444e-09 6.96629286e-10 2.09361315e-09]
+	Simulating Flocking of multiple agents Model with dt = 0.010000002559274435, repulsion_softening = 6.966302858123779e-10, cutoff_width = 2.093613147735596e-09
+Final distance from origin of first agent: 11.35153195679973
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [3.02493572e-09 2.09361315e-09 1.16229057e-09]
+	Simulating Flocking of multiple agents Model with dt = 0.010000003024935722, repulsion_softening = 2.093614147735596e-09, cutoff_width = 1.1622905731201172e-09
+Final distance from origin of first agent: 11.351531427369668
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [3.49059701e-09 1.62795186e-09 3.02493572e-09]
+	Simulating Flocking of multiple agents Model with dt = 0.01000000349059701, repulsion_softening = 1.6279528604278563e-09, cutoff_width = 3.0249357223510744e-09
+Final distance from origin of first agent: 11.351530893164918
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:24<00:49, 24.56s/it]Stepwise progress: 100%|██████████| 3/3 [00:24<00:00,  6.41s/it]Stepwise progress: 100%|██████████| 3/3 [00:24<00:00,  8.23s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/6 [00:00<?, ?it/s]Stepwise progress:  17%|█▋        | 1/6 [00:23<01:55, 23.03s/it]Stepwise progress:  50%|█████     | 3/6 [00:23<00:18,  6.01s/it]Stepwise progress:  83%|████████▎ | 5/6 [00:23<00:03,  3.07s/it]Stepwise progress: 100%|██████████| 6/6 [00:23<00:00,  3.96s/it]
+Predict f(0) = 11.351534884549919 +/- 7.578233393015007e-10
+
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [4.61935997e-10 6.04987144e-09 3.25590372e-09]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000461935997, repulsion_softening = 6.049872444702149e-09, cutoff_width = 3.255903720855713e-09
+Final distance from origin of first agent: 11.351534371290384
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.39325857e-09 2.32458115e-09 6.98119402e-09]
+	Simulating Flocking of multiple agents Model with dt = 0.010000001393258571, repulsion_softening = 2.3245821462402343e-09, cutoff_width = 6.981194019317627e-09
+Final distance from origin of first agent: 11.351533295669533
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [2.32458115e-09 6.98119402e-09 1.39325857e-09]
+	Simulating Flocking of multiple agents Model with dt = 0.010000002324581146, repulsion_softening = 6.981195019317628e-09, cutoff_width = 1.3932585716247559e-09
+Final distance from origin of first agent: 11.351532241592484
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [3.25590372e-09 4.61935997e-10 5.11854887e-09]
+	Simulating Flocking of multiple agents Model with dt = 0.01000000325590372, repulsion_softening = 4.6193699700927735e-10, cutoff_width = 5.11854887008667e-09
+Final distance from origin of first agent: 11.351531158798911
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [4.18722630e-09 5.11854887e-09 4.61935997e-10]
+	Simulating Flocking of multiple agents Model with dt = 0.010000004187226295, repulsion_softening = 5.118549870086671e-09, cutoff_width = 4.6193599700927734e-10
+Final distance from origin of first agent: 11.351530104787614
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [5.11854887e-09 1.39325857e-09 4.18722630e-09]
+	Simulating Flocking of multiple agents Model with dt = 0.01000000511854887, repulsion_softening = 1.3932595716247558e-09, cutoff_width = 4.187226295471192e-09
+Final distance from origin of first agent: 11.351529029245777
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [6.04987144e-09 4.18722630e-09 2.32458115e-09]
+	Simulating Flocking of multiple agents Model with dt = 0.010000006049871444, repulsion_softening = 4.187227295471192e-09, cutoff_width = 2.3245811462402344e-09
+Final distance from origin of first agent: 11.351527970460195
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [6.98119402e-09 3.25590372e-09 6.04987144e-09]
+	Simulating Flocking of multiple agents Model with dt = 0.010000006981194019, repulsion_softening = 3.2559047208557128e-09, cutoff_width = 6.049871444702149e-09
+Final distance from origin of first agent: 11.351526902105352
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:24<00:48, 24.05s/it]Stepwise progress: 100%|██████████| 3/3 [00:24<00:00,  8.05s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/6 [00:00<?, ?it/s]Stepwise progress:  17%|█▋        | 1/6 [00:22<01:54, 22.94s/it]Stepwise progress:  50%|█████     | 3/6 [00:23<00:17,  6.00s/it]Stepwise progress:  83%|████████▎ | 5/6 [00:23<00:02,  2.95s/it]Stepwise progress: 100%|██████████| 6/6 [00:23<00:00,  3.95s/it]
+Predict f(0) = 11.35153488422794 +/- 8.33638727351706e-10
+
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [9.23871994e-10 1.20997429e-08 6.51180744e-09]
+	Simulating Flocking of multiple agents Model with dt = 0.010000000923871995, repulsion_softening = 1.2099743889404298e-08, cutoff_width = 6.511807441711426e-09
+Final distance from origin of first agent: 11.351533858077595
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [2.78651714e-09 4.64916229e-09 1.39623880e-08]
+	Simulating Flocking of multiple agents Model with dt = 0.010000002786517144, repulsion_softening = 4.649163292480469e-09, cutoff_width = 1.3962388038635255e-08
+Final distance from origin of first agent: 11.351531706843172
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [4.64916229e-09 1.39623880e-08 2.78651714e-09]
+	Simulating Flocking of multiple agents Model with dt = 0.010000004649162293, repulsion_softening = 1.3962389038635255e-08, cutoff_width = 2.7865171432495117e-09
+Final distance from origin of first agent: 11.351529598792675
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [6.51180744e-09 9.23871994e-10 1.02370977e-08]
+	Simulating Flocking of multiple agents Model with dt = 0.010000006511807442, repulsion_softening = 9.238729940185547e-10, cutoff_width = 1.023709774017334e-08
+Final distance from origin of first agent: 11.351527433356917
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [8.37445259e-09 1.02370977e-08 9.23871994e-10]
+	Simulating Flocking of multiple agents Model with dt = 0.010000008374452592, repulsion_softening = 1.0237098740173341e-08, cutoff_width = 9.238719940185547e-10
+Final distance from origin of first agent: 11.34865008008048
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.02370977e-08 2.78651714e-09 8.37445259e-09]
+	Simulating Flocking of multiple agents Model with dt = 0.010000010237097741, repulsion_softening = 2.7865181432495116e-09, cutoff_width = 8.374452590942384e-09
+Final distance from origin of first agent: 11.348647680242516
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.20997429e-08 8.37445259e-09 4.64916229e-09]
+	Simulating Flocking of multiple agents Model with dt = 0.01000001209974289, repulsion_softening = 8.374453590942384e-09, cutoff_width = 4.649162292480469e-09
+Final distance from origin of first agent: 11.339399861004365
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.39623880e-08 6.51180744e-09 1.20997429e-08]
+	Simulating Flocking of multiple agents Model with dt = 0.01000001396238804, repulsion_softening = 6.511808441711426e-09, cutoff_width = 1.2099742889404298e-08
+Final distance from origin of first agent: 11.339397806455286
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:24<00:49, 24.66s/it]Stepwise progress: 100%|██████████| 3/3 [00:24<00:00,  6.44s/it]Stepwise progress: 100%|██████████| 3/3 [00:24<00:00,  8.26s/it]
+Predict f(0) = 11.349295060817635 +/- 0.002651694181183911
+
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.84774399e-09 2.41994858e-08 1.30236149e-08]
+	Simulating Flocking of multiple agents Model with dt = 0.010000001847743988, repulsion_softening = 2.4199486778808596e-08, cutoff_width = 1.3023614883422852e-08
+Final distance from origin of first agent: 11.351532831654668
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [5.57303429e-09 9.29832458e-09 2.79247761e-08]
+	Simulating Flocking of multiple agents Model with dt = 0.010000005573034286, repulsion_softening = 9.298325584960938e-09, cutoff_width = 2.792477607727051e-08
+Final distance from origin of first agent: 11.35152852936799
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [9.29832458e-09 2.79247761e-08 5.57303429e-09]
+	Simulating Flocking of multiple agents Model with dt = 0.010000009298324584, repulsion_softening = 2.792477707727051e-08, cutoff_width = 5.5730342864990234e-09
+Final distance from origin of first agent: 11.34864908216449
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.30236149e-08 1.84774399e-09 2.04741955e-08]
+	Simulating Flocking of multiple agents Model with dt = 0.010000013023614883, repulsion_softening = 1.8477449880371093e-09, cutoff_width = 2.047419548034668e-08
+Final distance from origin of first agent: 11.33939882764796
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.67489052e-08 2.04741955e-08 1.84774399e-09]
+	Simulating Flocking of multiple agents Model with dt = 0.010000016748905181, repulsion_softening = 2.047419648034668e-08, cutoff_width = 1.8477439880371094e-09
+Final distance from origin of first agent: 11.339394775618944
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [2.04741955e-08 5.57303429e-09 1.67489052e-08]
+	Simulating Flocking of multiple agents Model with dt = 0.01000002047419548, repulsion_softening = 5.573035286499024e-09, cutoff_width = 1.6748905181884767e-08
+Final distance from origin of first agent: 11.379123094860784
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [2.41994858e-08 1.67489052e-08 9.29832458e-09]
+	Simulating Flocking of multiple agents Model with dt = 0.010000024199485778, repulsion_softening = 1.6748906181884768e-08, cutoff_width = 9.298324584960937e-09
+Final distance from origin of first agent: 11.37911863167881
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [2.79247761e-08 1.30236149e-08 2.41994858e-08]
+	Simulating Flocking of multiple agents Model with dt = 0.010000027924776077, repulsion_softening = 1.3023615883422852e-08, cutoff_width = 2.4199485778808595e-08
+Final distance from origin of first agent: 11.379056517438878
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:25<00:51, 25.95s/it]Stepwise progress: 100%|██████████| 3/3 [00:26<00:00,  6.78s/it]Stepwise progress: 100%|██████████| 3/3 [00:26<00:00,  8.70s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/5 [00:00<?, ?it/s]Stepwise progress:  20%|██        | 1/5 [00:23<01:35, 23.94s/it]Stepwise progress:  60%|██████    | 3/5 [00:24<00:12,  6.26s/it]Stepwise progress: 100%|██████████| 5/5 [00:24<00:00,  3.07s/it]Stepwise progress: 100%|██████████| 5/5 [00:24<00:00,  4.84s/it]
+Predict f(0) = 11.337930548092947 +/- 0.01679574065410075
+
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [3.69548798e-09 4.83989716e-08 2.60472298e-08]
+	Simulating Flocking of multiple agents Model with dt = 0.010000003695487977, repulsion_softening = 4.839897255761719e-08, cutoff_width = 2.6047229766845703e-08
+Final distance from origin of first agent: 11.351530778838958
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.11460686e-08 1.85966492e-08 5.58495522e-08]
+	Simulating Flocking of multiple agents Model with dt = 0.010000011146068574, repulsion_softening = 1.8596650169921875e-08, cutoff_width = 5.584955215454102e-08
+Final distance from origin of first agent: 11.339400936592089
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [1.85966492e-08 5.58495522e-08 1.11460686e-08]
+	Simulating Flocking of multiple agents Model with dt = 0.01000001859664917, repulsion_softening = 5.5849553154541016e-08, cutoff_width = 1.1146068572998047e-08
+Final distance from origin of first agent: 11.33939283260778
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [2.60472298e-08 3.69548798e-09 4.09483910e-08]
+	Simulating Flocking of multiple agents Model with dt = 0.010000026047229767, repulsion_softening = 3.6954889760742186e-09, cutoff_width = 4.094839096069336e-08
+Final distance from origin of first agent: 11.379116369268312
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [3.34978104e-08 4.09483910e-08 3.69548798e-09]
+	Simulating Flocking of multiple agents Model with dt = 0.010000033497810364, repulsion_softening = 4.094839196069336e-08, cutoff_width = 3.6954879760742187e-09
+Final distance from origin of first agent: 11.339998169827341
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [4.09483910e-08 1.11460686e-08 3.34978104e-08]
+	Simulating Flocking of multiple agents Model with dt = 0.010000040948390961, repulsion_softening = 1.1146069572998047e-08, cutoff_width = 3.3497810363769535e-08
+Final distance from origin of first agent: 11.336671060554258
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [4.83989716e-08 3.34978104e-08 1.85966492e-08]
+	Simulating Flocking of multiple agents Model with dt = 0.010000048398971558, repulsion_softening = 3.349781136376953e-08, cutoff_width = 1.8596649169921875e-08
+Final distance from origin of first agent: 11.340688506736463
+Running model "flock" using offset [0.01, 1e-15, 0.0] with parameters [5.58495522e-08 2.60472298e-08 4.83989716e-08]
+	Simulating Flocking of multiple agents Model with dt = 0.010000055849552155, repulsion_softening = 2.6047230766845703e-08, cutoff_width = 4.839897155761719e-08
+Final distance from origin of first agent: 11.340679217753767
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:27<00:55, 27.58s/it]Stepwise progress:  67%|██████▋   | 2/3 [00:27<00:11, 11.55s/it]Stepwise progress: 100%|██████████| 3/3 [00:28<00:00,  6.34s/it]Stepwise progress: 100%|██████████| 3/3 [00:28<00:00,  9.35s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/5 [00:00<?, ?it/s]Stepwise progress:   0%|          | 0/5 [00:26<?, ?it/s]
+Traceback (most recent call last):
+  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/src/run_model_analysis.py", line 26, in <module>
+    model.run_analysis()
+  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/src/models/base_model.py", line 404, in run_analysis
+    out = extrapolation(X*h, Y, options, h)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/src/sparse_pre/extrapolation.py", line 79, in extrapolation
+    out = spre.stepwise_selection(max_order, use_fixed_basis, bases_filename, h)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/src/sparse_pre/SPRE.py", line 619, in stepwise_selection
+    fit_new = self.perform_extrapolation_optimization(A_new, do_jit)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/src/sparse_pre/SPRE.py", line 519, in perform_extrapolation_optimization
+    result = minimize(self.scipy_objective,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/.venv/lib/python3.12/site-packages/scipy/optimize/_minimize.py", line 809, in minimize
+    res = _minimize_trust_krylov(fun, x0, args, jac, hess, hessp,
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/.venv/lib/python3.12/site-packages/scipy/optimize/_trustregion_krylov.py", line 51, in _minimize_trust_krylov
+    return _minimize_trust_region(fun, x0, args=args, jac=jac,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/.venv/lib/python3.12/site-packages/scipy/optimize/_trustregion.py", line 280, in _minimize_trust_region
+    if m.jac_mag < gtol:
+       ^^^^^^^^^
+  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/.venv/lib/python3.12/site-packages/scipy/optimize/_trustregion.py", line 87, in jac_mag
+    self._g_mag = scipy.linalg.norm(self.jac)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/.venv/lib/python3.12/site-packages/scipy/linalg/_misc.py", line 146, in norm
+    a = np.asarray_chkfinite(a)
+        ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/.venv/lib/python3.12/site-packages/numpy/lib/_function_base_impl.py", line 665, in asarray_chkfinite
+    raise ValueError(
+ValueError: array must not contain infs or NaNs
+Thu 12 Feb 13:17:40 GMT 2026
+Total seconds: 4530

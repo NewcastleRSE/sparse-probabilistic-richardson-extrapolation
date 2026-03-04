@@ -1,0 +1,11 @@
+Wed 26 Nov 11:28:12 GMT 2025
+Running on hmem009 model simulation for job 1 scenario 38
+slurmstepd: error: slurm_get_node_energy: Socket timed out on send/recv operation
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+Running model "Diffusion" with parameters [1.18408203e-07 1.86157227e-03 1.67846680e-03]
+	Simulating Diffusion Model with dt = 1.18408203125e-07, 1074 x partitions and 1192 y partitions
+	Calculated final value: 79.5449063788447
+Wed 26 Nov 11:54:16 GMT 2025
+Total seconds: 1567
+slurmstepd: error: slurm_get_node_energy: Socket timed out on send/recv operation
+slurmstepd: error: _get_joules_task: can't get info from slurmd

@@ -1,0 +1,35 @@
+{
+  "model_name": "diffusion",
+  "diffusivity": 0.1,
+  "x_range": [-1, 1],
+  "y_range": [-1, 1],
+  "total_time": 0.01,
+  "start_pos": [0, 0], 
+  "start_amount": 1,
+  
+  "X": [
+  [6.0625000e-05, 2.3828125e-01, 2.1484375e-01],
+    [8.3125000e-05, 1.4453125e-01, 2.3828125e-01],
+    [1.5625000e-05, 2.1484375e-01, 1.6796875e-01],
+    [7.1875000e-05, 1.9140625e-01, 1.2109375e-01],
+    [4.9375000e-05, 7.4218750e-02, 9.7656250e-02],
+    [2.6875000e-05, 1.6796875e-01, 7.4218750e-02],
+    [3.8125000e-05, 1.2109375e-01, 1.9140625e-01],
+    [9.4375000e-05, 9.7656250e-02, 1.4453125e-01]
+],
+
+  "h_values": [[1, 1, 0.0078125], [1, 1, 0.015625], [1, 1, 0.03125], [1, 1, 0.0625], [1, 1, 0.125], [1, 1, 0.25], [1, 1, 0.5], [1, 1, 1]],
+
+  "final_tols": [1e-4, 0.125, 0.125],
+  "evaluation": true,
+ 
+  "results_filename": "output_diffusion_40.dat",
+  "results_eval_filename": "output_diffusion_abs_errors_eval_40.dat",
+  "results_eval_plot_filename": "output_diffusion_abs_errors_eval_40.png",
+  "results_plot_filename": "output_diffusion_40.png",
+  "final_model_plot_filename": "",
+  "final_mp4_filename": "",
+  "results_fx_filename": "output_diffusion_fx_eval_40.dat",
+  "extrapolation_name": "SPRE",
+  "extrapolation_kernel": "white"
+}

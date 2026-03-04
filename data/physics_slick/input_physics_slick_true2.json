@@ -1,0 +1,16 @@
+{
+  "model_name": "physics_slick",
+  "total_time": 2.0,
+    
+  "X": [
+   [1e-5, 1e-5, 5e-4]
+],
+
+"h_values":  [1],
+
+ "final_tols": [0.00416666666, 1, 0.01],
+ 
+  "extrapolation_name": "SPRE",
+  "extrapolation_kernel": "white"
+
+}

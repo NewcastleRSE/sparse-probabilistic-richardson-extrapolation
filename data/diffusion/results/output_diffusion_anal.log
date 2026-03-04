@@ -1,0 +1,306 @@
+Mon  2 Mar 16:11:56 GMT 2026
+Running on compute032 analysis for scenario 200
+pybullet build time: Nov 28 2025 15:19:22
+	Simulating Diffusion Model with dt = 0.0001, 640 x partitions and 640 y partitions
+	Calculated final value: 0.016447168929132346
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [5.91278076e-08 7.74383545e-07 4.16755676e-07]
+	Simulating Diffusion Model with dt = 0.00010005912780761719, 640 x partitions and 640 y partitions
+	Calculated final value: 0.01644879798155351
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [1.78337097e-07 2.97546387e-07 8.93592834e-07]
+	Simulating Diffusion Model with dt = 0.00010017833709716797, 640 x partitions and 640 y partitions
+	Calculated final value: 0.016448075443411543
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [2.97546387e-07 8.93592834e-07 1.78337097e-07]
+	Simulating Diffusion Model with dt = 0.00010029754638671875, 640 x partitions and 640 y partitions
+	Calculated final value: 0.016449405958725998
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [4.16755676e-07 5.91278076e-08 6.55174255e-07]
+	Simulating Diffusion Model with dt = 0.00010041675567626953, 640 x partitions and 640 y partitions
+	Calculated final value: 0.016448301809759133
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [5.35964966e-07 6.55174255e-07 5.91278076e-08]
+	Simulating Diffusion Model with dt = 0.00010053596496582032, 640 x partitions and 640 y partitions
+	Calculated final value: 0.016449256062118695
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [6.55174255e-07 1.78337097e-07 5.35964966e-07]
+	Simulating Diffusion Model with dt = 0.0001006551742553711, 640 x partitions and 640 y partitions
+	Calculated final value: 0.016447770324186248
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [7.74383545e-07 5.35964966e-07 2.97546387e-07]
+	Simulating Diffusion Model with dt = 0.00010077438354492188, 640 x partitions and 640 y partitions
+	Calculated final value: 0.01644834830057237
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [8.93592834e-07 4.16755676e-07 7.74383545e-07]
+	Simulating Diffusion Model with dt = 0.00010089359283447266, 640 x partitions and 640 y partitions
+	Calculated final value: 0.01644873948783337
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:11<00:23, 11.76s/it]Stepwise progress: 100%|██████████| 3/3 [00:11<00:00,  3.94s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/5 [00:00<?, ?it/s]Stepwise progress:  20%|██        | 1/5 [00:10<00:43, 10.76s/it]Stepwise progress: 100%|██████████| 5/5 [00:10<00:00,  1.63s/it]Stepwise progress: 100%|██████████| 5/5 [00:10<00:00,  2.18s/it]
+Predict f(0) = 0.01644808677808756 +/- 6.972846668966405e-07
+
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [1.18255615e-07 1.54876709e-06 8.33511353e-07]
+	Simulating Diffusion Model with dt = 0.00010011825561523438, 640 x partitions and 640 y partitions
+	Calculated final value: 0.016448140889855183
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [3.56674194e-07 5.95092773e-07 1.78718567e-06]
+	Simulating Diffusion Model with dt = 0.00010035667419433594, 640 x partitions and 640 y partitions
+	Calculated final value: 0.01644855881366125
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [5.95092773e-07 1.78718567e-06 3.56674194e-07]
+	Simulating Diffusion Model with dt = 0.0001005950927734375, 640 x partitions and 640 y partitions
+	Calculated final value: 0.01644821887974335
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [8.33511353e-07 1.18255615e-07 1.31034851e-06]
+	Simulating Diffusion Model with dt = 0.00010083351135253906, 640 x partitions and 640 y partitions
+	Calculated final value: 0.01644937827180077
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [1.07192993e-06 1.31034851e-06 1.18255615e-07]
+	Simulating Diffusion Model with dt = 0.00010107192993164063, 640 x partitions and 640 y partitions
+	Calculated final value: 0.016447527954345183
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [1.31034851e-06 3.56674194e-07 1.07192993e-06]
+	Simulating Diffusion Model with dt = 0.00010131034851074219, 640 x partitions and 640 y partitions
+	Calculated final value: 0.01644718763678512
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [1.54876709e-06 1.07192993e-06 5.95092773e-07]
+	Simulating Diffusion Model with dt = 0.00010154876708984375, 640 x partitions and 640 y partitions
+	Calculated final value: 0.016448373288989494
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [1.78718567e-06 8.33511353e-07 1.54876709e-06]
+	Simulating Diffusion Model with dt = 0.00010178718566894531, 640 x partitions and 640 y partitions
+	Calculated final value: 0.01644882245300021
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:10<00:21, 10.86s/it]Stepwise progress: 100%|██████████| 3/3 [00:10<00:00,  3.64s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:12<00:24, 12.23s/it]Stepwise progress: 100%|██████████| 3/3 [00:12<00:00,  4.09s/it]
+Predict f(0) = 0.01644769110536621 +/- 7.499749209210916e-07
+
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [2.36511230e-07 3.09753418e-06 1.66702271e-06]
+	Simulating Diffusion Model with dt = 0.00010023651123046876, 639 x partitions and 640 y partitions
+	Calculated final value: 0.01644760507540787
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [7.13348389e-07 1.19018555e-06 3.57437134e-06]
+	Simulating Diffusion Model with dt = 0.00010071334838867188, 640 x partitions and 639 y partitions
+	Calculated final value: 0.016446324416289494
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [1.19018555e-06 3.57437134e-06 7.13348389e-07]
+	Simulating Diffusion Model with dt = 0.00010119018554687501, 639 x partitions and 640 y partitions
+	Calculated final value: 0.01644776094998958
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [1.66702271e-06 2.36511230e-07 2.62069702e-06]
+	Simulating Diffusion Model with dt = 0.00010166702270507813, 640 x partitions and 639 y partitions
+	Calculated final value: 0.016447266220305366
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [2.14385986e-06 2.62069702e-06 2.36511230e-07]
+	Simulating Diffusion Model with dt = 0.00010214385986328126, 639 x partitions and 640 y partitions
+	Calculated final value: 0.016447309013049985
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [2.62069702e-06 7.13348389e-07 2.14385986e-06]
+	Simulating Diffusion Model with dt = 0.00010262069702148438, 640 x partitions and 640 y partitions
+	Calculated final value: 0.01644741623340425
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [3.09753418e-06 2.14385986e-06 1.19018555e-06]
+	Simulating Diffusion Model with dt = 0.00010309753417968751, 640 x partitions and 640 y partitions
+	Calculated final value: 0.01644789195605642
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [3.57437134e-06 1.66702271e-06 3.09753418e-06]
+	Simulating Diffusion Model with dt = 0.00010357437133789063, 640 x partitions and 639 y partitions
+	Calculated final value: 0.01644587258313511
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:10<00:21, 10.88s/it]Stepwise progress: 100%|██████████| 3/3 [00:10<00:00,  3.65s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:12<00:24, 12.46s/it]Stepwise progress: 100%|██████████| 3/3 [00:12<00:00,  4.17s/it]
+Fitting interactions of order 3:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:10<00:21, 10.53s/it]Stepwise progress: 100%|██████████| 3/3 [00:10<00:00,  3.53s/it]
+Fitting interactions of order 4:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:11<00:23, 11.89s/it]Stepwise progress: 100%|██████████| 3/3 [00:11<00:00,  3.99s/it]
+Predict f(0) = 0.016447172814361567 +/- 2.8261624227496225e-07
+
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [4.73022461e-07 6.19506836e-06 3.33404541e-06]
+	Simulating Diffusion Model with dt = 0.0001004730224609375, 639 x partitions and 639 y partitions
+	Calculated final value: 0.016444442006252887
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [1.42669678e-06 2.38037109e-06 7.14874268e-06]
+	Simulating Diffusion Model with dt = 0.00010142669677734375, 640 x partitions and 639 y partitions
+	Calculated final value: 0.016447452277060813
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [2.38037109e-06 7.14874268e-06 1.42669678e-06]
+	Simulating Diffusion Model with dt = 0.00010238037109375, 639 x partitions and 640 y partitions
+	Calculated final value: 0.016446961802242054
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [3.33404541e-06 4.73022461e-07 5.24139404e-06]
+	Simulating Diffusion Model with dt = 0.00010333404541015625, 640 x partitions and 639 y partitions
+	Calculated final value: 0.01644734759181537
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [4.28771973e-06 5.24139404e-06 4.73022461e-07]
+	Simulating Diffusion Model with dt = 0.0001042877197265625, 639 x partitions and 640 y partitions
+	Calculated final value: 0.016446761823045233
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [5.24139404e-06 1.42669678e-06 4.28771973e-06]
+	Simulating Diffusion Model with dt = 0.00010524139404296875, 640 x partitions and 639 y partitions
+	Calculated final value: 0.016445379709274545
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [6.19506836e-06 4.28771973e-06 2.38037109e-06]
+	Simulating Diffusion Model with dt = 0.000106195068359375, 639 x partitions and 640 y partitions
+	Calculated final value: 0.016445958116545777
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [7.14874268e-06 3.33404541e-06 6.19506836e-06]
+	Simulating Diffusion Model with dt = 0.00010714874267578125, 639 x partitions and 639 y partitions
+	Calculated final value: 0.016445058250197698
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:10<00:21, 10.76s/it]Stepwise progress: 100%|██████████| 3/3 [00:10<00:00,  3.61s/it]
+Predict f(0) = 0.016446170197054296 +/- 1.1959345585860691e-06
+
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [9.46044922e-07 1.23901367e-05 6.66809082e-06]
+	Simulating Diffusion Model with dt = 0.00010094604492187501, 637 x partitions and 639 y partitions
+	Calculated final value: 0.016444241907524897
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [2.85339355e-06 4.76074219e-06 1.42974854e-05]
+	Simulating Diffusion Model with dt = 0.00010285339355468751, 639 x partitions and 637 y partitions
+	Calculated final value: 0.016443672084146405
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [4.76074219e-06 1.42974854e-05 2.85339355e-06]
+	Simulating Diffusion Model with dt = 0.00010476074218750001, 637 x partitions and 639 y partitions
+	Calculated final value: 0.016444563284592928
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [6.66809082e-06 9.46044922e-07 1.04827881e-05]
+	Simulating Diffusion Model with dt = 0.00010666809082031251, 640 x partitions and 638 y partitions
+	Calculated final value: 0.016446877081993355
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [8.57543945e-06 1.04827881e-05 9.46044922e-07]
+	Simulating Diffusion Model with dt = 0.00010857543945312501, 638 x partitions and 640 y partitions
+	Calculated final value: 0.016447009954760103
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [1.04827881e-05 2.85339355e-06 8.57543945e-06]
+	Simulating Diffusion Model with dt = 0.00011048278808593751, 639 x partitions and 638 y partitions
+	Calculated final value: 0.016445690492657615
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [1.23901367e-05 8.57543945e-06 4.76074219e-06]
+	Simulating Diffusion Model with dt = 0.00011239013671875001, 638 x partitions and 639 y partitions
+	Calculated final value: 0.01644459595558257
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [1.42974854e-05 6.66809082e-06 1.23901367e-05]
+	Simulating Diffusion Model with dt = 0.00011429748535156251, 639 x partitions and 637 y partitions
+	Calculated final value: 0.016444614212093513
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:10<00:21, 10.89s/it]Stepwise progress: 100%|██████████| 3/3 [00:10<00:00,  3.65s/it]
+Predict f(0) = 0.016445158121668926 +/- 1.3101814731813773e-06
+
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [1.89208984e-06 2.47802734e-05 1.33361816e-05]
+	Simulating Diffusion Model with dt = 0.00010189208984375, 635 x partitions and 637 y partitions
+	Calculated final value: 0.01644327055003679
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [5.70678711e-06 9.52148437e-06 2.85949707e-05]
+	Simulating Diffusion Model with dt = 0.000105706787109375, 638 x partitions and 634 y partitions
+	Calculated final value: 0.016447235985256957
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [9.52148437e-06 2.85949707e-05 5.70678711e-06]
+	Simulating Diffusion Model with dt = 0.000109521484375, 634 x partitions and 639 y partitions
+	Calculated final value: 0.0164442719916772
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [1.33361816e-05 1.89208984e-06 2.09655762e-05]
+	Simulating Diffusion Model with dt = 0.000113336181640625, 640 x partitions and 636 y partitions
+	Calculated final value: 0.016446861742261745
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [1.71508789e-05 2.09655762e-05 1.89208984e-06]
+	Simulating Diffusion Model with dt = 0.00011715087890625, 636 x partitions and 640 y partitions
+	Calculated final value: 0.016449452181462827
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [2.09655762e-05 5.70678711e-06 1.71508789e-05]
+	Simulating Diffusion Model with dt = 0.000120965576171875, 639 x partitions and 637 y partitions
+	Calculated final value: 0.016444182874957743
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [2.47802734e-05 1.71508789e-05 9.52148437e-06]
+	Simulating Diffusion Model with dt = 0.0001247802734375, 637 x partitions and 638 y partitions
+	Calculated final value: 0.01644634652142567
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [2.85949707e-05 1.33361816e-05 2.47802734e-05]
+	Simulating Diffusion Model with dt = 0.000128594970703125, 637 x partitions and 635 y partitions
+	Calculated final value: 0.016446317218362434
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:10<00:21, 10.75s/it]Stepwise progress: 100%|██████████| 3/3 [00:10<00:00,  3.60s/it]
+Predict f(0) = 0.01644599238318017 +/- 2.1268402799585794e-06
+
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [3.78417969e-06 4.95605469e-05 2.66723633e-05]
+	Simulating Diffusion Model with dt = 0.00010378417968750001, 630 x partitions and 635 y partitions
+	Calculated final value: 0.0164464061385973
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [1.14135742e-05 1.90429687e-05 5.71899414e-05]
+	Simulating Diffusion Model with dt = 0.00011141357421875001, 636 x partitions and 628 y partitions
+	Calculated final value: 0.016446733219474582
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [1.90429687e-05 5.71899414e-05 1.14135742e-05]
+	Simulating Diffusion Model with dt = 0.00011904296875000001, 628 x partitions and 638 y partitions
+	Calculated final value: 0.016445829232838695
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [2.66723633e-05 3.78417969e-06 4.19311523e-05]
+	Simulating Diffusion Model with dt = 0.00012667236328125, 639 x partitions and 632 y partitions
+	Calculated final value: 0.01644671357825683
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [3.43017578e-05 4.19311523e-05 3.78417969e-06]
+	Simulating Diffusion Model with dt = 0.0001343017578125, 632 x partitions and 639 y partitions
+	Calculated final value: 0.01644530355697412
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [4.19311523e-05 1.14135742e-05 3.43017578e-05]
+	Simulating Diffusion Model with dt = 0.00014193115234375, 638 x partitions and 633 y partitions
+	Calculated final value: 0.016445679731097212
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [4.95605469e-05 3.43017578e-05 1.90429687e-05]
+	Simulating Diffusion Model with dt = 0.000149560546875, 633 x partitions and 636 y partitions
+	Calculated final value: 0.016445384966022773
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [5.71899414e-05 2.66723633e-05 4.95605469e-05]
+	Simulating Diffusion Model with dt = 0.00015718994140625, 635 x partitions and 630 y partitions
+	Calculated final value: 0.016447638933304184
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:12<00:24, 12.39s/it]Stepwise progress: 100%|██████████| 3/3 [00:12<00:00,  4.15s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:11<00:22, 11.30s/it]Stepwise progress: 100%|██████████| 3/3 [00:11<00:00,  3.79s/it]
+Predict f(0) = 0.016445149586072436 +/- 6.2343411562361e-07
+
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [7.56835937e-06 9.91210938e-05 5.33447266e-05]
+	Simulating Diffusion Model with dt = 0.000107568359375, 620 x partitions and 629 y partitions
+	Calculated final value: 0.016447067988863032
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [2.28271484e-05 3.80859375e-05 1.14379883e-04]
+	Simulating Diffusion Model with dt = 0.0001228271484375, 632 x partitions and 617 y partitions
+	Calculated final value: 0.016445252873618314
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [3.80859375e-05 1.14379883e-04 2.28271484e-05]
+	Simulating Diffusion Model with dt = 0.0001380859375, 617 x partitions and 635 y partitions
+	Calculated final value: 0.016444672126111178
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [5.33447266e-05 7.56835937e-06 8.38623047e-05]
+	Simulating Diffusion Model with dt = 0.0001533447265625, 638 x partitions and 623 y partitions
+	Calculated final value: 0.016443137668256367
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [6.86035156e-05 8.38623047e-05 7.56835937e-06]
+	Simulating Diffusion Model with dt = 0.00016860351562500003, 623 x partitions and 638 y partitions
+	Calculated final value: 0.016446329696343295
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [8.38623047e-05 2.28271484e-05 6.86035156e-05]
+	Simulating Diffusion Model with dt = 0.00018386230468750003, 635 x partitions and 626 y partitions
+	Calculated final value: 0.016445825634582485
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [9.91210938e-05 6.86035156e-05 3.80859375e-05]
+	Simulating Diffusion Model with dt = 0.00019912109375000003, 626 x partitions and 632 y partitions
+	Calculated final value: 0.016446613043336403
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [1.14379883e-04 5.33447266e-05 9.91210938e-05]
+	Simulating Diffusion Model with dt = 0.00021437988281250003, 629 x partitions and 620 y partitions
+	Calculated final value: 0.016444458642019513
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:10<00:21, 10.74s/it]Stepwise progress: 100%|██████████| 3/3 [00:10<00:00,  3.60s/it]
+/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/.venv/lib/python3.12/site-packages/pde/solvers/explicit.py:95: RuntimeWarning: invalid value encountered in add
+  state_data += dt * rhs_pde(state_data, t)
+/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/.venv/lib/python3.12/site-packages/pde/solvers/explicit.py:95: RuntimeWarning: invalid value encountered in add
+  state_data += dt * rhs_pde(state_data, t)
+/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/.venv/lib/python3.12/site-packages/pde/solvers/explicit.py:95: RuntimeWarning: invalid value encountered in add
+  state_data += dt * rhs_pde(state_data, t)
+Predict f(0) = 0.01644541970914132 +/- 1.3801280837257114e-06
+
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [1.51367187e-05 1.98242188e-04 1.06689453e-04]
+	Simulating Diffusion Model with dt = 0.00011513671875, 602 x partitions and 619 y partitions
+	Calculated final value: 0.016444104424764225
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [4.56542969e-05 7.61718750e-05 2.28759766e-04]
+	Simulating Diffusion Model with dt = 0.000145654296875, 625 x partitions and 596 y partitions
+	Calculated final value: 0.016446097738219697
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [7.61718750e-05 2.28759766e-04 4.56542969e-05]
+	Simulating Diffusion Model with dt = 0.000176171875, 596 x partitions and 631 y partitions
+	Calculated final value: 0.01644464337578712
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [1.06689453e-04 1.51367187e-05 1.67724609e-04]
+	Simulating Diffusion Model with dt = 0.000206689453125, 637 x partitions and 607 y partitions
+	Calculated final value: 0.01644318842854335
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [1.37207031e-04 1.67724609e-04 1.51367187e-05]
+	Simulating Diffusion Model with dt = 0.00023720703125, 607 x partitions and 637 y partitions
+	Calculated final value: 0.01644467016826754
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [1.67724609e-04 4.56542969e-05 1.37207031e-04]
+	Simulating Diffusion Model with dt = 0.000267724609375, 631 x partitions and 613 y partitions
+	Calculated final value: nan
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [1.98242188e-04 1.37207031e-04 7.61718750e-05]
+	Simulating Diffusion Model with dt = 0.0002982421875, 613 x partitions and 625 y partitions
+	Calculated final value: nan
+Running model "Diffusion" using offset [0.0001, 0.003125, 0.003125] with parameters [0.00022876 0.00010669 0.00019824]
+	Simulating Diffusion Model with dt = 0.000328759765625, 619 x partitions and 602 y partitions
+	Calculated final value: nan
+Traceback (most recent call last):
+  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/src/run_model_analysis.py", line 26, in <module>
+    model.run_analysis()
+  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/src/models/base_model.py", line 413, in run_analysis
+    out = extrapolation(X*h, Y, options, h)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/src/sparse_pre/extrapolation.py", line 79, in extrapolation
+    out = spre.stepwise_selection(max_order, use_fixed_basis, bases_filename, h)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/src/sparse_pre/SPRE.py", line 602, in stepwise_selection
+    fit = self.perform_extrapolation_optimization(A, do_jit)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/src/sparse_pre/SPRE.py", line 519, in perform_extrapolation_optimization
+    result = minimize(self.scipy_objective,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/.venv/lib/python3.12/site-packages/scipy/optimize/_minimize.py", line 809, in minimize
+    res = _minimize_trust_krylov(fun, x0, args, jac, hess, hessp,
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/.venv/lib/python3.12/site-packages/scipy/optimize/_trustregion_krylov.py", line 51, in _minimize_trust_krylov
+    return _minimize_trust_region(fun, x0, args=args, jac=jac,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/.venv/lib/python3.12/site-packages/scipy/optimize/_trustregion.py", line 232, in _minimize_trust_region
+    while m.jac_mag >= gtol:
+          ^^^^^^^^^
+  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/.venv/lib/python3.12/site-packages/scipy/optimize/_trustregion.py", line 87, in jac_mag
+    self._g_mag = scipy.linalg.norm(self.jac)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/.venv/lib/python3.12/site-packages/scipy/linalg/_misc.py", line 146, in norm
+    a = np.asarray_chkfinite(a)
+        ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/.venv/lib/python3.12/site-packages/numpy/lib/_function_base_impl.py", line 665, in asarray_chkfinite
+    raise ValueError(
+ValueError: array must not contain infs or NaNs
+Mon  2 Mar 16:41:54 GMT 2026
+Total seconds: 1799

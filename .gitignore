@@ -1,0 +1,11 @@
+.vscode/
+.venv/
+.venv2/
+*.env
+loocv_plots/
+ffmpeg*
+
+__pycache__
+
+# MacOS
+.DS_Store
