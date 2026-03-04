@@ -11,6 +11,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import re
 import itertools
 import collections.abc
 from pathlib import Path
@@ -314,19 +315,19 @@ def plot_multiple_spre_abs(
         plt.show()
 
 
-if __name__ == "__main__":
+def plot_three_images_together(files, output_file, show_plot = True, crop = (0.12, 0, 0.85, 1)):
+    """
+    Combines 3 image files in one image file.
 
-    # Show any plots (except combined flock sim pngs)
-    show_plot = True
-       
-    # Combine flock model time points
-    files = [
-            "data/flock/results/flock1_start.png",
-            "data/flock/results/flock1_1_second_with_trail.png",
-            "data/flock/results/flock1_5_seconds_no_trail.png"
-        ]
-    
-    output_file = "data/plots/flock_sim_3_timepoints.png"
+    Parameters:
+        files : list[str or Path]   Filename and paths to files   
+        output_filename : str       Filename and path of final file.
+        show_plot : bool            Show the plot as well as writing file
+        crop : tuple                Crop percentiles for left, upper, right, lower
+    Returns:
+        None
+
+    """
 
     cropped_images = []
 
@@ -335,10 +336,12 @@ if __name__ == "__main__":
         w, h = img.size
 
         # Crop middle of width
-        left = int(0.12 * w)
-        right = int(0.85 * w)
+        left = int(crop[0] * w)
+        upper = int(crop[1] * h)
+        right = int(crop[2] * w)
+        lower = int(crop[3] * h)
 
-        cropped = img.crop((left, 0, right, h))
+        cropped = img.crop((left, upper, right, lower))
         cropped_images.append(cropped)
 
     # Height of all images is the same
@@ -359,8 +362,164 @@ if __name__ == "__main__":
     # Save result
     combined.save(output_file, dpi=(300, 300))
 
-    print(f"Three flock simulation plots saved to {output_file}")
+    print(f"Three plots saved to {output_file}")
   
+   
+def plot_basis_file(filename, output_file, title = "", show_plot = False, *args, **kwargs):  
+    """
+    Reads the file and plots a scatter plot of basis elements
+
+    Parameters:
+        filename : str              Filename of basis data
+        output_file : str           Output image filename
+        title : str                 Plot title
+        show_plot : bool            Show the plot as well as writing file 
+        *args : tuple               Positional args passed to plt.plot (optional)
+        **kwargs : dict             Keyword args passed to plt.plot (optional)
+
+    Returns:
+        None
+
+    """
+
+    # -----------------------
+    # Read file
+    # -----------------------
+    with open(filename, 'r') as f:
+        content = f.read()
+
+    blocks = re.split(r'\n\s*\n', content.strip())
+
+    h_values = []
+    basis_dict = {}
+    col_index = 0
+
+    for block in blocks:
+        lines = block.strip().splitlines()
+        if not lines:
+            continue
+
+        h_match = re.search(r'h\s*=\s*([0-9.eE+-]+)', lines[0])
+        if not h_match:
+            continue
+
+        h_val = float(h_match.group(1))
+        h_values.append(h_val)
+
+        for line in lines[1:]:
+            line = line.strip()
+            if not line or line.startswith("Basis"):
+                continue
+
+            nums = tuple(map(int, line.split()))
+
+            if nums not in basis_dict:
+                basis_dict[nums] = set()
+
+            basis_dict[nums].add(col_index)
+
+        col_index += 1
+
+    # -----------------------
+    # Correct ordering
+    # total degree, then descending lex
+    # -----------------------
+    sorted_basis = sorted(
+        basis_dict.keys(),
+        key=lambda x: (x[0] + x[1] + x[2], -x[0], -x[1], -x[2])
+    )
+
+    row_labels = [f"({a}, {b}, {c})" for (a, b, c) in sorted_basis]
+
+    num_rows = len(sorted_basis)
+    num_cols = len(h_values)
+
+    # -----------------------
+    # Build matrix
+    # -----------------------
+    matrix = np.zeros((num_rows, num_cols), dtype=int)
+
+    for i, vec in enumerate(sorted_basis):
+        for j in basis_dict[vec]:
+            matrix[i, j] = 1
+
+    # -----------------------
+    # Fast vectorised scatter
+    # -----------------------
+    y_indices, x_indices = np.where(matrix == 1)
+
+    # -----------------------
+    # Format h labels
+    # -----------------------
+    def latex_sci(x):
+        if x == 0:
+            return "$0$"
+        exponent = int(np.floor(np.log10(abs(x))))
+        mantissa = x / 10**exponent
+        return rf"${mantissa:.3g} \times 10^{{{exponent}}}$"
+
+    formatted_h = [latex_sci(h) for h in h_values]
+
+    # -----------------------
+    # Plot
+    # -----------------------
+    plt.figure(figsize=(14, 8))
+
+    # Create list of colours
+    cmap = plt.get_cmap("tab20")
+    colors = cmap(y_indices)
+
+    # Faint horizontal guide lines
+    for y in range(num_rows):
+        plt.axhline(y=y, color='gray', linestyle="--", alpha=0.4, linewidth=0.8)
+
+    # Single fast scatter call
+    plt.scatter(x_indices, y_indices, s=60, facecolor=colors, edgecolor='dimgray', zorder=2, *args, **kwargs)
+
+    plt.xticks(range(num_cols), formatted_h, rotation=90)
+    plt.yticks(range(num_rows), row_labels)
+
+    plt.xlabel(r"$h$")
+    plt.ylabel("Basis elements")
+    plt.title(title)
+
+    plt.gca().invert_yaxis()
+    plt.tight_layout()
+
+    plt.savefig(output_file)
+    
+    if show_plot:
+        plt.show()
+
+
+
+if __name__ == "__main__":
+
+    # Show any plots (except combined flock sim pngs)
+    show_plot = False
+
+    # Combine flock plots at different time points  
+    files = [
+            "data/flock/results/flock1_start.png",
+            "data/flock/results/flock1_1_second_with_trail.png",
+            "data/flock/results/flock1_5_seconds_no_trail.png"
+        ]
+    
+    output_file = "data/plots/flock_sim_3_timepoints.png"
+
+    plot_three_images_together(files, output_file, show_plot)
+
+    # Combine flock plots at different time points with all with trails  
+    files = [
+            "data/flock/results/flock1_start.png",
+            "data/flock/results/flock1_1_second_with_trail.png",
+            "data/flock/results/flock1_5_seconds_with_trail.png"
+        ]
+    
+    output_file = "data/plots/flock_sim_3_timepoints_all_trails.png"
+
+    plot_three_images_together(files, output_file, show_plot)
+
     ###################################
     # Plot error bar plot 
     for seed in [1]:
@@ -504,3 +663,21 @@ if __name__ == "__main__":
 
         if show_plot:
             plt.show()
+
+    ###############################################
+    # Plot bases plots
+    plot_basis_file("data/mujoco/results/output_two_spheres_bases_300.dat", "data/plots/spre_two_spheres_bases_plot_white.png", "Two Spheres, Basis Elements for SPRE White", show_plot)
+    plot_basis_file("data/mujoco/results/output_two_spheres_bases_300_Gaussian.dat", "data/plots/spre_two_spheres_bases_plot_gaussian.png", "Two Spheres, Basis Elements for SPRE Gaussian", show_plot)
+    plot_basis_file("data/mujoco/results/output_two_spheres_bases_300_Matern12.dat", "data/plots/spre_two_spheres_bases_plot_matern12.png", r"Two Spheres, Basis Elements for SPRE Mat\'{e}rn-$\frac{1}{2}$", show_plot)
+    plot_basis_file("data/mujoco/results/output_two_spheres_bases_300_Matern32.dat", "data/plots/spre_two_spheres_bases_plot_matern32.png", r"Two Spheres, Basis Elements for SPRE Mat\'{e}rn-$\frac{3}{2}$", show_plot)
+
+    plot_basis_file("data/mujoco/results/output_many_shapes_bases_203.dat", "data/plots/spre_many_shapes_bases_plot_white.png", "Five Shapes, Basis Elements for SPRE White", show_plot)
+    plot_basis_file("data/mujoco/results/output_many_shapes_bases_203_Gaussian.dat", "data/plots/spre_many_shapes_bases_plot_gaussian.png", "Five Shapes, Basis Elements for SPRE Gaussian", show_plot)
+    plot_basis_file("data/mujoco/results/output_many_shapes_bases_203_Matern12.dat", "data/plots/spre_many_shapes_bases_plot_matern12.png", r"Five Shapes, Basis Elements for SPRE Mat\'{e}rn-$\frac{1}{2}$", show_plot)
+    plot_basis_file("data/mujoco/results/output_many_shapes_bases_203_Matern32.dat", "data/plots/spre_many_shapes_bases_plot_matern32.png", r"Five Shapes, Basis Elements for SPRE Mat\'{e}rn-$\frac{3}{2}$", show_plot)
+
+    plot_basis_file("data/flock/results/output_flock_bases_321.dat", "data/plots/spre_flock_bases_plot_white.png", "Flock, Basis Elements for SPRE White", show_plot)
+    plot_basis_file("data/flock/results/output_flock_bases_321_Gaussian.dat", "data/plots/spre_flock_bases_plot_gaussian.png", "Flock, Basis Elements for SPRE Gaussian", show_plot)
+    plot_basis_file("data/flock/results/output_flock_bases_321_Matern12.dat", "data/plots/spre_flock_bases_plot_matern12.png", r"Flock, Basis Elements for SPRE Mat\'{e}rn-$\frac{1}{2}$", show_plot)
+    plot_basis_file("data/flock/results/output_flock_bases_321_Matern32.dat", "data/plots/spre_flock_bases_plot_matern32.png", r"Flock, Basis Elements for SPRE Mat\'{e}rn-$\frac{3}{2}$", show_plot)
+
