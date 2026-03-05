@@ -38,7 +38,7 @@
   "use_offset_model": true,
   "use_fixed_time": true,
   "use_model_cache": true,
-  "self.max_order" : 10,
+  "max_order" : 10,
 
   "results_filename": "output_two_spheres_300_GRE.dat",
   "results_eval_filename": "output_two_spheres_abs_errors_eval_300_GRE.dat",

@@ -498,9 +498,9 @@ def plot_basis_file(filename, output_file, title = "", show_bar = True, show_plo
     ax.set_xticklabels(formatted_h, rotation=90)
     ax.set_yticks(range(num_rows), row_labels)
 
-    ax.set_xlabel(r"$h$")
-    ax.set_ylabel("Basis elements")
-    ax.set_title(title)
+    ax.set_xlabel(r"$h$", fontsize=18)
+    ax.set_ylabel(r"Elements of Index Set $A$", fontsize=18)
+    ax.set_title(title, pad=8)
 
     ax.invert_yaxis()
 
@@ -511,11 +511,12 @@ def plot_basis_file(filename, output_file, title = "", show_bar = True, show_plo
         # Count basis size per h
         basis_counts = matrix.sum(axis=0)
         ax_bar.bar(range(num_cols), basis_counts, width=0.6)
-        ax_bar.set_ylabel("Count")
+        ax_bar.set_ylabel("Count", fontsize=18)
         #ax_bar.tick_params(axis='x', which='both', bottom=False, labelbottom=False)
         ax_bar.set_xticks(range(num_cols))
         ax_bar.set_xticklabels(formatted_h, rotation=90)
         ax_bar.set_xlim(-0.5, num_cols - 0.5)
+        ax_bar.set_xlabel(r"$h$", fontsize=18)
 
     plt.tight_layout()
 
@@ -525,7 +526,8 @@ def plot_basis_file(filename, output_file, title = "", show_bar = True, show_plo
         plt.show()
 
 
-
+# Code below to plot the figures for the paper 
+# plus a few more that perhaps didn't make it to the paper or the supplementary
 if __name__ == "__main__":
 
     # Show any plots (except combined flock sim pngs)
@@ -561,7 +563,7 @@ if __name__ == "__main__":
             "data/mujoco/results/two_spheres_time5.png"
         ]
     
-    output_file = "data/plots/flock_sim_3_timepoints_two_spheres.png"
+    output_file = "data/plots/two_spheres_sim_3_timepoints.png"
 
     plot_three_images_together(files, output_file, show_plot, crops)
 
@@ -572,7 +574,7 @@ if __name__ == "__main__":
             "data/mujoco/results/many_shapes_time5.png"
         ]
     
-    output_file = "data/plots/flock_sim_3_timepoints_many_shapes.png"
+    output_file = "data/plots/five_shapes_sim_3_timepoints.png"
 
     plot_three_images_together(files, output_file, show_plot, crops)
 
@@ -679,7 +681,7 @@ if __name__ == "__main__":
     labels = ["SPRE White", "SPRE Gaussian", r"SPRE Mat\'{e}rn-$\frac{1}{2}$", r"SPRE Mat\'{e}rn-$\frac{3}{2}$", "MRE", "GRE White"]
     title = None #"Absolute Errors of Estimates"
     markers = itertools.cycle(('o', 's', 'v', '^', '+', 'x', '*'))
-    plot_multiple_spre_abs(files, h_columns, labels, f"data/plots/spre_many_shapes_abs_errors.png", plot_raw_estimates=True, title=title,     
+    plot_multiple_spre_abs(files, h_columns, labels, f"data/plots/spre_five_shapes_abs_errors.png", plot_raw_estimates=True, title=title,     
             marker=markers,
             linewidth=2,
             markersize=10,
@@ -687,8 +689,8 @@ if __name__ == "__main__":
             x_lims=(1e-16, 1e-8))
     
     ###################################
-    # Plot error bar plot
-    for model, scenario, pos_inset in zip(["two_spheres", "many_shapes"], [300, 203], ["upper left", "upper left"]):
+    # Plot error bar plot for 
+    for model, scenario, pos_inset in zip(["two_spheres", "many_shapes"], [300, 203], ["center left", "center left"]):
         plt.close("all")
 
         # Create a subplot
@@ -714,7 +716,10 @@ if __name__ == "__main__":
                             pos_inset=pos_inset)
 
         plt.tight_layout()
-        output_file=f"data/plots/spre_{model}_error_bars.png"
+        model_str = model
+        if model == "many_shapes":
+            model_str = "five_shapes"
+        output_file=f"data/plots/spre_{model_str}_error_bars.png"
         plt.savefig(output_file)
 
         if show_plot:
@@ -722,19 +727,19 @@ if __name__ == "__main__":
 
     ###############################################
     # Plot bases plots
-    show_bar = True
-    plot_basis_file("data/mujoco/results/output_two_spheres_bases_300.dat", "data/plots/spre_two_spheres_bases_plot_white.png", "Two Spheres, Basis Elements for SPRE White", show_bar, show_plot)
-    plot_basis_file("data/mujoco/results/output_two_spheres_bases_300_Gaussian.dat", "data/plots/spre_two_spheres_bases_plot_gaussian.png", "Two Spheres, Basis Elements for SPRE Gaussian", show_bar, show_plot)
-    plot_basis_file("data/mujoco/results/output_two_spheres_bases_300_Matern12.dat", "data/plots/spre_two_spheres_bases_plot_matern12.png", r"Two Spheres, Basis Elements for SPRE Mat\'{e}rn-$\frac{1}{2}$", show_bar, show_plot)
-    plot_basis_file("data/mujoco/results/output_two_spheres_bases_300_Matern32.dat", "data/plots/spre_two_spheres_bases_plot_matern32.png", r"Two Spheres, Basis Elements for SPRE Mat\'{e}rn-$\frac{3}{2}$", show_bar, show_plot)
+    show_bar = False
+    plot_basis_file("data/mujoco/results/output_two_spheres_bases_300.dat", "data/plots/spre_two_spheres_bases_plot_white.png", "Two Spheres Model, SPRE White", show_bar, show_plot)
+    plot_basis_file("data/mujoco/results/output_two_spheres_bases_300_Gaussian.dat", "data/plots/spre_two_spheres_bases_plot_gaussian.png", "Two Spheres Model, SPRE Gaussian", show_bar, show_plot)
+    plot_basis_file("data/mujoco/results/output_two_spheres_bases_300_Matern12.dat", "data/plots/spre_two_spheres_bases_plot_matern12.png", r"Two Spheres Model, SPRE Mat\'{e}rn-$\frac{1}{2}$", show_bar, show_plot)
+    plot_basis_file("data/mujoco/results/output_two_spheres_bases_300_Matern32.dat", "data/plots/spre_two_spheres_bases_plot_matern32.png", r"Two Spheres Model, SPRE Mat\'{e}rn-$\frac{3}{2}$", show_bar, show_plot)
 
-    plot_basis_file("data/mujoco/results/output_many_shapes_bases_203.dat", "data/plots/spre_many_shapes_bases_plot_white.png", "Five Shapes, Basis Elements for SPRE White", show_bar, show_plot)
-    plot_basis_file("data/mujoco/results/output_many_shapes_bases_203_Gaussian.dat", "data/plots/spre_many_shapes_bases_plot_gaussian.png", "Five Shapes, Basis Elements for SPRE Gaussian", show_bar, show_plot)
-    plot_basis_file("data/mujoco/results/output_many_shapes_bases_203_Matern12.dat", "data/plots/spre_many_shapes_bases_plot_matern12.png", r"Five Shapes, Basis Elements for SPRE Mat\'{e}rn-$\frac{1}{2}$", show_bar, show_plot)
-    plot_basis_file("data/mujoco/results/output_many_shapes_bases_203_Matern32.dat", "data/plots/spre_many_shapes_bases_plot_matern32.png", r"Five Shapes, Basis Elements for SPRE Mat\'{e}rn-$\frac{3}{2}$", show_bar, show_plot)
+    plot_basis_file("data/mujoco/results/output_many_shapes_bases_203.dat", "data/plots/spre_five_shapes_bases_plot_white.png", "Five Shapes Model, SPRE White", show_bar, show_plot)
+    plot_basis_file("data/mujoco/results/output_many_shapes_bases_203_Gaussian.dat", "data/plots/spre_five_shapes_bases_plot_gaussian.png", "Five Shapes Model, SPRE Gaussian", show_bar, show_plot)
+    plot_basis_file("data/mujoco/results/output_many_shapes_bases_203_Matern12.dat", "data/plots/spre_five_shapes_bases_plot_matern12.png", r"Five Shapes Model, SPRE Mat\'{e}rn-$\frac{1}{2}$", show_bar, show_plot)
+    plot_basis_file("data/mujoco/results/output_many_shapes_bases_203_Matern32.dat", "data/plots/spre_five_shapes_bases_plot_matern32.png", r"Five Shapes Model, SPRE Mat\'{e}rn-$\frac{3}{2}$", show_bar, show_plot)
 
-    plot_basis_file("data/flock/results/output_flock_bases_321.dat", "data/plots/spre_flock_bases_plot_white.png", "Flock, Basis Elements for SPRE White", show_bar, show_plot)
-    plot_basis_file("data/flock/results/output_flock_bases_321_Gaussian.dat", "data/plots/spre_flock_bases_plot_gaussian.png", "Flock, Basis Elements for SPRE Gaussian", show_bar, show_plot)
-    plot_basis_file("data/flock/results/output_flock_bases_321_Matern12.dat", "data/plots/spre_flock_bases_plot_matern12.png", r"Flock, Basis Elements for SPRE Mat\'{e}rn-$\frac{1}{2}$", show_bar, show_plot)
-    plot_basis_file("data/flock/results/output_flock_bases_321_Matern32.dat", "data/plots/spre_flock_bases_plot_matern32.png", r"Flock, Basis Elements for SPRE Mat\'{e}rn-$\frac{3}{2}$", show_bar, show_plot)
+    plot_basis_file("data/flock/results/output_flock_bases_321.dat", "data/plots/spre_flock_bases_plot_white.png", "Flock Model, SPRE White", show_bar, show_plot)
+    plot_basis_file("data/flock/results/output_flock_bases_321_Gaussian.dat", "data/plots/spre_flock_bases_plot_gaussian.png", "Flock Model, SPRE Gaussian", show_bar, show_plot)
+    plot_basis_file("data/flock/results/output_flock_bases_321_Matern12.dat", "data/plots/spre_flock_bases_plot_matern12.png", r"Flock Model, SPRE Mat\'{e}rn-$\frac{1}{2}$", show_bar, show_plot)
+    plot_basis_file("data/flock/results/output_flock_bases_321_Matern32.dat", "data/plots/spre_flock_bases_plot_matern32.png", r"Flock Model, SPRE Mat\'{e}rn-$\frac{3}{2}$", show_bar, show_plot)
 

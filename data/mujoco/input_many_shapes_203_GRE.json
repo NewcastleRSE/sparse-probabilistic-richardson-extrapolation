@@ -38,7 +38,7 @@
   "use_offset_model": true,
   "use_fixed_time": true,
   "use_model_cache": true,
-  "self.max_order" : 10,
+  "max_order" : 10,
 
   "results_filename": "output_many_shapes_203_GRE.dat",
   "results_eval_filename": "output_many_shapes_abs_errors_eval_203_GRE.dat",
