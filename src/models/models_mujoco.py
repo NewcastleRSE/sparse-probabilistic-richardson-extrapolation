@@ -10,6 +10,10 @@ import numpy.typing as npt
 from pathlib import Path
 import mujoco
 import imageio
+import matplotlib.pyplot as plt
+
+# To set LaTeX fonts later
+import matplotlib as mpl
 
 # Application modules
 from models.base_model import Model
@@ -46,6 +50,7 @@ class MujocoModel(Model):
         # Smaller is closer to the object
         self.camera_distance_scale = 0.5                
         self.fps = 60
+        self.screenshot_times = None
 
         # Default values for parameters if not set
         self.dt = 0.01
@@ -163,6 +168,20 @@ class MujocoModel(Model):
 
         return val, i
 
+    def set_latex_fonts(self) -> None:
+        """
+        Set LaTeX fonts for use with plots.
+        """
+
+        mpl.rcParams.update({
+            "text.usetex": True,
+            "font.family": "serif",
+            "font.serif": ["Computer Modern Roman"],
+            "axes.labelsize": 14,
+            "font.size": 14,
+            "legend.fontsize": 12,
+        })
+
     def run_model_simulation_fixed_time(self, discrete_paras):
         """
         Uses MuJoCo (Multi-Joint dynamics with Contact) Python library to simulate scenario as given in XML setup file.
@@ -181,15 +200,11 @@ class MujocoModel(Model):
         solver_reference, i = self.get_discrete_parameter_value(discrete_paras, i, self.solver_reference, self.use_solver_reference)
         solver_impedance, i = self.get_discrete_parameter_value(discrete_paras, i, self.solver_impedance, self.use_solver_impedance)
      
-       
         # Output info on what is being simulated
         print(f"\tSimulating {self.description} with dt = {dt}, solver reference = {solver_reference} and solver impedance = {solver_impedance}")
  
         # Setup model world
         self.setup_model_world(dt, solver_reference, solver_impedance)
-
-        # Total time is used as an upper limit all objects should come to rest well before this
-        steps = int(self.total_time / self.model.opt.timestep)
 
         # Set up if creating a video
         if self.save_animation:
@@ -200,6 +215,13 @@ class MujocoModel(Model):
             if frame_interval == 0:
                 frame_interval = 1
                 print("Warning: frame interval too small, set a smaller time step!")
+
+        # Set up for screenshots
+        if self.screenshot_times is not None:
+            screenshot_steps = [int(time/dt) + 1 for time in self.screenshot_times]
+            screenshot_no = 0
+        else:
+            screenshot_steps = []
 
         # Get all body IDs, only include bodies with joints (movable bodies)
         body_ids = [i for i in range(self.model.nbody) if self.model.body_jntadr[i] != -1]
@@ -215,6 +237,64 @@ class MujocoModel(Model):
                 renderer.update_scene(self.data, camera="angled_view")
                 frame = renderer.render()
                 self.frames.append(frame)
+
+            # Save PNG Screenshots
+            if step in screenshot_steps:
+                renderer.update_scene(self.data, camera="angled_view")
+                frame = renderer.render()
+
+                title_text = rf"{self.description}, $t = {self.screenshot_times[screenshot_no]}$"
+
+                h, w, _ = frame.shape
+
+                # ---- Layout settings (tune these if needed) ----
+                border = 50          # white border thickness (pixels)
+                title_space = 20    # space reserved for title at top
+                dpi = 100
+
+                fig_width = (w + 2 * border) / dpi
+                fig_height = (h + 2 * border + title_space) / dpi
+
+                self.set_latex_fonts()
+
+                fig = plt.figure(figsize=(fig_width, fig_height), dpi=dpi)
+                fig.patch.set_facecolor("white")
+
+                ax = fig.add_axes([0, 0, 1, 1])
+                ax.set_xlim(0, w + 2 * border)
+                ax.set_ylim(0, h + 2 * border + title_space)
+                ax.axis("off")
+
+                # Draw image (exact pixel size, no scaling)
+                ax.imshow(
+                    frame,
+                    extent=(
+                        border,
+                        border + w,
+                        border,
+                        border + h
+                    )
+                )
+
+                # Add centered LaTeX title
+                ax.text(
+                    (w + 2 * border) / 2,
+                    h + border + title_space*1.5,
+                    title_text,
+                    ha="center",
+                    va="center",
+                    fontsize=28
+                )
+
+                filename = self.screenshot_filename.replace(
+                    ".png", f"_time{self.screenshot_times[screenshot_no]}.png"
+                )
+                screenshot_no += 1
+
+                plt.savefig(filename, facecolor="white")
+                plt.close(fig)
+
+                print(f"Saved screenshot: {filename}")
 
             # Record last two steps to interpolate distance at exact final time
             if step == n_steps - 1:
