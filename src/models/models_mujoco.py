@@ -46,7 +46,7 @@ class MujocoModel(Model):
         self.use_fixed_time = False
       
         # Set default camera parameters
-        self.camera_position = np.array([2, -2, 1.5])
+        self.camera_position = [2, -2, 1.5]
         # Smaller is closer to the object
         self.camera_distance_scale = 0.5                
         self.fps = 60
@@ -95,7 +95,7 @@ class MujocoModel(Model):
         """
 
         # Set camera zoom
-        camera_pos = self.camera_position * self.camera_distance_scale
+        camera_pos = np.array(self.camera_position) * self.camera_distance_scale
 
         # Read MJCF from file, XML file with the model setup
         # Set the directory of the file

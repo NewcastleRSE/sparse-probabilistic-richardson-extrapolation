@@ -18,6 +18,7 @@ from pathlib import Path
 from PIL import Image
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 from matplotlib.gridspec import GridSpec
+from matplotlib.ticker import LogLocator, NullFormatter
 
 # Use LaTeX fonts
 import matplotlib as mpl
@@ -301,14 +302,18 @@ def plot_multiple_spre_abs(
     plt.xlabel(r"$h$")
     plt.ylabel("absolute error")
     plt.title(title)
-    plt.grid(True, which="both", linestyle="--", alpha=0.4)
-    
+
+   
     # Get current active axis
     ax = plt.gca()
 
     if y_lims is not None:
         ax.set_ylim(y_lims)
 
+    plt.grid(True)
+    plt.minorticks_off()
+    plt.grid(True, which="major", linestyle="--", alpha=0.4)
+    
     plt.legend()
     plt.tight_layout()
     plt.savefig(output_file)

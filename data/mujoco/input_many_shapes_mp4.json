@@ -14,5 +14,6 @@
   "final_mp4_filename": "many_shapes.mp4",
   "screenshot_filename": "many_shapes.png",
   "screenshot_times": [0, 0.3, 5],
-  "camera_distance_scale": 0.5
+  "camera_distance_scale": 0.5,
+  "camera_position": [2.05, -2.05, 2.0]
 }
