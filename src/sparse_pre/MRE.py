@@ -17,7 +17,7 @@ config.update("jax_enable_x64", True)
 # Application modules
 from sparse_pre.helper_functions import x2fx
 
-def MRE(A : jnp.ndarray, X : jnp.ndarray, Y : jnp.ndarray) -> jnp.ndarray:
+def MRE(A : jnp.ndarray, X : jnp.ndarray, Y : jnp.ndarray) -> dict:
     """
     Multivariate Richardson Extrapolation.
 
@@ -30,8 +30,12 @@ def MRE(A : jnp.ndarray, X : jnp.ndarray, Y : jnp.ndarray) -> jnp.ndarray:
             of shape (n_train,) or (n_train, 1). Training outputs.
 
     Returns:
-        float
+        dict
            'mu', the predicted f(0)
+           'var', None 
+           'cv", None        
+           'mu_cv', None
+           'var_cv', None
     """
     
     # Create default basis if not defined

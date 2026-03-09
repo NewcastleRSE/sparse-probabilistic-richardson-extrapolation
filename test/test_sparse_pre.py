@@ -129,14 +129,14 @@ class SPRETestCase(unittest.TestCase):
 
         ans = 3.666432116526238
         
-        result = MRE(A, X, Y)
+        result = MRE(A, X, Y)['mu']
         thres = 0.00000001
 
         self.assertTrue((abs(result - ans) < thres).all(), f"Failed MSE! Result is {result} not {ans}")
 
         A = jnp.array([[0, 0]])
         ans = 3.646700000000000
-        result = MRE(A, X, Y)
+        result = MRE(A, X, Y)['mu']
       
         self.assertTrue((abs(result - ans) < thres).all(), f"Failed MSE! Result is {result} not {ans}")
 

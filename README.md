@@ -52,7 +52,7 @@ pip install -r requirements.txt
 
 ### Running Tests
 
-From `sparse-probabilistic-richardson-extrapolation/src` directory unit tests can be ran with (for example):
+From `sparse-probabilistic-richardson-extrapolation` directory unit tests can be ran with (for example):
 
 `python -m unittest -v test.test_sparse_pre`
 
