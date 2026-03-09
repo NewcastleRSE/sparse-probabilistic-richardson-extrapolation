@@ -1,5 +1,11 @@
 <mujoco model="colliding_spheres">
-    <option gravity="0 0 -9.81" timestep="{timestep}" integrator="RK4"/>
+   <option gravity="0 0 -9.81"
+            timestep="{timestep}"
+            integrator="Euler"
+            solver="Newton"
+            iterations="100"
+            noslip_iterations="10"
+            tolerance="1e-8"/>
 
     <visual>
         <quality shadowsize="2048"/>
@@ -18,28 +24,35 @@
     </asset>
 
     <worldbody>
-        <!-- Camera -->
         <camera name="angled_view"
                 pos="{camera_pos_x} {camera_pos_y} {camera_pos_z}"
                 xyaxes="0.7 0.7 0  -0.3 0.3 0.9"/>
 
-        <!-- Lights -->
-        <light name="sun" pos="0 0 5" dir="0 0 -1" diffuse="1.5 1.5 1.5" specular="0.6 0.6 0.6"/>
-        <light name="fill" pos="2 2 3" diffuse="0.6 0.6 0.6"/>
+        <light name="sun" pos="0 0 5" dir="0 0 -1"
+               diffuse="1.5 1.5 1.5"
+               specular="0.6 0.6 0.6"/>
+        <light name="fill" pos="2 2 3"
+               diffuse="0.6 0.6 0.6"/>
 
         <!-- Floor -->
-        <geom name="floor" type="plane" size="5 5 0.1" material="floor_mat" solref="{solver_reference} 1" solimp="0.9 0.95 {solver_impedance}"/>
+         <!-- Softer floor contact -->
+        <geom name="floor"
+              type="plane"
+              size="5 5 0.1"
+              material="floor_mat"
+              solref="{solver_reference} 1"
+              solimp="0.8 0.9 {solver_impedance}"/>
 
         <!-- Sphere A, linear and angular velocity of free joint stored in user: lx, ly, lz, ax, ay, az -->
         <body name="a" pos="0 0 0.5" user="1.0 0 0 0 0 0.5">
             <joint type="free" damping="0.01"/>
-            <geom type="sphere" size="0.08" mass="1" material="sphere_a_mat" contype="1" conaffinity="1" solref="{solver_reference} 1" solimp="0.9 0.95 {solver_impedance}"/>            
+            <geom type="sphere" size="0.08" mass="1" material="sphere_a_mat" contype="1" conaffinity="1" solref="{solver_reference} 1" solimp="0.8 0.9 {solver_impedance}"/>            
         </body>
 
         <!-- Sphere B, linear and angular velocity of free joint stored in user: lx, ly, lz, ax, ay, az -->
         <body name="b" pos="0.5 0.1 0.55" user="-1.0 0 0 0 0 -0.5">
             <joint type="free" damping="0.01"/>
-            <geom type="sphere" size="0.08" mass="1" material="sphere_b_mat" contype="1" conaffinity="1" solref="{solver_reference} 1" solimp="0.9 0.95 {solver_impedance}"/>
+            <geom type="sphere" size="0.08" mass="1" material="sphere_b_mat" contype="1" conaffinity="1" solref="{solver_reference} 1" solimp="0.8 0.9 {solver_impedance}"/>
         </body>
     </worldbody>
 

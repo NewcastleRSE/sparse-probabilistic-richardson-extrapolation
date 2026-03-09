@@ -1,8 +1,0 @@
-Mon  2 Mar 15:44:54 GMT 2026
-Running on hmem010 model simulation for job 6 scenario 200
-pybullet build time: Nov 28 2025 15:19:22
-Running model "Diffusion" with parameters [1.22035715e-15 3.32178729e-16 9.98312544e-16]
-	Simulating Diffusion Model with dt = 0.00010000000000122036, 36 x partitions and 36 y partitions
-	Calculated final value: 0.018021918384610855
-Mon  2 Mar 15:45:06 GMT 2026
-Total seconds: 12

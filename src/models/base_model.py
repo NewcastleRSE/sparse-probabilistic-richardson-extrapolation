@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 # Application modules
 from sparse_pre.extrapolation import extrapolation
 
-# For default fonts
+# For default LaTeX fonts
 import matplotlib as mpl
 mpl.rcdefaults()
 
@@ -69,6 +69,7 @@ class Model:
         # Update paths for result files and plots
         self.update_paths(parameter_filename)
 
+
     def __str__(self) -> str:
         """
         Returns string to describe model.
@@ -81,34 +82,11 @@ class Model:
 
         return self.model_name
     
-    def diff_model(self, t : float, y : tuple) -> tuple:
-        """
-        Returns current gradients of model variables. Used for differential equation models.
-
-        Parameters:  
-            t : float            Current time
-            y : tuple            Current values model variables
-        Returns:
-            tuple                Current gradients
-        """
-
-        return (0, 0)
        
-    def get_initial_condition(self) -> tuple:
-        """
-        Returns initial condition of a model - often set with model parameters.
-
-        Parameters:  
-            None
-        Returns:
-            tuple                Initial values of model variables.
-        """
-
-        return (0, 0)
-    
     def get_final_quantity(self, discrete_paras : npt.NDArray) -> float:
         """
         Returns the final evaluation of a model, derived from the final state of the model.
+        This method should be updated by subclasses.
 
         Parameters:  
             discrete_paras : npt.NDArray        Discretisation parameters
@@ -118,6 +96,7 @@ class Model:
 
         return 0
     
+
     def set_parameters(self, parameters : dict) -> None:
         """
         Set model parameters from a dictionary.
@@ -154,6 +133,7 @@ class Model:
         if "results_bases_filename" not in parameters.keys():
             self.results_bases_filename = None
 
+
     # Files to save results
     def add_path(self, path : str, filename : str) -> None:
         """
@@ -172,6 +152,7 @@ class Model:
             new_filename = os.path.join(path, filename)
         return new_filename
         
+
     def update_paths(self, parameter_filename : str) -> None:
         """
         Updates the paths of all filenames where a result/plot is stored.
@@ -210,6 +191,7 @@ class Model:
             self.results_eval_plot_filename = self.add_path(results_dir, self.results_eval_plot_filename)
             self.do_results_eval_plot = self.results_eval_plot_filename != ""
 
+
     def set_true_value(self) -> None:
         """
         Sets the object variable "true_value" to the actual model outcome.
@@ -233,6 +215,7 @@ class Model:
         # Set back as before
         self.use_offset_model = use_offset_model
 
+
     def get_cache_filename(self, discrete_paras : npt.NDArray) -> str:
         """
         Returns the model cache filename based on the model parameters.
@@ -244,6 +227,7 @@ class Model:
         """
 
         return self.model_name + "_".join(str(i) for i in discrete_paras) + ".bin"
+
 
     def update_model_cache(self, discrete_paras : npt.NDArray, y : float) -> None:
         """
@@ -264,6 +248,7 @@ class Model:
         with open(cache_filename, "wb") as f:
             f.write(struct.pack('<d', y))   # explicit byte order, 'd' = double (64-bit float)
        
+
     def run_model(self, discrete_paras : npt.NDArray) -> float:
         """
         Either runs the model or looks up previously simulated value in the cache.
@@ -311,11 +296,11 @@ class Model:
 
         return y_result
 
-    def run_model_simulation(self, discrete_paras : npt.NDArray) -> float:
+
+    def run_model_simulation(self, discrete_paras: npt.NDArray[np.float64]) -> float:
         """
-        Runs model simulation by solving differiental equations.
-        Other models may override this to simulate models otherwise.
-        The final outcome of the model is returned.
+        Runs model simulation. Intended to be updated by subclasses.
+        The final outcome of the model should be returned.
        
         Parameters:  
             discrete_paras : npt.NDArray     Discretisation parameters used to simulate model.           
@@ -323,39 +308,13 @@ class Model:
             float   
         """
 
-        y0 = self.get_initial_condition()
-      
-        # Time span to evalute the model
-        t_span = (0, self.total_time)
-
-        # Timepoints at which to store values
-        number_of_points = 100000 #max(2, int(1/diff_tol)) + 1
-        t_eval = np.linspace(*t_span, number_of_points)
-
-        # -----------------------------
-        # Solve system together
-        # -----------------------------
-        sol = solve_ivp(
-            fun=self.diff_model,
-            t_span=t_span,
-            y0=y0,           
-            t_eval=t_eval,
-            method='RK45',
-            rtol=discrete_paras[0]
-            #method='LSODA',
-            #min_step=discrete_paras[0],
-            #max_step=discrete_paras[0],
-            #initial_step=discrete_paras[0]
-        )
-
-        self.diff_solution = sol
-
         return self.get_final_quantity(discrete_paras)
      
+
     def run_analysis(self) -> None:
         """
-        Runs analysis of the model by running SPRE on every set of discretisation parameters in X
-        scaled for by each value in h.
+        Runs analysis of the model by running SPRE on every set of discretisation parameters in X,
+        scaled by each value in h.
         If self.evaluation is set to true evaluation results/plot is recorded comparing to the "true value".
 
         Parameters:  
@@ -371,6 +330,9 @@ class Model:
         # Define options
         # "name"   : str, one of {"MRE", "GRE", "SPRE"} (default: "SPRE")
         # "k_name" : str, one of {"Gaussian", "GaussianARD", "Matern1/2", "Matern3/2", "white"} (default: "white")
+        # "plot" : plot leave-one-out plots
+        # "use_fixed_bases" : whether to fit basis matrix A or use a fixed basis
+        # "max_order" : maximum order to fit when fitting the basis - to guard against run away calculations
         options = {
             "name": self.extrapolation_name,
             "k_name":  self.extrapolation_kernel, 
@@ -485,8 +447,7 @@ class Model:
             if self.results_filename:
                 # Write to file with tab separation
                 self.df_all_extrapolation_results.to_csv(self.results_filename, sep="\t", index=False)
-
-        
+  
         # Do plots for the analysis if requested
         if self.evaluation:
            self.plot_evaluation_results() 
@@ -498,6 +459,7 @@ class Model:
         # Do plot of model simulation, e.g. solved differential equations  
         if self.do_final_model_plot:
             _ = self.plot_final_model()
+
 
     def simulate_ith_analysis_setting(self, sim_number : int) -> None:
         """
@@ -566,6 +528,7 @@ class Model:
 
         return best
 
+
     def plot_SPRE_results(self) -> None:
         """
         Plots SPRE estimates with error bars of 1 standard deviation against different values of h.
@@ -606,6 +569,7 @@ class Model:
         plt.savefig(self.results_plot_filename) 
         plt.show()    
 
+
     def plot_final_model(self) -> None:
         """
         Plots final simulated model.
@@ -616,30 +580,14 @@ class Model:
             None                
         """
 
-        # Plot Results
-        plt.close('all') 
-        plt.figure(figsize=(10, 6))
-        for i, y in enumerate(self.diff_solution.y):
-            variable_label = self.solution_labels[i] if len(self.solution_labels[i]) > i else ''
-            plt.plot(self.diff_solution.t, y, label=variable_label)
-           
-        plt.xlabel(self.xlabel)
-        plt.ylabel(self.ylabel)
-        plt.title(self.title)
-        plt.legend()
-        plt.grid()
-        plt.tight_layout()
-        if self.final_model_plot_filename:
-            plt.savefig(self.final_model_plot_filename)  
-        plt.show()
+        pass
+
 
     def plot_evaluation_results(self) -> None:
         """
         Plots absolute errors of SPRE estimate with the "true value" as a line plot on a log-log scale plot.
-        First point in X is also plotted as a reference, often with the smallest values in X, called "best estimate",
-        although may not be the best estimate in X.
-
-        Table of absolute errors is also recorded.
+        Raw estimates for each point in X is also plotted as references.
+        Saves results to file also.
 
         Parameters:  
             None
@@ -647,10 +595,7 @@ class Model:
             None                
         """
 
-        # -------------------------------
         # Build DataFrame of absolute errors
-        # -------------------------------
-
         # Header for h
         if not isinstance(self.h_values[0], (list, tuple)):
             abs_header = ["h"]
@@ -671,10 +616,7 @@ class Model:
         # Create DataFrame
         df_abs = pd.DataFrame(self.abs_error_table, columns=abs_header)
 
-        # -------------------------------
         # Choose x-axis values
-        # -------------------------------
-
         h_col = self.choose_h_column(df_abs)
         x_vals = df_abs[h_col]
         x_lab = "h"
@@ -683,17 +625,11 @@ class Model:
             x_vals = 2.0 / df_abs[abs_header[2]]
             x_lab = "grid spacing"
 
-        # -------------------------------
         # Save results to file
-        # -------------------------------
-
         if self.results_eval_filename:
             df_abs.to_csv(self.results_eval_filename, sep="\t", index=False)
 
-        # -------------------------------
         # Plot absolute errors
-        # -------------------------------
-
         if self.do_results_eval_plot:
 
             plt.close("all")
@@ -713,8 +649,6 @@ class Model:
 
             # SPRE estimates (highlighted)
             plt.plot(x_vals, df_abs["abs_err_spre_estimate"], marker='o', linestyle='solid', linewidth=2, markersize=12, label=f"{self.extrapolation_name} estimate", color ="black")
-
-          
             plt.xscale("log")
             plt.yscale("log")
             plt.xlabel(x_lab)

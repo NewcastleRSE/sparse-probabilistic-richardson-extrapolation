@@ -18,7 +18,7 @@ from pathlib import Path
 from PIL import Image
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 from matplotlib.gridspec import GridSpec
-from matplotlib.ticker import LogLocator, NullFormatter
+from typing import Any
 
 # Use LaTeX fonts
 import matplotlib as mpl
@@ -32,12 +32,13 @@ mpl.rcParams.update({
     "legend.fontsize": 12,
 })
 
-def choose_h_column(df):
+
+def choose_h_column(df) -> str:
     """
-    Mimics your internal logic:
-    - Prefer 'h' if present
-    - Otherwise use 'h1'
+    Returns name of the first h column in results file.
+    Returns 'h' if present otherwise use 'h1'
     """
+
     if "h" in df.columns:
         return "h"
     elif "h1" in df.columns:
@@ -61,7 +62,27 @@ def plot_spre_results(
     *args,
     **kwargs
 ) -> None:
+    """
+    Plot SPRE estimates from results file.
 
+    Parameters:
+        files : list[str]                   List of results files to use
+        h_columns : list[str]               Names of h columns to use
+        labels : list[str]                  Labels of each method to use in legend of methods
+        true_value_filename                 Filename of where to extract "true value"
+        true_value: float                   True value if known
+        title: str                          Title for plot
+        y_logscale: bool                    If y-axis should be log-scaled
+        x_lims: tuple                       Limits of x-axis
+        y_lims: tuple = None                Limits of y-axis
+        pos_inset                           Position of inset plot. Set to None if not required.
+        zoom_first_n                        How many points to include on inset plot.
+        *args : tuple                       Positional args passed to plt.plot (optional)
+        **kwargs : dict                     Keyword args passed to plt.plot (optional)
+    Returns:
+        None
+    """
+    
     # Use current active axes
     ax = plt.gca()
 
@@ -144,6 +165,7 @@ def plot_spre_results(
     if true_value is not None:
         ax.axhline(y=true_value, color="red", linestyle="--", linewidth=1)
 
+    # Plot inset if position for it is not None
     if pos_inset is not None:
         # Inset on the SAME axes
         axins = inset_axes(
@@ -195,36 +217,36 @@ def plot_spre_results(
 
 
 def plot_multiple_spre_abs(
-    files,
-    h_columns,
-    labels,
-    output_file,
-    title = "Absolute Errors of SPRE Estimates",
-    show_plot = True, 
-    plot_raw_estimates = False,  
-    marker=None,
+    files : list[str],
+    h_columns : list[str],
+    labels : list[str],
+    output_file : str,
+    title : str = "Absolute Errors of SPRE Estimates",
+    show_plot : bool = True, 
+    plot_raw_estimates : bool = False,  
+    marker : Any = None,
     x_lims: tuple = None,
     y_lims: tuple = None,
     *args,           # Positional arguments for plt.plot (like marker, linestyle)
     **kwargs         # Keyword arguments for plt.plot (like color, alpha, linewidth)
-):
+) -> None:
     """
     Plot multiple SPRE absolute-error curves on one log-log plot.
 
     Parameters:
-        files : list[str or Path]   Paths to result files   
+        files : list[str]           Paths to result files   
         h_columns : list[str]       Name of the h column for each file (e.g. ["h", "h1", "h2"]) 
         labels : list[str]          Optional legend labels for each file 
         output_file : str           Output image filename
         title : str                 Plot title
         show_plot : bool            Show the plot as well as writing file 
-        plot_raw_estimates : bool   Also plot the raw estimates on the plot   
+        plot_raw_estimates : bool   Also plot the raw estimates on the plot
+        x_lims: tuple               Limits of x-axis
+        y_lims: tuple = None        Limits of y-axis
         *args : tuple               Positional args passed to plt.plot (optional)
         **kwargs : dict             Keyword args passed to plt.plot (optional)
-
     Returns:
         None
-
     """
 
     if len(files) != len(h_columns):        
@@ -254,6 +276,7 @@ def plot_multiple_spre_abs(
                 f"Available columns: {list(df.columns)}"
             )
 
+        # Change marker
         if marker_iter is not None:
             m = next(marker_iter)
         else:
@@ -303,7 +326,6 @@ def plot_multiple_spre_abs(
     plt.ylabel("absolute error")
     plt.title(title)
 
-   
     # Get current active axis
     ax = plt.gca()
 
@@ -321,12 +343,12 @@ def plot_multiple_spre_abs(
         plt.show()
 
 
-def plot_three_images_together(files, output_file, show_plot = True, crop = (0.12, 0, 0.85, 1)):
+def plot_three_images_together(files : list[str], output_file : str, show_plot : bool = True, crop : tuple = (0.12, 0, 0.85, 1)) -> None:
     """
     Combines 3 image files in one image file.
 
     Parameters:
-        files : list[str or Path]   Filename and paths to files   
+        files : list[str]           Filename and paths to files   
         output_filename : str       Filename and path of final file.
         show_plot : bool            Show the plot as well as writing file
         crop : tuple                Crop percentiles for left, upper, right, lower
@@ -371,35 +393,35 @@ def plot_three_images_together(files, output_file, show_plot = True, crop = (0.1
     print(f"Three plots saved to {output_file}")
   
    
-def plot_basis_file(filename, output_file, title = "", show_bar = True, show_plot = False, *args, **kwargs):  
+def plot_basis_file(filename : str, output_file : str, title : str = "", show_bar : bool = True, show_plot : bool = False, *args, **kwargs) -> None:  
     """
-    Reads the file and plots a scatter plot of basis elements
+    Reads the file and plots a scatter plot of basis elements with h on x-axis and basis elements on y-axis.
 
     Parameters:
         filename : str              Filename of basis data
         output_file : str           Output image filename
         title : str                 Plot title
+        show_bar : bool             Add barchart to bottom of the plot also
         show_plot : bool            Show the plot as well as writing file 
         *args : tuple               Positional args passed to plt.plot (optional)
         **kwargs : dict             Keyword args passed to plt.plot (optional)
-
     Returns:
         None
-
     """
 
-    # -----------------------
-    # Read file
-    # -----------------------
+   
+    # Read basis file
     with open(filename, 'r') as f:
         content = f.read()
 
+    # Extract separate text blocks
     blocks = re.split(r'\n\s*\n', content.strip())
 
     h_values = []
     basis_dict = {}
     col_index = 0
 
+    # Process text block and save basis element info
     for block in blocks:
         lines = block.strip().splitlines()
         if not lines:
@@ -426,10 +448,8 @@ def plot_basis_file(filename, output_file, title = "", show_bar = True, show_plo
 
         col_index += 1
 
-    # -----------------------
-    # Correct ordering
-    # total degree, then descending lex
-    # -----------------------
+  
+    # Order basis elements: total degree, then descending on elements
     sorted_basis = sorted(
         basis_dict.keys(),
         key=lambda x: (x[0] + x[1] + x[2], -x[0], -x[1], -x[2])
@@ -440,23 +460,17 @@ def plot_basis_file(filename, output_file, title = "", show_bar = True, show_plo
     num_rows = len(sorted_basis)
     num_cols = len(h_values)
 
-    # -----------------------
-    # Build matrix
-    # -----------------------
+    # Build matrix of results
     matrix = np.zeros((num_rows, num_cols), dtype=int)
 
     for i, vec in enumerate(sorted_basis):
         for j in basis_dict[vec]:
             matrix[i, j] = 1
 
-    # -----------------------
-    # Fast vectorised scatter
-    # -----------------------
+    # Get coordinates for scatter plot
     y_indices, x_indices = np.where(matrix == 1)
 
-    # -----------------------
     # Format h labels
-    # -----------------------
     def latex_sci(x):
         if x == 0:
             return "$0$"
@@ -466,9 +480,7 @@ def plot_basis_file(filename, output_file, title = "", show_bar = True, show_plo
 
     formatted_h = [latex_sci(h) for h in h_values]
 
-    # -----------------------
-    # Plot
-    # -----------------------
+    # Plot with barplot or not
     if show_bar:
         fig = plt.figure(figsize=(14, 9))
         gs = GridSpec(2, 1, height_ratios=[6, 1], hspace=0.02)
@@ -509,15 +521,12 @@ def plot_basis_file(filename, output_file, title = "", show_bar = True, show_plo
 
     ax.invert_yaxis()
 
-    # -----------------------
     # Optional bar plot
-    # -----------------------
     if show_bar:
         # Count basis size per h
         basis_counts = matrix.sum(axis=0)
         ax_bar.bar(range(num_cols), basis_counts, width=0.6)
-        ax_bar.set_ylabel("Count", fontsize=18)
-        #ax_bar.tick_params(axis='x', which='both', bottom=False, labelbottom=False)
+        ax_bar.set_ylabel("Count", fontsize=18)      
         ax_bar.set_xticks(range(num_cols))
         ax_bar.set_xticklabels(formatted_h, rotation=90)
         ax_bar.set_xlim(-0.5, num_cols - 0.5)
@@ -661,7 +670,7 @@ if __name__ == "__main__":
     h_columns = ["h"] * len(files)
 
     labels = ["SPRE White", "SPRE Gaussian", r"SPRE Mat\'{e}rn-$\frac{1}{2}$", r"SPRE Mat\'{e}rn-$\frac{3}{2}$", "MRE", "GRE White"]
-    title = None #"Absolute Errors of Estimates"
+    title = None 
     markers = itertools.cycle(('o', 's', 'v', '^', '+', 'x', '*'))
     plot_multiple_spre_abs(files, h_columns, labels, f"data/plots/spre_two_spheres_abs_errors.png", plot_raw_estimates=True, title=title,     
             marker=markers,
@@ -684,7 +693,7 @@ if __name__ == "__main__":
     h_columns = ["h"] * len(files)
 
     labels = ["SPRE White", "SPRE Gaussian", r"SPRE Mat\'{e}rn-$\frac{1}{2}$", r"SPRE Mat\'{e}rn-$\frac{3}{2}$", "MRE", "GRE White"]
-    title = None #"Absolute Errors of Estimates"
+    title = None 
     markers = itertools.cycle(('o', 's', 'v', '^', '+', 'x', '*'))
     plot_multiple_spre_abs(files, h_columns, labels, f"data/plots/spre_five_shapes_abs_errors.png", plot_raw_estimates=True, title=title,     
             marker=markers,
@@ -694,7 +703,7 @@ if __name__ == "__main__":
             x_lims=(1e-16, 1e-8))
     
     ###################################
-    # Plot error bar plot for 
+    # Plot error bar plots for 3D models
     for model, scenario, pos_inset in zip(["two_spheres", "many_shapes"], [300, 203], ["center left", "center left"]):
         plt.close("all")
 
@@ -713,9 +722,7 @@ if __name__ == "__main__":
 
             plot_spre_results(files=files,
                             true_value_filename=true_val_file,
-                            h_columns=h_columns,
-                            #labels=[label],
-                            #y_logscale=True,
+                            h_columns=h_columns,                          
                             title=label,                            
                             x_lims=(1e-16, 1e-11),
                             pos_inset=pos_inset)

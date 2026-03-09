@@ -10,7 +10,6 @@
 
 # Python modules
 import jax.numpy as jnp
-from jax import grad, debug
 import matplotlib.pyplot as plt
 
 # Ensure 64-bit accuracy is used
@@ -21,7 +20,7 @@ config.update("jax_enable_x64", True)
 from sparse_pre.SPRE import SPRE
 import sparse_pre.MRE as MRE
 
-def extrapolation(X, Y, options = None, h = None):
+def extrapolation(X, Y, options = None, h = None) -> dict:
     """
     Extrapolation to estimate f(0) from input-output training data (X, Y).
 

@@ -1,7 +1,0 @@
-Fri 30 Jan 12:35:30 GMT 2026
-Running on compute030 SPRE analysis
-pybullet build time: Nov 28 2025 15:19:22
-/tmp/slurmd/job1179424/slurm_script: line 22: 937213 Killed                  python src/simulate_model.py data/multi_agent/input_multi_agent_112_true.json 1
-Fri 30 Jan 20:58:51 GMT 2026
-Total seconds: 30202
-slurmstepd: error: Detected 1 oom_kill event in StepId=1179424.batch. Some of the step tasks have been OOM Killed.

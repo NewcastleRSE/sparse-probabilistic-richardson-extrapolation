@@ -12,6 +12,7 @@
 # Python modules
 import jax.numpy as jnp
 from jax import random
+from typing import Any
 
 # Application modules
 from sparse_pre.extrapolation import extrapolation

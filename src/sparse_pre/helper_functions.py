@@ -26,10 +26,12 @@ def cellsum(arrays : list) -> jnp.array:
         out : jnp.array
             Element-wise sum of all arrays.
     """
+
     out = arrays[0]
     for arr in arrays[1:]:
         out = jnp.add(out, arr)
     return out
+
 
 def remove_row(arr : jnp.array, index : int) -> jnp.array:
     """
@@ -45,7 +47,9 @@ def remove_row(arr : jnp.array, index : int) -> jnp.array:
         jnp.array
             Array with the specified row removed.
     """
+
     return jnp.delete(arr, index, axis=0)
+
 
 def softplus(x : float) -> float:
     """
@@ -91,6 +95,7 @@ def stepwise(A : jnp.array, order : int) -> jnp.array:
     out = jnp.unique(expanded.reshape(-1, d), axis=0)
     return out
 
+
 def white(X1: jnp.ndarray, X2: jnp.ndarray) -> jnp.ndarray:
     """
     White noise kernel (JIT-friendly, no Python loops or dynamic shapes).
@@ -125,4 +130,5 @@ def x2fx(X : jnp.array, A : jnp.array) -> jnp.array:
         jnp.array
             (n, m) design matrix where V[i,j] = prod_k X[i,k]^A[j,k]
     """
+    
     return jnp.prod(jnp.array([X[:, [i]] ** A[:, i] for i in range(A.shape[1])]), axis=0)

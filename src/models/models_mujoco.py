@@ -24,7 +24,7 @@ class MujocoModel(Model):
     https://mujoco.readthedocs.io/
     """
 
-    def __init__(self, params, parameter_filename, skip_true_value_calc : bool = False):
+    def __init__(self, params, parameter_filename, skip_true_value_calc : bool = False) -> None:
         """
         Sets up the physics model class with model parameters.
 
@@ -36,14 +36,10 @@ class MujocoModel(Model):
             None         
         """
      
-        self.total_time = 600.0
-        # To decided when have objects stopped moving
-        self.velocity_thresh = 1e-15
-        self.steps_required_to_stop = 30
+        self.total_time = 6.0
 
         # Use model f_z(x) = f(z+x)
         self.use_offset_model = False
-        self.use_fixed_time = False
       
         # Set default camera parameters
         self.camera_position = [2, -2, 1.5]
@@ -82,7 +78,8 @@ class MujocoModel(Model):
         if not self.save_animation and not skip_true_value_calc:
             self.set_true_value()
      
-    def setup_model_world(self, dt : float, solver_reference : float, solver_impedance : float):
+
+    def setup_model_world(self, dt : float, solver_reference : float, solver_impedance : float) -> None:
         """
         Sets up world in MuJoCo to simulate model.
 
@@ -131,21 +128,6 @@ class MujocoModel(Model):
             if user_vals is not None and len(user_vals) >= 6:
                 self.data.qvel[dofadr:dofadr+6] = np.array(user_vals[:6])
 
-    def run_model_simulation(self, discrete_paras : npt.NDArray) -> float:
-        """
-        Uses MuJoCo (Multi-Joint dynamics with Contact) Python library to simulate scenario as given in XML setup file.
-        https://mujoco.readthedocs.io/
-
-        Parameters:  
-            discrete_paras : npt.NDArray     Discretisation parameters used to simulate model.           
-        Returns:
-            float   
-        """
-   
-        if self.use_fixed_time:
-            return self.run_model_simulation_fixed_time(discrete_paras)
-        else:
-            return self.run_model_simulation_resting(discrete_paras)
 
     def get_discrete_parameter_value(self, discrete_paras : npt.NDArray, i : int, default_value : float, use_this_parameter : bool) -> tuple:
         """
@@ -168,9 +150,15 @@ class MujocoModel(Model):
 
         return val, i
 
+
     def set_latex_fonts(self) -> None:
         """
         Set LaTeX fonts for use with plots.
+
+        Parameters:
+            None
+        Returns:
+            None  
         """
 
         mpl.rcParams.update({
@@ -182,7 +170,8 @@ class MujocoModel(Model):
             "legend.fontsize": 12,
         })
 
-    def run_model_simulation_fixed_time(self, discrete_paras):
+
+    def run_model_simulation(self, discrete_paras: npt.NDArray) -> float:
         """
         Uses MuJoCo (Multi-Joint dynamics with Contact) Python library to simulate scenario as given in XML setup file.
         https://mujoco.readthedocs.io/
@@ -316,7 +305,6 @@ class MujocoModel(Model):
 
         Parameters:
             body_id : int      Body index
-
         Returns:
             float              Distance from (0, 0)
         """
@@ -326,7 +314,8 @@ class MujocoModel(Model):
        
         return distance
     
-    def total_distance_from_origin(self, body_ids: list[int]):
+
+    def total_distance_from_origin(self, body_ids: list[int]) -> float:
         """
         Compute total distance of specified bodys from the origin.
 
@@ -343,80 +332,8 @@ class MujocoModel(Model):
 
         return total_distance
 
-    def run_model_simulation_resting(self, discrete_paras):
-        """
-        Uses MuJoCo (Multi-Joint dynamics with Contact) Python library to simulate scenario as given in XML setup file.
-        https://mujoco.readthedocs.io/
 
-        Parameters:  
-            discrete_paras : npt.NDArray     Discretisation parameters used to simulate model.           
-        Returns:
-            float   
-        """
-   
-        # Set discretisation parameters
-        dt = discrete_paras[0]
-        solver_reference = discrete_paras[1]
-        solver_impedance = discrete_paras[2]
-
-        # Output info on what is being simulated
-        print(f"\tSimulating {self.description} with dt = {dt}, solver reference = {solver_reference} and solver impedance = {solver_impedance}")
- 
-        # Setup model world
-        self.setup_model_world(dt, solver_reference, solver_impedance)
-
-        # Total time is used as an upper limit all objects should come to rest well before this
-        steps = int(self.total_time / self.model.opt.timestep)
-
-        # Set up if creating a video
-        if self.save_animation:
-            # Renderer
-            renderer = mujoco.Renderer(self.model, width=640, height=480)
-            self.frames = []
-            frame_interval = int(1.0 / (self.fps * self.model.opt.timestep))
-            if frame_interval == 0:
-                frame_interval = 1
-                print("Warning: frame interval too small, set a smaller time step!")
-
-        # Get all body IDs, only include bodies with joints (movable bodies)
-        body_ids = [i for i in range(self.model.nbody) if self.model.body_jntadr[i] != -1]
-        stop_steps = 1
-
-        for step in range(steps):
-            mujoco.mj_step(self.model, self.data)
-
-            # Save frames for video if creating one
-            if self.save_animation and step % frame_interval == 0:
-                renderer.update_scene(self.data, camera="angled_view")
-                frame = renderer.render()
-                self.frames.append(frame)
-
-            # Check if everything has stopped
-            stop_sim = True
-            for body_id in body_ids:
-                stop_sim = stop_sim and all(np.abs(self.data.cvel[body_id]) < self.velocity_thresh)
-
-            # Stop if stationary for a number of steps
-            if stop_sim:
-                stop_steps += 1
-                if stop_steps >= self.steps_required_to_stop:
-                    break
-
-        print("\tStop time: ", step*self.model.opt.timestep)
-        for body_id in body_ids:
-                print(np.abs(self.data.cvel[body_id]))
-
-        # Final position & distance
-        total_distance = 0.0
-        for body_id in body_ids:          
-            pos = self.data.xpos[body_id]  # world position of body
-            distance = np.linalg.norm(pos)
-            total_distance += distance
-
-        print(f"\tCalculated final value: {total_distance}")
-        return total_distance
-
-    def plot_final_model(self):
+    def plot_final_model(self) -> None:
         """
         Plots the final simulated model which is in this case is a mp4 video if req'd.
 
@@ -429,7 +346,8 @@ class MujocoModel(Model):
         if self.save_animation:            
             imageio.mimsave(self.final_mp4_filename, self.frames, fps=self.fps)
 
-    def get_cache_filename(self, discrete_paras : npt.NDArray):
+
+    def get_cache_filename(self, discrete_paras : npt.NDArray) -> str:
         """
         Returns the model cache filename for the Physics Mug model based on the model parameters.
 

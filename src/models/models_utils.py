@@ -10,11 +10,7 @@ import json
 # Application modules
 from models.base_model import Model
 from models.models_mujoco import *
-from models.models_ode import *
-from models.models_pde import *
-from models.models_pybullet import *
-from models.models_toy import *
-from models.models_agents import *
+from models.models_cubic import *
 from models.models_flock import *
 
 def get_model(parameter_filename : str, skip_true_value_calc : bool = False) -> Model:
@@ -36,7 +32,7 @@ def get_model(parameter_filename : str, skip_true_value_calc : bool = False) -> 
     if "model_name" in params.keys():
         model_name = params["model_name"]
     else:
-        model_name = "sir"
+        model_name = "cubic"
 
     # Get model class name
     parts = model_name.split('_')

@@ -69,7 +69,7 @@ def MRE(A : jnp.ndarray, X : jnp.ndarray, Y : jnp.ndarray) -> jnp.ndarray:
     coeffs = jnp.linalg.lstsq(V, Yn, rcond=None)[0]
     mu = nY * eval @ coeffs
 
-    # Return the same format as SPRE although most values are not given
+    # Return the same format as SPRE, although most values are not given
     out = {
                 "mu": mu,
                 "var": None,  

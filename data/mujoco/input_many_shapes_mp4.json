@@ -1,6 +1,6 @@
 {
   "model_name": "mujoco",
-  "model_file": "many_shapes2.xml",
+  "model_file": "many_shapes.xml",
   "description": "Five Shapes Simulation",
   "total_time": 6.0,
 

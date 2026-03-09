@@ -86,6 +86,11 @@ class VideoRecorder:
     def setup(self) -> None:
         """
         Initialise the matplotlib figure and create agent patches.
+
+        Parameters:
+            None
+        Returns:
+            None  
         """
 
         self.ax.set_xlim(0, self.model.space.width)
@@ -127,7 +132,6 @@ class VideoRecorder:
         Parameters:
             agent                 Agent instance
             size : float          Triangle size scale
-
         Returns:
             list                  List of 3 coordinate arrays
         """
@@ -151,6 +155,11 @@ class VideoRecorder:
     def capture_frame(self) -> None:
         """
         Update all agent patches and capture the current frame.
+
+        Parameters:
+            None
+        Returns:
+            None  
         """
 
         # Update main agent triangles
@@ -199,9 +208,7 @@ class VideoRecorder:
             # Store extra patches for cleanup after frame capture
             self.extra_patches = extra_patches
 
-        # -------------------
         # Update agent trails
-        # -------------------
         if self.show_trails:
             for agent in self.model.agent_list:
                 # Draw wrapped short dashed segments
@@ -292,9 +299,15 @@ class VideoRecorder:
             for p in self.extra_patches:
                 p.remove()
 
+
     def set_latex_fonts(self) -> None:
         """
         Set LaTeX fonts for use with plots.
+
+        Parameters:
+            None
+        Returns:
+            None  
         """
 
         mpl.rcParams.update({
@@ -309,6 +322,11 @@ class VideoRecorder:
     def save_initial_frame(self) -> None:
         """
         Save the initial frame.
+
+        Parameters:
+            None
+        Returns:
+            None  
         """
 
         # Set title
@@ -329,6 +347,8 @@ class VideoRecorder:
 
         Parameters:
             total_time : float   Time to write in title of simulation plt
+        Returns:
+            None
         """
 
         # Finish writing video
@@ -359,6 +379,8 @@ class ContinuousAgent(Agent):
         Parameters:
             unique_id : int    Unique identifier for the agent
             model               Parent model instance
+        Returns:
+            None
         """
 
         self.unique_id = unique_id
@@ -387,7 +409,6 @@ class ContinuousAgent(Agent):
 
         Parameters:
             dist : float    Distance to another agent
-
         Returns:
             float           Interaction weight in [0, 1]
         """
@@ -407,6 +428,8 @@ class ContinuousAgent(Agent):
         """
         Compute the total interaction force acting on this agent.
 
+        Parameters:
+            None
         Returns:
             np.ndarray      Resultant 2D force vector
         """
@@ -459,6 +482,11 @@ class ContinuousAgent(Agent):
     def step(self) -> None:
         """
         Advance the agent state by one time step.
+
+        Parameters:
+            None
+        Returns:
+            None  
         """
 
         # Compute interaction force
@@ -476,6 +504,8 @@ class ContinuousAgent(Agent):
         """
         Compute Euclidean distance from the origin.
 
+        Parameters:
+            None
         Returns:
             float   Distance from (0, 0)
         """
@@ -519,7 +549,7 @@ class FlockingModel(MesaModel):
             interaction_radius : float Maximum interaction distance
             repulsion_radius : float   Repulsion zone radius
             repulsion_softening : float
-                                      Softening parameter for short-range repulsion
+                                       Softening parameter for short-range repulsion
             cutoff_width : float       Smooth interaction cutoff width
             record_video : bool        Whether to record a simulation video
             video_filename : str       Output video filename
@@ -580,7 +610,12 @@ class FlockingModel(MesaModel):
 
     def step(self) -> None:
         """
-        Advance the model by one time step.        
+        Advance the model by one time step.
+
+        Parameters:
+            None
+        Returns:
+            None        
         """
       
         # Update all agents
@@ -603,6 +638,8 @@ class FlockingModel(MesaModel):
 
         Parameters:
             total_time : float    Time to write for title of simulation plot
+        Returns:
+            None
         """
 
         if self.record_video:
@@ -698,13 +735,13 @@ class FlockModel(Model):
             self.set_true_value()
 
 
-    def run_model_simulation(self, discrete_paras: npt.NDArray[np.float64]) -> float:
+    def run_model_simulation(self, discrete_paras: npt.NDArray) -> float:
         """
         Simulate the multi-agent model for a given set of discretisation parameters.
         Uses the Mesa library:   https://mujoco.readthedocs.io/
 
         Parameters:  
-            discrete_paras : NDArray[np.float64]   Discretisation parameters to use
+            discrete_paras : NDArray   Discretisation parameters to use
         Returns:
             float   Final distance from origin of first agent
         """

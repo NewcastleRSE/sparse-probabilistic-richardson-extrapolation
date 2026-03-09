@@ -13,6 +13,7 @@ from jax import grad, debug, hessian, jit, lax
 from tqdm import tqdm  # For progress bars
 import numpy as np
 from scipy.optimize import minimize
+from typing import Any
 
 # Ensure 64-bit accuracy is used
 from jax import config
@@ -46,7 +47,8 @@ class SPRE:
 
         # Set up the kernel to use
         self.set_kernel_spec(kernel_spec, gre_base)
-        
+
+
     def cdist_jax(self, XA : jnp.ndarray, XB : jnp.ndarray) -> jnp.ndarray:
         """
         Computes pairwise Euclidean distances between two sets of vectors (rows of XA and XB).
@@ -70,7 +72,8 @@ class SPRE:
         
         return dists
 
-    def set_kernel_spec(self, kernel_spec : str, gre_base : jnp.ndarray = None):
+
+    def set_kernel_spec(self, kernel_spec : str, gre_base : jnp.ndarray = None) -> None:
         """
         Sets up the kernel function for analyses, such that kernal(X1, X2, x) returns the set kernel function
         where X1 and X2 are simulation data output and x is array of hyperparameters for the kernel.
@@ -102,7 +105,8 @@ class SPRE:
         # Set default parameters
         self.set_kernel_default_parameters() 
        
-    def set_kernel_default_parameters(self):
+
+    def set_kernel_default_parameters(self) -> None:
         """
         Sets up the default hyperparameters for the set kernel function.
       
@@ -139,6 +143,7 @@ class SPRE:
             case _:
                 raise ValueError(f"Unknown kernel specification: {self.kernel_spec}")
             
+
     def kernel(self, X1 : jnp.ndarray, X2 : jnp.ndarray, x  : jnp.ndarray = None) -> jnp.ndarray:
         """
         Returns evalution of the kernel function. 
@@ -187,7 +192,8 @@ class SPRE:
                 self.kernel_spec = "GRE"
                 return ans 
 
-    def cv_local_loss(self, x : jnp.ndarray, A : jnp.ndarray, row_num : int, return_mu_cov : bool = False) -> object:
+
+    def cv_local_loss(self, x : jnp.ndarray, A : jnp.ndarray, row_num : int, return_mu_cov : bool = False) -> Any:
         """
         Sets arrays to use for cross-validation local loss (log-likelihood of test data) and returns result.
       
@@ -209,7 +215,8 @@ class SPRE:
         Xs = self.X_normalised[row_num:(row_num+1), :]
         Ys = self.Y_normalised[row_num:(row_num+1)]
 
-        return self.cv_loss_calculation(A, X, Y, Xs, Ys, x, str(row_num), return_mu_cov)
+        return self.cv_loss_calculation(A, X, Y, Xs, Ys, x, return_mu_cov)
+
 
     def check_unisolvent(self, A : jnp.ndarray) -> int:
         """
@@ -233,17 +240,13 @@ class SPRE:
         def on_false(_):    
             # Raising Python errors inside JIT is not allowed.
             # Instead return a special value.
-            debug.print(
-            "\nWARNING: A non-unisolvent set encountered! Rank={rank}, m={m}",
-            rank=rank, m=m
-        )       
-            #raise ValueError("The set X is not unisolvent")
+            debug.print("\nWARNING: A non-unisolvent set encountered! Rank={rank}, m={m}", rank=rank, m=m)       
             return -1   
 
         return lax.cond(rank == m, on_true, on_false, operand = None)
 
-    # Loss (log-likelihood of test data)
-    def cv_loss_calculation(self, A : jnp.ndarray, X : jnp.ndarray, Y : jnp.ndarray, Xs : jnp.ndarray, Ys : jnp.ndarray, x : jnp.ndarray, row_num_str : str = "_", return_mu_cov : bool = False):
+
+    def cv_loss_calculation(self, A : jnp.ndarray, X : jnp.ndarray, Y : jnp.ndarray, Xs : jnp.ndarray, Ys : jnp.ndarray, x : jnp.ndarray, return_mu_cov : bool = False) -> Any:
         """
         Calculates cross-validation local loss (log-likelihood of test data).
       
@@ -270,7 +273,6 @@ class SPRE:
     
         # Calculate some bits firstly    
         K_inv = jnp.linalg.inv(self.kernel(X, X, x))
-        #K_inv = jnp.linalg.pinv(self.kernel(X, X, x))
         kernel_Xs_Xs = self.kernel(Xs, Xs, x)
         kernel_X_Xs = self.kernel(X, Xs, x)
         
@@ -286,10 +288,7 @@ class SPRE:
         # Xs = n_test x d
         VA = x2fx(X, A)
         vAT = x2fx(Xs, A).T
-
-        # i.e. the basis function is not linearly independent
-        #status = self.check_unisolvent(VA, A.shape[0])
-             
+         
         # Residual term
         # A = m x d (sparse matrix)
         # X = n_train x d
@@ -304,7 +303,6 @@ class SPRE:
         # Xs = n_test x d
         # x = p x 1  
         inv_VA_T_at_K_inv_at_VA = jnp.linalg.inv(VA_T_at_K_inv @ VA)
-        #inv_VA_T_at_K_inv_at_VA = jnp.linalg.pinv(VA_T_at_K_inv @ VA, hermitian = True)
         cov_val = (kernel_Xs_Xs
                 - kernel_Xs_X @ K_inv @ kernel_X_Xs
                 + residual_X_Xs.T @ inv_VA_T_at_K_inv_at_VA @ residual_X_Xs)
@@ -338,6 +336,7 @@ class SPRE:
         
         return term1 + term2
 
+
     def cv_loss(self, x : jnp.ndarray, A : jnp.ndarray) -> float:
         """
         Calculate the loss (log-likelihood of test data) using leave-one-out cross validation (LOOCV).
@@ -354,15 +353,14 @@ class SPRE:
         # Y = n_train x 1
         # x = p x 1
         return sum(
-            self.cv_local_loss(                   
-                x,
-                A,
-                i
-            ) for i in range(self.X_normalised.shape[0])
+            self.cv_local_loss(x, A, i) for i in range(self.X_normalised.shape[0])
         )
 
-    def set_normalised_data(self, X : jnp.ndarray, Y : jnp.ndarray):
+
+    def set_normalised_data(self, X : jnp.ndarray, Y : jnp.ndarray) -> None:
         """
+        Set normalised data and save as object variables for use in other methods.
+
         Parameters:
             A : jnp.ndarray             shape (m, d), binary matrix representing the sparse basis
             X : jnp.ndarray             shape (n_train, d), training inputs
@@ -378,6 +376,7 @@ class SPRE:
         self.X_normalised = X / self.nX
         self.Y_normalised = Y / self.nY
     
+
     def perform_extrapolation(self, x : jnp.ndarray, A : jnp.ndarray, return_mu_and_var : bool = False) -> dict:
         """
         Perform Sparse Probabilistic Richardson Extrapolation (SPRE) for the given values of
@@ -403,8 +402,7 @@ class SPRE:
 
         # Output
         out = {
-            "cv": cv
-            #"cv_grad": jnp.array(gradient)          
+            "cv": cv       
         }
 
         # Uncomment to output info on fitting kernel parameters
@@ -436,6 +434,7 @@ class SPRE:
             
         return out
 
+
     def objective(self, x : jnp.ndarray, A : jnp.ndarray) -> float:
         """
         Objective function used to fit the hyperparameters of the kernel.
@@ -449,7 +448,8 @@ class SPRE:
 
         # Return the negative log likelihood using LOOCV with gradient
         out = self.jit_perform_extrapolation(x, A)     
-        return -out['cv'] #, -out['cv_grad']
+        return -out['cv'] 
+
 
     def scipy_hess(self, x_np : np.ndarray, A : np.ndarray) -> np.ndarray:
         """
@@ -467,6 +467,7 @@ class SPRE:
         # Negate for negative log likelihood
         return -np.asarray(self.jit_hess(x_jnp, A_jnp))
 
+
     def scipy_objective(self, x_np : np.ndarray, A : np.ndarray) -> np.float64:
         """
         Wrapper to create objective function using numpy arrays.
@@ -481,6 +482,7 @@ class SPRE:
         x_jnp = jnp.asarray(x_np)            # numpy -> jax
         A_jnp = jnp.asarray(A)
         return self.objective(x_jnp, A_jnp).astype(np.float64)
+
 
     def scipy_jac(self, x_np : np.ndarray, A : np.ndarray) -> np.ndarray:
         """
@@ -497,7 +499,8 @@ class SPRE:
         A_jnp = jnp.asarray(A)
         # Negate for negative log likelihood
         return -np.asarray(self.jit_grad(x_jnp, A_jnp))     # return numpy array
-        
+
+
     def perform_extrapolation_optimization(self, A : jnp.ndarray, do_jit : bool = True) -> dict:
         """
         Optimize kernel hyperparameters for SPRE.
@@ -532,7 +535,8 @@ class SPRE:
             'cv' : result_value
         }
 
-    def prepare_jit_for_extrapolation_optimization(self):
+
+    def prepare_jit_for_extrapolation_optimization(self) -> None:
         """
         Create gradient, hessian and extrapolation functions using JAX "Just in time" (JIT)
         compilation to speed up calculations when fitting parameters.
@@ -544,10 +548,11 @@ class SPRE:
         """
 
         # "Just in time" compilation to speed up the fitting.
-        # Note class variables may not change when these functions are called.
+        # Note: object variables are not allowed to change when these functions are called.
         self.jit_hess = jit(hessian(self.cv_loss))
         self.jit_grad = jit(grad(self.cv_loss))
         self.jit_perform_extrapolation = jit(self.perform_extrapolation)
+
 
     def stepwise_selection(self, max_order : int = 0, use_fixed_basis : bool = False, bases_filename : str = "", h : float = None) -> dict:
         """
@@ -651,13 +656,14 @@ class SPRE:
 
         return out
     
+
     def _GRE_stepwise_selection(self, A : jnp.ndarray, max_order : int = 0) -> dict:
         """
         Stepwise model selection for GRE (Gauss-Richardson Extrapolation).
 
         Parameters:
             A : jnp.ndarray           binary matrix representing the sparse basis
-            max_order : int             maximum order number to fit. Zero sets no limit.
+            max_order : int           maximum order number to fit. Zero sets no limit.
                                         (to avoid never ending orders being used for problematic datasets)
         Returns:
             out : dict

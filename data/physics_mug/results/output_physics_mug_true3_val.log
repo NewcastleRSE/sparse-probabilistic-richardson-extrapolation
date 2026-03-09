@@ -1,8 +1,0 @@
-Sun 30 Nov 14:37:12 GMT 2025
-Running on compute030 SPRE analysis
-pybullet build time: Nov 28 2025 15:19:22
-Running model "PhysicsMug" with parameters [2.e-06 2.e-04 2.e-06]
-	Simulating Physics Mug Model with dt = 2e-06, 5000 substeps and 500000 solver iterations
-	Calculated final value: 0.38170094974434715
-Mon  1 Dec 11:20:43 GMT 2025
-Total seconds: 74612

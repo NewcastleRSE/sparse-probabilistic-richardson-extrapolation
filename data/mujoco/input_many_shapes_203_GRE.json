@@ -1,6 +1,6 @@
 {
   "model_name": "mujoco",
-  "model_file": "many_shapes2.xml",
+  "model_file": "many_shapes.xml",
   "description": "Many Shapes Colliding Model",
   "total_time": 5.0,
   "use_dt": true,
