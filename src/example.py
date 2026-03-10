@@ -34,7 +34,7 @@ options = {
     "k_name":  "Gaussian" #"GaussianARD" #"Matern3/2" #"Matern1/2" #"Gaussian"
 }
 
-# Assume extrapolation is a defined function returning a dict with 'mu' and 'var'
+# Extrapolation is a defined function returning a dict with 'mu' and 'var'
 out = extrapolation(X, Y, options)
 
 print(f"predict f(0) = {out['mu']} +/- {jnp.sqrt(out['var'])}")
