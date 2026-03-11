@@ -62,7 +62,7 @@ The `extrapolation` function is used to estimate f(0) from input-output training
 
 ### Code Documentation
 
-There is some code documentation automatically created from the docstrings (comments for methods etc.) that is available in `site\index.html` or on the GitHub page [here](https://github.com/NewcastleRSE/sparse-probabilistic-richardson-extrapolation/blob/main/site/index.html) which may be useful.
+There is some code documentation automatically created from the docstrings (comments for methods etc.) that is available in `site\index.html` or on the GitHub page [here](https://newcastlerse.github.io/sparse-probabilistic-richardson-extrapolation/) which may be useful.
 
 ## Models
 
