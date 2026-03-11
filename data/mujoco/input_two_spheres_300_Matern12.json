@@ -36,18 +36,14 @@
   "final_tols": [1e-5, 0.02, 0.001],
   "evaluation": true,
   "use_offset_model": true,
-  "use_fixed_time": true,
   "use_model_cache": true,
 
   "results_filename": "output_two_spheres_300_Matern12.dat",
   "results_eval_filename": "output_two_spheres_abs_errors_eval_300_Matern12.dat",
-  "results_fx_filename": "output_two_spheres_fx_eval_300_Matern12.dat",
   "results_eval_plot_filename": "output_two_spheres_abs_errors_eval_300_Matern12.png",
   "results_plot_filename": "output_two_spheres_eval_300_Matern12.png",
   "results_bases_filename": "output_two_spheres_bases_300_Matern12.dat",
 
-  "final_mp4_filenamed": "",
-  
   "extrapolation_name": "SPRE",
   "extrapolation_kernel": "Matern1/2"
 }

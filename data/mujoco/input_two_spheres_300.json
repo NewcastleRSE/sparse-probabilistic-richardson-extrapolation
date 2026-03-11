@@ -36,7 +36,6 @@
   "final_tols": [1e-5, 0.02, 0.001],
   "evaluation": true,
   "use_offset_model": true,
-  "use_fixed_time": true,
   "use_model_cache": true,
 
   "results_filename": "output_two_spheres_300.dat",
@@ -46,8 +45,6 @@
   "results_plot_filename": "output_two_spheres_eval_300.png",
   "results_bases_filename": "output_two_spheres_bases_300.dat",
 
-  "final_mp4_filenamed": "",
-  
   "extrapolation_name": "SPRE",
   "extrapolation_kernel": "white"
 }

@@ -36,18 +36,14 @@
   "final_tols": [1e-5, 0.02, 0.001],
   "evaluation": true,
   "use_offset_model": true,
-  "use_fixed_time": true,
   "use_model_cache": true,
 
   "results_filename": "output_many_shapes_203_MRE.dat",
   "results_eval_filename": "output_many_shapes_abs_errors_eval_203_MRE.dat",
-  "results_fx_filename": "output_many_shapes_fx_eval_203_MRE.dat",
   "results_eval_plot_filename": "output_many_shapes_abs_errors_eval_203_MRE.png",
   "results_plot_filename": "output_many_shapes_eval_203_MRE.png",
   "results_bases_filename": "output_many_shapes_bases_203_MRE.dat",
 
-  "final_mp4_filenamed": "",
-  
   "extrapolation_name": "MRE",
   "extrapolation_kernel": "white"
 }

@@ -18,9 +18,9 @@
   "evaluation": true,
 
   "results_filename": "output_cubic_1.dat",
-  "results_eval_filename": "output_cubic_1.dat",
-  "results_fx_filename": "output_cubic_1.dat",
-  "results_eval_plot_filename": "output_cubic_1.png",
+  "results_eval_filename": "output_cubic_eval_1.dat",
+  "results_fx_filename": "output_fx_cubic_1.dat",
+  "results_eval_plot_filename": "output_cubic_eval_1.png",
   "results_plot_filename": "output_cubic_1.png",
   "final_mp4_filenamed": "",
   

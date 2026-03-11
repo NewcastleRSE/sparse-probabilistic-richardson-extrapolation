@@ -36,7 +36,6 @@
   "final_tols": [1e-5, 0.02, 0.001],
   "evaluation": true,
   "use_offset_model": true,
-  "use_fixed_time": true,
   "use_model_cache": true,
 
   "results_filename": "output_many_shapes_203.dat",
@@ -45,8 +44,6 @@
   "results_eval_plot_filename": "output_many_shapes_abs_errors_eval_203.png",
   "results_plot_filename": "output_many_shapes_eval_203.png",
   "results_bases_filename": "output_many_shapes_bases_203.dat",
-
-  "final_mp4_filenamed": "",
   
   "extrapolation_name": "SPRE",
   "extrapolation_kernel": "white"

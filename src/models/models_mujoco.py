@@ -359,9 +359,6 @@ class MujocoModel(Model):
       
         # Create filename with all settings and parameters used
         filename = f"mp_{self.total_time}_{self.model_file[:-4]}_"
-        
-        if not self.use_fixed_time:
-            filename += f"{self.velocity_thresh}_"
 
         if self.use_offset_model:
             filename += "_".join(str(i) for i in self.final_tols) + "_"

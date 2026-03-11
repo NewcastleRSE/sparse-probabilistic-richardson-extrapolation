@@ -53,7 +53,7 @@ pip install -r requirements.txt
 The file `example.py` contains a simple example of running the SPRE method. From the root directory run:
 
 ```
-python .\src\example.py
+python ./src/example.py
 ```
 
 The `extrapolation` function is used to estimate f(0) from input-output training data (X, Y). The default setting is to use SPRE with a white kernel. The methods GRE and MRE can also be used, and the possible kernels are "Gaussian", "GaussianARD", "Matern1/2", "Matern3/2" and "white".
@@ -67,12 +67,98 @@ A few models are included in this repository to demostrate the application of th
 The models are written in object-oriented python code with `src/models/base_model.py` providing a parent class providing all the methods necessary with simulating models and organising data for use with SPRE. Users of this code may find this useful to write their own model of interest as a subclass similar to how the models present here have been. In particular, each analysis of a method against a model with certain setting is given in a `json` parameter file for ease of reproducibility.
 
 ### Running a Model
+A single model simulation can be ran with the `simulate_model.py` script, a parameter file and the number of the simulation, for example:
+
+```
+python .\src\simulate_model.py .\data\mujoco\input_two_spheres_mp4.json 1
+```
+
+This will run the first Two Spheres model for the first simulation and will produce some screen shots and a video. For this parameter file there is only one set of parameters in X and only one value of h so that there is only one possible model that can run. When there are multiple parameter sets in X and multiple values for h there are more possibilities. For example, if X had 8 parameter sets and h has 10 values there are 80 possible models that could run.
+
+This option can be useful for running many model simulations in parallel on an HPC machine when using the cache option. These cached values can then be used later to speed up any analyses.
 
 ### Running a SPRE Analysis
+A SPRE analysis can be ran with the `run_model_analysis.py` script and a parameter file, for example:
+
+```
+python ./src/run_model_analysis.py ./data/cubic/input_cubic_1.json
+```
 
 ### Model Parameter files
 
-The following...
+When a parameter file is given, each parameter sets an object variable with the given value. If a parameter is not given the default value will be used which is set in the class constructor.
+
+The following is a description of the parameters:
+
+| Parameter | Description |
+|-----------|-------------|
+| model_name | Name of the simulation model being used. This should be in lowercase where the model class should be called "<model_name>Model" |
+| description | Description of the simulation scenario. |
+| total_time | Total simulation time (in seconds). |
+| X | Array of sample parameter vectors used as input points for the simulation or evaluation. |
+| h_values | Sequence of values, typically between 0 and 1, used to multiple values of X with to run a series of SPRE estimates (or GRE/MRE). |
+| final_tols | List of model parameters used to determine convergence/accuracy. |
+| evaluation | True/False flag indicating whether evaluation of results for accuracy should be performed. |
+| use_offset_model | Enables the use of an offset model for improved extrapolation evaluation. |
+| use_model_cache | Enables caching of model outcome values to improve performance. Saves in cache results if a new simulation, otherwise uses previous result. |
+| max_order | Maximum order to use for the basis, A, when doing SPRE optimisation. |
+| results_filename | Output file where the main simulation results are stored. |
+| results_eval_filename | File storing evaluation results such as absolute errors. |
+| results_fx_filename | File storing evaluated function values. X and y values used at each f(0) estimation step. |
+| results_eval_plot_filename | Filename for the generated plot of evaluation errors. |
+| results_plot_filename | Filename for the generated plot of estimated values with errorbars of 1 standard deviation. |
+| results_bases_filename | File storing basis data used during extrapolation or evaluation. |
+| final_mp4_filename | Optional filename for a rendered simulation video (MP4). |
+| extrapolation_name | Name of the extrapolation method used (e.g., SPRE). |
+| extrapolation_kernel | Kernel type used within the extrapolation method. |
+
+If any of the results files are not set or set to an empty string, then that results file or results plot is not saved.
+
+### 3D Models
+
+Additional parameters specific to the 3D MuJoCo physics models:
+
+| Parameter | Description |
+|-----------|-------------|
+| model_file | XML file containing the MuJoCo model definition. |
+| use_dt | Flag indicating whether a fixed timestep `dt` should be used. |
+| use_solver_reference | Enables the use of a custom solver reference tolerance. |
+| use_solver_impedance | Enables the use of a custom solver impedance parameter. |
+| dt | Default value if not varying. Simulation timestep size used for integration. |
+| solver_reference | Default value if not varying. Reference tolerance parameter for the solver. |
+| solver_impedance | Default value if not varying. Impedance parameter used by the solver for constraint handling. |
+
+Further parameters can be founf in the constructor for this class.
+
+### Flock Model
+
+Additional parameters specific to the Flock model:
+
+| Parameter | Description |
+|-----------|-------------|
+| seed | Random seed used to ensure reproducible simulations. |
+| n_agents | Number of agents participating in the flocking simulation. |
+| use_dt | Flag indicating whether a fixed timestep `dt` should be used. |
+| use_repulsion_softening | Enables the use of a softening parameter to stabilize repulsive interactions between agents. |
+| use_cutoff_width | Enables the use of a cutoff width, smoothing the attraction of agents. |
+| dt | Default value if not varying. Simulation timestep size used for steps. |
+| cutoff_width | Default value if not varying. Smoothing the attraction of agents near boundary for attraction. |
+| repulsion_softening | Default value if not varying. Softening factor applied to repulsive forces to avoid singularities or extreme forces at short distances. |
+
+Further parameters can be founf in the constructor for this class.
+
+### Adding Your Own Model
+
+To add your own model the easiest way to do this is to use the Cubic model, `src/models/models_cubic.py`, as a template and update it for your model.
+
+1. Copy `src/models/models_cubic.py` to `src/models/models_your_idea.py`
+1. Name the class of the model `YourIdeaModel(Model)`. That is, in camel case with `Model` afterwards.
+1. Update the class to simulate your model and update all of the methods.
+1. In the `data` directory create a directory called `your_idea`. All results and plots will be added to `data\your_idea\results`, and if you use the cache, model outcomes will be saved to `data\your_idea\cache`.
+1. Add parameter `json` files in the `data\your_idea` directory.
+1. Update `src/models_utils.py` to add the line `from models.models_your_idea import *` to import your model.
+
+After following these steps you should be able to run your analyses as above.
 
 ### Producing Plots
 
