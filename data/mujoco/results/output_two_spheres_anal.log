@@ -1,0 +1,670 @@
+Wed 11 Mar 15:12:19 GMT 2026
+Running on hmem010 analysis for scenario 300_GaussianARD
+	Using cached value: 0.4753407466699643
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.10134124e-16 1.44240175e-15 7.76267939e-16]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000000110135e-05, solver reference = 0.020000000000001444 and solver impedance = 0.0010000000000007763
+	Calculated final value: 0.47534074666654064
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.32178729e-16 5.54223334e-16 1.66444636e-15]
+	Simulating Two Spheres Colliding Model with dt = 1.000000000033218e-05, solver reference = 0.020000000000000556 and solver impedance = 0.0010000000000016645
+	Calculated final value: 0.4753407466596511
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [5.54223334e-16 1.66444636e-15 3.32178729e-16]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000000554225e-05, solver reference = 0.020000000000001666 and solver impedance = 0.0010000000000003322
+	Calculated final value: 0.47534074665275966
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [7.76267939e-16 1.10134124e-16 1.22035715e-15]
+	Simulating Two Spheres Colliding Model with dt = 1.000000000077627e-05, solver reference = 0.02000000000000011 and solver impedance = 0.0010000000000012204
+	Calculated final value: 0.4753407466459012
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [9.98312544e-16 1.22035715e-15 1.10134124e-16]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000000998314e-05, solver reference = 0.02000000000000122 and solver impedance = 0.0010000000000001102
+	Calculated final value: 0.475340746638991
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.22035715e-15 3.32178729e-16 9.98312544e-16]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000001220358e-05, solver reference = 0.020000000000000333 and solver impedance = 0.0010000000000009984
+	Calculated final value: 0.47534074663209547
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.44240175e-15 9.98312544e-16 5.54223334e-16]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000001442403e-05, solver reference = 0.020000000000001 and solver impedance = 0.0010000000000005543
+	Calculated final value: 0.47534074662521203
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.66444636e-15 7.76267939e-16 1.44240175e-15]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000001664448e-05, solver reference = 0.020000000000000778 and solver impedance = 0.0010000000000014424
+	Calculated final value: 0.4753407466183363
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:18<00:37, 18.70s/it]Stepwise progress: 100%|██████████| 3/3 [00:18<00:00,  6.25s/it]
+/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/.venv/lib/python3.12/site-packages/scipy/optimize/_trustregion.py:54: RuntimeWarning: overflow encountered in dot
+  return self.fun + np.dot(self.jac, p) + 0.5 * np.dot(p, self.hessp(p))
+Predict f(0) = 0.47534074666827847 +/- 8.891292080126539e-13
+
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.20268248e-16 2.88480351e-15 1.55253588e-15]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000000220268e-05, solver reference = 0.020000000000002884 and solver impedance = 0.0010000000000015526
+	Calculated final value: 0.4753407466631256
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [6.64357458e-16 1.10844667e-15 3.32889272e-15]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000000664358e-05, solver reference = 0.020000000000001107 and solver impedance = 0.001000000000003329
+	Calculated final value: 0.4753407466493474
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.10844667e-15 3.32889272e-15 6.64357458e-16]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000001108447e-05, solver reference = 0.020000000000003328 and solver impedance = 0.0010000000000006644
+	Calculated final value: 0.47534074663555964
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.55253588e-15 2.20268248e-16 2.44071430e-15]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000001552536e-05, solver reference = 0.02000000000000022 and solver impedance = 0.0010000000000024408
+	Calculated final value: 0.47534074662179227
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.99662509e-15 2.44071430e-15 2.20268248e-16]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000001996625e-05, solver reference = 0.02000000000000244 and solver impedance = 0.0010000000000002203
+	Calculated final value: 0.47534074660803033
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.44071430e-15 6.64357458e-16 1.99662509e-15]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000002440714e-05, solver reference = 0.020000000000000663 and solver impedance = 0.0010000000000019967
+	Calculated final value: 0.47534074659426034
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.88480351e-15 1.99662509e-15 1.10844667e-15]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000002884804e-05, solver reference = 0.020000000000001995 and solver impedance = 0.0010000000000011085
+	Calculated final value: 0.47534074658050646
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.32889272e-15 1.55253588e-15 2.88480351e-15]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000003328893e-05, solver reference = 0.02000000000000155 and solver impedance = 0.0010000000000028849
+	Calculated final value: 0.47534074656670444
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:19<00:38, 19.32s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  6.47s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:40, 20.32s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.80s/it]
+Predict f(0) = 0.4753407466704244 +/- 1.590910424229903e-12
+
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.40536496e-16 5.76960701e-15 3.10507176e-15]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000000440538e-05, solver reference = 0.02000000000000577 and solver impedance = 0.0010000000000031052
+	Calculated final value: 0.4753407466562909
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.32871492e-15 2.21689334e-15 6.65778543e-15]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000001328716e-05, solver reference = 0.020000000000002217 and solver impedance = 0.0010000000000066579
+	Calculated final value: 0.47534074662873876
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.21689334e-15 6.65778543e-15 1.32871492e-15]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000002216894e-05, solver reference = 0.02000000000000666 and solver impedance = 0.0010000000000013288
+	Calculated final value: 0.4753407466012051
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.10507176e-15 4.40536496e-16 4.88142859e-15]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000003105073e-05, solver reference = 0.02000000000000044 and solver impedance = 0.0010000000000048815
+	Calculated final value: 0.4753407465736536
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.99325017e-15 4.88142859e-15 4.40536496e-16]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000003993251e-05, solver reference = 0.020000000000004882 and solver impedance = 0.0010000000000004406
+	Calculated final value: 0.4753407465460757
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.88142859e-15 1.32871492e-15 3.99325017e-15]
+	Simulating Two Spheres Colliding Model with dt = 1.000000000488143e-05, solver reference = 0.02000000000000133 and solver impedance = 0.0010000000000039934
+	Calculated final value: 0.4753407465185606
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [5.76960701e-15 3.99325017e-15 2.21689334e-15]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000005769608e-05, solver reference = 0.020000000000003994 and solver impedance = 0.001000000000002217
+	Calculated final value: 0.47534074649099983
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [6.65778543e-15 3.10507176e-15 5.76960701e-15]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000006657787e-05, solver reference = 0.020000000000003106 and solver impedance = 0.0010000000000057697
+	Calculated final value: 0.4753407464634463
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:23<00:46, 23.38s/it]Stepwise progress: 100%|██████████| 3/3 [00:23<00:00,  7.82s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:24<00:49, 24.75s/it]Stepwise progress: 100%|██████████| 3/3 [00:24<00:00,  8.28s/it]
+Fitting interactions of order 3:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:19<00:38, 19.08s/it]Stepwise progress:  67%|██████▋   | 2/3 [00:19<00:08,  8.14s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  6.53s/it]
+Fitting interactions of order 4:
+Stepwise progress:   0%|          | 0/5 [00:00<?, ?it/s]Stepwise progress:  20%|██        | 1/5 [00:19<01:17, 19.38s/it]Stepwise progress: 100%|██████████| 5/5 [00:19<00:00,  2.91s/it]Stepwise progress: 100%|██████████| 5/5 [00:19<00:00,  3.90s/it]
+Predict f(0) = 0.475340746669819 +/- 8.96147786655169e-13
+
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [8.81072992e-16 1.15392140e-14 6.21014351e-15]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000000881074e-05, solver reference = 0.02000000000001154 and solver impedance = 0.0010000000000062101
+	Calculated final value: 0.475340746642633
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.65742983e-15 4.43378667e-15 1.33155709e-14]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000002657431e-05, solver reference = 0.020000000000004434 and solver impedance = 0.0010000000000133155
+	Calculated final value: 0.4753407465875287
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.43378667e-15 1.33155709e-14 2.65742983e-15]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000004433788e-05, solver reference = 0.020000000000013316 and solver impedance = 0.0010000000000026574
+	Calculated final value: 0.47534074653242137
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [6.21014351e-15 8.81072992e-16 9.76285719e-15]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000006210145e-05, solver reference = 0.02000000000000088 and solver impedance = 0.0010000000000097628
+	Calculated final value: 0.4753407464773403
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [7.98650035e-15 9.76285719e-15 8.81072992e-16]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000007986502e-05, solver reference = 0.020000000000009763 and solver impedance = 0.001000000000000881
+	Calculated final value: 0.47534074642222096
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [9.76285719e-15 2.65742983e-15 7.98650035e-15]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000009762859e-05, solver reference = 0.020000000000002658 and solver impedance = 0.0010000000000079865
+	Calculated final value: 0.47534074636711515
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.15392140e-14 7.98650035e-15 4.43378667e-15]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000011539215e-05, solver reference = 0.020000000000007987 and solver impedance = 0.0010000000000044338
+	Calculated final value: 0.4753407463120643
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.33155709e-14 6.21014351e-15 1.15392140e-14]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000013315572e-05, solver reference = 0.02000000000000621 and solver impedance = 0.0010000000000115392
+	Calculated final value: 0.47534074625691763
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:19<00:39, 19.50s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  5.24s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.67s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:40, 20.07s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.71s/it]
+Predict f(0) = 0.4753407466699908 +/- 3.2518496180021682e-12
+
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.76214598e-15 2.30784281e-14 1.24202870e-14]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000001762146e-05, solver reference = 0.02000000000002308 and solver impedance = 0.0010000000000124202
+	Calculated final value: 0.47534074661529985
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [5.31485966e-15 8.86757334e-15 2.66311417e-14]
+	Simulating Two Spheres Colliding Model with dt = 1.000000000531486e-05, solver reference = 0.02000000000000887 and solver impedance = 0.001000000000026631
+	Calculated final value: 0.4753407465051031
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [8.86757334e-15 2.66311417e-14 5.31485966e-15]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000008867573e-05, solver reference = 0.020000000000026632 and solver impedance = 0.0010000000000053148
+	Calculated final value: 0.47534074639490564
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.24202870e-14 1.76214598e-15 1.95257144e-14]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000012420287e-05, solver reference = 0.020000000000001763 and solver impedance = 0.0010000000000195256
+	Calculated final value: 0.47534074628468115
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.59730007e-14 1.95257144e-14 1.76214598e-15]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000015973001e-05, solver reference = 0.020000000000019526 and solver impedance = 0.001000000000001762
+	Calculated final value: 0.47534074617449723
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.95257144e-14 5.31485966e-15 1.59730007e-14]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000019525715e-05, solver reference = 0.020000000000005316 and solver impedance = 0.001000000000015973
+	Calculated final value: 0.4753407460642967
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.30784281e-14 1.59730007e-14 8.86757334e-15]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000023078428e-05, solver reference = 0.020000000000015974 and solver impedance = 0.0010000000000088675
+	Calculated final value: 0.47534074595410014
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.66311417e-14 1.24202870e-14 2.30784281e-14]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000026631142e-05, solver reference = 0.02000000000001242 and solver impedance = 0.0010000000000230783
+	Calculated final value: 0.4753407458438694
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:19<00:39, 19.53s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  6.54s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:40, 20.03s/it]Stepwise progress:  67%|██████▋   | 2/3 [00:20<00:08,  8.53s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.84s/it]
+Predict f(0) = 0.4753407466696532 +/- 2.3385189454681383e-13
+
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.52429197e-15 4.61568561e-14 2.48405740e-14]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000003524293e-05, solver reference = 0.020000000000046158 and solver impedance = 0.0010000000000248406
+	Calculated final value: 0.47534074656067077
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.06297193e-14 1.77351467e-14 5.32622835e-14]
+	Simulating Two Spheres Colliding Model with dt = 1.000000001062972e-05, solver reference = 0.020000000000017736 and solver impedance = 0.0010000000000532623
+	Calculated final value: 0.47534074634020457
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.77351467e-14 5.32622835e-14 1.06297193e-14]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000017735148e-05, solver reference = 0.020000000000053263 and solver impedance = 0.0010000000000106298
+	Calculated final value: 0.475340746119891
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.48405740e-14 3.52429197e-15 3.90514288e-14]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000024840575e-05, solver reference = 0.020000000000003525 and solver impedance = 0.0010000000000390515
+	Calculated final value: 0.4753407458994395
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.19460014e-14 3.90514288e-14 3.52429197e-15]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000031946003e-05, solver reference = 0.020000000000039053 and solver impedance = 0.0010000000000035243
+	Calculated final value: 0.4753407456790605
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.90514288e-14 1.06297193e-14 3.19460014e-14]
+	Simulating Two Spheres Colliding Model with dt = 1.000000003905143e-05, solver reference = 0.02000000000001063 and solver impedance = 0.001000000000031946
+	Calculated final value: 0.4753407454586298
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.61568561e-14 3.19460014e-14 1.77351467e-14]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000046156857e-05, solver reference = 0.020000000000031947 and solver impedance = 0.0010000000000177352
+	Calculated final value: 0.4753407452382566
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [5.32622835e-14 2.48405740e-14 4.61568561e-14]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000053262285e-05, solver reference = 0.02000000000002484 and solver impedance = 0.001000000000046157
+	Calculated final value: 0.47534074501781576
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:41, 20.67s/it]Stepwise progress:  67%|██████▋   | 2/3 [00:21<00:08,  8.79s/it]Stepwise progress: 100%|██████████| 3/3 [00:21<00:00,  7.07s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:41, 20.85s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.98s/it]
+Fitting interactions of order 3:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:19<00:38, 19.47s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  6.52s/it]
+Predict f(0) = 0.4753407466702271 +/- 3.382159383334664e-13
+
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [7.04858394e-15 9.23137122e-14 4.96811481e-14]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000007048585e-05, solver reference = 0.020000000000092315 and solver impedance = 0.0010000000000496812
+	Calculated final value: 0.47534074645135166
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.12594387e-14 3.54702934e-14 1.06524567e-13]
+	Simulating Two Spheres Colliding Model with dt = 1.000000002125944e-05, solver reference = 0.020000000000035472 and solver impedance = 0.0010000000001065246
+	Calculated final value: 0.4753407460104642
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.54702934e-14 1.06524567e-13 2.12594387e-14]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000035470295e-05, solver reference = 0.020000000000106526 and solver impedance = 0.0010000000000212595
+	Calculated final value: 0.47534074556977035
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.96811481e-14 7.04858394e-15 7.81028575e-14]
+	Simulating Two Spheres Colliding Model with dt = 1.000000004968115e-05, solver reference = 0.02000000000000705 and solver impedance = 0.001000000000078103
+	Calculated final value: 0.4753407451288775
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [6.38920028e-14 7.81028575e-14 7.04858394e-15]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000063892004e-05, solver reference = 0.020000000000078105 and solver impedance = 0.0010000000000070486
+	Calculated final value: 0.4753407446881525
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [7.81028575e-14 2.12594387e-14 6.38920028e-14]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000078102859e-05, solver reference = 0.02000000000002126 and solver impedance = 0.001000000000063892
+	Calculated final value: 0.4753407442473083
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [9.23137122e-14 6.38920028e-14 3.54702934e-14]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000092313714e-05, solver reference = 0.020000000000063894 and solver impedance = 0.0010000000000354703
+	Calculated final value: 0.47534074380655555
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.06524567e-13 4.96811481e-14 9.23137122e-14]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000106524568e-05, solver reference = 0.020000000000049683 and solver impedance = 0.0010000000000923138
+	Calculated final value: 0.47534074336569876
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:25<00:51, 25.68s/it]Stepwise progress: 100%|██████████| 3/3 [00:25<00:00,  6.70s/it]Stepwise progress: 100%|██████████| 3/3 [00:25<00:00,  8.60s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/6 [00:00<?, ?it/s]Stepwise progress:  17%|█▋        | 1/6 [00:19<01:36, 19.27s/it]Stepwise progress:  67%|██████▋   | 4/6 [00:19<00:07,  3.68s/it]Stepwise progress: 100%|██████████| 6/6 [00:19<00:00,  3.25s/it]
+Predict f(0) = 0.47534074666920745 +/- 2.20347778030509e-12
+
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.40971679e-14 1.84627424e-13 9.93622962e-14]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000014097168e-05, solver reference = 0.020000000000184627 and solver impedance = 0.0010000000000993624
+	Calculated final value: 0.4753407462327362
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.25188773e-14 7.09405867e-14 2.13049134e-13]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000042518878e-05, solver reference = 0.02000000000007094 and solver impedance = 0.0010000000002130492
+	Calculated final value: 0.47534074535098275
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [7.09405867e-14 2.13049134e-13 4.25188773e-14]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000070940587e-05, solver reference = 0.02000000000021305 and solver impedance = 0.001000000000042519
+	Calculated final value: 0.47534074446958746
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [9.93622962e-14 1.40971679e-14 1.56205715e-13]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000099362297e-05, solver reference = 0.020000000000014097 and solver impedance = 0.0010000000001562058
+	Calculated final value: 0.47534074358778355
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.27784006e-13 1.56205715e-13 1.40971679e-14]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000127784006e-05, solver reference = 0.020000000000156205 and solver impedance = 0.0010000000000140973
+	Calculated final value: 0.47534074270639176
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.56205715e-13 4.25188773e-14 1.27784006e-13]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000156205716e-05, solver reference = 0.02000000000004252 and solver impedance = 0.001000000000127784
+	Calculated final value: 0.47534074182463193
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.84627424e-13 1.27784006e-13 7.09405867e-14]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000184627425e-05, solver reference = 0.020000000000127784 and solver impedance = 0.0010000000000709407
+	Calculated final value: 0.4753407409431195
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.13049134e-13 9.93622962e-14 1.84627424e-13]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000213049134e-05, solver reference = 0.020000000000099362 and solver impedance = 0.0010000000001846275
+	Calculated final value: 0.47534074006141763
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:41, 20.56s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.88s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:21<00:42, 21.00s/it]Stepwise progress: 100%|██████████| 3/3 [00:21<00:00,  7.03s/it]
+Fitting interactions of order 3:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:19<00:38, 19.00s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  6.36s/it]
+Fitting interactions of order 4:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:19<00:38, 19.12s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  6.40s/it]
+Predict f(0) = 0.47534074667011633 +/- 1.3938230365459168e-12
+
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.81943358e-14 3.69254849e-13 1.98724592e-13]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000028194336e-05, solver reference = 0.020000000000369254 and solver impedance = 0.0010000000001987245
+	Calculated final value: 0.4753407457954893
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [8.50377546e-14 1.41881173e-13 4.26098268e-13]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000085037755e-05, solver reference = 0.02000000000014188 and solver impedance = 0.0010000000004260982
+	Calculated final value: 0.47534074403202364
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.41881173e-13 4.26098268e-13 8.50377546e-14]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000141881174e-05, solver reference = 0.020000000000426097 and solver impedance = 0.0010000000000850377
+	Calculated final value: 0.4753407422692468
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.98724592e-13 2.81943358e-14 3.12411430e-13]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000198724593e-05, solver reference = 0.020000000000028193 and solver impedance = 0.0010000000003124114
+	Calculated final value: 0.47534074050562536
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.55568011e-13 3.12411430e-13 2.81943358e-14]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000255568012e-05, solver reference = 0.02000000000031241 and solver impedance = 0.0010000000000281943
+	Calculated final value: 0.475340738742813
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.12411430e-13 8.50377546e-14 2.55568011e-13]
+	Simulating Two Spheres Colliding Model with dt = 1.000000031241143e-05, solver reference = 0.020000000000085037 and solver impedance = 0.001000000000255568
+	Calculated final value: 0.4753407369793026
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.69254849e-13 2.55568011e-13 1.41881173e-13]
+	Simulating Two Spheres Colliding Model with dt = 1.000000036925485e-05, solver reference = 0.020000000000255567 and solver impedance = 0.001000000000141881
+	Calculated final value: 0.4753407352162816
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.26098268e-13 1.98724592e-13 3.69254849e-13]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000426098268e-05, solver reference = 0.020000000000198723 and solver impedance = 0.0010000000003692548
+	Calculated final value: 0.4753407334529194
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:22<00:44, 22.11s/it]Stepwise progress: 100%|██████████| 3/3 [00:22<00:00,  5.77s/it]Stepwise progress: 100%|██████████| 3/3 [00:22<00:00,  7.40s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:22<00:44, 22.35s/it]Stepwise progress:  67%|██████▋   | 2/3 [00:22<00:09,  9.49s/it]Stepwise progress: 100%|██████████| 3/3 [00:22<00:00,  7.63s/it]
+Predict f(0) = 0.4753407466711507 +/- 2.9851412449142313e-12
+
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [5.63886715e-14 7.38509698e-13 3.97449185e-13]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000056388673e-05, solver reference = 0.02000000000073851 and solver impedance = 0.0010000000003974492
+	Calculated final value: 0.47534074492105083
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.70075509e-13 2.83762347e-13 8.52196536e-13]
+	Simulating Two Spheres Colliding Model with dt = 1.000000017007551e-05, solver reference = 0.020000000000283763 and solver impedance = 0.0010000000008521966
+	Calculated final value: 0.47534074139407717
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.83762347e-13 8.52196536e-13 1.70075509e-13]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000283762349e-05, solver reference = 0.020000000000852197 and solver impedance = 0.0010000000001700756
+	Calculated final value: 0.4753407378684976
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.97449185e-13 5.63886715e-14 6.24822860e-13]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000397449186e-05, solver reference = 0.02000000000005639 and solver impedance = 0.001000000000624823
+	Calculated final value: 0.4753407343413031
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [5.11136022e-13 6.24822860e-13 5.63886715e-14]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000511136024e-05, solver reference = 0.020000000000624824 and solver impedance = 0.0010000000000563887
+	Calculated final value: 0.4753407308156361
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [6.24822860e-13 1.70075509e-13 5.11136022e-13]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000624822862e-05, solver reference = 0.020000000000170076 and solver impedance = 0.001000000000511136
+	Calculated final value: 0.475340727288648
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [7.38509698e-13 5.11136022e-13 2.83762347e-13]
+	Simulating Two Spheres Colliding Model with dt = 1.00000007385097e-05, solver reference = 0.020000000000511137 and solver impedance = 0.0010000000002837624
+	Calculated final value: 0.4753407237626244
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [8.52196536e-13 3.97449185e-13 7.38509698e-13]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000852196537e-05, solver reference = 0.02000000000039745 and solver impedance = 0.0010000000007385098
+	Calculated final value: 0.47534072023584956
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:21<00:43, 21.64s/it]Stepwise progress: 100%|██████████| 3/3 [00:21<00:00,  7.24s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:22<00:44, 22.49s/it]Stepwise progress: 100%|██████████| 3/3 [00:22<00:00,  7.53s/it]
+Predict f(0) = 0.4753407466699177 +/- 5.963891694936826e-12
+
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.12777343e-13 1.47701940e-12 7.94898369e-13]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000112777344e-05, solver reference = 0.02000000000147702 and solver impedance = 0.0010000000007948985
+	Calculated final value: 0.4753407431721323
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.40151018e-13 5.67524694e-13 1.70439307e-12]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000340151019e-05, solver reference = 0.020000000000567526 and solver impedance = 0.0010000000017043932
+	Calculated final value: 0.4753407361181621
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [5.67524694e-13 1.70439307e-12 3.40151018e-13]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000567524695e-05, solver reference = 0.020000000001704394 and solver impedance = 0.001000000000340151
+	Calculated final value: 0.47534072906700925
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [7.94898369e-13 1.12777343e-13 1.24964572e-12]
+	Simulating Two Spheres Colliding Model with dt = 1.000000079489837e-05, solver reference = 0.020000000000112778 and solver impedance = 0.0010000000012496458
+	Calculated final value: 0.47534072201261673
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.02227204e-12 1.24964572e-12 1.12777343e-13]
+	Simulating Two Spheres Colliding Model with dt = 1.0000001022272045e-05, solver reference = 0.020000000001249647 and solver impedance = 0.0010000000001127774
+	Calculated final value: 0.4753407149613117
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.24964572e-12 3.40151018e-13 1.02227204e-12]
+	Simulating Two Spheres Colliding Model with dt = 1.0000001249645721e-05, solver reference = 0.020000000000340152 and solver impedance = 0.0010000000010222721
+	Calculated final value: 0.47534070790734434
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.47701940e-12 1.02227204e-12 5.67524694e-13]
+	Simulating Two Spheres Colliding Model with dt = 1.0000001477019396e-05, solver reference = 0.020000000001022273 and solver impedance = 0.0010000000005675248
+	Calculated final value: 0.4753407008552933
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.70439307e-12 7.94898369e-13 1.47701940e-12]
+	Simulating Two Spheres Colliding Model with dt = 1.0000001704393072e-05, solver reference = 0.0200000000007949 and solver impedance = 0.0010000000014770195
+	Calculated final value: 0.4753406938017423
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:22<00:44, 22.32s/it]Stepwise progress: 100%|██████████| 3/3 [00:22<00:00,  7.47s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/5 [00:00<?, ?it/s]Stepwise progress:  20%|██        | 1/5 [00:20<01:23, 20.93s/it]Stepwise progress:  40%|████      | 2/5 [00:21<00:26,  8.91s/it]Stepwise progress: 100%|██████████| 5/5 [00:21<00:00,  2.56s/it]Stepwise progress: 100%|██████████| 5/5 [00:21<00:00,  4.31s/it]
+Predict f(0) = 0.4753407466700463 +/- 1.1747824449294576e-11
+
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.25554686e-13 2.95403879e-12 1.58979674e-12]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000225554687e-05, solver reference = 0.02000000000295404 and solver impedance = 0.0010000000015897967
+	Calculated final value: 0.47534073967432056
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [6.80302037e-13 1.13504939e-12 3.40878614e-12]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000680302037e-05, solver reference = 0.02000000000113505 and solver impedance = 0.001000000003408786
+	Calculated final value: 0.47534072556636686
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.13504939e-12 3.40878614e-12 6.80302037e-13]
+	Simulating Two Spheres Colliding Model with dt = 1.0000001135049388e-05, solver reference = 0.020000000003408788 and solver impedance = 0.001000000000680302
+	Calculated final value: 0.47534071146408147
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.58979674e-12 2.25554686e-13 2.49929144e-12]
+	Simulating Two Spheres Colliding Model with dt = 1.000000158979674e-05, solver reference = 0.020000000000225556 and solver impedance = 0.0010000000024992914
+	Calculated final value: 0.4753406973552801
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.04454409e-12 2.49929144e-12 2.25554686e-13]
+	Simulating Two Spheres Colliding Model with dt = 1.000000204454409e-05, solver reference = 0.020000000002499293 and solver impedance = 0.0010000000002255546
+	Calculated final value: 0.47534068325268175
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.49929144e-12 6.80302037e-13 2.04454409e-12]
+	Simulating Two Spheres Colliding Model with dt = 1.0000002499291441e-05, solver reference = 0.020000000000680303 and solver impedance = 0.001000000002044544
+	Calculated final value: 0.47534066914476525
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.95403879e-12 2.04454409e-12 1.13504939e-12]
+	Simulating Two Spheres Colliding Model with dt = 1.0000002954038792e-05, solver reference = 0.020000000002044546 and solver impedance = 0.0010000000011350493
+	Calculated final value: 0.4753406550406895
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.40878614e-12 1.58979674e-12 2.95403879e-12]
+	Simulating Two Spheres Colliding Model with dt = 1.0000003408786143e-05, solver reference = 0.020000000001589798 and solver impedance = 0.0010000000029540387
+	Calculated final value: 0.4753406409336137
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:21<00:43, 21.53s/it]Stepwise progress: 100%|██████████| 3/3 [00:21<00:00,  7.20s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:21<00:43, 21.60s/it]Stepwise progress: 100%|██████████| 3/3 [00:21<00:00,  7.23s/it]
+Fitting interactions of order 3:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:40, 20.08s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.72s/it]
+Fitting interactions of order 4:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:41, 20.97s/it]Stepwise progress: 100%|██████████| 3/3 [00:21<00:00,  5.47s/it]Stepwise progress: 100%|██████████| 3/3 [00:21<00:00,  7.02s/it]
+Fitting interactions of order 5:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:41, 20.63s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  5.39s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.92s/it]
+Predict f(0) = 0.4753407466701472 +/- 9.725429439344703e-13
+
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.51109372e-13 5.90807758e-12 3.17959348e-12]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000451109372e-05, solver reference = 0.020000000005908077 and solver impedance = 0.0010000000031795935
+	Calculated final value: 0.4753407326787091
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.36060407e-12 2.27009878e-12 6.81757228e-12]
+	Simulating Two Spheres Colliding Model with dt = 1.0000001360604074e-05, solver reference = 0.020000000002270098 and solver impedance = 0.0010000000068175724
+	Calculated final value: 0.47534070446279214
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.27009878e-12 6.81757228e-12 1.36060407e-12]
+	Simulating Two Spheres Colliding Model with dt = 1.0000002270098776e-05, solver reference = 0.02000000000681757 and solver impedance = 0.0010000000013606041
+	Calculated final value: 0.4753406762582222
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.17959348e-12 4.51109372e-13 4.99858288e-12]
+	Simulating Two Spheres Colliding Model with dt = 1.0000003179593478e-05, solver reference = 0.02000000000045111 and solver impedance = 0.001000000004998583
+	Calculated final value: 0.4753406480406902
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.08908818e-12 4.99858288e-12 4.51109372e-13]
+	Simulating Two Spheres Colliding Model with dt = 1.000000408908818e-05, solver reference = 0.020000000004998582 and solver impedance = 0.0010000000004511094
+	Calculated final value: 0.47534061983550757
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.99858288e-12 1.36060407e-12 4.08908818e-12]
+	Simulating Two Spheres Colliding Model with dt = 1.0000004998582881e-05, solver reference = 0.020000000001360603 and solver impedance = 0.0010000000040890882
+	Calculated final value: 0.4753405916197058
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [5.90807758e-12 4.08908818e-12 2.27009878e-12]
+	Simulating Two Spheres Colliding Model with dt = 1.0000005908077583e-05, solver reference = 0.020000000004089087 and solver impedance = 0.0010000000022700988
+	Calculated final value: 0.4753405634115767
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [6.81757228e-12 3.17959348e-12 5.90807758e-12]
+	Simulating Two Spheres Colliding Model with dt = 1.0000006817572285e-05, solver reference = 0.020000000003179592 and solver impedance = 0.0010000000059080777
+	Calculated final value: 0.4753405351974682
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:21<00:43, 21.91s/it]Stepwise progress: 100%|██████████| 3/3 [00:21<00:00,  7.33s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:22<00:44, 22.46s/it]Stepwise progress: 100%|██████████| 3/3 [00:22<00:00,  5.87s/it]Stepwise progress: 100%|██████████| 3/3 [00:22<00:00,  7.53s/it]
+Fitting interactions of order 3:
+Stepwise progress:   0%|          | 0/5 [00:00<?, ?it/s]Stepwise progress:  20%|██        | 1/5 [00:20<01:22, 20.64s/it]Stepwise progress:  80%|████████  | 4/5 [00:20<00:03,  3.94s/it]Stepwise progress: 100%|██████████| 5/5 [00:21<00:00,  4.26s/it]
+Fitting interactions of order 4:
+Stepwise progress:   0%|          | 0/5 [00:00<?, ?it/s]Stepwise progress:  20%|██        | 1/5 [00:21<01:24, 21.08s/it]Stepwise progress:  80%|████████  | 4/5 [00:21<00:04,  4.02s/it]Stepwise progress: 100%|██████████| 5/5 [00:21<00:00,  4.34s/it]
+Predict f(0) = 0.47534074666212006 +/- 5.149665808499351e-11
+
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [9.02218744e-13 1.18161552e-11 6.35918695e-12]
+	Simulating Two Spheres Colliding Model with dt = 1.0000000902218745e-05, solver reference = 0.020000000011816156 and solver impedance = 0.001000000006359187
+	Calculated final value: 0.4753407186874499
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.72120815e-12 4.54019755e-12 1.36351446e-11]
+	Simulating Two Spheres Colliding Model with dt = 1.0000002721208149e-05, solver reference = 0.0200000000045402 and solver impedance = 0.0010000000136351447
+	Calculated final value: 0.47534066225566085
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.54019755e-12 1.36351446e-11 2.72120815e-12]
+	Simulating Two Spheres Colliding Model with dt = 1.0000004540197553e-05, solver reference = 0.020000000013635146 and solver impedance = 0.0010000000027212083
+	Calculated final value: 0.47534060584662224
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [6.35918695e-12 9.02218744e-13 9.99716576e-12]
+	Simulating Two Spheres Colliding Model with dt = 1.0000006359186956e-05, solver reference = 0.02000000000090222 and solver impedance = 0.0010000000099971659
+	Calculated final value: 0.4753405494116202
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [8.17817636e-12 9.99716576e-12 9.02218744e-13]
+	Simulating Two Spheres Colliding Model with dt = 1.000000817817636e-05, solver reference = 0.020000000009997167 and solver impedance = 0.0010000000009022189
+	Calculated final value: 0.4753404930014701
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [9.99716576e-12 2.72120815e-12 8.17817636e-12]
+	Simulating Two Spheres Colliding Model with dt = 1.0000009997165763e-05, solver reference = 0.02000000000272121 and solver impedance = 0.0010000000081781765
+	Calculated final value: 0.4753404365699902
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.18161552e-11 8.17817636e-12 4.54019755e-12]
+	Simulating Two Spheres Colliding Model with dt = 1.0000011816155167e-05, solver reference = 0.020000000008178177 and solver impedance = 0.0010000000045401977
+	Calculated final value: 0.4753403801539929
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.36351446e-11 6.35918695e-12 1.18161552e-11]
+	Simulating Two Spheres Colliding Model with dt = 1.000001363514457e-05, solver reference = 0.020000000006359188 and solver impedance = 0.0010000000118161553
+	Calculated final value: 0.47534032372603796
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:21<00:43, 21.72s/it]Stepwise progress: 100%|██████████| 3/3 [00:21<00:00,  7.27s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/5 [00:00<?, ?it/s]Stepwise progress:  20%|██        | 1/5 [00:20<01:21, 20.30s/it]Stepwise progress:  40%|████      | 2/5 [00:20<00:25,  8.65s/it]Stepwise progress:  60%|██████    | 3/5 [00:21<00:09,  4.92s/it]Stepwise progress:  80%|████████  | 4/5 [00:21<00:03,  3.17s/it]Stepwise progress: 100%|██████████| 5/5 [00:21<00:00,  4.36s/it]
+Fitting interactions of order 3:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:41, 20.75s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  5.43s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.96s/it]
+Predict f(0) = 0.4753407466730278 +/- 1.1660395633537234e-11
+
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.80443749e-12 2.36323103e-11 1.27183739e-11]
+	Simulating Two Spheres Colliding Model with dt = 1.0000001804437488e-05, solver reference = 0.020000000023632312 and solver impedance = 0.001000000012718374
+	Calculated final value: 0.47534069070490503
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [5.44241630e-12 9.08039510e-12 2.72702891e-11]
+	Simulating Two Spheres Colliding Model with dt = 1.0000005442416296e-05, solver reference = 0.020000000009080397 and solver impedance = 0.0010000000272702891
+	Calculated final value: 0.4753405778415303
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [9.08039510e-12 2.72702891e-11 5.44241630e-12]
+	Simulating Two Spheres Colliding Model with dt = 1.0000009080395103e-05, solver reference = 0.02000000002727029 and solver impedance = 0.0010000000054424163
+	Calculated final value: 0.4753404650237492
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.27183739e-11 1.80443749e-12 1.99943315e-11]
+	Simulating Two Spheres Colliding Model with dt = 1.000001271837391e-05, solver reference = 0.02000000000180444 and solver impedance = 0.0010000000199943315
+	Calculated final value: 0.47534035215417975
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.63563527e-11 1.99943315e-11 1.80443749e-12]
+	Simulating Two Spheres Colliding Model with dt = 1.0000016356352717e-05, solver reference = 0.020000000019994333 and solver impedance = 0.0010000000018044375
+	Calculated final value: 0.47534023933445196
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.99943315e-11 5.44241630e-12 1.63563527e-11]
+	Simulating Two Spheres Colliding Model with dt = 1.0000019994331524e-05, solver reference = 0.020000000005442418 and solver impedance = 0.0010000000163563527
+	Calculated final value: 0.4753401264722292
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.36323103e-11 1.63563527e-11 9.08039510e-12]
+	Simulating Two Spheres Colliding Model with dt = 1.0000023632310331e-05, solver reference = 0.020000000016356354 and solver impedance = 0.001000000009080395
+	Calculated final value: 0.47534001364107425
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.72702891e-11 1.27183739e-11 2.36323103e-11]
+	Simulating Two Spheres Colliding Model with dt = 1.0000027270289138e-05, solver reference = 0.020000000012718375 and solver impedance = 0.0010000000236323103
+	Calculated final value: 0.47533990078618127
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:22<00:44, 22.41s/it]Stepwise progress: 100%|██████████| 3/3 [00:22<00:00,  7.50s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:22<00:45, 22.68s/it]Stepwise progress: 100%|██████████| 3/3 [00:22<00:00,  7.59s/it]
+Fitting interactions of order 3:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:41, 20.94s/it]Stepwise progress: 100%|██████████| 3/3 [00:21<00:00,  5.63s/it]Stepwise progress: 100%|██████████| 3/3 [00:21<00:00,  7.16s/it]
+Predict f(0) = 0.4753407466679416 +/- 9.49460382986341e-12
+
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.60887498e-12 4.72646207e-11 2.54367478e-11]
+	Simulating Two Spheres Colliding Model with dt = 1.0000003608874978e-05, solver reference = 0.02000000004726462 and solver impedance = 0.0010000000254367478
+	Calculated final value: 0.47534063473994415
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.08848326e-11 1.81607902e-11 5.45405783e-11]
+	Simulating Two Spheres Colliding Model with dt = 1.0000010884832592e-05, solver reference = 0.02000000001816079 and solver impedance = 0.0010000000545405782
+	Calculated final value: 0.4753404090137561
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.81607902e-11 5.45405783e-11 1.08848326e-11]
+	Simulating Two Spheres Colliding Model with dt = 1.0000018160790206e-05, solver reference = 0.020000000054540577 and solver impedance = 0.0010000000108848326
+	Calculated final value: 0.4753401833793349
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.54367478e-11 3.60887498e-12 3.99886630e-11]
+	Simulating Two Spheres Colliding Model with dt = 1.000002543674782e-05, solver reference = 0.020000000003608874 and solver impedance = 0.001000000039988663
+	Calculated final value: 0.47533995764196046
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.27127054e-11 3.99886630e-11 3.60887498e-12]
+	Simulating Two Spheres Colliding Model with dt = 1.0000032712705434e-05, solver reference = 0.020000000039988662 and solver impedance = 0.001000000003608875
+	Calculated final value: 0.4753397320047982
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.99886630e-11 1.08848326e-11 3.27127054e-11]
+	Simulating Two Spheres Colliding Model with dt = 1.0000039988663049e-05, solver reference = 0.02000000001088483 and solver impedance = 0.0010000000327127054
+	Calculated final value: 0.4753395062832511
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.72646207e-11 3.27127054e-11 1.81607902e-11]
+	Simulating Two Spheres Colliding Model with dt = 1.0000047264620663e-05, solver reference = 0.020000000032712704 and solver impedance = 0.0010000000181607902
+	Calculated final value: 0.4753392806244104
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [5.45405783e-11 2.54367478e-11 4.72646207e-11]
+	Simulating Two Spheres Colliding Model with dt = 1.0000054540578277e-05, solver reference = 0.020000000025436747 and solver impedance = 0.0010000000472646206
+	Calculated final value: 0.4753390549186872
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:21<00:43, 21.85s/it]Stepwise progress: 100%|██████████| 3/3 [00:21<00:00,  7.31s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/5 [00:00<?, ?it/s]Stepwise progress:  20%|██        | 1/5 [00:20<01:22, 20.62s/it]Stepwise progress:  80%|████████  | 4/5 [00:20<00:03,  3.93s/it]Stepwise progress: 100%|██████████| 5/5 [00:20<00:00,  4.16s/it]
+Fitting interactions of order 3:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:21<00:42, 21.09s/it]Stepwise progress: 100%|██████████| 3/3 [00:21<00:00,  7.06s/it]
+Predict f(0) = 0.4753407466723954 +/- 3.705531246162769e-11
+
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [7.21774995e-12 9.45292413e-11 5.08734956e-11]
+	Simulating Two Spheres Colliding Model with dt = 1.0000007217749955e-05, solver reference = 0.020000000094529242 and solver impedance = 0.0010000000508734958
+	Calculated final value: 0.4753405228102344
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.17696652e-11 3.63215804e-11 1.09081157e-10]
+	Simulating Two Spheres Colliding Model with dt = 1.0000021769665183e-05, solver reference = 0.02000000003632158 and solver impedance = 0.0010000001090811567
+	Calculated final value: 0.47534007136019557
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.63215804e-11 1.09081157e-10 2.17696652e-11]
+	Simulating Two Spheres Colliding Model with dt = 1.0000036321580411e-05, solver reference = 0.020000000109081158 and solver impedance = 0.0010000000217696653
+	Calculated final value: 0.4753396200958769
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [5.08734956e-11 7.21774995e-12 7.99773261e-11]
+	Simulating Two Spheres Colliding Model with dt = 1.000005087349564e-05, solver reference = 0.02000000000721775 and solver impedance = 0.0010000000799773262
+	Calculated final value: 0.4753391686280808
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [6.54254109e-11 7.99773261e-11 7.21774995e-12]
+	Simulating Two Spheres Colliding Model with dt = 1.0000065425410868e-05, solver reference = 0.020000000079977327 and solver impedance = 0.00100000000721775
+	Calculated final value: 0.47533871736128264
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [7.99773261e-11 2.17696652e-11 6.54254109e-11]
+	Simulating Two Spheres Colliding Model with dt = 1.0000079977326097e-05, solver reference = 0.020000000021769666 and solver impedance = 0.001000000065425411
+	Calculated final value: 0.47533826591002093
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [9.45292413e-11 6.54254109e-11 3.63215804e-11]
+	Simulating Two Spheres Colliding Model with dt = 1.0000094529241325e-05, solver reference = 0.020000000065425412 and solver impedance = 0.0010000000363215805
+	Calculated final value: 0.4753378145645416
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.09081157e-10 5.08734956e-11 9.45292413e-11]
+	Simulating Two Spheres Colliding Model with dt = 1.0000109081156553e-05, solver reference = 0.020000000050873497 and solver impedance = 0.0010000000945292414
+	Calculated final value: 0.47535525860292677
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:22<00:44, 22.21s/it]Stepwise progress: 100%|██████████| 3/3 [00:22<00:00,  5.80s/it]Stepwise progress: 100%|██████████| 3/3 [00:22<00:00,  7.44s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/6 [00:00<?, ?it/s]Stepwise progress:  17%|█▋        | 1/6 [00:21<01:45, 21.04s/it]Stepwise progress:  50%|█████     | 3/6 [00:21<00:16,  5.49s/it]Stepwise progress:  83%|████████▎ | 5/6 [00:21<00:02,  2.70s/it]Stepwise progress: 100%|██████████| 6/6 [00:21<00:00,  3.55s/it]
+Fitting interactions of order 3:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:21<00:42, 21.31s/it]Stepwise progress:  67%|██████▋   | 2/3 [00:21<00:09,  9.09s/it]Stepwise progress: 100%|██████████| 3/3 [00:21<00:00,  4.99s/it]Stepwise progress: 100%|██████████| 3/3 [00:21<00:00,  7.32s/it]
+Fitting interactions of order 4:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:40, 20.46s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.84s/it]
+Predict f(0) = 0.4753139158672703 +/- 4.0186195596742554e-06
+
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.44354999e-11 1.89058483e-10 1.01746991e-10]
+	Simulating Two Spheres Colliding Model with dt = 1.0000014435499907e-05, solver reference = 0.020000000189058485 and solver impedance = 0.0010000001017469913
+	Calculated final value: 0.4753402989516563
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.35393304e-11 7.26431608e-11 2.18162313e-10]
+	Simulating Two Spheres Colliding Model with dt = 1.0000043539330364e-05, solver reference = 0.020000000072643163 and solver impedance = 0.001000000218162313
+	Calculated final value: 0.4753393960607837
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [7.26431608e-11 2.18162313e-10 4.35393304e-11]
+	Simulating Two Spheres Colliding Model with dt = 1.000007264316082e-05, solver reference = 0.020000000218162315 and solver impedance = 0.0010000000435393304
+	Calculated final value: 0.4753384935418272
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.01746991e-10 1.44354999e-11 1.59954652e-10]
+	Simulating Two Spheres Colliding Model with dt = 1.0000101746991277e-05, solver reference = 0.020000000014435502 and solver impedance = 0.0010000001599546522
+	Calculated final value: 0.47535548589201776
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.30850822e-10 1.59954652e-10 1.44354999e-11]
+	Simulating Two Spheres Colliding Model with dt = 1.0000130850821734e-05, solver reference = 0.020000000159954654 and solver impedance = 0.0010000000144355
+	Calculated final value: 0.4753545838654888
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.59954652e-10 4.35393304e-11 1.30850822e-10]
+	Simulating Two Spheres Colliding Model with dt = 1.000015995465219e-05, solver reference = 0.020000000043539332 and solver impedance = 0.0010000001308508217
+	Calculated final value: 0.4753536815032665
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.89058483e-10 1.30850822e-10 7.26431608e-11]
+	Simulating Two Spheres Colliding Model with dt = 1.0000189058482647e-05, solver reference = 0.020000000130850824 and solver impedance = 0.0010000000726431608
+	Calculated final value: 0.4753527794056055
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.18162313e-10 1.01746991e-10 1.89058483e-10]
+	Simulating Two Spheres Colliding Model with dt = 1.0000218162313104e-05, solver reference = 0.020000000101746993 and solver impedance = 0.0010000001890584826
+	Calculated final value: 0.4753518771342725
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:22<00:44, 22.08s/it]Stepwise progress: 100%|██████████| 3/3 [00:22<00:00,  5.78s/it]Stepwise progress: 100%|██████████| 3/3 [00:22<00:00,  7.41s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/6 [00:00<?, ?it/s]Stepwise progress:  17%|█▋        | 1/6 [00:21<01:45, 21.01s/it]Stepwise progress:  50%|█████     | 3/6 [00:21<00:16,  5.49s/it]Stepwise progress: 100%|██████████| 6/6 [00:21<00:00,  2.15s/it]Stepwise progress: 100%|██████████| 6/6 [00:21<00:00,  3.55s/it]
+Predict f(0) = 0.4753555577199738 +/- 1.5033282306215849e-05
+
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.88709998e-11 3.78116965e-10 2.03493983e-10]
+	Simulating Two Spheres Colliding Model with dt = 1.0000028870999815e-05, solver reference = 0.020000000378116965 and solver impedance = 0.0010000002034939825
+	Calculated final value: 0.47533985123791156
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [8.70786607e-11 1.45286322e-10 4.36324626e-10]
+	Simulating Two Spheres Colliding Model with dt = 1.0000087078660728e-05, solver reference = 0.02000000014528632 and solver impedance = 0.0010000004363246262
+	Calculated final value: 0.47533804545397546
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.45286322e-10 4.36324626e-10 8.70786607e-11]
+	Simulating Two Spheres Colliding Model with dt = 1.0000145286321642e-05, solver reference = 0.020000000436324626 and solver impedance = 0.0010000000870786607
+	Calculated final value: 0.47535413648805547
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.03493983e-10 2.88709998e-11 3.19909304e-10]
+	Simulating Two Spheres Colliding Model with dt = 1.0000203493982555e-05, solver reference = 0.020000000028871 and solver impedance = 0.0010000003199093044
+	Calculated final value: 0.4753523316921964
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.61701643e-10 3.19909304e-10 2.88709998e-11]
+	Simulating Two Spheres Colliding Model with dt = 1.0000261701643469e-05, solver reference = 0.020000000319909304 and solver impedance = 0.0010000000288709998
+	Calculated final value: 0.47535052776238923
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.19909304e-10 8.70786607e-11 2.61701643e-10]
+	Simulating Two Spheres Colliding Model with dt = 1.0000319909304382e-05, solver reference = 0.02000000008707866 and solver impedance = 0.0010000002617016434
+	Calculated final value: 0.4753487232186799
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.78116965e-10 2.61701643e-10 1.45286322e-10]
+	Simulating Two Spheres Colliding Model with dt = 1.0000378116965296e-05, solver reference = 0.020000000261701643 and solver impedance = 0.0010000001452863216
+	Calculated final value: 0.4753469191286761
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.36324626e-10 2.03493983e-10 3.78116965e-10]
+	Simulating Two Spheres Colliding Model with dt = 1.0000436324626209e-05, solver reference = 0.020000000203493982 and solver impedance = 0.0010000003781169653
+	Calculated final value: 0.4753451134988228
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:22<00:44, 22.01s/it]Stepwise progress:  67%|██████▋   | 2/3 [00:22<00:09,  9.17s/it]Stepwise progress: 100%|██████████| 3/3 [00:22<00:00,  7.42s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:22<00:44, 22.46s/it]Stepwise progress:  67%|██████▋   | 2/3 [00:22<00:09,  9.54s/it]Stepwise progress: 100%|██████████| 3/3 [00:23<00:00,  7.68s/it]
+Fitting interactions of order 3:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:21<00:42, 21.03s/it]Stepwise progress: 100%|██████████| 3/3 [00:21<00:00,  5.49s/it]Stepwise progress: 100%|██████████| 3/3 [00:21<00:00,  7.04s/it]
+Fitting interactions of order 4:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:41, 20.61s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  5.38s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.91s/it]
+Predict f(0) = 0.4753366903618563 +/- 8.612877103089553e-08
+
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [5.77419996e-11 7.56233931e-10 4.06987965e-10]
+	Simulating Two Spheres Colliding Model with dt = 1.0000057741999627e-05, solver reference = 0.02000000075623393 and solver impedance = 0.001000000406987965
+	Calculated final value: 0.4753389558240621
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.74157321e-10 2.90572643e-10 8.72649252e-10]
+	Simulating Two Spheres Colliding Model with dt = 1.0000174157321454e-05, solver reference = 0.020000000290572643 and solver impedance = 0.0010000008726492524
+	Calculated final value: 0.4753532408741121
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.90572643e-10 8.72649252e-10 1.74157321e-10]
+	Simulating Two Spheres Colliding Model with dt = 1.000029057264328e-05, solver reference = 0.020000000872649252 and solver impedance = 0.0010000001741573214
+	Calculated final value: 0.47534963309284317
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.06987965e-10 5.77419996e-11 6.39818609e-10]
+	Simulating Two Spheres Colliding Model with dt = 1.0000406987965108e-05, solver reference = 0.020000000057742 and solver impedance = 0.0010000006398186087
+	Calculated final value: 0.47534602317962105
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [5.23403287e-10 6.39818609e-10 5.77419996e-11]
+	Simulating Two Spheres Colliding Model with dt = 1.0000523403286935e-05, solver reference = 0.020000000639818608 and solver impedance = 0.0010000000577419996
+	Calculated final value: 0.47534968598857225
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [6.39818609e-10 1.74157321e-10 5.23403287e-10]
+	Simulating Two Spheres Colliding Model with dt = 1.0000639818608762e-05, solver reference = 0.02000000017415732 and solver impedance = 0.0010000005234032869
+	Calculated final value: 0.4753460759405977
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [7.56233931e-10 5.23403287e-10 2.90572643e-10]
+	Simulating Two Spheres Colliding Model with dt = 1.0000756233930588e-05, solver reference = 0.020000000523403286 and solver impedance = 0.0010000002905726432
+	Calculated final value: 0.47534246717080314
+Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [8.72649252e-10 4.06987965e-10 7.56233931e-10]
+	Simulating Two Spheres Colliding Model with dt = 1.0000872649252415e-05, solver reference = 0.020000000406987965 and solver impedance = 0.0010000007562339305
+	Calculated final value: 0.4753567542128687
+Fitting interactions of order 1:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:22<00:44, 22.22s/it]Stepwise progress: 100%|██████████| 3/3 [00:22<00:00,  7.44s/it]
+Fitting interactions of order 2:
+Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:21<00:43, 21.84s/it]Stepwise progress:  33%|███▎      | 1/3 [00:22<00:44, 22.03s/it]
+Traceback (most recent call last):
+  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/src/run_model_analysis.py", line 26, in <module>
+    model.run_analysis()
+  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/src/models/base_model.py", line 380, in run_analysis
+    out = extrapolation(X*h, Y, options, h)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/src/sparse_pre/extrapolation.py", line 78, in extrapolation
+    out = spre.stepwise_selection(max_order, use_fixed_basis, bases_filename, h)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/src/sparse_pre/SPRE.py", line 624, in stepwise_selection
+    fit_new = self.perform_extrapolation_optimization(A_new, do_jit)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/src/sparse_pre/SPRE.py", line 522, in perform_extrapolation_optimization
+    result = minimize(self.scipy_objective,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/.venv/lib/python3.12/site-packages/scipy/optimize/_minimize.py", line 809, in minimize
+    res = _minimize_trust_krylov(fun, x0, args, jac, hess, hessp,
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/.venv/lib/python3.12/site-packages/scipy/optimize/_trustregion_krylov.py", line 51, in _minimize_trust_krylov
+    return _minimize_trust_region(fun, x0, args=args, jac=jac,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/.venv/lib/python3.12/site-packages/scipy/optimize/_trustregion.py", line 280, in _minimize_trust_region
+    if m.jac_mag < gtol:
+       ^^^^^^^^^
+  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/.venv/lib/python3.12/site-packages/scipy/optimize/_trustregion.py", line 87, in jac_mag
+    self._g_mag = scipy.linalg.norm(self.jac)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/.venv/lib/python3.12/site-packages/scipy/linalg/_misc.py", line 146, in norm
+    a = np.asarray_chkfinite(a)
+        ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/.venv/lib/python3.12/site-packages/numpy/lib/_function_base_impl.py", line 665, in asarray_chkfinite
+    raise ValueError(
+ValueError: array must not contain infs or NaNs
+Wed 11 Mar 15:51:04 GMT 2026
+Total seconds: 2326
