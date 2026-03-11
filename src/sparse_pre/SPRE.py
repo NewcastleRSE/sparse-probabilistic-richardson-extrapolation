@@ -49,14 +49,15 @@ class SPRE:
         self.set_kernel_spec(kernel_spec, gre_base)
 
 
-    def cdist_jax(self, XA : jnp.ndarray, XB : jnp.ndarray) -> jnp.ndarray:
+    def cdist_jax(self, XA : jnp.ndarray, XB : jnp.ndarray, squared : bool = False) -> jnp.ndarray:
         """
         Computes pairwise Euclidean distances between two sets of vectors (rows of XA and XB).
         Equivalent to scipy.spatial.distance.cdist(XA, XB, 'euclidean') but using jax.
 
         Parameters:  
             XA : jnp.ndarray          First array,  (m, d)        
-            XB : jnp.ndarray          Second array, (n, d)              
+            XB : jnp.ndarray          Second array, (n, d)   
+            squared : bool            Return squared distance
         Returns:
             jnp.ndarray               Distances between rows in XA and XB, (m, n)
         """
@@ -68,7 +69,11 @@ class SPRE:
        
         # Ensure no problems with negative sqrt if value is -1e16
         nums = XA_sq - 2 * cross_term + XB_sq
-        dists = jnp.where(nums >= 0, jnp.sqrt(nums), 0.0)
+        if squared:
+            # Return distance squared
+            dists = jnp.where(nums >= 0, nums, 0.0)
+        else:
+            dists = jnp.where(nums >= 0, jnp.sqrt(nums), 0.0)
         
         return dists
 
@@ -167,9 +172,18 @@ class SPRE:
                 return (self.ep + softplus(x[0])) * jnp.exp((-self.cdist_jax(X1, X2) ** 2)/ softplus(x[1])**2)
             
             case "GaussianARD":
+                x = jnp.asarray(x)
+
                 amp = self.ep + softplus(x[0])
-                lengthscales = [self.cdist_jax(X1[:, [i]], X2[:, [i]])**2 / softplus(x[i+1])**2 for i in range(self.dimension)]
-                return amp * jnp.exp(-cellsum(lengthscales))
+
+                lengthscales = softplus(x[1:self.dimension + 1])
+
+                X1_scaled = X1 / lengthscales
+                X2_scaled = X2 / lengthscales
+
+                r2 = self.cdist_jax(X1_scaled, X2_scaled, squared=True)
+
+                return amp * jnp.exp(-r2)
             
             case "white":
                 return (self.ep + softplus(x[0])) * white(X1, X2)
