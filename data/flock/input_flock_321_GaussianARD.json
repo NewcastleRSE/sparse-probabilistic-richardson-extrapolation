@@ -42,7 +42,6 @@
 
   "results_filename": "output_flock_321_GaussianARD.dat",
   "results_eval_filename": "output_flock_abs_errors_eval_321_GaussianARD.dat",
-  "results_fx_filename": "output_flock_fx_eval_321_GaussianARD.dat",
   "results_eval_plot_filename": "output_flock_abs_errors_eval_321_GaussianARD.png",
   "results_plot_filename": "output_flock_321_GaussianARD.png",
   "results_bases_filename": "output_flock_bases_321_GaussianARD.dat",

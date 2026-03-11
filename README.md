@@ -23,6 +23,8 @@ The new method, called Sparse Probabilistic Richardson Extrapolation, is both si
 
 ## Getting Started
 
+The below documentation refers to the Python version of the SPRE code. There is also some MatLab code available of the SPRE method.
+
 ### Prerequisites
 
 The Python versions used during development were **Python 3.12.6** and **3.13.9**. You can find the different versions of Python [here](https://www.python.org/downloads/).
@@ -64,7 +66,7 @@ A few models are included in this repository to demostrate the application of th
 
 ### Model Code
 
-The models are written in object-oriented python code with `src/models/base_model.py` providing a parent class providing all the methods necessary with simulating models and organising data for use with SPRE. Users of this code may find this useful to write their own model of interest as a subclass similar to how the models present here have been. In particular, each analysis of a method against a model with certain setting is given in a `json` parameter file for ease of reproducibility.
+The models are written in object-oriented Python code with `src/models/base_model.py` providing a parent class providing all the methods necessary with simulating models and organising data for use with SPRE. Users of this code may find this useful to write their own model of interest as a subclass similar to how the models present here have been. In particular, each analysis of a method against a model with certain setting is given in a `json` parameter file for ease of reproducibility.
 
 ### Running a Model
 A single model simulation can be ran with the `simulate_model.py` script, a parameter file and the number of the simulation, for example:
@@ -162,7 +164,7 @@ After following these steps you should be able to run your analyses as above.
 
 ### Producing Plots
 
-All of the plots produce for the empicprical evaluation of the SPRE method in the paper can be produced by running:
+All of the plots produce for the empirical evaluation of the SPRE method in the paper can be produced by running:
 
 ```
 python .\src\plot_analysis_results.py
@@ -183,7 +185,7 @@ Below is the directory structure of repository. Only a selection of directories 
 │   │   ├── input_flock_mp4.json           # Parameter file to produce a mp4 video
 │   │   └── results
 │   │       └── flock1.mp4                 # Video of the Flock model
-│   ├── mujoco                             # 3D physics model using MuJoCo python library
+│   ├── mujoco                             # 3D physics model using MuJoCo Python library
 │   │   ├── cache                          # Cache of final outcomes (y values) of models
 │   │   ├── input_many_shapes_203.json     # Parameter file to do SPRE analysis with white kernel of Five Shapes model  
 │   │   ├── input_many_shapes_mp4.json     # Video of the Five Shapes model
@@ -235,7 +237,7 @@ Below is the directory structure of repository. Only a selection of directories 
 │   ├── plot_analysis_results.py          # Python script which when ran produces all plots used in SPRe paper
 │   ├── run_model_analysis.py             # Run a SPRE analysis given a parameter file for models written with above model code
 │   ├── simulate_model.py                 # Run one model given a parameter file and the number of model to run (e.g. 10th)
-│   └── sparse_pre                        # The python code to do the actual SPRE analysis
+│   └── sparse_pre                        # The Python code to do the actual SPRE analysis
 │       ├── extrapolation.py              # Wrapper function to call the SPRE method for given input-output data and options
 │       ├── helper_functions.py           # Various helper functions
 │       ├── MRE.py                        # The MRE method
@@ -250,7 +252,7 @@ From the `sparse-probabilistic-richardson-extrapolation` directory all unit test
 
 `python -m unittest -v test.test_sparse_pre`
 
-This tests the python code against the original MatLab code.
+This tests the Python code against the original MatLab code.
 
 ## Acknowledgements
 This work was funded by a grant from the UK Research Councils, EPSRC grant ref. EP/W019590/1, “Harnessing the Power of Stein Discrepancies in Bayesian Computation”.

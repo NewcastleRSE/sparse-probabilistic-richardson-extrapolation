@@ -1,0 +1,48 @@
+{
+  "model_name": "mujoco",
+  "model_file": "two_spheres.xml",
+  "description": "Two Spheres Colliding Model",
+  "total_time": 5.0,
+  "use_dt": true,
+  "use_solver_reference": true,
+  "use_solver_impedance": true,
+  "dt": 0.02,
+  "solver_reference": 1e-6,
+  "solver_impedance": 1e-6,
+
+ "X": [
+    [0.062, 0.812, 0.437],
+    [0.187, 0.312, 0.937],
+    [0.312, 0.937, 0.187],
+    [0.437, 0.062, 0.687],
+    [0.562, 0.687, 0.062],
+    [0.687, 0.187, 0.562],
+    [0.812, 0.562, 0.312],
+    [0.937, 0.437, 0.812]
+  ],
+
+  "h_values": [
+   
+ 1.4901161193847656e-08, 2.9802322387695312e-08, 5.9604644775390625e-08, 1.1920928955078125e-07, 2.3841857910156250e-07, 4.7683715820312500e-07,
+ 9.5367431640625000e-07, 1.9073486328125000e-06, 3.8146972656250000e-06, 7.6293945312500000e-06, 1.5258789062500000e-05, 3.0517578125000000e-05,
+ 6.1035156250000000e-05, 1.2207031250000000e-04, 2.4414062500000000e-04, 4.8828125000000000e-04, 9.7656250000000000e-04, 1.9531250000000000e-03,
+ 3.9062500000000000e-03, 7.8125000000000000e-03, 1.5625000000000000e-02, 3.1250000000000000e-02, 6.2500000000000000e-02, 1.2500000000000000e-01,
+ 2.5000000000000000e-01, 5.0000000000000000e-01
+  ],
+  
+  "final_tols": [1e-5, 0.02, 0.001],
+  "evaluation": true,
+  "use_offset_model": true,
+  "use_model_cache": true,
+
+  "results_filename": "test_output_two_spheres_300_GaussianARD.dat",
+  "results_eval_filename": "test_output_two_spheres_abs_errors_eval_300_GaussianARD.dat",
+  "results_eval_plot_filename": "test_output_two_spheres_abs_errors_eval_300_GaussianARD.png",
+  "results_plot_filename": "test_output_two_spheres_eval_300_GaussianARD.png",
+  "results_bases_filename": "test_output_two_spheres_bases_300_GaussianARD.dat",
+  
+  "results_fx_filename": "test_output_two_spheres_fx_eval_300.dat",
+
+  "extrapolation_name": "SPRE",
+  "extrapolation_kernel": "GaussianARD"
+}
