@@ -60,6 +60,10 @@ python ./src/example.py
 
 The `extrapolation` function is used to estimate f(0) from input-output training data (X, Y). The default setting is to use SPRE with a white kernel. The methods GRE and MRE can also be used, and the possible kernels are "Gaussian", "GaussianARD", "Matern1/2", "Matern3/2" and "white".
 
+### Code Documentation
+
+There is some code documentation automatically created from the docstrings (comments for methods etc.) that is available in `site\index.html` or on the GitHub page [here](https://github.com/NewcastleRSE/sparse-probabilistic-richardson-extrapolation/blob/main/site/index.html) which may be useful.
+
 ## Models
 
 A few models are included in this repository to demostrate the application of the SPRE method.
@@ -198,6 +202,7 @@ Below is the directory structure of repository. Only a selection of directories 
 │   │   │   └── two_spheres.mp4
 │   │   └── two_spheres.xml                # MuJoCo 3D world setup file for the Two Spheres model
 │   └── plots                              # Directory of plots used for demostration/publication of the SPRE method 
+├── docs                                   # Files used to create automatically created code documentation
 ├── extrapaths.pth                         # Files needed to set paths to allow unit tests to find the correct files
 ├── extrapaths_win.pth
 ├── matlab_code                            # Original MatLab code of the SPRE method
@@ -226,6 +231,7 @@ Below is the directory structure of repository. Only a selection of directories 
 │   └── unisolvent.m
 ├── README.md                             # This file
 ├── requirements.txt                      # Python library requirements
+├── site                                  # Code documentation create automatically from docstrings 
 ├── src                                   # Source code of Python code
 │   ├── example.py                        # Example of applying the SPRE method
 │   ├── models                            # Models used for SPRE analysis
