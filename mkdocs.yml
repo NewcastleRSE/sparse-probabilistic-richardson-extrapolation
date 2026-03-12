@@ -5,7 +5,7 @@ theme:
 
 nav:
   - Home: index.md
-  - API: api.md
+  - Code Description: api.md
 
 plugins:
   - search
@@ -19,3 +19,8 @@ plugins:
             show_root_heading: true
             show_signature_annotations: true
             members_order: source
+
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true
