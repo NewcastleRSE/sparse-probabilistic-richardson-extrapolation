@@ -10,6 +10,7 @@
 # Python modules
 import jax.numpy as jnp
 from jax import grad, debug, hessian, jit, lax
+from jax.nn import softplus
 from tqdm import tqdm  # For progress bars
 import numpy as np
 from scipy.optimize import minimize
@@ -20,7 +21,7 @@ from jax import config
 config.update("jax_enable_x64", True)
 
 # Application modules
-from sparse_pre.helper_functions import x2fx, softplus, cellsum, white, remove_row, stepwise
+from sparse_pre.helper_functions import x2fx, cellsum, white, remove_row, stepwise
 
 class SPRE:
     """
