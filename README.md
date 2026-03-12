@@ -190,7 +190,6 @@ Below is the directory structure of repository. Only a selection of directories 
 │   │   └── results
 │   │       └── flock1.mp4                 # Video of the Flock model
 │   ├── mujoco                             # 3D physics model using MuJoCo Python library
-│   │   ├── cache                          # Cache of final outcomes (y values) of models
 │   │   ├── input_many_shapes_203.json     # Parameter file to do SPRE analysis with white kernel of Five Shapes model  
 │   │   ├── input_many_shapes_mp4.json     # Video of the Five Shapes model
 │   │   ├── input_two_spheres_300.json     # Parameter file to do SPRE analysis with white kernel of Two Spheres model  
