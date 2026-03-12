@@ -168,7 +168,7 @@ After following these steps you should be able to run your analyses as above.
 
 ### Producing Plots
 
-All of the plots produce for the empirical evaluation of the SPRE method in the paper can be produced by running:
+All of the plots for the empirical evaluation of the SPRE method in the paper can be produced by running:
 
 ```
 python .\src\plot_analysis_results.py
