@@ -1,16 +1,3 @@
-Below is your README with:
-
-* **All typos fixed**
-* **Grammar improvements applied**
-* **Unix-style paths used consistently (`./src/...`)**
-* **`y` kept lowercase as requested**
-* **Table markdown fixed**
-* **MATLAB capitalization standardized**
-
-I avoided changing the structure or tone beyond the corrections you asked for.
-
----
-
 # Sparse Probabilistic Richardson Extrapolation
 
 This work is a **follow-up** to the [Probabilistic Richardson Extrapolation](https://academic.oup.com/jrsssb/article/87/2/457/7933067) paper.
