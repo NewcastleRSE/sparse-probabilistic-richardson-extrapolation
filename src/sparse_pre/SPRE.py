@@ -175,12 +175,13 @@ class SPRE:
             case "GaussianARD":
                 x = jnp.asarray(x)
 
-                amp = self.ep + softplus(x[0])
+                params = softplus(x[:self.dimension + 1])
 
-                lengthscales = softplus(x[1:self.dimension + 1])
+                amp = self.ep + params[0]
+                inv_l = 1.0 / params[1:]
 
-                X1_scaled = X1 / lengthscales
-                X2_scaled = X2 / lengthscales
+                X1_scaled = X1 * inv_l
+                X2_scaled = X2 * inv_l
 
                 r2 = self.cdist_jax(X1_scaled, X2_scaled, squared=True)
 
@@ -539,7 +540,7 @@ class SPRE:
                     method='trust-krylov',   # trust-krylov is trust region fitting algorithm
                     jac=self.scipy_jac,      # gradient
                     hess=self.scipy_hess,    # hessian
-                    args=(A),
+                    args=(A,),
                     options={'maxiter': 1000, 'disp': False})
 
         result_value = self.objective(result.x, A)

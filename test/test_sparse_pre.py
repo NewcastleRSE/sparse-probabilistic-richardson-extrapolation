@@ -55,16 +55,6 @@ class SPRETestCase(unittest.TestCase):
         
         # Check all elements match
         self.assertTrue((result == ans).all(), f"Failed remove_row! Result is {result}")
-      
-    def test_softplus(self):
-        # Check correct answers are returned.
-        a1 = helper_functions.softplus(0)
-        a2 = 0.6931472 # = log(1 + exp(0))
-        b1 = helper_functions.softplus(1)
-        b2 = 1.313262 # = log(1 + exp(1))
-
-        self.assertTrue(round(a1, 6) == round(a2, 6), f"Failed softplus(0) == {a2} (to 6 d.p.)! Result is {a1}")
-        self.assertTrue(round(b1, 6) == round(b2, 6), f"Failed softplus(1) == {b2} (to 6 d.p.)! Result is {b1}")
 
     def test_stepwise(self):
         

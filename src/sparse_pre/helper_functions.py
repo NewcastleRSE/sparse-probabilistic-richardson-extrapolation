@@ -51,18 +51,6 @@ def remove_row(arr : jnp.array, index : int) -> jnp.array:
     return jnp.delete(arr, index, axis=0)
 
 
-def softplus(x : float) -> float:
-    """
-    Computes soft plus log(1 + exp(x)).
-
-    Parameters:
-        x : float
-    Returns:
-        float
-    """
-
-    return jnp.log1p(jnp.exp(x))  # log(1 + exp(x))
-
 def stepwise(A : jnp.array, order : int) -> jnp.array:
     """
     Compute which high-order interactions to consider next.
