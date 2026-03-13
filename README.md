@@ -16,6 +16,8 @@ The new method, called Sparse Probabilistic Richardson Extrapolation, is both si
 | ------------- | ---- | -------------------- |
 | Chris Oates   | PI   | Newcastle University |
 | Richard Howey | RSE  | Newcastle University |
+| Toni Karvonen | Co-I | Lappeenranta–Lahti University of Technology LUT |
+| Aretha Teckentrup | Co-I | University of Edinburgh |
 
 ## Built With
 
@@ -201,12 +203,12 @@ Below is the directory structure of the repository. Only a selection of director
 
 ```
 .
-├── data                                   # Models that were used to evaluate SPRE
+├── data                                  # Models that were used to evaluate SPRE
 │   ├── cubic
 │   │   ├── input_cubic_1.json
 │   │   └── results
 │   ├── flock
-│   │   ├── input_flock_321.json           # Parameter file to do SPRE analysis with white kernel
+│   │   ├── input_flock_321.json          # Parameter file to do SPRE analysis with white kernel
 │   │   ├── input_flock_mp4.json
 │   │   └── results
 │   │       └── flock1.mp4
@@ -221,21 +223,30 @@ Below is the directory structure of the repository. Only a selection of director
 │   │   │   ├── many_shapes.mp4
 │   │   │   └── two_spheres.mp4
 │   │   └── two_spheres.xml
-│   └── plots                              # Directory of plots used for demonstration/publication
-├── docs                                   # Files used to create automatically generated documentation
+│   └── plots                             # Directory of plots used for demonstration/publication
+├── docs                                  # Files used to create automatically generated documentation
 ├── extrapaths.pth
 ├── extrapaths_win.pth
-├── matlab_code                            # Original MATLAB code of the SPRE method
+├── matlab_code                           # Original MATLAB code of the SPRE method
 ├── README.md
 ├── requirements.txt
-├── site                                   # Code documentation created automatically from docstrings
-├── src
-│   ├── example.py
-│   ├── models
-│   ├── plot_analysis_results.py           # Script that produces plots used in the SPRE paper
-│   ├── run_model_analysis.py
-│   ├── simulate_model.py
-│   └── sparse_pre
+├── site                                  # Code documentation created automatically from docstrings
+├── src                                   # Source code of Python code
+│   ├── example.py                        # Example of applying the SPRE method
+│   ├── models                            # Models used for SPRE analysis
+│   │   ├── base_model.py                 # Parent class for models
+│   │   ├── models_cubic.py               # Simple cubic model
+│   │   ├── models_flock.py               # 2D Flocking model
+│   │   ├── models_mujoco.py              # 3D physics model using MuJoCo library
+│   │   └── models_utils.py               # Helper functions
+│   ├── plot_analysis_results.py          # Python script which when ran produces all plots used in SPRe paper
+│   ├── run_model_analysis.py             # Run a SPRE analysis given a parameter file for models written with above model code
+│   ├── simulate_model.py                 # Run one model given a parameter file and the number of model to run (e.g. 10th)
+│   └── sparse_pre                        # The Python code to do the actual SPRE analysis
+│       ├── extrapolation.py              # Wrapper function to call the SPRE method for given input-output data and options
+│       ├── helper_functions.py           # Various helper functions
+│       ├── MRE.py                        # The MRE method
+│       └── SPRE.py                       # Python code for the SPRE method
 └── test
     └── test_sparse_pre.py
 ```
