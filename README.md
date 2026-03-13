@@ -224,13 +224,13 @@ Below is the directory structure of the repository. Only a selection of director
 │   │   │   └── two_spheres.mp4
 │   │   └── two_spheres.xml
 │   └── plots                             # Directory of plots used for demonstration/publication
-├── docs                                  # Files used to create automatically generated documentation
+├── docs                                  # Files to automatically create documentation
 ├── extrapaths.pth
 ├── extrapaths_win.pth
 ├── matlab_code                           # Original MATLAB code of the SPRE method
 ├── README.md
 ├── requirements.txt
-├── site                                  # Code documentation created automatically from docstrings
+├── site                                  # Automatically created code documentation
 ├── src                                   # Source code of Python code
 │   ├── example.py                        # Example of applying the SPRE method
 │   ├── models                            # Models used for SPRE analysis
