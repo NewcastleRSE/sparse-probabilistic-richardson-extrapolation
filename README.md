@@ -240,10 +240,10 @@ Below is the directory structure of the repository. Only a selection of director
 │   │   ├── models_mujoco.py              # 3D physics model using MuJoCo library
 │   │   └── models_utils.py               # Helper functions
 │   ├── plot_analysis_results.py          # Python script which when ran produces all plots used in SPRe paper
-│   ├── run_model_analysis.py             # Run a SPRE analysis given a parameter file for models written with above model code
-│   ├── simulate_model.py                 # Run one model given a parameter file and the number of model to run (e.g. 10th)
+│   ├── run_model_analysis.py             # Run a SPRE analysis with a given a parameter file
+│   ├── simulate_model.py                 # Run one model from given a parameter file
 │   └── sparse_pre                        # The Python code to do the actual SPRE analysis
-│       ├── extrapolation.py              # Wrapper function to call the SPRE method for given input-output data and options
+│       ├── extrapolation.py              # Function to call the SPRE method for given input-output data and options
 │       ├── helper_functions.py           # Various helper functions
 │       ├── MRE.py                        # The MRE method
 │       └── SPRE.py                       # Python code for the SPRE method
