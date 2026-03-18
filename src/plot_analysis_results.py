@@ -30,6 +30,7 @@ mpl.rcParams.update({
     "axes.labelsize": 14,
     "font.size": 14,
     "legend.fontsize": 12,
+    "savefig.dpi": 300
 })
 
 
