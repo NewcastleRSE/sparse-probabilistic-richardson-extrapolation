@@ -8,6 +8,7 @@
 import numpy as np
 import numpy.typing as npt
 import os
+import time
 import struct
 from pathlib import Path
 import pandas as pd
@@ -57,6 +58,7 @@ class Model:
         self.screenshot_filename = ""
         self.results_fx_filename = ""
         self.results_bases_filename = ""
+        self.results_timings_filename = ""
 
         # Model labels
         self.xlabel = 'time'
@@ -133,6 +135,9 @@ class Model:
         if "results_bases_filename" not in parameters.keys():
             self.results_bases_filename = None
 
+        if "results_timings_filename" not in parameters.keys():
+                    self.results_timings_filename = None
+
 
     # Files to save results
     def add_path(self, path : str, filename : str) -> None:
@@ -182,9 +187,11 @@ class Model:
         self.screenshot_filename = self.add_path(results_dir, self.screenshot_filename)
         self.results_fx_filename = self.add_path(results_dir, self.results_fx_filename)
         self.results_bases_filename = self.add_path(results_dir, self.results_bases_filename)
+        self.results_timings_filename = self.add_path(results_dir, self.results_timings_filename)
 
         self.do_results_plot = self.results_plot_filename != ""
         self.do_final_model_plot = self.final_model_plot_filename != ""
+        self.do_timing = self.results_timings_filename != ""
 
         if self.evaluation:
             self.results_eval_filename = self.add_path(results_dir, self.results_eval_filename)
@@ -347,6 +354,11 @@ class Model:
             if os.path.exists(self.results_bases_filename):
                 os.remove(self.results_bases_filename)
 
+        # Create a table of timings if requested
+        if self.do_timing:
+            # Create a DataFrame to store timings
+            timings = np.zeros((len(self.h_values), X.shape[0] + 1))
+
         offset_name = ""
         if self.use_offset_model:
             offset_name = f"using offset {self.final_tols} "
@@ -361,11 +373,19 @@ class Model:
                 extrapolation_results = [h]
 
             # Get results
-            for x in X:     
+            for j, x in enumerate(X):   
+                # Do timing if req'd
+                if self.do_timing:
+                    start_time = time.perf_counter()  
+                        
                 discrete_parameters = np.array(h) * np.array(x)
-                print(f"Running model \"{self.model_name}\" {offset_name}with parameters {discrete_parameters}")                                    
+                print(f"Running model \"{self.model_name}\" {offset_name}with parameters {discrete_parameters}") 
                 y = self.run_model(discrete_parameters)
                 Y = np.append(Y, y)
+
+                # Record timing of this model simulation if req'd
+                if self.do_timing:
+                    timings[i][j] = time.perf_counter() - start_time
 
             # Assume extrapolation is a defined function returning a dict with 'mu' and 'var'
             if self.do_results_plot: 
@@ -376,9 +396,17 @@ class Model:
                 # Save result in LOOCV directory
                 new_filepath = filepath.parent / "loocv_plots" / filepath.name              
                 options["plot_filename"] = new_filepath
-            
+
+            # Do timing if req'd
+            if self.do_timing:
+                start_SPRE_time = time.perf_counter()  
+
             out = extrapolation(X*h, Y, options, h)
 
+            # Record timing of SPRE if req'd
+            if self.do_timing:
+                timings[i][len(X)] = time.perf_counter() - start_SPRE_time
+                
             if self.extrapolation_name != "MRE":
                 print(f"Predict f(0) = {out['mu'][0]} +/- {np.sqrt(out['var'][0][0])}\n")
                 extrapolation_results.extend([out['mu'][0], out['var'][0][0]])
@@ -427,27 +455,33 @@ class Model:
                 # Save file
                 np.savetxt(filename, dataXY, delimiter="\t", fmt="%.17g", header=header, comments='')
 
-            # Create dataframe of results
-            number_of_x = X.shape[0]
+        # Create dataframe of results
+        number_of_x = X.shape[0]
 
-            if not isinstance(h, (list, tuple)):
-                header = ["h"]
-            else:
-                header = [f"h{i+1}" for i in range(len(h))]
+        if not isinstance(h, (list, tuple)):
+            header = ["h"]
+        else:
+            header = [f"h{i+1}" for i in range(len(h))]
 
-            if self.extrapolation_name != "MRE":
-                header += ["mu", "var"] + [f"mu_cv{n}" for n in range(1, number_of_x + 1)] + [f"var_cv{n}" for n in range(1, number_of_x + 1)]
-            else:
-                header += ["mu"]
+        if self.extrapolation_name != "MRE":
+            header += ["mu", "var"] + [f"mu_cv{n}" for n in range(1, number_of_x + 1)] + [f"var_cv{n}" for n in range(1, number_of_x + 1)]
+        else:
+            header += ["mu"]
 
-            # Create DataFrame
-            self.df_all_extrapolation_results = pd.DataFrame(all_extrapolation_results, columns=header)
+        # Create DataFrame
+        self.df_all_extrapolation_results = pd.DataFrame(all_extrapolation_results, columns=header)
 
-            # Write results to file
-            if self.results_filename:
-                # Write to file with tab separation
-                self.df_all_extrapolation_results.to_csv(self.results_filename, sep="\t", index=False)
-  
+        # Write results to file
+        if self.results_filename:
+            # Write to file with tab separation
+            self.df_all_extrapolation_results.to_csv(self.results_filename, sep="\t", index=False)
+
+        # Write timings to file if requested
+        if self.do_timing:
+            header_timings = [f"time{n}" for n in range(1, number_of_x + 1)] + ["time_SPRE"]
+            df_timings = pd.DataFrame(timings, columns=header_timings)
+            df_timings.to_csv(self.results_timings_filename, sep="\t", index=False)
+
         # Do plots for the analysis if requested
         if self.evaluation:
            self.plot_evaluation_results() 
