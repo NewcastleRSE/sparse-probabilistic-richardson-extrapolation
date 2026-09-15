@@ -4,6 +4,7 @@
 *.env
 loocv_plots/
 ffmpeg*
+*.bin
 
 __pycache__
 
