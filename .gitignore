@@ -5,6 +5,7 @@
 loocv_plots/
 ffmpeg*
 *.bin
+hpc/
 
 __pycache__
 
