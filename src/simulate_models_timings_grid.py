@@ -17,7 +17,7 @@ import pandas as pd
 # Application modules
 from models.models_utils import get_model
 
-# Get model parameter settings
+# Get model parameter settings, true value is 0.4753407466699643
 parameter_filename = "./data/mujoco/input_two_spheres_300.json"
 
 # Results filename
@@ -41,10 +41,11 @@ for dt in np.linspace(1e-12, 1e-11, 10):
             # Set parameters to use for simulation, "dt", "solver_reference", "solver_impedance"
             parameters_to_set = np.array((dt, solver_reference, solver_impedance))
 
-            # Simulate the model and time how long it takes
-            start_time = time.perf_counter()  
-                    
             print(f"Running model \"{model.model_name}\" with parameters {parameters_to_set}") 
+
+            # Simulate the model and time how long it takes
+            start_time = time.perf_counter() 
+                    
             y = model.run_model(parameters_to_set)
 
             # Record timing of this model simulation
