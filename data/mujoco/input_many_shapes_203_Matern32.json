@@ -3,6 +3,7 @@
   "model_file": "many_shapes.xml",
   "description": "Many Shapes Colliding Model",
   "total_time": 5.0,
+  "burn_in_time": 5.0,
   "use_dt": true,
   "use_solver_reference": true,
   "use_solver_impedance": true,

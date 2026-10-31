@@ -1,0 +1,5 @@
+# Only needed to build the code documentation (mkdocs build / mkdocs gh-deploy)
+mkdocs==1.6.1
+mkdocs-material==9.8.0
+mkdocstrings[python]==1.0.8
+mkdocstrings-python==2.0.10

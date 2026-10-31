@@ -1,13 +1,19 @@
 ##############################################################################
 # Script to plot SPRE analyses results.
 #
-# From root directory, for example run
-# python ./src/plot_analysis_results.py
+# From the root directory,
+#   python ./src/plot_analysis_results.py
+# combines the simulation snapshots into the three-panel figures of the case
+# studies used in the paper (written to data/plots/). Running
+#   python ./src/plot_analysis_results.py legacy
+# also draws earlier (exploratory) versions of the results plots; the data
+# figures in the paper itself are produced by src/make_paper_figures.py.
 #
 # Richard Howey, July 2025 - April 2026
 ##############################################################################
 
 # Python modules
+import sys
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
@@ -592,6 +598,11 @@ if __name__ == "__main__":
     output_file = "data/plots/five_shapes_sim_3_timepoints.png"
 
     plot_three_images_together(files, output_file, show_plot, crops)
+
+    # The remaining plots are earlier, exploratory versions of the results figures.
+    # The data figures in the paper are produced by src/make_paper_figures.py.
+    if len(sys.argv) < 2 or sys.argv[1] != "legacy":
+        sys.exit(0)
 
     ###################################
     # Plot error bar plot 

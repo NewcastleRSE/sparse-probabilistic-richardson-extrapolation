@@ -1,1102 +1,0 @@
-Thu 12 Mar 09:42:16 GMT 2026
-Running on hmem009 analysis for scenario 203_GaussianARD
-	Using cached value: 0.33123442579122125
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.10134124e-16 1.44240175e-15 7.76267939e-16]
-	Using cached value: 0.33123442475024745
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.32178729e-16 5.54223334e-16 1.66444636e-15]
-	Using cached value: 0.3312344276474798
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [5.54223334e-16 1.66444636e-15 3.32178729e-16]
-	Using cached value: 0.33123443130746677
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [7.76267939e-16 1.10134124e-16 1.22035715e-15]
-	Using cached value: 0.3312344318586616
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [9.98312544e-16 1.22035715e-15 1.10134124e-16]
-	Using cached value: 0.3312344330134729
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.22035715e-15 3.32178729e-16 9.98312544e-16]
-	Using cached value: 0.33123443642529016
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.44240175e-15 9.98312544e-16 5.54223334e-16]
-	Using cached value: 0.33123443761077553
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.66444636e-15 7.76267939e-16 1.44240175e-15]
-	Using cached value: 0.33123443610485953
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:18<00:37, 18.96s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  4.97s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  6.37s/it]
-Fitting interactions of order 2:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:19<00:39, 19.62s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  5.15s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  6.60s/it]
-Fitting interactions of order 3:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:18<00:37, 18.74s/it]Stepwise progress: 100%|██████████| 3/3 [00:18<00:00,  4.90s/it]Stepwise progress: 100%|██████████| 3/3 [00:18<00:00,  6.29s/it]
-Predict f(0) = 0.3312344099231311 +/- 2.364908544131119e-09
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.20268248e-16 2.88480351e-15 1.55253588e-15]
-	Using cached value: 0.3312344288718257
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [6.64357458e-16 1.10844667e-15 3.32889272e-15]
-	Using cached value: 0.33123443415611886
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.10844667e-15 3.32889272e-15 6.64357458e-16]
-	Using cached value: 0.33123442918347284
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.55253588e-15 2.20268248e-16 2.44071430e-15]
-	Using cached value: 0.33123443727989327
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.99662509e-15 2.44071430e-15 2.20268248e-16]
-	Using cached value: 0.33123443937372427
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.44071430e-15 6.64357458e-16 1.99662509e-15]
-	Using cached value: 0.33123444680715164
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.88480351e-15 1.99662509e-15 1.10844667e-15]
-	Using cached value: 0.3312344459278728
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.32889272e-15 1.55253588e-15 2.88480351e-15]
-	Using cached value: 0.3312344535658068
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]/mnt/nfs/home/nrajh/RSE/NumErrors/sparse-probabilistic-richardson-extrapolation/.venv/lib/python3.12/site-packages/scipy/optimize/_trustregion.py:54: RuntimeWarning: overflow encountered in dot
-  return self.fun + np.dot(self.jac, p) + 0.5 * np.dot(p, self.hessp(p))
-Stepwise progress:  33%|███▎      | 1/3 [00:19<00:39, 19.62s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  5.13s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  6.58s/it]
-Fitting interactions of order 2:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:19<00:39, 19.63s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  5.14s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  6.59s/it]
-Fitting interactions of order 3:
-Stepwise progress:   0%|          | 0/5 [00:00<?, ?it/s]Stepwise progress:  20%|██        | 1/5 [00:18<01:14, 18.61s/it]Stepwise progress:  60%|██████    | 3/5 [00:18<00:09,  4.88s/it]Stepwise progress: 100%|██████████| 5/5 [00:18<00:00,  2.40s/it]Stepwise progress: 100%|██████████| 5/5 [00:18<00:00,  3.78s/it]
-Predict f(0) = 0.3312344372192525 +/- 1.0880462842418615e-09
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.40536496e-16 5.76960701e-15 3.10507176e-15]
-	Using cached value: 0.33123443171117617
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.32871492e-15 2.21689334e-15 6.65778543e-15]
-	Using cached value: 0.3312344339596168
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.21689334e-15 6.65778543e-15 1.32871492e-15]
-	Using cached value: 0.3312344429216168
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.10507176e-15 4.40536496e-16 4.88142859e-15]
-	Using cached value: 0.3312344466633526
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.99325017e-15 4.88142859e-15 4.40536496e-16]
-	Using cached value: 0.3312344579466513
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.88142859e-15 1.32871492e-15 3.99325017e-15]
-	Using cached value: 0.3312344638855693
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [5.76960701e-15 3.99325017e-15 2.21689334e-15]
-	Using cached value: 0.3312344716940916
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [6.65778543e-15 3.10507176e-15 5.76960701e-15]
-	Using cached value: 0.331234472994248
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:19<00:38, 19.36s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  5.07s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  6.50s/it]
-Predict f(0) = 0.33123443562301896 +/- 5.044724016382624e-10
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [8.81072992e-16 1.15392140e-14 6.21014351e-15]
-	Using cached value: 0.3312344333895024
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.65742983e-15 4.43378667e-15 1.33155709e-14]
-	Using cached value: 0.3312344469307657
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.43378667e-15 1.33155709e-14 2.65742983e-15]
-	Using cached value: 0.3312344594285395
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [6.21014351e-15 8.81072992e-16 9.76285719e-15]
-	Using cached value: 0.3312344724010111
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [7.98650035e-15 9.76285719e-15 8.81072992e-16]
-	Using cached value: 0.33123448640061176
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [9.76285719e-15 2.65742983e-15 7.98650035e-15]
-	Using cached value: 0.3312344995142156
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.15392140e-14 7.98650035e-15 4.43378667e-15]
-	Using cached value: 0.3312345123813556
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.33155709e-14 6.21014351e-15 1.15392140e-14]
-	Using cached value: 0.3312345315570538
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:19<00:38, 19.48s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  6.52s/it]
-Fitting interactions of order 2:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:19<00:39, 19.68s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  5.15s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  6.60s/it]
-Predict f(0) = 0.33123442434281786 +/- 1.4482688859129471e-09
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.76214598e-15 2.30784281e-14 1.24202870e-14]
-	Using cached value: 0.33123443647779127
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [5.31485966e-15 8.86757334e-15 2.66311417e-14]
-	Using cached value: 0.3312344677938895
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [8.86757334e-15 2.66311417e-14 5.31485966e-15]
-	Using cached value: 0.33123449510432357
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.24202870e-14 1.76214598e-15 1.95257144e-14]
-	Using cached value: 0.3312345209534992
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.59730007e-14 1.95257144e-14 1.76214598e-15]
-	Using cached value: 0.3312345476928961
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.95257144e-14 5.31485966e-15 1.59730007e-14]
-	Using cached value: 0.3312345740620904
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.30784281e-14 1.59730007e-14 8.86757334e-15]
-	Using cached value: 0.3312346025892584
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.66311417e-14 1.24202870e-14 2.30784281e-14]
-	Using cached value: 0.33123462895162664
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:19<00:39, 19.67s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  6.59s/it]
-Predict f(0) = 0.331234412828442 +/- 3.2631858193807616e-09
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.52429197e-15 4.61568561e-14 2.48405740e-14]
-	Using cached value: 0.33123445347644287
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.06297193e-14 1.77351467e-14 5.32622835e-14]
-	Using cached value: 0.33123450724850373
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.77351467e-14 5.32622835e-14 1.06297193e-14]
-	Using cached value: 0.3312345624341372
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.48405740e-14 3.52429197e-15 3.90514288e-14]
-	Using cached value: 0.33123461678766275
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.19460014e-14 3.90514288e-14 3.52429197e-15]
-	Using cached value: 0.3312346685266743
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.90514288e-14 1.06297193e-14 3.19460014e-14]
-	Using cached value: 0.3312347254447966
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.61568561e-14 3.19460014e-14 1.77351467e-14]
-	Using cached value: 0.33123477713252597
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [5.32622835e-14 2.48405740e-14 4.61568561e-14]
-	Using cached value: 0.33123482952934197
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:19<00:38, 19.29s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  6.46s/it]
-Predict f(0) = 0.3312344407391334 +/- 9.516445562027268e-10
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [7.04858394e-15 9.23137122e-14 4.96811481e-14]
-	Using cached value: 0.33123447790054267
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.12594387e-14 3.54702934e-14 1.06524567e-13]
-	Using cached value: 0.3312345882044088
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.54702934e-14 1.06524567e-13 2.12594387e-14]
-	Using cached value: 0.331234690969577
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.96811481e-14 7.04858394e-15 7.81028575e-14]
-	Using cached value: 0.3312348065963468
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [6.38920028e-14 7.81028575e-14 7.04858394e-15]
-	Using cached value: 0.33123491344826683
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [7.81028575e-14 2.12594387e-14 6.38920028e-14]
-	Using cached value: 0.3312350176204569
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [9.23137122e-14 6.38920028e-14 3.54702934e-14]
-	Using cached value: 0.33123512490746815
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.06524567e-13 4.96811481e-14 9.23137122e-14]
-	Using cached value: 0.33123523520849774
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:19<00:38, 19.39s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  6.50s/it]
-Fitting interactions of order 2:
-Stepwise progress:   0%|          | 0/5 [00:00<?, ?it/s]Stepwise progress:  20%|██        | 1/5 [00:18<01:13, 18.34s/it]Stepwise progress:  60%|██████    | 3/5 [00:18<00:09,  4.82s/it]Stepwise progress: 100%|██████████| 5/5 [00:18<00:00,  2.37s/it]Stepwise progress: 100%|██████████| 5/5 [00:18<00:00,  3.72s/it]
-Fitting interactions of order 3:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:18<00:37, 18.96s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  4.95s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  6.35s/it]
-Predict f(0) = 0.3312344795103099 +/- 5.587777598908423e-09
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.40971679e-14 1.84627424e-13 9.93622962e-14]
-	Using cached value: 0.3312345348625303
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.25188773e-14 7.09405867e-14 2.13049134e-13]
-	Using cached value: 0.3312347481607718
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [7.09405867e-14 2.13049134e-13 4.25188773e-14]
-	Using cached value: 0.3312349634473997
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [9.93622962e-14 1.40971679e-14 1.56205715e-13]
-	Using cached value: 0.3312351797205689
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.27784006e-13 1.56205715e-13 1.40971679e-14]
-	Using cached value: 0.3312353963448105
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.56205715e-13 4.25188773e-14 1.27784006e-13]
-	Using cached value: 0.3312356073337034
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.84627424e-13 1.27784006e-13 7.09405867e-14]
-	Using cached value: 0.3312358233139205
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.13049134e-13 9.93622962e-14 1.84627424e-13]
-	Using cached value: 0.33123603879004637
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:19<00:38, 19.43s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  5.08s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  6.51s/it]
-Fitting interactions of order 2:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:40, 20.28s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  5.30s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.80s/it]
-Fitting interactions of order 3:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:18<00:37, 18.54s/it]Stepwise progress: 100%|██████████| 3/3 [00:18<00:00,  6.21s/it]
-Fitting interactions of order 4:
-Stepwise progress:   0%|          | 0/5 [00:00<?, ?it/s]Stepwise progress:  20%|██        | 1/5 [00:19<01:18, 19.57s/it]Stepwise progress:  60%|██████    | 3/5 [00:19<00:10,  5.13s/it]Stepwise progress: 100%|██████████| 5/5 [00:19<00:00,  2.53s/it]Stepwise progress: 100%|██████████| 5/5 [00:19<00:00,  3.98s/it]
-Predict f(0) = 0.3312344221988918 +/- 5.063965765811966e-09
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.81943358e-14 3.69254849e-13 1.98724592e-13]
-	Using cached value: 0.3312346410005878
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [8.50377546e-14 1.41881173e-13 4.26098268e-13]
-	Using cached value: 0.33123506933448843
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.41881173e-13 4.26098268e-13 8.50377546e-14]
-	Using cached value: 0.3312355013995931
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.98724592e-13 2.81943358e-14 3.12411430e-13]
-	Using cached value: 0.3312359336658776
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.55568011e-13 3.12411430e-13 2.81943358e-14]
-	Using cached value: 0.3312363620232345
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.12411430e-13 8.50377546e-14 2.55568011e-13]
-	Using cached value: 0.33123679358486474
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.69254849e-13 2.55568011e-13 1.41881173e-13]
-	Using cached value: 0.33123722592228705
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.26098268e-13 1.98724592e-13 3.69254849e-13]
-	Using cached value: 0.33123765537754185
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:19<00:39, 19.56s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  5.12s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  6.57s/it]
-Fitting interactions of order 2:
-Stepwise progress:   0%|          | 0/5 [00:00<?, ?it/s]Stepwise progress:  20%|██        | 1/5 [00:19<01:16, 19.24s/it]Stepwise progress:  40%|████      | 2/5 [00:19<00:24,  8.26s/it]Stepwise progress:  80%|████████  | 4/5 [00:19<00:03,  3.13s/it]Stepwise progress: 100%|██████████| 5/5 [00:20<00:00,  2.35s/it]Stepwise progress: 100%|██████████| 5/5 [00:20<00:00,  4.11s/it]
-Predict f(0) = 0.33123443826974797 +/- 4.1834098657468984e-09
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [5.63886715e-14 7.38509698e-13 3.97449185e-13]
-	Using cached value: 0.33123485519603457
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.70075509e-13 2.83762347e-13 8.52196536e-13]
-	Using cached value: 0.3312357166680613
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.83762347e-13 8.52196536e-13 1.70075509e-13]
-	Using cached value: 0.33123657842311705
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.97449185e-13 5.63886715e-14 6.24822860e-13]
-	Using cached value: 0.331237437807524
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [5.11136022e-13 6.24822860e-13 5.63886715e-14]
-	Using cached value: 0.33123692857699016
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [6.24822860e-13 1.70075509e-13 5.11136022e-13]
-	Using cached value: 0.33123779167470335
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [7.38509698e-13 5.11136022e-13 2.83762347e-13]
-	Using cached value: 0.3312386526740858
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [8.52196536e-13 3.97449185e-13 7.38509698e-13]
-	Using cached value: 0.33123951189372913
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:19<00:39, 19.59s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  5.15s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  6.60s/it]
-Predict f(0) = 0.3312380339121683 +/- 1.4262831014888225e-07
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.12777343e-13 1.47701940e-12 7.94898369e-13]
-	Using cached value: 0.3312352791078324
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.40151018e-13 5.67524694e-13 1.70439307e-12]
-	Using cached value: 0.3312370022111148
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [5.67524694e-13 1.70439307e-12 3.40151018e-13]
-	Using cached value: 0.3312373576530566
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [7.94898369e-13 1.12777343e-13 1.24964572e-12]
-	Using cached value: 0.33123907778440437
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.02227204e-12 1.24964572e-12 1.12777343e-13]
-	Using cached value: 0.33125524413982066
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.24964572e-12 3.40151018e-13 1.02227204e-12]
-	Using cached value: 0.33125696582715985
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.47701940e-12 1.02227204e-12 5.67524694e-13]
-	Using cached value: 0.33125868757429916
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.70439307e-12 7.94898369e-13 1.47701940e-12]
-	Using cached value: 0.331260407500004
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:40, 20.13s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  5.29s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.77s/it]
-Predict f(0) = 0.33120268688212556 +/- 4.0981721004424375e-06
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.25554686e-13 2.95403879e-12 1.58979674e-12]
-	Using cached value: 0.3312361385325628
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [6.80302037e-13 1.13504939e-12 3.40878614e-12]
-	Using cached value: 0.331238210210279
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.13504939e-12 3.40878614e-12 6.80302037e-13]
-	Using cached value: 0.3312560995606995
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.58979674e-12 2.25554686e-13 2.49929144e-12]
-	Using cached value: 0.3312595429235231
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.04454409e-12 2.49929144e-12 2.25554686e-13]
-	Using cached value: 0.33126299032236334
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.49929144e-12 6.80302037e-13 2.04454409e-12]
-	Using cached value: 0.33123155392800674
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.95403879e-12 2.04454409e-12 1.13504939e-12]
-	Using cached value: 0.3312349965008188
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.40878614e-12 1.58979674e-12 2.95403879e-12]
-	Using cached value: 0.3312818906582872
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:19<00:39, 19.52s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  5.12s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  6.56s/it]
-Fitting interactions of order 2:
-Stepwise progress:   0%|          | 0/5 [00:00<?, ?it/s]Stepwise progress:  20%|██        | 1/5 [00:18<01:14, 18.59s/it]Stepwise progress:  60%|██████    | 3/5 [00:18<00:09,  4.86s/it]Stepwise progress: 100%|██████████| 5/5 [00:18<00:00,  2.39s/it]Stepwise progress: 100%|██████████| 5/5 [00:18<00:00,  3.76s/it]
-Predict f(0) = 0.33121775413663734 +/- 2.9867718974181047e-06
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.51109372e-13 5.90807758e-12 3.17959348e-12]
-	Using cached value: 0.3312378463828575
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.36060407e-12 2.27009878e-12 6.81757228e-12]
-	Using cached value: 0.33125780771649577
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.27009878e-12 6.81757228e-12 1.36060407e-12]
-	Using cached value: 0.3312646944991947
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.17959348e-12 4.51109372e-13 4.99858288e-12]
-	Using cached value: 0.33123533372604486
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.08908818e-12 4.99858288e-12 4.51109372e-13]
-	Using cached value: 0.3312870413545002
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.99858288e-12 1.36060407e-12 4.08908818e-12]
-	Using cached value: 0.33126986593748964
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [5.90807758e-12 4.08908818e-12 2.27009878e-12]
-	Using cached value: 0.3312753855087407
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [6.81757228e-12 3.17959348e-12 5.90807758e-12]
-	Using cached value: 0.3312754698424955
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:19<00:39, 19.55s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  5.14s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  6.59s/it]
-Fitting interactions of order 2:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:40, 20.37s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  5.35s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.85s/it]
-Predict f(0) = 0.33106240407448345 +/- 8.932485494090004e-06
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [9.02218744e-13 1.18161552e-11 6.35918695e-12]
-	Using cached value: 0.33123989203922755
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.72120815e-12 4.54019755e-12 1.36351446e-11]
-	Using cached value: 0.3312332332414837
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.54019755e-12 1.36351446e-11 2.72120815e-12]
-	Using cached value: 0.33125559133343735
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [6.35918695e-12 9.02218744e-13 9.99716576e-12]
-	Using cached value: 0.33127880242264457
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [8.17817636e-12 9.99716576e-12 9.02218744e-13]
-	Using cached value: 0.33128000552303294
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [9.99716576e-12 2.72120815e-12 8.17817636e-12]
-	Using cached value: 0.33128917694038895
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.18161552e-11 8.17817636e-12 4.54019755e-12]
-	Using cached value: 0.33128110350502205
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.36351446e-11 6.35918695e-12 1.18161552e-11]
-	Using cached value: 0.33127263287047803
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:40, 20.03s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  5.24s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.72s/it]
-Fitting interactions of order 2:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:41, 20.67s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  5.40s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.93s/it]
-Predict f(0) = 0.3313213276174871 +/- 2.6684734913785607e-06
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.80443749e-12 2.36323103e-11 1.27183739e-11]
-	Using cached value: 0.3312611647273482
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [5.44241630e-12 9.08039510e-12 2.72702891e-11]
-	Using cached value: 0.33127185847634655
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [9.08039510e-12 2.72702891e-11 5.44241630e-12]
-	Using cached value: 0.3312854703828983
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.27183739e-11 1.80443749e-12 1.99943315e-11]
-	Using cached value: 0.3312879320616668
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.63563527e-11 1.99943315e-11 1.80443749e-12]
-	Using cached value: 0.3312996921611072
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.99943315e-11 5.44241630e-12 1.63563527e-11]
-	Using cached value: 0.3312863618873042
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.36323103e-11 1.63563527e-11 9.08039510e-12]
-	Using cached value: 0.3312997310953464
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.72702891e-11 1.27183739e-11 2.36323103e-11]
-	Using cached value: 0.33132622491782276
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:19<00:39, 19.79s/it]Stepwise progress:  67%|██████▋   | 2/3 [00:19<00:08,  8.22s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  6.66s/it]
-Fitting interactions of order 2:
-Stepwise progress:   0%|          | 0/5 [00:00<?, ?it/s]Stepwise progress:  20%|██        | 1/5 [00:18<01:14, 18.65s/it]Stepwise progress:  60%|██████    | 3/5 [00:18<00:09,  4.89s/it]Stepwise progress: 100%|██████████| 5/5 [00:18<00:00,  2.43s/it]Stepwise progress: 100%|██████████| 5/5 [00:18<00:00,  3.80s/it]
-Fitting interactions of order 3:
-Stepwise progress:   0%|          | 0/6 [00:00<?, ?it/s]Stepwise progress:  17%|█▋        | 1/6 [00:18<01:33, 18.79s/it]Stepwise progress:  50%|█████     | 3/6 [00:18<00:14,  4.91s/it]Stepwise progress:  83%|████████▎ | 5/6 [00:19<00:02,  2.56s/it]Stepwise progress: 100%|██████████| 6/6 [00:19<00:00,  3.28s/it]
-Fitting interactions of order 4:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:18<00:37, 18.77s/it]Stepwise progress: 100%|██████████| 3/3 [00:18<00:00,  6.28s/it]
-Predict f(0) = 0.33161905609483894 +/- 1.6437793789894683e-06
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.60887498e-12 4.72646207e-11 2.54367478e-11]
-	Using cached value: 0.33128340066866385
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.08848326e-11 1.81607902e-11 5.45405783e-11]
-	Using cached value: 0.3312754151777211
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.81607902e-11 5.45405783e-11 1.08848326e-11]
-	Using cached value: 0.3312895268474886
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.54367478e-11 3.60887498e-12 3.99886630e-11]
-	Using cached value: 0.3313029369535011
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.27127054e-11 3.99886630e-11 3.60887498e-12]
-	Using cached value: 0.33131676947790917
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.99886630e-11 1.08848326e-11 3.27127054e-11]
-	Using cached value: 0.3313479429580304
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.72646207e-11 3.27127054e-11 1.81607902e-11]
-	Using cached value: 0.33134881055993953
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [5.45405783e-11 2.54367478e-11 4.72646207e-11]
-	Using cached value: 0.33137009354246494
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:19<00:38, 19.41s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  5.25s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.67s/it]
-Fitting interactions of order 2:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:41, 20.77s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  5.44s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.97s/it]
-Fitting interactions of order 3:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:18<00:37, 18.87s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  4.95s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  6.34s/it]
-Predict f(0) = 0.3312297279932063 +/- 1.6669284354764499e-06
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [7.21774995e-12 9.45292413e-11 5.08734956e-11]
-	Using cached value: 0.33129134836466906
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.17696652e-11 3.63215804e-11 1.09081157e-10]
-	Using cached value: 0.33130621509280217
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.63215804e-11 1.09081157e-10 2.17696652e-11]
-	Using cached value: 0.33133382770581393
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [5.08734956e-11 7.21774995e-12 7.99773261e-11]
-	Using cached value: 0.3313594699054111
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [6.54254109e-11 7.99773261e-11 7.21774995e-12]
-	Using cached value: 0.3313497079226056
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [7.99773261e-11 2.17696652e-11 6.54254109e-11]
-	Using cached value: 0.3309943965432261
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [9.45292413e-11 6.54254109e-11 3.63215804e-11]
-	Using cached value: 0.3310157787829444
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.09081157e-10 5.08734956e-11 9.45292413e-11]
-	Using cached value: 0.33104435268249566
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:19<00:39, 19.62s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  5.13s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  6.58s/it]
-Predict f(0) = 0.3312572948395061 +/- 0.0001243339606025786
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.44354999e-11 1.89058483e-10 1.01746991e-10]
-	Using cached value: 0.33127515846074485
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.35393304e-11 7.26431608e-11 2.18162313e-10]
-	Using cached value: 0.3313328109516767
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [7.26431608e-11 2.18162313e-10 4.35393304e-11]
-	Using cached value: 0.33139594459672617
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.01746991e-10 1.44354999e-11 1.59954652e-10]
-	Using cached value: 0.331031778011476
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.30850822e-10 1.59954652e-10 1.44354999e-11]
-	Using cached value: 0.3309689669969925
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.59954652e-10 4.35393304e-11 1.30850822e-10]
-	Using cached value: 0.33101255219520886
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.89058483e-10 1.30850822e-10 7.26431608e-11]
-	Using cached value: 0.3311595914676434
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.18162313e-10 1.01746991e-10 1.89058483e-10]
-	Using cached value: 0.3312169357432371
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:40, 20.06s/it]Stepwise progress:  67%|██████▋   | 2/3 [00:20<00:08,  8.33s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.76s/it]
-Fitting interactions of order 2:
-Stepwise progress:   0%|          | 0/6 [00:00<?, ?it/s]Stepwise progress:  17%|█▋        | 1/6 [00:19<01:36, 19.40s/it]Stepwise progress:  50%|█████     | 3/6 [00:19<00:15,  5.09s/it]Stepwise progress:  83%|████████▎ | 5/6 [00:19<00:02,  2.50s/it]Stepwise progress: 100%|██████████| 6/6 [00:19<00:00,  3.29s/it]
-Predict f(0) = 0.3298786132246285 +/- 5.5228222071222834e-05
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.88709998e-11 3.78116965e-10 2.03493983e-10]
-	Using cached value: 0.33131802617823025
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [8.70786607e-11 1.45286322e-10 4.36324626e-10]
-	Using cached value: 0.3310053064469581
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.45286322e-10 4.36324626e-10 8.70786607e-11]
-	Using cached value: 0.33098016066788555
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.03493983e-10 2.88709998e-11 3.19909304e-10]
-	Using cached value: 0.3311938688233328
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.61701643e-10 3.19909304e-10 2.88709998e-11]
-	Using cached value: 0.3312980672687801
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.19909304e-10 8.70786607e-11 2.61701643e-10]
-	Using cached value: 0.3312874232087669
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.78116965e-10 2.61701643e-10 1.45286322e-10]
-	Using cached value: 0.3312515292795596
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.36324626e-10 2.03493983e-10 3.78116965e-10]
-	Using cached value: 0.3309208018939612
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:40, 20.19s/it]Stepwise progress:  67%|██████▋   | 2/3 [00:20<00:08,  8.38s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  4.60s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.80s/it]
-Fitting interactions of order 2:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:41, 20.51s/it]Stepwise progress: 100%|██████████| 3/3 [00:21<00:00,  5.57s/it]Stepwise progress: 100%|██████████| 3/3 [00:21<00:00,  7.06s/it]
-Predict f(0) = 0.3323808612281572 +/- 0.00016157569660334544
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [5.77419996e-11 7.56233931e-10 4.06987965e-10]
-	Using cached value: 0.3313837948309964
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.74157321e-10 2.90572643e-10 8.72649252e-10]
-	Using cached value: 0.3311293158477629
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.90572643e-10 8.72649252e-10 1.74157321e-10]
-	Using cached value: 0.33132725941093666
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.06987965e-10 5.77419996e-11 6.39818609e-10]
-	Using cached value: 0.33085625724483253
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [5.23403287e-10 6.39818609e-10 5.77419996e-11]
-	Using cached value: 0.33137466978214924
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [6.39818609e-10 1.74157321e-10 5.23403287e-10]
-	Using cached value: 0.3311956633727425
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [7.56233931e-10 5.23403287e-10 2.90572643e-10]
-	Using cached value: 0.33094162437311364
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [8.72649252e-10 4.06987965e-10 7.56233931e-10]
-	Using cached value: 0.3312433206472799
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:40, 20.05s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.71s/it]
-Fitting interactions of order 2:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:41, 20.71s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.93s/it]
-Predict f(0) = 0.330959232724916 +/- 0.00018336726407178617
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.15483999e-10 1.51246786e-09 8.13975930e-10]
-	Using cached value: 0.3309237766178524
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.48314643e-10 5.81145287e-10 1.74529850e-09]
-	Using cached value: 0.3313206495215619
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [5.81145287e-10 1.74529850e-09 3.48314643e-10]
-	Using cached value: 0.33132874091090614
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [8.13975930e-10 1.15483999e-10 1.27963722e-09]
-	Using cached value: 0.33123356037186336
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.04680657e-09 1.27963722e-09 1.15483999e-10]
-	Using cached value: 0.33098480068490965
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.27963722e-09 3.48314643e-10 1.04680657e-09]
-	Using cached value: 0.33140423753703835
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.51246786e-09 1.04680657e-09 5.81145287e-10]
-	Using cached value: 0.33127503935330105
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.74529850e-09 8.13975930e-10 1.51246786e-09]
-	Using cached value: 0.3313075510393739
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:41, 20.59s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  5.39s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.91s/it]
-Fitting interactions of order 2:
-Stepwise progress:   0%|          | 0/6 [00:00<?, ?it/s]Stepwise progress:  17%|█▋        | 1/6 [00:19<01:35, 19.15s/it]Stepwise progress:  50%|█████     | 3/6 [00:19<00:15,  5.01s/it]Stepwise progress:  83%|████████▎ | 5/6 [00:19<00:02,  2.47s/it]Stepwise progress: 100%|██████████| 6/6 [00:19<00:00,  3.25s/it]
-Fitting interactions of order 3:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:19<00:39, 19.81s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  5.19s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  6.65s/it]
-Fitting interactions of order 4:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:18<00:37, 18.93s/it]Stepwise progress: 100%|██████████| 3/3 [00:18<00:00,  6.33s/it]
-Predict f(0) = 0.332395801918593 +/- 6.456760660724106e-05
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.30967999e-10 3.02493572e-09 1.62795186e-09]
-	Using cached value: 0.33123775508807596
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [6.96629286e-10 1.16229057e-09 3.49059701e-09]
-	Using cached value: 0.3313972310164557
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.16229057e-09 3.49059701e-09 6.96629286e-10]
-	Using cached value: 0.3311475490569642
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.62795186e-09 2.30967999e-10 2.55927444e-09]
-	Using cached value: 0.3313736258579457
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.09361315e-09 2.55927444e-09 2.30967999e-10]
-	Using cached value: 0.3311680022916681
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.55927444e-09 6.96629286e-10 2.09361315e-09]
-	Using cached value: 0.3313360357938257
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.02493572e-09 2.09361315e-09 1.16229057e-09]
-	Using cached value: 0.3312137746778832
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.49059701e-09 1.62795186e-09 3.02493572e-09]
-	Using cached value: 0.3314558438886478
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:40, 20.15s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  5.29s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.77s/it]
-Fitting interactions of order 2:
-Stepwise progress:   0%|          | 0/5 [00:00<?, ?it/s]Stepwise progress:  20%|██        | 1/5 [00:19<01:17, 19.49s/it]Stepwise progress:  60%|██████    | 3/5 [00:19<00:10,  5.12s/it]Stepwise progress: 100%|██████████| 5/5 [00:19<00:00,  2.53s/it]Stepwise progress: 100%|██████████| 5/5 [00:19<00:00,  3.97s/it]
-Predict f(0) = 0.3311376886066676 +/- 2.074283742624403e-06
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.61935997e-10 6.04987144e-09 3.25590372e-09]
-	Using cached value: 0.331126722801383
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.39325857e-09 2.32458115e-09 6.98119402e-09]
-	Using cached value: 0.3312372399307559
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.32458115e-09 6.98119402e-09 1.39325857e-09]
-	Using cached value: 0.33115943873499326
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.25590372e-09 4.61935997e-10 5.11854887e-09]
-	Using cached value: 0.33103794830933564
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.18722630e-09 5.11854887e-09 4.61935997e-10]
-	Using cached value: 0.3311037939666826
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [5.11854887e-09 1.39325857e-09 4.18722630e-09]
-	Using cached value: 0.33116242657959566
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [6.04987144e-09 4.18722630e-09 2.32458115e-09]
-	Using cached value: 0.3312010282564968
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [6.98119402e-09 3.25590372e-09 6.04987144e-09]
-	Using cached value: 0.3310843424157936
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:40, 20.26s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  5.30s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.80s/it]
-Fitting interactions of order 2:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:41, 20.58s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  5.40s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.92s/it]
-Predict f(0) = 0.3310946456221042 +/- 4.38511296782633e-05
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [9.23871994e-10 1.20997429e-08 6.51180744e-09]
-	Using cached value: 0.33131204978708784
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.78651714e-09 4.64916229e-09 1.39623880e-08]
-	Using cached value: 0.3311099056426409
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.64916229e-09 1.39623880e-08 2.78651714e-09]
-	Using cached value: 0.33133616789542186
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [6.51180744e-09 9.23871994e-10 1.02370977e-08]
-	Using cached value: 0.3313397463304291
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [8.37445259e-09 1.02370977e-08 9.23871994e-10]
-	Using cached value: 0.33134088652229265
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.02370977e-08 2.78651714e-09 8.37445259e-09]
-	Using cached value: 0.3311988236528216
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.20997429e-08 8.37445259e-09 4.64916229e-09]
-	Using cached value: 0.33124262270011473
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.39623880e-08 6.51180744e-09 1.20997429e-08]
-	Using cached value: 0.33131914136418844
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:40, 20.26s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  5.30s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.79s/it]
-Predict f(0) = 0.3313173751602979 +/- 7.402783628495103e-05
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.84774399e-09 2.41994858e-08 1.30236149e-08]
-	Using cached value: 0.3312505886176397
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [5.57303429e-09 9.29832458e-09 2.79247761e-08]
-	Using cached value: 0.3312993577072853
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [9.29832458e-09 2.79247761e-08 5.57303429e-09]
-	Using cached value: 0.33141244143164916
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.30236149e-08 1.84774399e-09 2.04741955e-08]
-	Using cached value: 0.33131025455812324
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.67489052e-08 2.04741955e-08 1.84774399e-09]
-	Using cached value: 0.3312898095760622
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.04741955e-08 5.57303429e-09 1.67489052e-08]
-	Using cached value: 0.3312989110859109
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.41994858e-08 1.67489052e-08 9.29832458e-09]
-	Using cached value: 0.3311498776041845
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.79247761e-08 1.30236149e-08 2.41994858e-08]
-	Using cached value: 0.33127580495459263
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:19<00:39, 19.87s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  5.20s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  6.66s/it]
-Fitting interactions of order 2:
-Stepwise progress:   0%|          | 0/6 [00:00<?, ?it/s]Stepwise progress:  17%|█▋        | 1/6 [00:19<01:35, 19.11s/it]Stepwise progress:  50%|█████     | 3/6 [00:19<00:15,  5.01s/it]Stepwise progress:  83%|████████▎ | 5/6 [00:19<00:02,  2.48s/it]Stepwise progress: 100%|██████████| 6/6 [00:19<00:00,  3.25s/it]
-Predict f(0) = 0.3308162008482455 +/- 0.0002199534232637584
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.69548798e-09 4.83989716e-08 2.60472298e-08]
-	Using cached value: 0.3311960762211526
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.11460686e-08 1.85966492e-08 5.58495522e-08]
-	Using cached value: 0.33110482821313436
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.85966492e-08 5.58495522e-08 1.11460686e-08]
-	Using cached value: 0.3312158124921176
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.60472298e-08 3.69548798e-09 4.09483910e-08]
-	Using cached value: 0.3313701713956737
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.34978104e-08 4.09483910e-08 3.69548798e-09]
-	Using cached value: 0.33108707350293193
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.09483910e-08 1.11460686e-08 3.34978104e-08]
-	Using cached value: 0.3312298655996515
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.83989716e-08 3.34978104e-08 1.85966492e-08]
-	Using cached value: 0.33131804318521935
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [5.58495522e-08 2.60472298e-08 4.83989716e-08]
-	Using cached value: 0.3312113688692523
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:41, 20.83s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.98s/it]
-Predict f(0) = 0.3313061633521804 +/- 0.00015260348446814728
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [7.39097595e-09 9.67979431e-08 5.20944595e-08]
-	Using cached value: 0.3311996218092504
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.22921371e-08 3.71932983e-08 1.11699104e-07]
-	Using cached value: 0.33104276623811557
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.71932983e-08 1.11699104e-07 2.22921371e-08]
-	Using cached value: 0.3309768582767059
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [5.20944595e-08 7.39097595e-09 8.18967819e-08]
-	Using cached value: 0.33123599948703586
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [6.69956207e-08 8.18967819e-08 7.39097595e-09]
-	Using cached value: 0.3309538865948777
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [8.18967819e-08 2.22921371e-08 6.69956207e-08]
-	Using cached value: 0.33112760677422787
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [9.67979431e-08 6.69956207e-08 3.71932983e-08]
-	Using cached value: 0.3312882345024253
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.11699104e-07 5.20944595e-08 9.67979431e-08]
-	Using cached value: 0.33136924098927434
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:40, 20.23s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  5.32s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.81s/it]
-Predict f(0) = 0.33213618827533725 +/- 0.00012684219467816362
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.47819519e-08 1.93595886e-07 1.04188919e-07]
-	Using cached value: 0.33106203015107044
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.45842743e-08 7.43865967e-08 2.23398209e-07]
-	Using cached value: 0.33131643439975467
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [7.43865967e-08 2.23398209e-07 4.45842743e-08]
-	Using cached value: 0.3314685621342761
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.04188919e-07 1.47819519e-08 1.63793564e-07]
-	Using cached value: 0.331418880615027
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.33991241e-07 1.63793564e-07 1.47819519e-08]
-	Using cached value: 0.3312600663457485
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.63793564e-07 4.45842743e-08 1.33991241e-07]
-	Using cached value: 0.33142315865400573
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.93595886e-07 1.33991241e-07 7.43865967e-08]
-	Using cached value: 0.3313476267744421
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.23398209e-07 1.04188919e-07 1.93595886e-07]
-	Using cached value: 0.3313165554672104
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:41, 20.71s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  5.45s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.98s/it]
-Fitting interactions of order 2:
-Stepwise progress:   0%|          | 0/5 [00:00<?, ?it/s]Stepwise progress:  20%|██        | 1/5 [00:18<01:15, 18.92s/it]Stepwise progress:  60%|██████    | 3/5 [00:19<00:09,  4.95s/it]Stepwise progress: 100%|██████████| 5/5 [00:19<00:00,  2.46s/it]Stepwise progress: 100%|██████████| 5/5 [00:19<00:00,  3.85s/it]
-Predict f(0) = 0.3318183941332712 +/- 6.655201632278254e-05
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.95639038e-08 3.87191772e-07 2.08377838e-07]
-	Using cached value: 0.3313188211662906
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [8.91685486e-08 1.48773193e-07 4.46796417e-07]
-	Using cached value: 0.33129708631982013
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.48773193e-07 4.46796417e-07 8.91685486e-08]
-	Using cached value: 0.3309387861086973
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.08377838e-07 2.95639038e-08 3.27587128e-07]
-	Using cached value: 0.33120465356438306
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.67982483e-07 3.27587128e-07 2.95639038e-08]
-	Using cached value: 0.3313413041909501
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.27587128e-07 8.91685486e-08 2.67982483e-07]
-	Using cached value: 0.3312392598942379
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.87191772e-07 2.67982483e-07 1.48773193e-07]
-	Using cached value: 0.3312070763534582
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.46796417e-07 2.08377838e-07 3.87191772e-07]
-	Using cached value: 0.33133539169932164
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:40, 20.15s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  5.27s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.75s/it]
-Fitting interactions of order 2:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:21<00:42, 21.07s/it]Stepwise progress: 100%|██████████| 3/3 [00:21<00:00,  5.52s/it]Stepwise progress: 100%|██████████| 3/3 [00:21<00:00,  7.08s/it]
-Fitting interactions of order 3:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:18<00:37, 18.92s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  6.34s/it]
-Predict f(0) = 0.3313985436028888 +/- 5.601515973443464e-05
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [5.91278076e-08 7.74383545e-07 4.16755676e-07]
-	Using cached value: 0.33102503248909176
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.78337097e-07 2.97546387e-07 8.93592834e-07]
-	Using cached value: 0.3310093830692431
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.97546387e-07 8.93592834e-07 1.78337097e-07]
-	Using cached value: 0.3313575255897346
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.16755676e-07 5.91278076e-08 6.55174255e-07]
-	Using cached value: 0.3310586450178388
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [5.35964966e-07 6.55174255e-07 5.91278076e-08]
-	Using cached value: 0.3313489941757653
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [6.55174255e-07 1.78337097e-07 5.35964966e-07]
-	Using cached value: 0.3313476922423635
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [7.74383545e-07 5.35964966e-07 2.97546387e-07]
-	Using cached value: 0.3310909819040072
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [8.93592834e-07 4.16755676e-07 7.74383545e-07]
-	Using cached value: 0.33111258302359003
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:40, 20.23s/it]Stepwise progress:  67%|██████▋   | 2/3 [00:20<00:08,  8.40s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  4.62s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.82s/it]
-Fitting interactions of order 2:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:41, 20.92s/it]Stepwise progress:  67%|██████▋   | 2/3 [00:21<00:08,  8.69s/it]Stepwise progress: 100%|██████████| 3/3 [00:21<00:00,  7.05s/it]
-Predict f(0) = 0.32969080407799756 +/- 8.49837852957072e-05
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.18255615e-07 1.54876709e-06 8.33511353e-07]
-	Using cached value: 0.3310027166809034
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.56674194e-07 5.95092773e-07 1.78718567e-06]
-	Using cached value: 0.3312811057086925
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [5.95092773e-07 1.78718567e-06 3.56674194e-07]
-	Using cached value: 0.3311414646972176
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [8.33511353e-07 1.18255615e-07 1.31034851e-06]
-	Using cached value: 0.3313256383970539
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.07192993e-06 1.31034851e-06 1.18255615e-07]
-	Using cached value: 0.3313783655109695
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.31034851e-06 3.56674194e-07 1.07192993e-06]
-	Using cached value: 0.33123768106843116
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.54876709e-06 1.07192993e-06 5.95092773e-07]
-	Using cached value: 0.33106925047209124
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.78718567e-06 8.33511353e-07 1.54876709e-06]
-	Using cached value: 0.3312715569426644
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:41, 20.70s/it]Stepwise progress:  67%|██████▋   | 2/3 [00:20<00:08,  8.58s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.96s/it]
-Fitting interactions of order 2:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:41, 20.70s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  5.42s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.95s/it]
-Predict f(0) = 0.33220406451503265 +/- 2.0943564406338746e-05
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.36511230e-07 3.09753418e-06 1.66702271e-06]
-	Using cached value: 0.3310888790251386
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [7.13348389e-07 1.19018555e-06 3.57437134e-06]
-	Using cached value: 0.33143301319069474
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.19018555e-06 3.57437134e-06 7.13348389e-07]
-	Using cached value: 0.331103303500404
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.66702271e-06 2.36511230e-07 2.62069702e-06]
-	Using cached value: 0.3310527258482139
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.14385986e-06 2.62069702e-06 2.36511230e-07]
-	Using cached value: 0.331055595892462
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.62069702e-06 7.13348389e-07 2.14385986e-06]
-	Using cached value: 0.33130343630919135
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.09753418e-06 2.14385986e-06 1.19018555e-06]
-	Using cached value: 0.3309903008748076
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.57437134e-06 1.66702271e-06 3.09753418e-06]
-	Using cached value: 0.3309578419185384
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:41, 20.62s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  5.41s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.93s/it]
-Fitting interactions of order 2:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:41, 20.64s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  5.40s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.92s/it]
-Fitting interactions of order 3:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:19<00:38, 19.48s/it]Stepwise progress:  67%|██████▋   | 2/3 [00:19<00:08,  8.08s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  6.55s/it]
-Fitting interactions of order 4:
-Stepwise progress:   0%|          | 0/5 [00:00<?, ?it/s]Stepwise progress:  20%|██        | 1/5 [00:19<01:16, 19.04s/it]Stepwise progress:  60%|██████    | 3/5 [00:19<00:09,  4.98s/it]Stepwise progress: 100%|██████████| 5/5 [00:19<00:00,  2.45s/it]Stepwise progress: 100%|██████████| 5/5 [00:19<00:00,  3.85s/it]
-Predict f(0) = 0.33098640481392694 +/- 0.0004063933746100601
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.73022461e-07 6.19506836e-06 3.33404541e-06]
-	Using cached value: 0.33136542121201473
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.42669678e-06 2.38037109e-06 7.14874268e-06]
-	Using cached value: 0.33103981286359396
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.38037109e-06 7.14874268e-06 1.42669678e-06]
-	Using cached value: 0.3309690935370942
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.33404541e-06 4.73022461e-07 5.24139404e-06]
-	Using cached value: 0.3308502432168845
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.28771973e-06 5.24139404e-06 4.73022461e-07]
-	Using cached value: 0.33095094813732373
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [5.24139404e-06 1.42669678e-06 4.28771973e-06]
-	Using cached value: 0.33071788763243454
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [6.19506836e-06 4.28771973e-06 2.38037109e-06]
-	Using cached value: 0.33111426318788456
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [7.14874268e-06 3.33404541e-06 6.19506836e-06]
-	Using cached value: 0.3307735026847136
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:40, 20.40s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  5.36s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.86s/it]
-Fitting interactions of order 2:
-Stepwise progress:   0%|          | 0/6 [00:00<?, ?it/s]Stepwise progress:  17%|█▋        | 1/6 [00:19<01:38, 19.62s/it]Stepwise progress:  33%|███▎      | 2/6 [00:20<00:33,  8.45s/it]Stepwise progress:  67%|██████▋   | 4/6 [00:20<00:06,  3.19s/it]Stepwise progress: 100%|██████████| 6/6 [00:20<00:00,  1.71s/it]Stepwise progress: 100%|██████████| 6/6 [00:20<00:00,  3.41s/it]
-Predict f(0) = 0.3319457488354448 +/- 0.000622570990383765
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [9.46044922e-07 1.23901367e-05 6.66809082e-06]
-	Using cached value: 0.33105140273667577
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.85339355e-06 4.76074219e-06 1.42974854e-05]
-	Using cached value: 0.33124950521472196
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.76074219e-06 1.42974854e-05 2.85339355e-06]
-	Using cached value: 0.3313020526357736
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [6.66809082e-06 9.46044922e-07 1.04827881e-05]
-	Using cached value: 0.3310470703219981
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [8.57543945e-06 1.04827881e-05 9.46044922e-07]
-	Using cached value: 0.33063555858524574
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.04827881e-05 2.85339355e-06 8.57543945e-06]
-	Using cached value: 0.330407107958408
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.23901367e-05 8.57543945e-06 4.76074219e-06]
-	Using cached value: 0.33093180225709745
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.42974854e-05 6.66809082e-06 1.23901367e-05]
-	Using cached value: 0.3308393112940561
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:41, 20.78s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  5.44s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.97s/it]
-Fitting interactions of order 2:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:40, 20.48s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  5.36s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.87s/it]
-Predict f(0) = 0.3318190953431107 +/- 3.344846756069224e-05
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.89208984e-06 2.47802734e-05 1.33361816e-05]
-	Using cached value: 0.3313937797190836
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [5.70678711e-06 9.52148437e-06 2.85949707e-05]
-	Using cached value: 0.33106799129092446
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [9.52148437e-06 2.85949707e-05 5.70678711e-06]
-	Using cached value: 0.3313869989243778
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.33361816e-05 1.89208984e-06 2.09655762e-05]
-	Using cached value: 0.33064129093640693
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.71508789e-05 2.09655762e-05 1.89208984e-06]
-	Using cached value: 0.3303926571083854
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.09655762e-05 5.70678711e-06 1.71508789e-05]
-	Using cached value: 0.33030569839614043
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.47802734e-05 1.71508789e-05 9.52148437e-06]
-	Using cached value: 0.3301118554607469
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.85949707e-05 1.33361816e-05 2.47802734e-05]
-	Using cached value: 0.3308109513858674
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:19<00:39, 19.65s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  5.16s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  6.61s/it]
-Fitting interactions of order 2:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:40, 20.48s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  5.37s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.88s/it]
-Fitting interactions of order 3:
-Stepwise progress:   0%|          | 0/5 [00:00<?, ?it/s]Stepwise progress:  20%|██        | 1/5 [00:18<01:14, 18.66s/it]Stepwise progress:  60%|██████    | 3/5 [00:18<00:09,  4.88s/it]Stepwise progress: 100%|██████████| 5/5 [00:18<00:00,  2.41s/it]Stepwise progress: 100%|██████████| 5/5 [00:18<00:00,  3.78s/it]
-Predict f(0) = 0.3339038811809891 +/- 2.7660064103628255e-05
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.78417969e-06 4.95605469e-05 2.66723633e-05]
-	Using cached value: 0.3311941067371863
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.14135742e-05 1.90429687e-05 5.71899414e-05]
-	Using cached value: 0.33101280960986
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.90429687e-05 5.71899414e-05 1.14135742e-05]
-	Using cached value: 0.3305584318074529
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.66723633e-05 3.78417969e-06 4.19311523e-05]
-	Using cached value: 0.3304308509780708
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.43017578e-05 4.19311523e-05 3.78417969e-06]
-	Using cached value: 0.329856833283656
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.19311523e-05 1.14135742e-05 3.43017578e-05]
-	Using cached value: 0.32964332763944915
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.95605469e-05 3.43017578e-05 1.90429687e-05]
-	Using cached value: 0.32954715729921147
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [5.71899414e-05 2.66723633e-05 4.95605469e-05]
-	Using cached value: 0.3305188686076266
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:19<00:39, 19.76s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  5.17s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  6.63s/it]
-Predict f(0) = 0.33086694348027346 +/- 0.0002980809834086764
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [7.56835937e-06 9.91210938e-05 5.33447266e-05]
-	Using cached value: 0.330289470848823
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.28271484e-05 3.80859375e-05 1.14379883e-04]
-	Using cached value: 0.3305553735968183
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.80859375e-05 1.14379883e-04 2.28271484e-05]
-	Using cached value: 0.3296841173226496
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [5.33447266e-05 7.56835937e-06 8.38623047e-05]
-	Using cached value: 0.3305831948780647
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [6.86035156e-05 8.38623047e-05 7.56835937e-06]
-	Using cached value: 0.3297930588550494
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [8.38623047e-05 2.28271484e-05 6.86035156e-05]
-	Using cached value: 0.32850242901278337
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [9.91210938e-05 6.86035156e-05 3.80859375e-05]
-	Using cached value: 0.32836434959784067
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.14379883e-04 5.33447266e-05 9.91210938e-05]
-	Using cached value: 0.3286134075330346
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:40, 20.26s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  5.29s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.79s/it]
-Fitting interactions of order 2:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:40, 20.09s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  5.27s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.75s/it]
-Fitting interactions of order 3:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:18<00:36, 18.42s/it]Stepwise progress: 100%|██████████| 3/3 [00:18<00:00,  4.82s/it]Stepwise progress: 100%|██████████| 3/3 [00:18<00:00,  6.18s/it]
-Predict f(0) = 0.3329112702541137 +/- 0.0005826495037368977
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.51367187e-05 1.98242188e-04 1.06689453e-04]
-	Using cached value: 0.32865417225174637
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.56542969e-05 7.61718750e-05 2.28759766e-04]
-	Using cached value: 0.33111905225678906
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [7.61718750e-05 2.28759766e-04 4.56542969e-05]
-	Using cached value: 0.32798422027137114
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.06689453e-04 1.51367187e-05 1.67724609e-04]
-	Using cached value: 0.3315321633754251
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.37207031e-04 1.67724609e-04 1.51367187e-05]
-	Using cached value: 0.3301569770333912
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.67724609e-04 4.56542969e-05 1.37207031e-04]
-	Using cached value: 0.329793858263011
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.98242188e-04 1.37207031e-04 7.61718750e-05]
-	Using cached value: 0.32516146719809697
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.00022876 0.00010669 0.00019824]
-	Using cached value: 0.3299548659471973
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:40, 20.34s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  5.33s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.83s/it]
-Fitting interactions of order 2:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:40, 20.10s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  5.26s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.75s/it]
-Predict f(0) = 0.3323941282461575 +/- 0.0001511208583729692
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.02734375e-05 3.96484375e-04 2.13378906e-04]
-	Using cached value: 0.32278254358479386
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [9.13085937e-05 1.52343750e-04 4.57519531e-04]
-	Using cached value: 0.3311019634507886
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [1.52343750e-04 4.57519531e-04 9.13085937e-05]
-	Using cached value: 0.317770066155503
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.13378906e-04 3.02734375e-05 3.35449219e-04]
-	Using cached value: 0.3316546170866379
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [2.74414063e-04 3.35449219e-04 3.02734375e-05]
-	Using cached value: 0.32416066984026665
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [3.35449219e-04 9.13085937e-05 2.74414063e-04]
-	Using cached value: 0.3290520906072965
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.00039648 0.00027441 0.00015234]
-	Using cached value: 0.32350421665602447
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.00045752 0.00021338 0.00039648]
-	Using cached value: 0.3238443776463614
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:41, 20.54s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  5.38s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.89s/it]
-Fitting interactions of order 2:
-Stepwise progress:   0%|          | 0/5 [00:00<?, ?it/s]Stepwise progress:  20%|██        | 1/5 [00:19<01:16, 19.13s/it]Stepwise progress:  60%|██████    | 3/5 [00:19<00:10,  5.01s/it]Stepwise progress: 100%|██████████| 5/5 [00:19<00:00,  2.48s/it]Stepwise progress: 100%|██████████| 5/5 [00:19<00:00,  3.89s/it]
-Predict f(0) = 0.3443459060577569 +/- 0.003219979082627838
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [6.05468750e-05 7.92968750e-04 4.26757812e-04]
-	Using cached value: 0.32413272259334414
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.00018262 0.00030469 0.00091504]
-	Using cached value: 0.32941262094374707
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.00030469 0.00091504 0.00018262]
-	Using cached value: 0.321937050464596
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [4.26757812e-04 6.05468750e-05 6.70898438e-04]
-	Using cached value: 0.32960402001702466
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [5.48828125e-04 6.70898438e-04 6.05468750e-05]
-	Using cached value: 0.3119219360424578
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.0006709  0.00018262 0.00054883]
-	Using cached value: 0.3280198657641227
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.00079297 0.00054883 0.00030469]
-	Using cached value: 0.31260551072686144
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.00091504 0.00042676 0.00079297]
-	Using cached value: 0.32391334693567264
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:19<00:39, 19.95s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.68s/it]
-Fitting interactions of order 2:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:41, 20.69s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  5.42s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.95s/it]
-Fitting interactions of order 3:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:18<00:37, 18.63s/it]Stepwise progress: 100%|██████████| 3/3 [00:18<00:00,  4.88s/it]Stepwise progress: 100%|██████████| 3/3 [00:18<00:00,  6.25s/it]
-Predict f(0) = 0.3146226297696441 +/- 0.00021576294983287236
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.00012109 0.00158594 0.00085352]
-	Using cached value: 0.32620313431005843
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.00036523 0.00060937 0.00183008]
-	Using cached value: 0.32883984827640544
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.00060937 0.00183008 0.00036523]
-	Using cached value: 0.3303731417456796
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.00085352 0.00012109 0.0013418 ]
-	Using cached value: 0.30220164313239223
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.00109766 0.0013418  0.00012109]
-	Using cached value: 0.3085198613770595
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.0013418  0.00036523 0.00109766]
-	Using cached value: 0.30290510002033316
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.00158594 0.00109766 0.00060937]
-	Using cached value: 0.32118408633878104
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.00183008 0.00085352 0.00158594]
-	Using cached value: 0.29572542812335545
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:40, 20.10s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  5.27s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.76s/it]
-Fitting interactions of order 2:
-Stepwise progress:   0%|          | 0/5 [00:00<?, ?it/s]Stepwise progress:  20%|██        | 1/5 [00:19<01:19, 19.86s/it]Stepwise progress:  40%|████      | 2/5 [00:19<00:24,  8.24s/it]Stepwise progress:  80%|████████  | 4/5 [00:20<00:03,  3.13s/it]Stepwise progress: 100%|██████████| 5/5 [00:20<00:00,  4.05s/it]
-Predict f(0) = 0.3052164024348867 +/- 0.000296740921349006
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.00024219 0.00317188 0.00170703]
-	Using cached value: 0.33713448912080357
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.00073047 0.00121875 0.00366016]
-	Using cached value: 0.314828621758625
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.00121875 0.00366016 0.00073047]
-	Using cached value: 0.33866190293114407
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.00170703 0.00024219 0.00268359]
-	Using cached value: 0.3147293634967862
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.00219531 0.00268359 0.00024219]
-	Using cached value: 0.3276071802027719
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.00268359 0.00073047 0.00219531]
-	Using cached value: 0.325029386987181
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.00317188 0.00219531 0.00121875]
-	Using cached value: 0.3495430212402501
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.00366016 0.00170703 0.00317188]
-	Using cached value: 0.31420924931931643
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:40, 20.23s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  5.30s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.79s/it]
-Predict f(0) = 0.32244481906517475 +/- 0.0029068167043512995
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.00048437 0.00634375 0.00341406]
-	Using cached value: 0.3152314542358957
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.00146094 0.0024375  0.00732031]
-	Using cached value: 0.33666076369609954
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.0024375  0.00732031 0.00146094]
-	Using cached value: 0.3242352936502609
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.00341406 0.00048437 0.00536719]
-	Using cached value: 0.2921921807012886
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.00439063 0.00536719 0.00048437]
-	Using cached value: 0.29556181752275845
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.00536719 0.00146094 0.00439063]
-	Using cached value: 0.31087241405551624
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.00634375 0.00439063 0.0024375 ]
-	Using cached value: 0.36140861529072893
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.00732031 0.00341406 0.00634375]
-	Using cached value: 0.33408005437776805
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:19<00:39, 19.77s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  5.18s/it]Stepwise progress: 100%|██████████| 3/3 [00:19<00:00,  6.64s/it]
-Fitting interactions of order 2:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:41, 20.61s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  5.40s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.92s/it]
-Predict f(0) = 0.25531731267121016 +/- 0.00032205979844929645
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.00096875 0.0126875  0.00682812]
-	Using cached value: 0.31622225012116
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.00292187 0.004875   0.01464063]
-	Using cached value: 0.3045758491292102
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.004875   0.01464063 0.00292187]
-	Using cached value: 0.297620507847589
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.00682812 0.00096875 0.01073438]
-	Using cached value: 0.30275128679434415
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.00878125 0.01073438 0.00096875]
-	Using cached value: 0.3310164087721078
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.01073438 0.00292187 0.00878125]
-	Using cached value: 0.29829479095798267
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.0126875  0.00878125 0.004875  ]
-	Using cached value: 0.3010355778923713
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.01464063 0.00682812 0.0126875 ]
-	Using cached value: 0.30810947955366863
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:40, 20.12s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.74s/it]
-Fitting interactions of order 2:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:41, 20.73s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.94s/it]
-Fitting interactions of order 3:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:18<00:37, 18.60s/it]Stepwise progress: 100%|██████████| 3/3 [00:18<00:00,  6.23s/it]
-Predict f(0) = 0.34548414433538793 +/- 0.007533756115861852
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.0019375  0.025375   0.01365625]
-	Using cached value: 0.34672042510766526
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.00584375 0.00975    0.02928125]
-	Using cached value: 0.33062280171217656
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.00975    0.02928125 0.00584375]
-	Using cached value: 0.30584083723206446
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.01365625 0.0019375  0.02146875]
-	Using cached value: 0.32886848024681825
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.0175625  0.02146875 0.0019375 ]
-	Using cached value: 0.2655809597794286
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.02146875 0.00584375 0.0175625 ]
-	Using cached value: 0.31166237362645
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.025375  0.0175625 0.00975  ]
-	Using cached value: 0.3655640386149467
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.02928125 0.01365625 0.025375  ]
-	Using cached value: 0.35470295497072435
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:19<00:39, 19.99s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  5.23s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.71s/it]
-Predict f(0) = 0.33941894323395094 +/- 0.027985111302539802
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.003875  0.05075   0.0273125]
-	Using cached value: 0.3839892208614673
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.0116875 0.0195    0.0585625]
-	Using cached value: 0.34103396227737276
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.0195    0.0585625 0.0116875]
-	Using cached value: 0.42730496352625363
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.0273125 0.003875  0.0429375]
-	Using cached value: 0.37458088026543845
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.035125  0.0429375 0.003875 ]
-	Using cached value: 0.24783769769991743
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.0429375 0.0116875 0.035125 ]
-	Using cached value: 0.5071119723993801
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.05075  0.035125 0.0195  ]
-	Using cached value: 0.2582624345701868
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.0585625 0.0273125 0.05075  ]
-	Using cached value: 0.25577580926604193
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:40, 20.28s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  5.32s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.81s/it]
-Predict f(0) = 0.2149282775046153 +/- 0.036711203194792034
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.00775  0.1015   0.054625]
-	Using cached value: 0.3479011768171262
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.023375 0.039    0.117125]
-	Using cached value: 0.3204682233929417
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.039    0.117125 0.023375]
-	Using cached value: 0.39046722420707464
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.054625 0.00775  0.085875]
-	Using cached value: 0.30882948243937114
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.07025  0.085875 0.00775 ]
-	Using cached value: 0.27031220930318506
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.085875 0.023375 0.07025 ]
-	Using cached value: 0.26023281977979495
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.1015  0.07025 0.039  ]
-	Using cached value: 0.23815182843500132
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.117125 0.054625 0.1015  ]
-	Using cached value: 0.44048339693880445
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:40, 20.46s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  5.37s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.88s/it]
-Fitting interactions of order 2:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:20<00:40, 20.27s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  5.34s/it]Stepwise progress: 100%|██████████| 3/3 [00:20<00:00,  6.83s/it]
-Fitting interactions of order 3:
-Stepwise progress:   0%|          | 0/5 [00:00<?, ?it/s]Stepwise progress:  20%|██        | 1/5 [00:18<01:13, 18.44s/it]Stepwise progress:  60%|██████    | 3/5 [00:18<00:09,  4.82s/it]Stepwise progress: 100%|██████████| 5/5 [00:18<00:00,  2.37s/it]Stepwise progress: 100%|██████████| 5/5 [00:18<00:00,  3.73s/it]
-Predict f(0) = 0.4117479634932759 +/- 0.018194528308510257
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.0155  0.203   0.10925]
-	Using cached value: 0.3347458239084089
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.04675 0.078   0.23425]
-	Using cached value: 0.26058033298991184
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.078   0.23425 0.04675]
-	Using cached value: 0.3162284977342826
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.10925 0.0155  0.17175]
-	Using cached value: 0.2999306204738036
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.1405  0.17175 0.0155 ]
-	Using cached value: 0.15754041289328946
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.17175 0.04675 0.1405 ]
-	Using cached value: 0.6919730078526404
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.203  0.1405 0.078 ]
-	Using cached value: 1.3483694322503803
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.23425 0.10925 0.203  ]
-	Using cached value: 0.24326240221114145
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:16<00:33, 16.97s/it]Stepwise progress: 100%|██████████| 3/3 [00:17<00:00,  4.45s/it]Stepwise progress: 100%|██████████| 3/3 [00:17<00:00,  5.71s/it]
-Fitting interactions of order 2:
-Stepwise progress:   0%|          | 0/5 [00:00<?, ?it/s]Stepwise progress:  20%|██        | 1/5 [00:15<01:03, 15.80s/it]Stepwise progress:  60%|██████    | 3/5 [00:15<00:08,  4.14s/it]Stepwise progress: 100%|██████████| 5/5 [00:16<00:00,  2.05s/it]Stepwise progress: 100%|██████████| 5/5 [00:16<00:00,  3.22s/it]
-Fitting interactions of order 3:
-Stepwise progress:   0%|          | 0/6 [00:00<?, ?it/s]Stepwise progress:  17%|█▋        | 1/6 [00:15<01:19, 15.90s/it]Stepwise progress:  50%|█████     | 3/6 [00:16<00:12,  4.18s/it]Stepwise progress:  83%|████████▎ | 5/6 [00:16<00:02,  2.07s/it]Stepwise progress: 100%|██████████| 6/6 [00:16<00:00,  2.72s/it]
-Fitting interactions of order 4:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:15<00:31, 15.74s/it]Stepwise progress: 100%|██████████| 3/3 [00:15<00:00,  5.27s/it]
-Predict f(0) = -1.6895114081928602 +/- 0.05476835438894317
-
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.031  0.406  0.2185]
-	Using cached value: 0.7452022819140912
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.0935 0.156  0.4685]
-	Using cached value: 0.23755677115010254
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.156  0.4685 0.0935]
-	Using cached value: 1.1724047399171806
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.2185 0.031  0.3435]
-	Using cached value: 0.27979948448075787
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.281  0.3435 0.031 ]
-	Using cached value: 0.7559715288681923
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.3435 0.0935 0.281 ]
-	Using cached value: 2.9080506604367606
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.406 0.281 0.156]
-	Using cached value: 3.8527003270681397
-Running model "Mujoco" using offset [1e-05, 0.02, 0.001] with parameters [0.4685 0.2185 0.406 ]
-	Using cached value: 4.180293567007943
-Fitting interactions of order 1:
-Stepwise progress:   0%|          | 0/3 [00:00<?, ?it/s]Stepwise progress:  33%|███▎      | 1/3 [00:16<00:33, 16.82s/it]Stepwise progress: 100%|██████████| 3/3 [00:16<00:00,  4.40s/it]Stepwise progress: 100%|██████████| 3/3 [00:16<00:00,  5.64s/it]
-Fitting interactions of order 2:
-Stepwise progress:   0%|          | 0/5 [00:00<?, ?it/s]Stepwise progress:  20%|██        | 1/5 [00:15<01:03, 15.81s/it]Stepwise progress:  80%|████████  | 4/5 [00:15<00:03,  3.03s/it]Stepwise progress: 100%|██████████| 5/5 [00:15<00:00,  3.20s/it]
-Predict f(0) = -2.6129097280719575 +/- 1.0247233176704158
-
-
-True value calculated as f(0) = 0.33123442579122125
-
-Thu 12 Mar 10:42:12 GMT 2026
-Total seconds: 3596

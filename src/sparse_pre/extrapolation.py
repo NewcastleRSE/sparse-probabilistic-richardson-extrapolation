@@ -34,7 +34,7 @@ def extrapolation(X, Y, options = None, h = None) -> dict:
                 - "name"   : str, one of {"MRE", "GRE", "SPRE"} (default: "SPRE")
                 - "k_name" : str, one of {"Gaussian", "GaussianARD", "Matern1/2", "Matern3/2", "white"} (default: "white")
                 - "plot"   : bool, whether to plot LOOCV results (default: True)
-                - "plot_filename" : filename to plot LOOCV results (default: True)
+                - "plot_filename" : filename to save the LOOCV plot to (default: "", not saved)
                 - "use_fixed_basis" : bool, whether to use fixed default basis, e.g. for d=2 use A=[[0, 0], [1, 0], [0, 1]]
                 - "bases_filename" : file to store bases in
                 - "max_order": maximum order to do stepwise fitting

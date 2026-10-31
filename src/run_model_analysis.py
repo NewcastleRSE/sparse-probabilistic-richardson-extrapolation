@@ -2,7 +2,7 @@
 # Script to run SPRE analysis given a model parameter file.
 #
 # From root directory, for example run
-# python ./src/run_model_analysis.py ./data/chem_equil/input_1.json
+# python ./src/run_model_analysis.py ./data/cubic/input_cubic_1.json
 #
 # Richard Howey, July 2025 - April 2026
 ##############################################################################

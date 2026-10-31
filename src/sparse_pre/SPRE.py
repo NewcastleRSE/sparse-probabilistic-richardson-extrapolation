@@ -1,7 +1,7 @@
 ##############################################################################
 # Sparse Probabilistic Richardson Extrapolation (SPRE)
-# Main class with methods for peforming SPRE. See test.py and extrapolation.py
-# for an example application. 
+# Main class with methods for performing SPRE. See src/example.py and
+# sparse_pre/extrapolation.py for an example application. 
 # Based on the methods and original MatLab code by Chris Oates.
 #
 # Richard Howey, July 2025 - April 2026
@@ -35,12 +35,12 @@ class SPRE:
         Parameters:  
             kernel_spec : str               Name of the kernel to set up and use.
             dimension : int                 Data dimension.
-            gre_base : jnp.ndarray          Basis for compatability layer for GRE.          
+            gre_base : jnp.ndarray          Basis for compatibility layer for GRE.          
         Returns:
             None         
         """
         
-        # Smallest allowed amplitude, epsilson, used in the kernel.
+        # Smallest allowed amplitude, epsilon, used in the kernel.
         self.ep = 1e-16  
 
         # Set dimension, the number of parameters that are discretized in the simulation, such as time
@@ -81,7 +81,7 @@ class SPRE:
 
     def set_kernel_spec(self, kernel_spec : str, gre_base : jnp.ndarray = None) -> None:
         """
-        Sets up the kernel function for analyses, such that kernal(X1, X2, x) returns the set kernel function
+        Sets up the kernel function for analyses, such that kernel(X1, X2, x) returns the set kernel function
         where X1 and X2 are simulation data output and x is array of hyperparameters for the kernel.
             X1 = n1 x dimension
             X2 = n2 x dimension
@@ -90,13 +90,13 @@ class SPRE:
 
         Parameters:  
             kernel_spec : str               Name of the kernel to set up and use         
-            gre_base : jnp.ndarray          Basis for compatability layer for GRE             
+            gre_base : jnp.ndarray          Basis for compatibility layer for GRE             
         Returns:
             None         
         """
 
         if gre_base is None:
-            # Create kernal function
+            # Create kernel function
             self.kernel_spec = kernel_spec
             self.kernel_base = None
             
@@ -517,15 +517,16 @@ class SPRE:
         return -np.asarray(self.jit_grad(x_jnp, A_jnp))     # return numpy array
 
 
-    def perform_extrapolation_optimization(self, A : jnp.ndarray, do_jit : bool = True) -> dict:
+    def perform_extrapolation_optimization(self, A : jnp.ndarray, do_jit : bool = True, max_iterations : int = 1000) -> dict:
         """
         Optimize kernel hyperparameters for SPRE.
 
         Parameters:
             A : jnp.ndarray           binary matrix representing the sparse basis
-            do_jit : bool             Do "Just in time" compilation to speed up the fitting.
-                                      all "self" values must remain constant during this call otherwise
-                                      this should be set to True.
+            do_jit : bool             Do "Just in time" compilation before fitting. This can be set to
+                                      False only if prepare_jit_for_extrapolation_optimization() has
+                                      already been called and no object variables have changed since.
+            max_iterations : int      Maximum number of iterations of the trust region method.
         Returns:
             out : dict with keys:
                  x  = p x 1, fitted kernel hyperparameters 
@@ -541,7 +542,7 @@ class SPRE:
                     jac=self.scipy_jac,      # gradient
                     hess=self.scipy_hess,    # hessian
                     args=(A,),
-                    options={'maxiter': 1000, 'disp': False})
+                    options={'maxiter': max_iterations, 'disp': False})
 
         result_value = self.objective(result.x, A)
         result_params = result.x
@@ -584,14 +585,13 @@ class SPRE:
 
         Returns:
             out     : dict, result of SPRE using optimal model
-                    out.mu      = scalar, predictive mean for f(0)
-                    out.var     = scalar, predictive variance for f(0)
-                    out.mu_GP   = function R^d -> R, predictive mean for fitted GP
-                    out.cov_GP  = function R^d x R^d -> R, predictive covariance for fitted GP
-                    out.mu_cv   = n_train x 1, LOOCV predictive means
-                    out.var_cv  = n_train x 1, LOOCV predictive variances
-                    out.cv      = scalar, LOOCV criterion
-                    out.cv_grad = p x 1, gradient of LOOCV criterion
+                    out["mu"]     = scalar, predictive mean for f(0)
+                    out["var"]    = scalar, predictive variance for f(0)
+                    out["mu_cv"]  = n_train x 1, LOOCV predictive means
+                    out["var_cv"] = n_train x 1, LOOCV predictive variances
+                    out["cv"]     = scalar, LOOCV criterion
+                    out["A"]      = selected index set (basis), one multi-index per row
+                    out["x"]      = fitted kernel hyperparameters
         """
 
         # Number of training points
@@ -660,6 +660,11 @@ class SPRE:
        
         # Final model with best kernel parameters and basis A
         out = self.perform_extrapolation(x_opt, A, return_mu_and_var = True)
+
+        # Also return the selected basis and fitted kernel parameters
+        # (used, for example, for sequential experimental design)
+        out["A"] = A
+        out["x"] = x_opt
 
         # Record used basis
         if bases_filename != "":

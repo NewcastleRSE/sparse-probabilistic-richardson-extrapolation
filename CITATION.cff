@@ -1,16 +1,38 @@
 cff-version: 1.2.0
-message: "If you use this software, please cite it as below."
-authors:
-- family-names: "Oates"
-  given-names: "Chris J"
-- family-names: "Howey"
-  given-names: "Richard" 
-- family-names: "Karvonen"
-  given-names: "Toni" 
-- family-names: "Teckentrup L"
-  given-names: "Aretha" 
+message: "If you use this software, please cite the accompanying paper (preferred-citation below) and, optionally, the software itself."
 title: "Sparse Probabilistic Richardson Extrapolation"
-version: 1.0.0
-doi: TBA
-date-released: 2026-04-01
-url: "https://github.com/NewcastleRSE/sparse-probabilistic-richardson-extrapolation/"
+abstract: "Python implementation of Sparse Probabilistic Richardson Extrapolation (SPRE), together with Multivariate Richardson Extrapolation (MRE) and Gauss-Richardson Extrapolation (GRE), and code to reproduce the experiments in the accompanying paper."
+type: software
+authors:
+  - family-names: "Oates"
+    given-names: "Chris J."
+    affiliation: "Newcastle University"
+  - family-names: "Howey"
+    given-names: "Richard"
+    affiliation: "Newcastle University"
+  - family-names: "Karvonen"
+    given-names: "Toni"
+    affiliation: "Lappeenranta-Lahti University of Technology LUT"
+version: 1.1.0
+date-released: 2026-10-31
+license: MIT
+repository-code: "https://github.com/NewcastleRSE/sparse-probabilistic-richardson-extrapolation"
+url: "https://newcastlerse.github.io/sparse-probabilistic-richardson-extrapolation/"
+keywords:
+  - "Richardson extrapolation"
+  - "Gaussian process"
+  - "numerical analysis"
+  - "uncertainty quantification"
+  - "experimental design"
+preferred-citation:
+  type: unpublished
+  title: "Sparse Probabilistic Richardson Extrapolation"
+  authors:
+    - family-names: "Oates"
+      given-names: "Chris J."
+    - family-names: "Howey"
+      given-names: "Richard"
+    - family-names: "Karvonen"
+      given-names: "Toni"
+  year: 2026
+  notes: "Manuscript under review."

@@ -7,7 +7,7 @@
 # is set in the parameter file.
 #
 # From root directory, for example run
-# python ./src/simulate_model.py ./data/diffusion/input_diffusion_38.json 2
+# python ./src/simulate_model.py ./data/mujoco/input_two_spheres_mp4.json 1
 #
 # To simulate the model using the 2nd discretisation parameters that would
 #  be simulated for the given X and h arrays.

@@ -34,7 +34,7 @@ class Model:
         Parameters:  
             params : dict               Parameters for the model.
             parameter_filename : str    Filename and path of the file.
-            skip_true_value_calc : bool Skip evaulation of the true value (if not doing SPRE)
+            skip_true_value_calc : bool Skip evaluation of the true value (if not doing SPRE)
                                         Used in sub classes of Model    
         Returns:
             None         

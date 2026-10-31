@@ -3,6 +3,7 @@
   "model_file": "two_spheres.xml",
   "description": "Two Spheres Colliding Model",
   "total_time": 5.0,
+  "burn_in_time": 5.0,
   "use_dt": true,
   "use_solver_reference": true,
   "use_solver_impedance": true,
