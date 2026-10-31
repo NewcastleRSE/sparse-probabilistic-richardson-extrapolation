@@ -1,13 +1,29 @@
-.vscode/
+# Python
+__pycache__/
+*.py[cod]
 .venv/
 .venv2/
+venv/
 *.env
-loocv_plots/
-ffmpeg*
+
+# Cache of simulator outputs (can be large; regenerated on demand)
+data/*/cache/
 *.bin
+
+# Local HPC job files and tools
 hpc/
+ffmpeg*
+loocv_plots/
 
-__pycache__
+# Built code documentation (published to GitHub Pages from the gh-pages branch)
+site/
 
-# MacOS
+# MATLAB
+*.asv
+*.m~
+
+# Operating system and editor files
 .DS_Store
+Thumbs.db
+.vscode/
+.idea/

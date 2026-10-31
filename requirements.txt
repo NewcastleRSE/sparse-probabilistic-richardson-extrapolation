@@ -1,11 +1,13 @@
 numpy==2.3.1
+scipy==1.18.1
 scikit-learn==1.7.0
 jax==0.7.2
-jaxopt==0.8.5
+sympy==1.14.0
 tqdm==4.67.1
 matplotlib==3.10.3
 pandas==2.3.2
+pillow==13.0.0
 imageio==2.37.2
-mujoco==3.4.0
 imageio-ffmpeg==0.6.0
+mujoco==3.4.0
 mesa==3.4.1

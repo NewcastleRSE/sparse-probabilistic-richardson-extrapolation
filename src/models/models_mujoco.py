@@ -31,12 +31,19 @@ class MujocoModel(Model):
         Parameters:  
             params : dict               Parameters for the model.
             parameter_filename : str    Filename and path of the file. 
-            skip_true_value_calc : bool Skip evaulation of the true value (if not doing SPRE)     
+            skip_true_value_calc : bool Skip evaluation of the true value (if not doing SPRE)     
         Returns:
             None         
         """
      
         self.total_time = 6.0
+
+        # Simulated time (in seconds) before the measured period starts. The quantity of
+        # interest is then recorded at time burn_in_time + total_time. The case studies in the
+        # paper use burn_in_time = total_time = 5, so that the quantity of interest is the
+        # distance of the red sphere from the origin at (approximately) t = 10.
+        # The default of 0 records the quantity of interest at total_time.
+        self.burn_in_time = 0.0
 
         # Use model f_z(x) = f(z+x)
         self.use_offset_model = False
@@ -195,6 +202,11 @@ class MujocoModel(Model):
         # Setup model world
         self.setup_model_world(dt, solver_reference, solver_impedance)
 
+        # Burn-in period, simulated before the measured period (see self.burn_in_time)
+        if self.burn_in_time > 0:
+            for _ in range(int(self.burn_in_time / self.model.opt.timestep)):
+                mujoco.mj_step(self.model, self.data)
+
         # Set up if creating a video
         if self.save_animation:
             # Renderer
@@ -349,7 +361,7 @@ class MujocoModel(Model):
 
     def get_cache_filename(self, discrete_paras : npt.NDArray) -> str:
         """
-        Returns the model cache filename for the Physics Mug model based on the model parameters.
+        Returns the model cache filename for the MuJoCo model based on the model parameters.
 
         Parameters:  
             discrete_paras : npt.NDArray   Discretisation parameters
@@ -359,6 +371,9 @@ class MujocoModel(Model):
       
         # Create filename with all settings and parameters used
         filename = f"mp_{self.total_time}_{self.model_file[:-4]}_"
+
+        if self.burn_in_time > 0:
+            filename += f"burnin{self.burn_in_time}_"
 
         if self.use_offset_model:
             filename += "_".join(str(i) for i in self.final_tols) + "_"

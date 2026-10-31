@@ -1,4 +1,6 @@
-site_name: SPRE Python
+site_name: Sparse Probabilistic Richardson Extrapolation (SPRE)
+site_url: https://newcastlerse.github.io/sparse-probabilistic-richardson-extrapolation/
+repo_url: https://github.com/NewcastleRSE/sparse-probabilistic-richardson-extrapolation
 
 theme:
   name: material
@@ -24,3 +26,7 @@ markdown_extensions:
   - admonition
   - toc:
       permalink: true
+
+# docs/requirements.txt lists the packages needed to build the documentation
+exclude_docs: |
+  requirements.txt
